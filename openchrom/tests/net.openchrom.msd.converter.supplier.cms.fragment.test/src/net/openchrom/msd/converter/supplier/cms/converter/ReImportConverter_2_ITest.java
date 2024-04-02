@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 whitlow.
+ * Copyright (c) 2017, 2024 whitlow.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,25 +8,25 @@
  *
  * Contributors:
  * whitlow - initial API and implementation
+ * Philip Wenig - refactor m/z and abundance limit
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cms.converter;
 
 import java.io.File;
 
-import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.msd.converter.database.IDatabaseExportConverter;
 import org.eclipse.chemclipse.msd.converter.database.IDatabaseImportConverter;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
-import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
-import junit.framework.TestCase;
 import net.openchrom.msd.converter.supplier.cms.PathResolver;
 import net.openchrom.msd.converter.supplier.cms.TestPathHelper;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
+
+import junit.framework.TestCase;
 
 public class ReImportConverter_2_ITest extends TestCase {
 
@@ -79,7 +79,7 @@ public class ReImportConverter_2_ITest extends TestCase {
 		super.tearDown();
 	}
 
-	public void test_1() throws AbundanceLimitExceededException, IonLimitExceededException {
+	public void test_1() {
 
 		assertEquals(massSpectra1.size(), massSpectra2.size());
 		for(int i = 1; i <= massSpectra1.size(); i++) {

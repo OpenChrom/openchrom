@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Lablicate GmbH.
+ * Copyright (c) 2013, 2024 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -7,15 +7,13 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
+ * Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cdf.model;
 
-import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
-import org.eclipse.chemclipse.msd.model.core.AbstractScanIon;
-import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
+import org.eclipse.chemclipse.msd.model.core.AbstractIon;
 
-public class VendorIon extends AbstractScanIon implements IVendorIon {
+public class VendorIon extends AbstractIon implements IVendorIon {
 
 	/**
 	 * Renew the serialVersionUID any time you have changed some fields or
@@ -29,40 +27,13 @@ public class VendorIon extends AbstractScanIon implements IVendorIon {
 	public static final double MIN_ION = 1.0d;
 	public static final double MAX_ION = 65535.0d;
 
-	public VendorIon(float ion) throws IonLimitExceededException {
+	public VendorIon(double ion) {
+
 		super(ion);
 	}
 
-	public VendorIon(double ion, boolean ignoreAbundanceLimit) throws IonLimitExceededException {
-		super(ion);
-		setIgnoreAbundanceLimit(ignoreAbundanceLimit);
-	}
+	public VendorIon(double ion, float abundance) {
 
-	public VendorIon(double ion, float abundance) throws AbundanceLimitExceededException, IonLimitExceededException {
 		super(ion, abundance);
-	}
-
-	@Override
-	public float getMinPossibleAbundanceValue() {
-
-		return MIN_ABUNDANCE;
-	}
-
-	@Override
-	public float getMaxPossibleAbundanceValue() {
-
-		return MAX_ABUNDANCE;
-	}
-
-	@Override
-	public double getMinPossibleIonValue() {
-
-		return MIN_ION;
-	}
-
-	@Override
-	public double getMaxPossibleIonValue() {
-
-		return MAX_ION;
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Walter Whitlock.
+ * Copyright (c) 2016, 2024 Walter Whitlock.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Walter Whitlock - initial API and implementation
+ * Philip Wenig - refactor m/z and abundance limit
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cms.model;
 
@@ -15,11 +16,8 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.msd.model.core.AbstractRegularLibraryMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IIon;
-import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.chemclipse.msd.model.implementation.Ion;
 import org.eclipse.chemclipse.support.text.ValueFormat;
 
@@ -30,7 +28,6 @@ public class CalibratedVendorLibraryMassSpectrum extends AbstractRegularLibraryM
 	 * methods.
 	 */
 	private static final long serialVersionUID = 5981872973320440739L;
-	private static final Logger logger = Logger.getLogger(CalibratedVendorLibraryMassSpectrum.class);
 	//
 	private DecimalFormat decimalFormatScaleFactor = ValueFormat.getDecimalFormatEnglish("0.0#####");
 	private List<String> comments; // this implementation preserves the order in which the comments were first read
@@ -48,6 +45,7 @@ public class CalibratedVendorLibraryMassSpectrum extends AbstractRegularLibraryM
 	private double scaleFactor; // used for dynamic rescaling, ignored in compareTo()
 
 	public CalibratedVendorLibraryMassSpectrum() {
+
 		/*
 		 * Initialize the values.
 		 */
@@ -385,14 +383,8 @@ public class CalibratedVendorLibraryMassSpectrum extends AbstractRegularLibraryM
 		 * Make a deep copy of all ions.
 		 */
 		for(IIon ion : getIons()) {
-			try {
-				defaultIon = new Ion(ion.getIon(), ion.getAbundance());
-				massSpectrum.addIon(defaultIon);
-			} catch(AbundanceLimitExceededException e) {
-				logger.warn(e);
-			} catch(IonLimitExceededException e) {
-				logger.warn(e);
-			}
+			defaultIon = new Ion(ion.getIon(), ion.getAbundance());
+			massSpectrum.addIon(defaultIon);
 		}
 		return massSpectrum;
 	}

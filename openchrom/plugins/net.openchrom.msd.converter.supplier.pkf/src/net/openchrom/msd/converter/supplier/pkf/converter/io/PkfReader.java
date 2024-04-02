@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2022 Matthias Mailänder.
+ * Copyright (c) 2020, 2024 Matthias Mailänder.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Matthias Mailänder - initial API and implementation
+ * Philip Wenig - refactor m/z and abundance limit
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.pkf.converter.io;
 
@@ -15,14 +16,11 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.lang3.StringUtils;
-import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.model.identifier.PeakLibraryInformation;
 import org.eclipse.chemclipse.msd.converter.io.AbstractMassSpectraReader;
 import org.eclipse.chemclipse.msd.converter.io.IMassSpectraReader;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
-import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.chemclipse.msd.model.implementation.Ion;
 import org.eclipse.chemclipse.msd.model.implementation.MassSpectra;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -36,8 +34,6 @@ import us.hebi.matlab.mat.types.Matrix;
 import us.hebi.matlab.mat.types.Struct;
 
 public class PkfReader extends AbstractMassSpectraReader implements IMassSpectraReader {
-
-	private static final Logger logger = Logger.getLogger(PkfReader.class);
 
 	@Override
 	public IMassSpectra read(File file, IProgressMonitor monitor) throws IOException {
@@ -71,12 +67,7 @@ public class PkfReader extends AbstractMassSpectraReader implements IMassSpectra
 			for(int n = 0; n < pik.getNumCols(); n++) {
 				double mz = pik.getDouble(0, n);
 				float intensity = pik.getFloat(1, n);
-				try {
-					pkf.addIon(new Ion(mz, intensity));
-				} catch(AbundanceLimitExceededException
-						| IonLimitExceededException e) {
-					logger.warn(e);
-				}
+				pkf.addIon(new Ion(mz, intensity));
 			}
 			massSpectra.addMassSpectrum(pkf);
 		}

@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Matthias Mailänder - initial API and implementation
+ * Philip Wenig - refactor m/z and abundance limit
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.animl.io;
 
@@ -18,13 +19,11 @@ import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.msd.converter.io.AbstractMassSpectraReader;
 import org.eclipse.chemclipse.msd.converter.io.IMassSpectraReader;
 import org.eclipse.chemclipse.msd.model.core.AbstractIon;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IVendorStandaloneMassSpectrum;
-import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.chemclipse.msd.model.implementation.VendorMassSpectrum;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.xml.sax.SAXException;
@@ -120,17 +119,11 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 				}
 			}
 			for(int i = 0; i < length; i++) {
-				try {
-					double intensity = intensities[i];
-					if(intensity >= VendorIon.MIN_ABUNDANCE && intensity <= VendorIon.MAX_ABUNDANCE) {
-						double mz = AbstractIon.getIon(mzs[i]);
-						IVendorIon ion = new VendorIon(mz, (float)intensity);
-						massSpectrum.addIon(ion);
-					}
-				} catch(AbundanceLimitExceededException e) {
-					logger.warn(e);
-				} catch(IonLimitExceededException e) {
-					logger.warn(e);
+				double intensity = intensities[i];
+				if(intensity >= VendorIon.MIN_ABUNDANCE && intensity <= VendorIon.MAX_ABUNDANCE) {
+					double mz = AbstractIon.getIon(mzs[i]);
+					IVendorIon ion = new VendorIon(mz, (float)intensity);
+					massSpectrum.addIon(ion);
 				}
 			}
 		} catch(SAXException e) {

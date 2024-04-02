@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Lablicate GmbH.
+ * Copyright (c) 2023, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -19,15 +19,12 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
-import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.msd.converter.io.AbstractMassSpectraReader;
 import org.eclipse.chemclipse.msd.converter.io.IMassSpectraReader;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
-import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.chemclipse.msd.model.implementation.Ion;
 import org.eclipse.chemclipse.msd.model.implementation.MassSpectra;
 import org.eclipse.chemclipse.msd.model.implementation.RegularLibraryMassSpectrum;
@@ -43,7 +40,6 @@ public class MassSpectraReader extends AbstractMassSpectraReader implements IMas
 	// TODO private static final String CHARGE = "CHARGE=";
 	private static final Pattern ionPattern = Pattern.compile("(\\d+\\.\\d+) (\\d+\\.\\d+)(?: (\\d+))?");
 	private static final Pattern peptidePattern = Pattern.compile("(\\d+\\.\\d+)(?: (\\d+\\\\.\\d+))?");
-	private static final Logger logger = Logger.getLogger(MassSpectraReader.class);
 
 	@Override
 	public IMassSpectra read(File file, IProgressMonitor monitor) throws IOException {
@@ -78,21 +74,15 @@ public class MassSpectraReader extends AbstractMassSpectraReader implements IMas
 					}
 					boolean startsWithNumber = Pattern.matches("^\\d.*", line);
 					if(startsWithNumber) {
-						try {
-							Matcher matcher = ionPattern.matcher(line);
-							if(matcher.find()) {
-								String mass = matcher.group(1);
-								String intensity = matcher.group(2);
-								// TODO: String charge = matcher.group(3);
-								double mz = Double.parseDouble(mass);
-								float abundance = Float.parseFloat(intensity);
-								IIon ion = new Ion(mz, abundance);
-								massSpectrum.addIon(ion);
-							}
-						} catch(AbundanceLimitExceededException e) {
-							logger.warn(e);
-						} catch(IonLimitExceededException e) {
-							logger.warn(e);
+						Matcher matcher = ionPattern.matcher(line);
+						if(matcher.find()) {
+							String mass = matcher.group(1);
+							String intensity = matcher.group(2);
+							// TODO: String charge = matcher.group(3);
+							double mz = Double.parseDouble(mass);
+							float abundance = Float.parseFloat(intensity);
+							IIon ion = new Ion(mz, abundance);
+							massSpectrum.addIon(ion);
 						}
 					}
 					if(line.equals(END_IONS)) {

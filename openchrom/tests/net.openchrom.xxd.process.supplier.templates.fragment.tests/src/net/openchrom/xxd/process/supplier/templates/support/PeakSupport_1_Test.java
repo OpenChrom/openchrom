@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Lablicate GmbH.
+ * Copyright (c) 2022, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -21,13 +21,11 @@ import org.eclipse.chemclipse.csd.model.implementation.PeakCSD;
 import org.eclipse.chemclipse.csd.model.implementation.PeakModelCSD;
 import org.eclipse.chemclipse.csd.model.implementation.ScanCSD;
 import org.eclipse.chemclipse.model.core.IPeakIntensityValues;
-import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.model.implementation.PeakIntensityValues;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IPeakMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IPeakModelMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
-import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.chemclipse.msd.model.implementation.Ion;
 import org.eclipse.chemclipse.msd.model.implementation.PeakMSD;
 import org.eclipse.chemclipse.msd.model.implementation.PeakMassSpectrum;
@@ -127,7 +125,7 @@ public class PeakSupport_1_Test extends TestCase {
 		assertTrue(true);
 	}
 
-	public void test5b() throws AbundanceLimitExceededException, IonLimitExceededException {
+	public void test5b() {
 
 		IScanMSD scan = new ScanMSD();
 		scan.addIon(new Ion(18.0d, 1000.0f));
@@ -154,7 +152,7 @@ public class PeakSupport_1_Test extends TestCase {
 		assertTrue(PeakSupport.isPeakRelevant(peak, traces));
 	}
 
-	public void test6b() throws AbundanceLimitExceededException, IonLimitExceededException {
+	public void test6b() {
 
 		IScanMSD scan = new ScanMSD();
 		scan.addIon(new Ion(18.0d, 1000.0f));
@@ -184,7 +182,7 @@ public class PeakSupport_1_Test extends TestCase {
 		assertTrue(PeakSupport.isPeakRelevant(peak, traces));
 	}
 
-	public void test7b() throws AbundanceLimitExceededException, IonLimitExceededException {
+	public void test7b() {
 
 		IScanMSD scan = new ScanMSD();
 		scan.addIon(new Ion(18.0d, 1000.0f));

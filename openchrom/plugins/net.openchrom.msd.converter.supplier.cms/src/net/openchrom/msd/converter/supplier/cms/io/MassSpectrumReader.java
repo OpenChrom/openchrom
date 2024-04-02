@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Walter Whitlock, Philip Wenig.
+ * Copyright (c) 2016, 2024 Walter Whitlock, Philip Wenig.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -30,14 +30,11 @@ import java.util.regex.Pattern;
 
 import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
-import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
-import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.msd.converter.io.AbstractMassSpectraReader;
 import org.eclipse.chemclipse.msd.converter.io.IMassSpectraReader;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
-import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.chemclipse.msd.model.implementation.Ion;
 import org.eclipse.chemclipse.msd.model.implementation.MassSpectra;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -51,7 +48,6 @@ import net.openchrom.msd.converter.supplier.cms.model.IonMeasurement;
 
 public class MassSpectrumReader extends AbstractMassSpectraReader implements IMassSpectraReader {
 
-	private static final Logger logger = Logger.getLogger(AbstractMassSpectraReader.class);
 	/**
 	 * The converter id is used in the extension point mechanism.
 	 * See <extension point="org.eclipse.chemclipse.msd.converter.massSpectrumSupplier"> in plugin.xml.
@@ -396,13 +392,7 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 							mass = Double.parseDouble(fieldMatcher.group(1));
 							signal = Float.parseFloat(fieldMatcher.group(2));
 							assert (libFile);
-							try {
-								tempIIonList.add(new Ion(mass, signal));
-							} catch(AbundanceLimitExceededException e) {
-								logger.warn(e);
-							} catch(IonLimitExceededException e) {
-								logger.warn(e);
-							}
+							tempIIonList.add(new Ion(mass, signal));
 							peakCount++;
 						} while(fieldMatcher.find());
 					}
@@ -473,11 +463,7 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 			}
 			// System.out.println("rescaling library " + cvmSpectrum.getLibraryInformation().getName() + ", " + maxSignal + "-->" + maxSig);
 			for(IIon ion : cvmSpectrum.getIons()) {
-				try {
-					ion.setAbundance(maxSig / maxSignal * ion.getAbundance());
-				} catch(AbundanceLimitExceededException e) {
-					logger.warn(e);
-				}
+				ion.setAbundance(maxSig / maxSignal * ion.getAbundance());
 			}
 		} else {
 			for(IIonMeasurement peak : ((ICalibratedVendorMassSpectrum)cvmSpectrum).getIonMeasurements()) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2023 Lablicate GmbH.
+ * Copyright (c) 2013, 2024 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -15,10 +15,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.msd.model.core.AbstractIon;
-import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 
 import net.openchrom.msd.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
 import net.openchrom.msd.converter.supplier.cdf.exceptions.NoSuchScanStored;
@@ -32,12 +29,9 @@ import ucar.nc2.Variable;
 
 /**
  * This class offers some convenient methods to parse the cdf file.
- * 
- * @author eselmeister
  */
 public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReader {
 
-	private static final Logger logger = Logger.getLogger(CDFChromtogramArrayReader.class);
 	private double[] valueArrayIon;
 	private float[] valueArrayAbundance;
 	private int[] valueArrayPointCount;
@@ -155,13 +149,7 @@ public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReade
 
 	private void addIon(VendorScan massSpectrum, double mz, float intensity) {
 
-		try {
-			VendorIon ion = new VendorIon(mz, intensity);
-			massSpectrum.addIon(ion, false);
-		} catch(AbundanceLimitExceededException e) {
-			logger.warn(e);
-		} catch(IonLimitExceededException e) {
-			logger.warn(e);
-		}
+		VendorIon ion = new VendorIon(mz, intensity);
+		massSpectrum.addIon(ion, false);
 	}
 }

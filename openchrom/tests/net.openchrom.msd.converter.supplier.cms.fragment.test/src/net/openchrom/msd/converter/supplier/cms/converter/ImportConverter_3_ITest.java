@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2019 Walter Whitlock, Philip Wenig.
+ * Copyright (c) 2016, 2024 Walter Whitlock, Philip Wenig.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -16,19 +16,18 @@ package net.openchrom.msd.converter.supplier.cms.converter;
 import java.io.File;
 import java.util.List;
 
-import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.msd.converter.database.IDatabaseImportConverter;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
-import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
-import junit.framework.TestCase;
 import net.openchrom.msd.converter.supplier.cms.PathResolver;
 import net.openchrom.msd.converter.supplier.cms.TestPathHelper;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.IIonMeasurement;
+
+import junit.framework.TestCase;
 
 public class ImportConverter_3_ITest extends TestCase {
 
@@ -51,7 +50,7 @@ public class ImportConverter_3_ITest extends TestCase {
 		super.tearDown();
 	}
 
-	public void test_1() throws AbundanceLimitExceededException, IonLimitExceededException {
+	public void test_1() {
 
 		assertEquals(1, massSpectra.size());
 		IScanMSD massSpectrum = massSpectra.getMassSpectrum(1);

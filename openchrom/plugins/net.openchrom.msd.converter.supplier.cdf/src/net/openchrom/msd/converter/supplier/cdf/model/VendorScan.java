@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Lablicate GmbH.
+ * Copyright (c) 2013, 2024 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -7,15 +7,12 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
+ * Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cdf.model;
 
-import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.msd.model.core.AbstractVendorMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IIon;
-import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
-import org.eclipse.chemclipse.logging.core.Logger;
 
 public class VendorScan extends AbstractVendorMassSpectrum implements IVendorScan {
 
@@ -24,7 +21,6 @@ public class VendorScan extends AbstractVendorMassSpectrum implements IVendorSca
 	 * methods.
 	 */
 	private static final long serialVersionUID = 251851545112617476L;
-	private static final Logger logger = Logger.getLogger(VendorScan.class);
 	/**
 	 * MAX_IONS The total amount of ions to be stored in the
 	 * cdf chromatogram.<br/>
@@ -36,6 +32,7 @@ public class VendorScan extends AbstractVendorMassSpectrum implements IVendorSca
 	public static final int MAX_RETENTION_TIME = Integer.MAX_VALUE;
 
 	public VendorScan() {
+
 		super();
 	}
 
@@ -57,7 +54,6 @@ public class VendorScan extends AbstractVendorMassSpectrum implements IVendorSca
 		return MIN_RETENTION_TIME;
 	}
 
-	// -------------------------------IMassSpectrumCloneable
 	/**
 	 * Keep in mind, it is a covariant return.<br/>
 	 * IMassSpectrum is needed. ICDFMassSpectrum is a subtype of
@@ -67,7 +63,6 @@ public class VendorScan extends AbstractVendorMassSpectrum implements IVendorSca
 	public IVendorScan makeDeepCopy() throws CloneNotSupportedException {
 
 		IVendorScan massSpectrum = (IVendorScan)super.clone();
-		IVendorIon cdfIon;
 		/*
 		 * The instance variables have been copied by super.clone();.<br/> The
 		 * ions in the ion list need not to be removed via
@@ -77,14 +72,8 @@ public class VendorScan extends AbstractVendorMassSpectrum implements IVendorSca
 		 * Make a deep copy of all ions.
 		 */
 		for(IIon ion : getIons()) {
-			try {
-				cdfIon = new VendorIon(ion.getIon(), ion.getAbundance());
-				massSpectrum.addIon(cdfIon);
-			} catch(AbundanceLimitExceededException e) {
-				logger.warn(e);
-			} catch(IonLimitExceededException e) {
-				logger.warn(e);
-			}
+			IVendorIon cdfIon = new VendorIon(ion.getIon(), ion.getAbundance());
+			massSpectrum.addIon(cdfIon);
 		}
 		return massSpectrum;
 	}
@@ -94,5 +83,4 @@ public class VendorScan extends AbstractVendorMassSpectrum implements IVendorSca
 
 		return makeDeepCopy();
 	}
-	// -------------------------------IMassSpectrumCloneable
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2022 Lablicate GmbH.
+ * Copyright (c) 2020, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
+ * Philip Wenig - initial API and implementation
  * Matthias Mailänder - initial API and implementation
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.btmsp.converter.io;
@@ -29,13 +29,11 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.XMLEvent;
 
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.model.identifier.PeakLibraryInformation;
 import org.eclipse.chemclipse.msd.converter.io.AbstractMassSpectraReader;
 import org.eclipse.chemclipse.msd.converter.io.IMassSpectraReader;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
-import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.chemclipse.msd.model.implementation.Ion;
 import org.eclipse.chemclipse.msd.model.implementation.MassSpectra;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -74,8 +72,7 @@ public class MainSpectraProjectionReader extends AbstractMassSpectraReader imple
 			readSample(zipFile, zipEntry, libraryInformation);
 			mainSpectrum = readPeakData(zipFile, zipEntry);
 			mainSpectrum.setLibraryInformation(libraryInformation);
-		} catch(XMLStreamException | AbundanceLimitExceededException
-				| IonLimitExceededException | IOException e) {
+		} catch(XMLStreamException | IOException e) {
 			logger.warn(e);
 		}
 		return mainSpectrum;
@@ -125,7 +122,7 @@ public class MainSpectraProjectionReader extends AbstractMassSpectraReader imple
 		}
 	}
 
-	private MainSpectraProjection readPeakData(ZipFile zipFile, ZipEntry zipEntry) throws XMLStreamException, AbundanceLimitExceededException, IonLimitExceededException, IOException {
+	private MainSpectraProjection readPeakData(ZipFile zipFile, ZipEntry zipEntry) throws XMLStreamException, IOException {
 
 		InputStream dataXML = zipFile.getInputStream(zipEntry);
 		BufferedInputStream bufferedInputStream = new BufferedInputStream(dataXML);

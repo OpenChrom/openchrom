@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Matthias Mailänder - initial API and implementation
+ * Philip Wenig - refactor m/z and abundance limit
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.gaml.io;
 
@@ -27,18 +28,13 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.eclipse.chemclipse.converter.io.AbstractChromatogramReader;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
-import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.msd.converter.io.IChromatogramMSDReader;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
-import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Unmarshaller;
 import net.openchrom.msd.converter.supplier.gaml.model.IVendorChromatogram;
 import net.openchrom.msd.converter.supplier.gaml.model.IVendorIon;
 import net.openchrom.msd.converter.supplier.gaml.model.IVendorScan;
@@ -58,6 +54,10 @@ import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.Units;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.Xdata;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.Ydata;
 import net.openchrom.xxd.converter.supplier.gaml.io.Reader120;
+
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 
 public class ChromatogramReaderVersion120 extends AbstractChromatogramReader implements IChromatogramMSDReader {
 
@@ -147,16 +147,10 @@ public class ChromatogramReaderVersion120 extends AbstractChromatogramReader imp
 					int retentionTime = Reader120.convertToMiliSeconds(retentionTimes[l], unit);
 					massSpectrum.setRetentionTime(retentionTime);
 					for(int s = 0; s < scans; s++) {
-						try {
-							float intensity = (float)abundances[s];
-							if(intensity >= VendorIon.MIN_ABUNDANCE && intensity <= VendorIon.MAX_ABUNDANCE) {
-								IVendorIon ion = new VendorIon(mzs[s], intensity);
-								massSpectrum.addIon(ion);
-							}
-						} catch(AbundanceLimitExceededException e) {
-							logger.warn(e);
-						} catch(IonLimitExceededException e) {
-							logger.warn(e);
+						float intensity = (float)abundances[s];
+						if(intensity >= VendorIon.MIN_ABUNDANCE && intensity <= VendorIon.MAX_ABUNDANCE) {
+							IVendorIon ion = new VendorIon(mzs[s], intensity);
+							massSpectrum.addIon(ion);
 						}
 					}
 					chromatogram.addScan(massSpectrum);

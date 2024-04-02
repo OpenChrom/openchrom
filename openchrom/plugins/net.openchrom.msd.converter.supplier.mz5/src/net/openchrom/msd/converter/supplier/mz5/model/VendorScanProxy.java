@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2021 Lablicate GmbH.
+ * Copyright (c) 2017, 2024 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,17 +7,15 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
+ * Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.mz5.model;
 
 import java.io.IOException;
 
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.msd.model.core.AbstractVendorMassSpectrumProxy;
 import org.eclipse.chemclipse.msd.model.core.IIon;
-import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.mz5.internal.io.ProxyReader;
@@ -76,7 +74,6 @@ public class VendorScanProxy extends AbstractVendorMassSpectrumProxy implements 
 		}
 	}
 
-	// -------------------------------IMassSpectrumCloneable
 	/**
 	 * Keep in mind, it is a covariant return.<br/>
 	 * IMassSpectrum is needed. IMassSpectrum is a subtype of
@@ -86,7 +83,6 @@ public class VendorScanProxy extends AbstractVendorMassSpectrumProxy implements 
 	public IVendorScan makeDeepCopy() throws CloneNotSupportedException {
 
 		IVendorScanProxy massSpectrum = (IVendorScanProxy)super.clone();
-		IVendorIon vendorIon;
 		/*
 		 * The instance variables have been copied by super.clone();.<br/> The
 		 * ions in the ion list need not to be removed via
@@ -96,14 +92,8 @@ public class VendorScanProxy extends AbstractVendorMassSpectrumProxy implements 
 		 * Make a deep copy of all ions.
 		 */
 		for(IIon ion : getIons()) {
-			try {
-				vendorIon = new VendorIon(ion.getIon(), ion.getAbundance());
-				massSpectrum.addIon(vendorIon);
-			} catch(AbundanceLimitExceededException e) {
-				logger.warn(e);
-			} catch(IonLimitExceededException e) {
-				logger.warn(e);
-			}
+			IVendorIon vendorIon = new VendorIon(ion.getIon(), ion.getAbundance());
+			massSpectrum.addIon(vendorIon);
 		}
 		return massSpectrum;
 	}
@@ -113,5 +103,4 @@ public class VendorScanProxy extends AbstractVendorMassSpectrumProxy implements 
 
 		return makeDeepCopy();
 	}
-	// -------------------------------IMassSpectrumCloneable
 }

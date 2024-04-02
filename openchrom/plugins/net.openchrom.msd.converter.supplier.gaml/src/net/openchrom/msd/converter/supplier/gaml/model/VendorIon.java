@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2021 Lablicate GmbH.
+ * Copyright (c) 2008, 2024 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -7,17 +7,14 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
+ * Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.gaml.model;
 
-import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
-import org.eclipse.chemclipse.msd.model.core.AbstractScanIon;
+import org.eclipse.chemclipse.msd.model.core.AbstractIon;
 import org.eclipse.chemclipse.msd.model.core.IIonTransition;
-import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
-import org.eclipse.chemclipse.msd.model.exceptions.IonTransitionIsNullException;
 
-public class VendorIon extends AbstractScanIon implements IVendorIon {
+public class VendorIon extends AbstractIon implements IVendorIon {
 
 	/**
 	 * Renew the serialVersionUID any time you have changed some fields or
@@ -31,48 +28,18 @@ public class VendorIon extends AbstractScanIon implements IVendorIon {
 	public static final double MIN_ION = 1.0d;
 	public static final double MAX_ION = 65535.0d;
 
-	public VendorIon(double ion) throws IonLimitExceededException {
+	public VendorIon(double ion) {
 
 		super(ion);
 	}
 
-	public VendorIon(double ion, boolean ignoreAbundanceLimit) throws IonLimitExceededException {
-
-		super(ion);
-		setIgnoreAbundanceLimit(ignoreAbundanceLimit);
-	}
-
-	public VendorIon(double ion, float abundance) throws AbundanceLimitExceededException, IonLimitExceededException {
+	public VendorIon(double ion, float abundance) {
 
 		super(ion, abundance);
 	}
 
-	public VendorIon(double ion, float abundance, IIonTransition ionTransition) throws AbundanceLimitExceededException, IonLimitExceededException, IonTransitionIsNullException {
+	public VendorIon(double ion, float abundance, IIonTransition ionTransition) {
 
 		super(ion, abundance, ionTransition);
-	}
-
-	@Override
-	public float getMinPossibleAbundanceValue() {
-
-		return MIN_ABUNDANCE;
-	}
-
-	@Override
-	public float getMaxPossibleAbundanceValue() {
-
-		return MAX_ABUNDANCE;
-	}
-
-	@Override
-	public double getMinPossibleIonValue() {
-
-		return MIN_ION;
-	}
-
-	@Override
-	public double getMaxPossibleIonValue() {
-
-		return MAX_ION;
 	}
 }

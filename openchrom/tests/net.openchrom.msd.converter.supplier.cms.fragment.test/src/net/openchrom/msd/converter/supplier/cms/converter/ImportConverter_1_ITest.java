@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2019 Walter Whitlock, Philip Wenig.
+ * Copyright (c) 2016, 2024 Walter Whitlock, Philip Wenig.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -15,17 +15,16 @@ package net.openchrom.msd.converter.supplier.cms.converter;
 
 import java.io.File;
 
-import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
 import org.eclipse.chemclipse.msd.converter.database.IDatabaseImportConverter;
 import org.eclipse.chemclipse.msd.model.core.ILibraryMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
-import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
-import junit.framework.TestCase;
 import net.openchrom.msd.converter.supplier.cms.TestPathHelper;
+
+import junit.framework.TestCase;
 
 public class ImportConverter_1_ITest extends TestCase {
 
@@ -53,7 +52,7 @@ public class ImportConverter_1_ITest extends TestCase {
 		assertEquals(5, massSpectra.size());
 	}
 
-	public void test_2() throws AbundanceLimitExceededException, IonLimitExceededException {
+	public void test_2() {
 
 		IScanMSD massSpectrum = massSpectra.getMassSpectrum(1);
 		ILibraryMassSpectrum libraryMassSpectrum = (ILibraryMassSpectrum)massSpectrum;
@@ -66,7 +65,7 @@ public class ImportConverter_1_ITest extends TestCase {
 		assertEquals(1.00000e+00f, massSpectrum.getIon(40).getAbundance());
 	}
 
-	public void test_3() throws AbundanceLimitExceededException, IonLimitExceededException {
+	public void test_3() {
 
 		IScanMSD massSpectrum = massSpectra.getMassSpectrum(2);
 		ILibraryMassSpectrum libraryMassSpectrum = (ILibraryMassSpectrum)massSpectrum;
@@ -78,7 +77,7 @@ public class ImportConverter_1_ITest extends TestCase {
 		assertEquals(7.40074e-03f, massSpectrum.getIon(29).getAbundance());
 	}
 
-	public void test_4() throws AbundanceLimitExceededException, IonLimitExceededException {
+	public void test_4() {
 
 		IScanMSD massSpectrum = massSpectra.getMassSpectrum(3);
 		ILibraryMassSpectrum libraryMassSpectrum = (ILibraryMassSpectrum)massSpectrum;
@@ -89,7 +88,7 @@ public class ImportConverter_1_ITest extends TestCase {
 		assertEquals(1.00000e+00f, massSpectrum.getIon(32).getAbundance());
 	}
 
-	public void test_5() throws AbundanceLimitExceededException, IonLimitExceededException {
+	public void test_5() {
 
 		IScanMSD massSpectrum = massSpectra.getMassSpectrum(4);
 		ILibraryMassSpectrum libraryMassSpectrum = (ILibraryMassSpectrum)massSpectrum;
@@ -112,7 +111,7 @@ public class ImportConverter_1_ITest extends TestCase {
 		assertEquals(5.00050e-03f, massSpectrum.getIon(31).getAbundance());
 	}
 
-	public void test_6() throws AbundanceLimitExceededException, IonLimitExceededException {
+	public void test_6() {
 
 		IScanMSD massSpectrum = massSpectra.getMassSpectrum(5);
 		ILibraryMassSpectrum libraryMassSpectrum = (ILibraryMassSpectrum)massSpectrum;
