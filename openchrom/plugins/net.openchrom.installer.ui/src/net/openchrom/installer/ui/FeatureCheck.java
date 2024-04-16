@@ -59,7 +59,6 @@ public class FeatureCheck implements IStartup {
 			"net.openchrom.csd.converter.supplier.finnigan.dat", //
 			"net.openchrom.csd.converter.supplier.varian", //
 			"net.openchrom.csd.converter.supplier.perkinelmer", //
-			"net.openchrom.msd.converter.supplier.nist", //
 			"net.openchrom.csd.converter.supplier.shimadzu.gc10", //
 			"net.openchrom.msd.converter.supplier.finnigan.cgm", //
 			"net.openchrom.csd.converter.supplier.finnigan.raw", //
