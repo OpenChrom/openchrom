@@ -3,7 +3,8 @@
       id="net.openchrom.xxd.identifier.supplier.cdk.feature"
       label="CDK Support"
       version="1.5.0.qualifier"
-      provider-name="OpenChrom" plugin="net.openchrom.feature.branding">
+      provider-name="OpenChrom"
+      plugin="net.openchrom.feature.branding">
 
    <description url="http://www.openchrom.net">
       This is the CDK feature to display molecules.
@@ -27,23 +28,18 @@ http://www.eclipse.org/legal/epl-v10.html
 
    <plugin
          id="net.openchrom.xxd.identifier.supplier.cdk"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
          id="net.openchrom.xxd.identifier.supplier.cdk.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
          id="net.openchrom.thirdparty.cdk"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
+
+   <plugin
+         id="wrapped.uk.ac.ebi.beam.beam-core"
+         version="0.0.0"/>
 
 </feature>
