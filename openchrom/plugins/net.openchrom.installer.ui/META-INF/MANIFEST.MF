@@ -30,7 +30,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.equinox.p2.metadata;bundle-version="2.7.100",
  org.eclipse.equinox.p2.operations;bundle-version="2.7.100",
  org.eclipse.equinox.p2.repository;bundle-version="2.7.100",
- org.eclipse.equinox.p2.ui;bundle-version="2.8.100"
+ org.eclipse.equinox.p2.ui;bundle-version="2.8.100",
+ org.eclipse.chemclipse.progress;bundle-version="0.9.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: net.openchrom.installer.ui
