@@ -48,6 +48,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 
 import net.openchrom.installer.model.PluginDescriptor;
+import net.openchrom.installer.ui.swt.InstallErrorDialog;
 
 /**
  * Install job for Eclipse 3.6+
@@ -89,16 +90,16 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 		try {
 			SubMonitor monitor = SubMonitor.convert(progressMonitor, "configuring", 100);
 			try {
-				final IInstallableUnit[] ius = computeInstallableUnits(monitor.newChild(50));
+				final IInstallableUnit[] installableUnits = computeInstallableUnits(monitor.newChild(50));
 				checkCancelled(monitor);
-				final InstallOperation installOperation = resolve(monitor.newChild(50), ius, repositoryLocations.toArray(new URI[0]));
+				final InstallOperation installOperation = resolve(monitor.newChild(50), installableUnits, repositoryLocations.toArray(new URI[0]));
 				checkCancelled(monitor);
 				Display.getDefault().asyncExec(new Runnable() {
 
 					@Override
 					public void run() {
 
-						provisioningUI.openInstallWizard(Arrays.asList(ius), installOperation, null);
+						provisioningUI.openInstallWizard(Arrays.asList(installableUnits), installOperation, null);
 					}
 				});
 			} finally {
@@ -138,16 +139,13 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 			removeOldVersions(installableUnits);
 			checkForUnavailable(installableUnits);
 			return installableUnits.toArray(new IInstallableUnit[installableUnits.size()]);
-		} catch(URISyntaxException e) {
-			logger.warn(e);
-		} catch(MalformedURLException e) {
-			logger.warn(e);
-		} catch(ProvisionException e) {
-			logger.warn(e);
+		} catch(URISyntaxException | MalformedURLException
+				| ProvisionException e) {
+			InstallErrorDialog.notifyError(DisplayUtils.getShell(), "Failed to install plugins.", e);
 		} finally {
 			monitor.done();
 		}
-		return null;
+		return new IInstallableUnit[0];
 	}
 
 	/**
