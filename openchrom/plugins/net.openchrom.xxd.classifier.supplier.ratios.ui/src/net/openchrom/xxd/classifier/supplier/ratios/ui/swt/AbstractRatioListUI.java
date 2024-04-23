@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Lablicate GmbH.
+ * Copyright (c) 2019, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -25,12 +25,17 @@ import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.PeakRat
 
 public abstract class AbstractRatioListUI extends ExtendedTableViewer {
 
-	protected PeakRatioFilter listFilter = new PeakRatioFilter();
+	private PeakRatioFilter peakRatioFilter = new PeakRatioFilter();
 	private IUpdateListener updateListener;
 
 	protected AbstractRatioListUI(Composite parent, int style) {
 
 		super(parent, style);
+	}
+
+	public PeakRatioFilter getPeakRatioFilter() {
+
+		return peakRatioFilter;
 	}
 
 	public void setUpdateListener(IUpdateListener updateListener) {
@@ -47,7 +52,7 @@ public abstract class AbstractRatioListUI extends ExtendedTableViewer {
 
 	public void setSearchText(String searchText, boolean caseSensitive) {
 
-		listFilter.setSearchText(searchText, caseSensitive);
+		peakRatioFilter.setSearchText(searchText, caseSensitive);
 		refresh();
 	}
 
@@ -70,11 +75,12 @@ public abstract class AbstractRatioListUI extends ExtendedTableViewer {
 				public void update(ViewerCell cell) {
 
 					if(cell != null) {
-						IPeakRatio peakRatio = (IPeakRatio)cell.getElement();
-						cell.setBackground(Colors.getColor(Colors.LIGHT_YELLOW));
-						cell.setForeground(Colors.BLACK);
-						cell.setText("> " + Double.toString(peakRatio.getDeviationWarn()));
-						super.update(cell);
+						if(cell.getElement() instanceof IPeakRatio peakRatio) {
+							cell.setBackground(Colors.getColor(Colors.LIGHT_YELLOW));
+							cell.setForeground(Colors.BLACK);
+							cell.setText("> " + Double.toString(peakRatio.getDeviationWarn()));
+							super.update(cell);
+						}
 					}
 				}
 			});
@@ -90,11 +96,12 @@ public abstract class AbstractRatioListUI extends ExtendedTableViewer {
 				public void update(ViewerCell cell) {
 
 					if(cell != null) {
-						IPeakRatio peakRatio = (IPeakRatio)cell.getElement();
-						cell.setBackground(Colors.getColor(Colors.LIGHT_RED));
-						cell.setForeground(Colors.BLACK);
-						cell.setText("> " + Double.toString(peakRatio.getDeviationError()));
-						super.update(cell);
+						if(cell.getElement() instanceof IPeakRatio peakRatio) {
+							cell.setBackground(Colors.getColor(Colors.LIGHT_RED));
+							cell.setForeground(Colors.BLACK);
+							cell.setText("> " + Double.toString(peakRatio.getDeviationError()));
+							super.update(cell);
+						}
 					}
 				}
 			});

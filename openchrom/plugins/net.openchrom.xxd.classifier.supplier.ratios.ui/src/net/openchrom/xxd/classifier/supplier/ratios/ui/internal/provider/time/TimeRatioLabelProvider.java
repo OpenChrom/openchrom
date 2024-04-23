@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Lablicate GmbH.
+ * Copyright (c) 2019, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,12 +7,13 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
+ * Philip Wenig - initial API and implementation
  * Christoph Läubrich - color support
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time;
 
 import java.text.DecimalFormat;
+import java.util.Arrays;
 
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.core.IPeak;
@@ -38,7 +39,7 @@ public class TimeRatioLabelProvider extends AbstractTraceRatioLabelProvider {
 
 	public TimeRatioLabelProvider(DisplayOption displayOption) {
 
-		super(3);
+		super(Arrays.asList(3));
 		this.displayOption = displayOption;
 	}
 

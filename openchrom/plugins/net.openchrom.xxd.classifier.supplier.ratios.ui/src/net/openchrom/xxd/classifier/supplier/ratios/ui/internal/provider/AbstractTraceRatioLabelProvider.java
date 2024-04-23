@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Lablicate GmbH.
+ * Copyright (c) 2019, 2024 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -8,8 +8,13 @@
  * 
  * Contributors:
  * Christoph Läubrich - initial API and implementation
+ * Philip Wenig - color provider table
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.eclipse.chemclipse.support.ui.provider.AbstractChemClipseLabelProvider;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
@@ -20,17 +25,17 @@ import net.openchrom.xxd.classifier.supplier.ratios.model.IPeakRatio;
 
 public abstract class AbstractTraceRatioLabelProvider extends AbstractChemClipseLabelProvider implements ITableColorProvider {
 
-	private int deviationColumn;
+	private Set<Integer> deviationColumns = new HashSet<>();
 
-	public AbstractTraceRatioLabelProvider(int deviationColumn) {
+	public AbstractTraceRatioLabelProvider(List<Integer> deviationColumns) {
 
-		this.deviationColumn = deviationColumn;
+		this.deviationColumns.addAll(deviationColumns);
 	}
 
 	@Override
 	public Color getBackground(Object element, int columnIndex) {
 
-		if(columnIndex == deviationColumn) {
+		if(deviationColumns.contains(columnIndex)) {
 			if(element instanceof IPeakRatio peakRatio) {
 				double deviation = peakRatio.getDeviation();
 				double deviationWarn = peakRatio.getDeviationWarn();
@@ -45,13 +50,14 @@ public abstract class AbstractTraceRatioLabelProvider extends AbstractChemClipse
 				}
 			}
 		}
+		//
 		return null;
 	}
 
 	@Override
 	public Color getForeground(Object element, int columnIndex) {
 
-		if(columnIndex == deviationColumn) {
+		if(deviationColumns.contains(columnIndex)) {
 			if(element instanceof IPeakRatio peakRatio) {
 				double deviation = peakRatio.getDeviation();
 				double deviationWarn = peakRatio.getDeviationWarn();
@@ -66,6 +72,7 @@ public abstract class AbstractTraceRatioLabelProvider extends AbstractChemClipse
 				}
 			}
 		}
+		//
 		return null;
 	}
 }
