@@ -151,6 +151,10 @@
          id="net.openchrom.swtchart.extension.export.vectorgraphics.feature"
          version="0.0.0"/>
 
+   <includes
+         id="org.eclipse.equinox.p2.rcp.feature"
+         version="0.0.0"/>
+
    <plugin
          id="net.openchrom.rcp.compilation.community.ui"
          version="0.0.0"/>
