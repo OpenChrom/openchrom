@@ -16,27 +16,15 @@ import java.util.Objects;
 public class GroupMarker {
 
 	private String name = "";
-	private double areaPercent = 0.0d;
 
-	public GroupMarker(String name, double areaPercent) {
+	public GroupMarker(String name) {
 
 		this.name = name;
-		this.areaPercent = areaPercent;
 	}
 
 	public String getName() {
 
 		return name;
-	}
-
-	public double getAreaPercent() {
-
-		return areaPercent;
-	}
-
-	public void setAreaPercent(double areaPercent) {
-
-		this.areaPercent = areaPercent;
 	}
 
 	@Override
@@ -61,6 +49,6 @@ public class GroupMarker {
 	@Override
 	public String toString() {
 
-		return "GroupMarker [name=" + name + ", areaPercent=" + areaPercent + "]";
+		return "GroupMarker [name=" + name + "]";
 	}
 }

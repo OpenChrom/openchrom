@@ -135,10 +135,7 @@ public class SuspectMatricesIO {
 								for(Object entryGroup : listGroups) {
 									if(entryGroup instanceof Map mapGroupMarker) {
 										String nameGroup = mapGroupMarker.getOrDefault("name", "").toString();
-										double areaPercent = getValue(mapGroupMarker.getOrDefault("areaPercent", ""));
-										if(areaPercent > 0) {
-											suspect.getGroupMarkers().add(new GroupMarker(nameGroup, areaPercent));
-										}
+										suspect.getGroupMarkers().add(new GroupMarker(nameGroup));
 									}
 								}
 							}
