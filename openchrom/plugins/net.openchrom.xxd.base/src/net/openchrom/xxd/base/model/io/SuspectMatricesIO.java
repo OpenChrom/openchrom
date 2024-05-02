@@ -67,13 +67,22 @@ public class SuspectMatricesIO {
 		/*
 		 * Don't export the default entry.
 		 */
-		List<SuspectMatrix> suspectMatrices = new ArrayList<>(settings);
+		List<SuspectMatrix> suspectMatrices = new ArrayList<>();
 		for(SuspectMatrix setting : settings) {
+			/*
+			 * Inspect the entries.
+			 */
 			SuspectMatrix suspectMatrix = new SuspectMatrix(setting.getName(), false);
 			for(Suspect suspect : setting.getSuspects()) {
 				if(!suspect.isDefault()) {
 					suspectMatrix.add(suspect);
 				}
+			}
+			/*
+			 * Add if at least one entry exist.
+			 */
+			if(!suspectMatrix.getSuspects().isEmpty()) {
+				suspectMatrices.add(suspectMatrix);
 			}
 		}
 		/*
