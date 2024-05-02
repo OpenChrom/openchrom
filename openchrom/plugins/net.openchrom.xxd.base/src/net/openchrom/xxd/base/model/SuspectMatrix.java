@@ -50,14 +50,14 @@ public class SuspectMatrix {
 		this.version = version;
 	}
 
-	public void add(Suspect compound) {
+	public void add(Suspect suspect) {
 
-		if(compound.isDefault()) {
+		if(suspect.isDefault()) {
 			if(!hasDefault()) {
-				suspects.add(compound);
+				suspects.add(suspect);
 			}
 		} else {
-			suspects.add(compound);
+			suspects.add(suspect);
 		}
 	}
 
@@ -78,8 +78,8 @@ public class SuspectMatrix {
 		boolean hasDefault = false;
 		if(!suspects.isEmpty()) {
 			exitloop:
-			for(Suspect compound : suspects) {
-				if(compound.isDefault()) {
+			for(Suspect suspect : suspects) {
+				if(suspect.isDefault()) {
 					hasDefault = true;
 					break exitloop;
 				}
