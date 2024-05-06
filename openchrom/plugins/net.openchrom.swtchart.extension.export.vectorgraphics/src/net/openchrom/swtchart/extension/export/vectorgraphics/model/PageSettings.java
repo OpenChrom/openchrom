@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Lablicate GmbH.
+ * Copyright (c) 2023, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -25,9 +25,10 @@ import de.erichseifert.vectorgraphics2d.util.PageSize;
 
 public class PageSettings {
 
+	public static final int STYLE_FONT_STANDARD = Font.PLAIN;
+	//
 	private static final int SIZE_FONT_STANDARD = 14;
 	private static final String TYPE_FONT_STANDARD = "Arial";
-	public static final int STYLE_FONT_STANDARD = Font.PLAIN;
 	//
 	private float factorGraphics = 1.0f;
 	private float factorFont = 1.0f;
