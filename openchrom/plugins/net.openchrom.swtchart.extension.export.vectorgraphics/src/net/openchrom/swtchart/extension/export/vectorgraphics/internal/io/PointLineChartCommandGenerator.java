@@ -78,6 +78,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		PageSettings pageSettings = new PageSettings(FULL_LANDSCAPE);
 		graphics2D.setStroke(pageSettings.getStrokeSolid());
 		graphics2D.setFont(pageSettings.getFont());
+		PageSize pageSize = pageSizeOption.pageSize();
 		/*
 		 * Calculate/Set Scale
 		 */
@@ -86,7 +87,6 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 			scale = new Point(1.0, 1.0);
 		} else {
 			PageSize pageSizeFull = FULL_LANDSCAPE.pageSize();
-			PageSize pageSize = pageSizeOption.pageSize();
 			double x = pageSize.getWidth() / pageSizeFull.getWidth();
 			double y = pageSize.getHeight() / pageSizeFull.getHeight();
 			scale = new Point(x, y);
@@ -113,7 +113,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 			}
 		}
 		//
-		graphics2D.setClip(0, 0, (int)Math.round(scale.getX()), (int)Math.round(scale.getY()));
+		graphics2D.setClip(0, 0, (int)Math.round(pageSize.getWidth()), (int)Math.round(pageSize.getHeight()));
 		return graphics2D.getCommands();
 	}
 
