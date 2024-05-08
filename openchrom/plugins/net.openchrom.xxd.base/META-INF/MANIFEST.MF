@@ -4,13 +4,11 @@ Bundle-ManifestVersion: 2
 Bundle-Name: OpenChrom Base
 Bundle-SymbolicName: net.openchrom.xxd.base
 Bundle-Version: 1.5.0.qualifier
-Export-Package: net.openchrom.xxd.base.model,
- net.openchrom.xxd.base.model.io
+Export-Package: net.openchrom.xxd.base.model
 Bundle-Activator: net.openchrom.xxd.base.Activator
 Bundle-Vendor: Lablicate GmbH
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.numeric;bundle-version="0.9.0",
- com.google.gson;bundle-version="2.10.0",
  org.eclipse.chemclipse.model;bundle-version="0.9.0",
  org.eclipse.chemclipse.logging;bundle-version="0.9.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-17

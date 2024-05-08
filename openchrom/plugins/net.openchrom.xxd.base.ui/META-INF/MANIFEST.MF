@@ -5,8 +5,7 @@ Bundle-Name: OpenChrom Base UI
 Bundle-SymbolicName: net.openchrom.xxd.base.ui
 Bundle-Version: 1.5.0.qualifier
 Export-Package: net.openchrom.xxd.base.ui.services,
- net.openchrom.xxd.base.ui.support,
- net.openchrom.xxd.base.ui.swt
+ net.openchrom.xxd.base.ui.support
 Bundle-Activator: net.openchrom.xxd.base.ui.Activator
 Bundle-Vendor: Lablicate GmbH
 Require-Bundle: org.eclipse.ui,
