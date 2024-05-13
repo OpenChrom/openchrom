@@ -6,11 +6,21 @@
 		<repository location="https://download.eclipse.org/releases/2024-03/"/>
 		<unit id="org.eclipse.equinox.sdk.feature.group" version="0.0.0"/>
 		<unit id="org.eclipse.sdk.feature.group" version="0.0.0"/>
+		<unit id="javax.activation" version="0.0.0"/>
+	</location>
+	<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+		<repository location="https://download.eclipse.org/cbi/updates/license/1.0.0.v20131003-1638/"/>
+		<unit id="org.eclipse.license.feature.group" version="0.0.0"/>
+	</location>
+	<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+		<unit id="org.slf4j.api" version="0.0.0"/>
+		<repository location="https://download.eclipse.org/releases/2022-12/"/>
 	</location>
 	<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 		<repository location="https://download.eclipse.org/chemclipse/integration/develop/repository/"/>
 		<unit id="org.eclipse.chemclipse.rcp.compilation.community.feature.feature.group" version="0.0.0"/>
 		<unit id="org.eclipse.chemclipse.rcp.compilation.testing.feature.feature.group" version="0.0.0"/>
+		<unit id="org.eclipse.chemclipse.assets.feature.feature.group" version="0.0.0"/>
 	</location>
 	<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 		<repository location="https://update.openchrom.net/repositories/community/latest/3rdparty"/>
@@ -69,6 +79,28 @@
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-imaging</artifactId>
 				<version>1.0-alpha2</version>
+				<type>jar</type>
+			</dependency>
+		</dependencies>
+	</location>
+	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" label="org.apache.httpcomponents" missingManifest="generate" type="Maven">
+		<dependencies>
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient-cache</artifactId>
+				<version>4.5.14</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient</artifactId>
+				<version>4.5.14</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpcore</artifactId>
+				<version>4.4.16</version>
 				<type>jar</type>
 			</dependency>
 		</dependencies>

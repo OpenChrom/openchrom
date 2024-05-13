@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="OpenChrom Analytics Edition (McLafferty)" uid="net.openchrom.rcp.compilation.community.product.id" id="net.openchrom.rcp.compilation.community.ui.product" application="org.eclipse.chemclipse.rcp.app.ui.org.eclipse.chemclipse.rcp.application" version="1.5.0.qualifier" type="features" includeLaunchers="true" autoIncludeRequirements="false">
+<product name="OpenChrom Analytics Edition (McLafferty)" uid="net.openchrom.rcp.compilation.community.product.id" id="net.openchrom.rcp.compilation.community.ui.product" application="org.eclipse.chemclipse.rcp.app.ui.org.eclipse.chemclipse.rcp.application" version="1.5.0.qualifier" type="features" includeLaunchers="true" autoIncludeRequirements="true">
 
    <aboutInfo>
       <image path="/net.openchrom.rcp.compilation.community.ui/icons/about_250x330.png"/>
@@ -65,6 +65,7 @@ Contributors:
 
    <features>
       <feature id="net.openchrom.platform.feature"/>
+      <feature id="org.eclipse.chemclipse.assets.feature" installMode="root"/>
    </features>
 
    <configurations>
