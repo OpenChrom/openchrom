@@ -1134,23 +1134,6 @@
 
       <pluginDescriptor
             categoryId="com.lablicate.openchrom.converters.proprietary"
-            description="Reads *.csv files."
-            groupId="net.openchrom.vsd.converter"
-            id="net.openchrom.vsd.converter.supplier.csv.feature"
-            kind="converter"
-            license="Converter License Terms"
-            name="Thermo Nicolet CSV FT-IR"
-            provider="Lablicate"
-            url="https://converter.openchrom.net/">
-         <icon image32="icons/32x32/Thermo.png">
-         </icon>
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
-      </pluginDescriptor>
-
-      <pluginDescriptor
-            categoryId="com.lablicate.openchrom.converters.proprietary"
             description="Reads *.spc files."
             groupId="net.openchrom.vsd.converter"
             id="net.openchrom.vsd.converter.supplier.galactic.spc.feature"
