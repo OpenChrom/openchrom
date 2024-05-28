@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Matthias Mailänder - initial API and implementation
+ * Philip Wenig - area percent option
  *******************************************************************************/
 package net.openchrom.chromatogram.xxd.report.supplier.csv.model;
 
@@ -32,6 +33,7 @@ public class ReportColumns extends ArrayList<String> {
 	public static final String START_RT = "Start";
 	public static final String STOP_RT = "Stop";
 	public static final String PEAK_AREA = "Peak Area";
+	public static final String PEAK_PERCENT_AREA = "Peak Area [%]";
 	public static final String PEAK_HEIGHT = "Peak Height";
 	public static final String INTEGRATOR = "Integrator";
 	public static final String TARGET = "Target";
@@ -98,6 +100,7 @@ public class ReportColumns extends ArrayList<String> {
 		reportColumns.add(START_RT);
 		reportColumns.add(STOP_RT);
 		reportColumns.add(PEAK_AREA);
+		reportColumns.add(PEAK_PERCENT_AREA);
 		reportColumns.add(PEAK_HEIGHT);
 		reportColumns.add(INTEGRATOR);
 		reportColumns.add(TARGET);
