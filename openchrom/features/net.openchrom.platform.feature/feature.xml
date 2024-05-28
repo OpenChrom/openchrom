@@ -519,4 +519,12 @@
          id="org.eclipse.equinox.cm"
          version="0.0.0"/>
 
+   <plugin
+         id="org.eclipse.ui.themes"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.e4.ui.css.swt.theme"
+         version="0.0.0"/>
+
 </feature>
