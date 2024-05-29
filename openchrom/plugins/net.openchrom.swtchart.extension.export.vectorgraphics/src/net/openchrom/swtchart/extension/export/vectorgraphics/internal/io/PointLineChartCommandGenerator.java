@@ -156,7 +156,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		 * Settings
 		 */
 		Range rangeX = axisX.getRange();
-		double deltaRange = (rangeX.upper + rangeX.lower) / NUMBER_TICS;
+		double deltaRange = (rangeX.upper - rangeX.lower) / NUMBER_TICS;
 		double deltaWidth = (width - xBorderLeft - xBorderRight) / NUMBER_TICS;
 		/*
 		 * Scale
@@ -243,7 +243,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		 * Settings
 		 */
 		Range rangeY = axisY.getRange();
-		double deltaRange = (rangeY.upper + rangeY.lower) / NUMBER_TICS;
+		double deltaRange = (rangeY.upper - baseChart.getMinY()) / NUMBER_TICS; // Watch Out: Force to have no offset
 		double deltaHeight = (height - yBorderTop - yBorderBottom) / NUMBER_TICS;
 		/*
 		 * Scale
@@ -316,7 +316,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		//
 		double xMin = rangeX.lower; // baseChart.getMinX();
 		double xMax = rangeX.upper; // baseChart.getMaxX();
-		double yMin = baseChart.getMinY(); // Force to have no offset
+		double yMin = baseChart.getMinY(); // Watch Out: Force to have no offset
 		double yMax = rangeY.upper; // baseChart.getMaxY();
 		//
 		ISeries<?>[] seriesSet = baseChart.getSeriesSet().getSeries();
