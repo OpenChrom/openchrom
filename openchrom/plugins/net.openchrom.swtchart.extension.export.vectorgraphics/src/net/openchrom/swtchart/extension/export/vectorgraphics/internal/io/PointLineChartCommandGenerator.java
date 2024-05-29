@@ -243,7 +243,8 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		 * Settings
 		 */
 		Range rangeY = axisY.getRange();
-		double deltaRange = (rangeY.upper - baseChart.getMinY()) / NUMBER_TICS; // Watch Out: Force to have no offset
+		double lower = baseChart.getMinY();
+		double deltaRange = (rangeY.upper - lower) / NUMBER_TICS; // Watch Out: Force to have no offset
 		double deltaHeight = (height - yBorderTop - yBorderBottom) / NUMBER_TICS;
 		/*
 		 * Scale
@@ -274,7 +275,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		graphics2D.setStroke(pageSettings.getStrokeSolid());
 		graphics2D.setColor(pageSettings.getColorBlack());
 		for(int i = 0; i < NUMBER_TICS; i++) {
-			double yMin = rangeY.lower + (NUMBER_TICS - i) * deltaRange;
+			double yMin = lower + (NUMBER_TICS - i) * deltaRange;
 			String label = decimalFormatY.format((axisScaleConverterY != null) ? axisScaleConverterY.convertToSecondaryUnit(yMin) : yMin);
 			int heightText = fontMetrics.getHeight();
 			int x1 = (int)(xBorderLeft / 2.5d);
