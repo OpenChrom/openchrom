@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Lablicate GmbH.
+ * Copyright (c) 2023, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -30,7 +30,7 @@ public interface IAlignmentService {
 
 	DataType getDataType();
 
-	IProcessingInfo<?> calculate(List<IChromatogram<?>> chromatograms, TimeRanges timeRanges, IProgressMonitor monitor);
+	IProcessingInfo<?> calculate(List<IChromatogram<?>> chromatograms, TimeRanges timeRanges, Boolean shiftChromatograms, IProgressMonitor monitor);
 
 	Class<? extends IWorkbenchPreferencePage> getPreferencePage();
 }
