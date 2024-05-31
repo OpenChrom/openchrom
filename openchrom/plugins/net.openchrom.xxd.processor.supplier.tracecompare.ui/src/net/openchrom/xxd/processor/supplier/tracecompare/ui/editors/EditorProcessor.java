@@ -103,7 +103,7 @@ public class EditorProcessor extends MultiPageEditorPart {
 	public void doSaveAs() {
 
 		// Shell shell = Display.getDefault().getActiveShell();
-		// FileDialog fileDialog = ExtendedFileDialog.create(shell, SWT.SAVE);
+		// FileDialog fileDialog = new FileDialog(shell, SWT.SAVE);
 		// fileDialog.setOverwrite(true);
 		// fileDialog.setText("Save results as *.csv file.");
 		// fileDialog.setFilterExtensions(new String[]{"*.csv"});

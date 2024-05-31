@@ -18,7 +18,6 @@ import java.io.IOException;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.support.editor.SystemEditor;
-import org.eclipse.chemclipse.support.ui.files.ExtendedFileDialog;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
@@ -100,7 +99,7 @@ public abstract class AbstractExportHandler extends AbstractSeriesExportHandler 
 
 	private void executeFile(Shell shell, Document document, String filterName, String filterExtension, String fileName) {
 
-		FileDialog fileDialog = ExtendedFileDialog.create(shell, SWT.SAVE);
+		FileDialog fileDialog = new FileDialog(shell, SWT.SAVE);
 		fileDialog.setOverwrite(true);
 		fileDialog.setText(filterName);
 		fileDialog.setFilterExtensions(new String[]{filterExtension});

@@ -23,7 +23,6 @@ import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.chemclipse.support.text.ValueFormat;
-import org.eclipse.chemclipse.support.ui.files.ExtendedFileDialog;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
@@ -271,7 +270,7 @@ public class CompositeLibrarySpectraUI extends Composite {
 			public void widgetSelected(SelectionEvent e) {
 
 				String pathCmsLibrarySpectra = PreferenceSupplier.getPathCmsLibrarySpectra();
-				FileDialog fileDialog = ExtendedFileDialog.create(Display.getCurrent().getActiveShell(), SWT.READ_ONLY);
+				FileDialog fileDialog = new FileDialog(Display.getCurrent().getActiveShell(), SWT.READ_ONLY);
 				fileDialog.setText("Select the CMS library file.");
 				fileDialog.setFilterExtensions(new String[]{"*.cms", "*.CMS"});
 				fileDialog.setFilterNames(new String[]{"Calibrated Spectra (*.cms)", "Calibrated Spectra (*.CMS)"});
