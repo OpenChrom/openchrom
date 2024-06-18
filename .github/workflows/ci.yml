@@ -30,4 +30,4 @@ jobs:
       with:
         path: openchrom
     - name: Build with Maven
-      run: cd openchrom && mvn -f openchrom/releng/net.openchrom.aggregator/pom.xml -T 1C verify --batch-mode --no-transfer-progress
+      run: cd openchrom && mvn -f openchrom/releng/net.openchrom.aggregator/pom.xml -T 1C verify -Pci --batch-mode --no-transfer-progress
