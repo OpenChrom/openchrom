@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
-Automatic-Module-Name: net.openchrom.xxd.process.supplier.templates.fragment.tests
+Automatic-Module-Name: net.openchrom.xxd.process.supplier.templates.fragment.test
 Bundle-ManifestVersion: 2
 Bundle-Name: Template Test
-Bundle-SymbolicName: net.openchrom.xxd.process.supplier.templates.fragment.tests
+Bundle-SymbolicName: net.openchrom.xxd.process.supplier.templates.fragment.test
 Bundle-Version: 1.5.0.qualifier
 Bundle-Vendor: OpenChrom
 Fragment-Host: net.openchrom.xxd.process.supplier.templates;bundle-version="1.5.0"
