@@ -23,8 +23,8 @@ jobs:
     name: Year
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: masesgroup/retrieve-changed-files@v2
+      - uses: actions/checkout@v4
+      - uses: masesgroup/retrieve-changed-files@v3
         id: changed-files
         continue-on-error: true
       - name: Print changed files
