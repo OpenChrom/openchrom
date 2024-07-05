@@ -30,6 +30,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtchart.export.core.AbstractSeriesExportHandler;
 import org.eclipse.swtchart.export.core.ISeriesExportConverter;
 import org.eclipse.swtchart.extensions.core.ChartType;
+import org.eclipse.swtchart.extensions.core.IChartSettings;
+import org.eclipse.swtchart.extensions.core.RangeRestriction;
 import org.eclipse.swtchart.extensions.core.ScrollableChart;
 import org.eclipse.swtchart.extensions.linecharts.LineChart;
 
@@ -56,7 +58,7 @@ public abstract class AbstractExportHandler extends AbstractSeriesExportHandler 
 		/*
 		 * Export
 		 */
-		CommandSequence commandSequene = getCommandSequence(shell, pageSizeOption, scrollableChart);
+		CommandSequence commandSequene = getCommandSequenceAutofixChart(shell, pageSizeOption, scrollableChart);
 		if(commandSequene != null) {
 			Document document = processor.getDocument(commandSequene, pageSizeOption.pageSize());
 			executeFile(shell, document, filterName, filterExtension, fileName);
@@ -68,7 +70,7 @@ public abstract class AbstractExportHandler extends AbstractSeriesExportHandler 
 
 	public boolean execute(File file, Shell shell, PageSizeOption pageSizeOption, ScrollableChart scrollableChart, Processor processor) {
 
-		CommandSequence commandSequene = getCommandSequence(shell, pageSizeOption, scrollableChart);
+		CommandSequence commandSequene = getCommandSequenceAutofixChart(shell, pageSizeOption, scrollableChart);
 		if(commandSequene != null) {
 			Document document = processor.getDocument(commandSequene, pageSizeOption.pageSize());
 			execute(file, document);
@@ -76,6 +78,34 @@ public abstract class AbstractExportHandler extends AbstractSeriesExportHandler 
 		}
 		//
 		return false;
+	}
+
+	private CommandSequence getCommandSequenceAutofixChart(Shell shell, PageSizeOption pageSizeOption, ScrollableChart scrollableChart) {
+
+		/*
+		 * Check that the Y extend option is not set.
+		 */
+		IChartSettings chartSettings = scrollableChart.getChartSettings();
+		RangeRestriction rangeRestriction = chartSettings.getRangeRestriction();
+		double extendMaxY = rangeRestriction.getExtendMaxY();
+		rangeRestriction.setExtendMaxY(0);
+		scrollableChart.applySettings(chartSettings);
+		/*
+		 * Create the export data
+		 */
+		CommandSequence commandSequene = null;
+		try {
+			commandSequene = getCommandSequence(shell, pageSizeOption, scrollableChart);
+		} catch(Exception e) {
+			logger.warn(e);
+		}
+		/*
+		 * Restore chart setting
+		 */
+		rangeRestriction.setExtendMaxY(extendMaxY);
+		scrollableChart.applySettings(chartSettings);
+		//
+		return commandSequene;
 	}
 
 	private void executeClipboard(Document document, String typeName) {
