@@ -417,27 +417,6 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 			for(ICustomSeries customSeries : baseChart.getCustomSeries()) {
 				if(customSeries.isDraw()) {
 					/*
-					 * Text Elements
-					 */
-					for(ITextElement textElement : customSeries.getTextElements()) {
-						double x = textElement.getX();
-						if(x >= xMin && x <= xMax) {
-							//
-							graphics2D.setFont(pageSettings.getFont());
-							graphics2D.setColor(AWTUtils.convertColor(textElement.getColor(), textElement.getAlpha()));
-							graphics2D.setStroke(pageSettings.getStrokeSolid());
-							//
-							double y = textElement.getY();
-							String label = textElement.getLabel();
-							int rotation = textElement.getRotation();
-							int widthText = fontMetrics.stringWidth(label);
-							int heightText = fontMetrics.getHeight();
-							int x1 = (int)((factorX * (x - xMin)) + xBorderLeft);
-							int y1 = (int)((height - factorY * (y - yMin)) - yBorderBottom);
-							drawStringNormal(graphics2D, scale, label, rotation, x1, y1, widthText, heightText);
-						}
-					}
-					/*
 					 * Graphic Elements
 					 */
 					for(IGraphicElement graphicElement : customSeries.getGraphicElements()) {
@@ -467,6 +446,27 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 								graphics2D.setStroke(pageSettings.getStroke(elementLine.getLineStyle(), elementLine.getLineWidth()));
 								graphics2D.drawLine(x1, y1, x2, y2);
 							}
+						}
+					}
+					/*
+					 * Text Elements
+					 */
+					for(ITextElement textElement : customSeries.getTextElements()) {
+						double x = textElement.getX();
+						if(x >= xMin && x <= xMax) {
+							//
+							graphics2D.setFont(pageSettings.getFont());
+							graphics2D.setColor(AWTUtils.convertColor(textElement.getColor(), textElement.getAlpha()));
+							graphics2D.setStroke(pageSettings.getStrokeSolid());
+							//
+							double y = textElement.getY();
+							String label = textElement.getLabel();
+							int rotation = textElement.getRotation();
+							int widthText = fontMetrics.stringWidth(label);
+							int heightText = fontMetrics.getHeight();
+							int x1 = (int)((factorX * (x - xMin)) + xBorderLeft);
+							int y1 = (int)((height - factorY * (y - yMin)) - yBorderBottom);
+							drawStringNormal(graphics2D, scale, label, rotation, x1, y1, widthText, heightText);
 						}
 					}
 				}

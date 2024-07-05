@@ -11,6 +11,8 @@
  *******************************************************************************/
 package net.openchrom.swtchart.extension.export.vectorgraphics.core;
 
+import java.io.File;
+
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
@@ -20,6 +22,7 @@ import org.eclipse.swtchart.export.core.ISeriesExportConverter;
 import org.eclipse.swtchart.extensions.core.ScrollableChart;
 
 import net.openchrom.swtchart.extension.export.vectorgraphics.internal.io.AbstractExportHandler;
+import net.openchrom.swtchart.extension.export.vectorgraphics.model.PageSizeOption;
 
 import de.erichseifert.vectorgraphics2d.svg.SVGProcessor;
 
@@ -49,5 +52,19 @@ public class SVGExportHandler extends AbstractExportHandler implements ISeriesEx
 
 		String fileName = scrollableChart.getFileName().isEmpty() ? FILE_NAME : scrollableChart.getFileName();
 		execute(shell, scrollableChart, new SVGProcessor(), TYPE_NAME, FILTER_NAME, FILTER_EXTENSION, fileName);
+	}
+
+	/**
+	 * Writes the chart into the given file. True on success.
+	 * 
+	 * @param file
+	 * @param shell
+	 * @param pageSizeOption
+	 * @param scrollableChart
+	 * @return boolean
+	 */
+	public boolean execute(File file, Shell shell, PageSizeOption pageSizeOption, ScrollableChart scrollableChart) {
+
+		return execute(file, shell, pageSizeOption, scrollableChart, new SVGProcessor());
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2023 Lablicate GmbH.
+ * Copyright (c) 2018, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -53,7 +53,9 @@ public abstract class AbstractExportHandler extends AbstractSeriesExportHandler 
 			pageSizeOption = pageSizeDialog.getPageSizeOption();
 			PreferenceSupplier.setPageSizeOption(pageSizeOption);
 		}
-		//
+		/*
+		 * Export
+		 */
 		CommandSequence commandSequene = getCommandSequence(shell, pageSizeOption, scrollableChart);
 		if(commandSequene != null) {
 			Document document = processor.getDocument(commandSequene, pageSizeOption.pageSize());
@@ -62,6 +64,18 @@ public abstract class AbstractExportHandler extends AbstractSeriesExportHandler 
 		} else {
 			MessageDialog.openInformation(shell, "VectorGraphics", "Sorry, the chart type is not supported yet. Please ask for support.");
 		}
+	}
+
+	public boolean execute(File file, Shell shell, PageSizeOption pageSizeOption, ScrollableChart scrollableChart, Processor processor) {
+
+		CommandSequence commandSequene = getCommandSequence(shell, pageSizeOption, scrollableChart);
+		if(commandSequene != null) {
+			Document document = processor.getDocument(commandSequene, pageSizeOption.pageSize());
+			execute(file, document);
+			return true;
+		}
+		//
+		return false;
 	}
 
 	private void executeClipboard(Document document, String typeName) {
@@ -113,12 +127,17 @@ public abstract class AbstractExportHandler extends AbstractSeriesExportHandler 
 			 */
 			File file = new File(pathname);
 			PreferenceSupplier.setPathExport(file.getParentFile().getAbsolutePath());
-			try (FileOutputStream outputStream = new FileOutputStream(file)) {
-				document.writeTo(outputStream);
-				SystemEditor.open(file);
-			} catch(IOException e) {
-				logger.warn(e);
-			}
+			execute(file, document);
+		}
+	}
+
+	private void execute(File file, Document document) {
+
+		try (FileOutputStream outputStream = new FileOutputStream(file)) {
+			document.writeTo(outputStream);
+			SystemEditor.open(file);
+		} catch(IOException e) {
+			logger.warn(e);
 		}
 	}
 
