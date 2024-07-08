@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Lablicate GmbH.
+ * Copyright (c) 2021, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -41,7 +41,6 @@ public class ScanImportConverter extends AbstractScanImportConverter<Collection<
 		try {
 			final FileReader fileReader = new FileReader(file);
 			final char[] charBuffer = new char[500];
-			System.out.println(charBuffer);
 			fileReader.read(charBuffer);
 			fileReader.close();
 			//
@@ -54,7 +53,6 @@ public class ScanImportConverter extends AbstractScanImportConverter<Collection<
 				throw new UnknownVersionException();
 			}
 		} catch(IOException e) {
-			e.printStackTrace();
 			processingInfo.addErrorMessage("nmrML", "There was a problem during file import.", e);
 		}
 		return processingInfo;

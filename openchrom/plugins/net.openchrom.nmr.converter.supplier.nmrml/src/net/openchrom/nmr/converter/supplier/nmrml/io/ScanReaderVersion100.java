@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -20,6 +20,7 @@ import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -33,9 +34,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Unmarshaller;
 import net.openchrom.nmr.converter.supplier.nmrml.internal.io.IConstants;
 import net.openchrom.nmr.converter.supplier.nmrml.internal.v100.model.Acquisition1DType;
 import net.openchrom.nmr.converter.supplier.nmrml.internal.v100.model.AcquisitionDimensionParameterSetType;
@@ -52,6 +50,10 @@ import net.openchrom.nmr.converter.supplier.nmrml.model.VendorFIDMeasurement;
 import net.openchrom.nmr.converter.supplier.nmrml.model.VendorFIDSignal;
 import net.openchrom.nmr.processing.supplier.base.settings.ExponentialApodizationSettings;
 import net.openchrom.nmr.processing.supplier.base.settings.PhaseCorrectionSettings;
+
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 
 public class ScanReaderVersion100 {
 
@@ -144,8 +146,8 @@ public class ScanReaderVersion100 {
 			logger.warn(e);
 		} catch(SAXException e) {
 			logger.warn(e);
-		} catch(Exception e) {
-			e.printStackTrace();
+		} catch(DataFormatException e) {
+			logger.warn(e);
 		}
 		if(measurements.isEmpty()) {
 			return null;
