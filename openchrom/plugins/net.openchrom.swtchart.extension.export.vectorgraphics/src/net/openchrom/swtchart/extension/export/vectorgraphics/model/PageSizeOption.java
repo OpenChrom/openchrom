@@ -17,15 +17,22 @@ import de.erichseifert.vectorgraphics2d.util.PageSize;
 
 public enum PageSizeOption implements ILabel {
 
-	FULL_LANDSCAPE("Full Size (Landscape)", new PageSize(44930, 31780), 20.0f), // [px] -> 11887.73, 8408.46 [mm]
-	A0_LANDSCAPE("A0 (Landscape)", new PageSize(4493.858, 3178.583), 1.0f), // [px] -> 1189.0, 841.0 [mm]
-	A1_LANDSCAPE("A1 (Landscape)", new PageSize(3178.583, 2245.039), 0.75f), // [px] -> 841.0, 594.0 [mm]
-	A2_LANDSCAPE("A2 (Landscape)", new PageSize(2245.039, 1587.402), 0.5f), // [px] -> 594.0, 420.0 [mm]
-	A3_LANDSCAPE("A3 (Landscape)", new PageSize(1587.402, 1122.520), 0.375f), // [px] -> 420.0, 297.0 [mm]
-	A4_LANDSCAPE("A4 (Landscape)", new PageSize(1122.520, 793.701), 0.25f), // [px] -> 297.0, 210.0 [mm]
-	A5_LANDSCAPE("A5 (Landscape)", new PageSize(793.701, 559.370), 0.125f), // [px] -> 210.0, 148.0 [mm]
-	US_LETTER("US Letter (Landscape)", new PageSize(1056.0, 816.0), 0.25f), // [px] -> 279.4, 215.9 [mm]
-	US_LEGAL("US Legal (Landscape)", new PageSize(1344.0, 816.0), 0.25f); // [px] -> 355.6, 215.9 [in]
+	/*
+	 * The full landscape is used to compensate that int
+	 * values can be plotted only.
+	 */
+	FULL_LANDSCAPE("Full Size (Landscape)", new PageSize(44930.0, 31780.0), 20.0f), //
+	/*
+	 * MM
+	 */
+	A0_LANDSCAPE("A0 (Landscape)", new PageSize(1189.0, 841.0), 1.0f), //
+	A1_LANDSCAPE("A1 (Landscape)", new PageSize(841.0, 594.0), 0.75f), //
+	A2_LANDSCAPE("A2 (Landscape)", new PageSize(594.0, 420.0), 0.5f), //
+	A3_LANDSCAPE("A3 (Landscape)", new PageSize(420.0, 297.0), 0.375f), //
+	A4_LANDSCAPE("A4 (Landscape)", new PageSize(297.0, 210.0), 0.25f), //
+	A5_LANDSCAPE("A5 (Landscape)", new PageSize(210.0, 148.0), 0.125f), //
+	US_LETTER("US Letter (Landscape)", new PageSize(279.4, 215.9), 0.25f), //
+	US_LEGAL("US Legal (Landscape)", new PageSize(355.6, 215.9), 0.25f); //
 
 	private String label = "";
 	private PageSize pageSize;
