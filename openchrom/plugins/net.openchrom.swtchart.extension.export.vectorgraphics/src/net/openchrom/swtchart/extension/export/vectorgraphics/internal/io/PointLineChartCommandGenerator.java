@@ -71,6 +71,23 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 	@Override
 	public CommandSequence getCommandSequence(Shell shell, PageSizeOption pageSizeOption, ScrollableChart scrollableChart) {
 
+		BaseChart baseChart = scrollableChart.getBaseChart();
+		VectorExportSettingsDialog exportSettingsDialog = new VectorExportSettingsDialog(shell, baseChart);
+		exportSettingsDialog.create();
+		//
+		if(exportSettingsDialog.open() == Window.OK) {
+			//
+			int indexAxisX = exportSettingsDialog.getIndexAxisSelectionX();
+			int indexAxisY = exportSettingsDialog.getIndexAxisSelectionY();
+			return getCommandSequence(pageSizeOption, indexAxisX, indexAxisY, scrollableChart);
+		}
+		//
+		return null;
+	}
+
+	@Override
+	public CommandSequence getCommandSequence(PageSizeOption pageSizeOption, int indexAxisX, int indexAxisY, ScrollableChart scrollableChart) {
+
 		/*
 		 * Use the full landscape and the scale the image.
 		 */
@@ -92,25 +109,19 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 			scale = new Point(x, y);
 		}
 		graphics2D.scale(scale.getX(), scale.getY());
-		//
-		BaseChart baseChart = scrollableChart.getBaseChart();
-		VectorExportSettingsDialog exportSettingsDialog = new VectorExportSettingsDialog(shell, baseChart);
-		exportSettingsDialog.create();
-		//
-		if(exportSettingsDialog.open() == Window.OK) {
-			//
-			int indexAxisX = exportSettingsDialog.getIndexAxisSelectionX();
-			int indexAxisY = exportSettingsDialog.getIndexAxisSelectionY();
-			//
-			if(indexAxisX >= 0 && indexAxisY >= 0) {
-				/*
-				 * Print
-				 */
-				drawAxes(graphics2D, scale, baseChart, indexAxisX, indexAxisY, pageSettings);
-				drawStandardSeries(graphics2D, scale, baseChart, pageSettings);
-				drawCustomSeries(graphics2D, scale, baseChart, pageSettings);
-				drawBranding(graphics2D, pageSettings);
-			}
+		/*
+		 * Create using the given axes.
+		 */
+		if(indexAxisX >= 0 && indexAxisY >= 0) {
+			/*
+			 * Print
+			 */
+			BaseChart baseChart = scrollableChart.getBaseChart();
+			drawAxes(graphics2D, scale, baseChart, indexAxisX, indexAxisY, pageSettings);
+			drawStandardSeries(graphics2D, scale, baseChart, pageSettings);
+			drawCustomSeries(graphics2D, scale, baseChart, pageSettings);
+			drawTitle(graphics2D, pageSettings, scrollableChart);
+			drawBranding(graphics2D, pageSettings);
 		}
 		//
 		graphics2D.setClip(0, 0, (int)Math.round(pageSize.getWidth()), (int)Math.round(pageSize.getHeight()));
@@ -675,6 +686,26 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 				break;
 			default:
 				break;
+		}
+	}
+
+	private void drawTitle(Graphics2D graphics2D, PageSettings pageSettings, ScrollableChart scrollableChart) {
+
+		IChartSettings chartSettings = scrollableChart.getChartSettings();
+		if(chartSettings.isTitleVisible()) {
+			double xBorderLeft = pageSettings.getBorderLeftX();
+			double yBorderTop = pageSettings.getBorderTopY();
+			//
+			graphics2D.setFont(pageSettings.getFont());
+			graphics2D.setColor(pageSettings.getColorDarkGray());
+			graphics2D.setStroke(pageSettings.getStrokeSolid());
+			//
+			String label = chartSettings.getTitle();
+			FontMetrics fontMetrics = graphics2D.getFontMetrics();
+			int heightText = fontMetrics.getHeight();
+			int x = (int)(xBorderLeft);
+			int y = (int)((yBorderTop / 2.0d) + (heightText / 2.0d));
+			graphics2D.drawString(label, x, y);
 		}
 	}
 

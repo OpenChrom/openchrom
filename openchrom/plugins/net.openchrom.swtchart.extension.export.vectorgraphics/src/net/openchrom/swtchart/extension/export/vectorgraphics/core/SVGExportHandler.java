@@ -55,16 +55,19 @@ public class SVGExportHandler extends AbstractExportHandler implements ISeriesEx
 	}
 
 	/**
+	 * 
 	 * Writes the chart into the given file. True on success.
 	 * 
 	 * @param file
 	 * @param shell
 	 * @param pageSizeOption
+	 * @param indexAxisX
+	 * @param indexAxisY
 	 * @param scrollableChart
 	 * @return boolean
 	 */
-	public boolean execute(File file, Shell shell, PageSizeOption pageSizeOption, ScrollableChart scrollableChart) {
+	public boolean execute(File file, Shell shell, PageSizeOption pageSizeOption, int indexAxisX, int indexAxisY, ScrollableChart scrollableChart) {
 
-		return execute(file, shell, pageSizeOption, scrollableChart, new SVGProcessor());
+		return execute(file, shell, pageSizeOption, scrollableChart, indexAxisX, indexAxisY, new SVGProcessor());
 	}
 }

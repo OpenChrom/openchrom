@@ -58,29 +58,29 @@ public abstract class AbstractExportHandler extends AbstractSeriesExportHandler 
 		/*
 		 * Export
 		 */
-		CommandSequence commandSequene = getCommandSequenceAutofixChart(shell, pageSizeOption, scrollableChart);
+		CommandSequence commandSequene = getCommandSequenceAutofixChart(shell, pageSizeOption, -1, -1, scrollableChart);
 		if(commandSequene != null) {
 			Document document = processor.getDocument(commandSequene, pageSizeOption.pageSize());
-			executeFile(shell, document, filterName, filterExtension, fileName);
+			executeFile(shell, document, filterName, filterExtension, fileName, true);
 			executeClipboard(document, typeName);
 		} else {
 			MessageDialog.openInformation(shell, "VectorGraphics", "Sorry, the chart type is not supported yet. Please ask for support.");
 		}
 	}
 
-	public boolean execute(File file, Shell shell, PageSizeOption pageSizeOption, ScrollableChart scrollableChart, Processor processor) {
+	public boolean execute(File file, Shell shell, PageSizeOption pageSizeOption, ScrollableChart scrollableChart, int indexAxisX, int indexAxisY, Processor processor) {
 
-		CommandSequence commandSequene = getCommandSequenceAutofixChart(shell, pageSizeOption, scrollableChart);
+		CommandSequence commandSequene = getCommandSequenceAutofixChart(shell, pageSizeOption, indexAxisX, indexAxisY, scrollableChart);
 		if(commandSequene != null) {
 			Document document = processor.getDocument(commandSequene, pageSizeOption.pageSize());
-			execute(file, document);
+			execute(file, document, false);
 			return true;
 		}
 		//
 		return false;
 	}
 
-	private CommandSequence getCommandSequenceAutofixChart(Shell shell, PageSizeOption pageSizeOption, ScrollableChart scrollableChart) {
+	private CommandSequence getCommandSequenceAutofixChart(Shell shell, PageSizeOption pageSizeOption, int indexAxisX, int indexAxisY, ScrollableChart scrollableChart) {
 
 		/*
 		 * Check that the Y extend option is not set.
@@ -95,7 +95,7 @@ public abstract class AbstractExportHandler extends AbstractSeriesExportHandler 
 		 */
 		CommandSequence commandSequene = null;
 		try {
-			commandSequene = getCommandSequence(shell, pageSizeOption, scrollableChart);
+			commandSequene = getCommandSequence(shell, pageSizeOption, indexAxisX, indexAxisY, scrollableChart);
 		} catch(Exception e) {
 			logger.warn(e);
 		}
@@ -141,7 +141,7 @@ public abstract class AbstractExportHandler extends AbstractSeriesExportHandler 
 		};
 	}
 
-	private void executeFile(Shell shell, Document document, String filterName, String filterExtension, String fileName) {
+	private void executeFile(Shell shell, Document document, String filterName, String filterExtension, String fileName, boolean openInEditor) {
 
 		FileDialog fileDialog = new FileDialog(shell, SWT.SAVE);
 		fileDialog.setOverwrite(true);
@@ -157,15 +157,17 @@ public abstract class AbstractExportHandler extends AbstractSeriesExportHandler 
 			 */
 			File file = new File(pathname);
 			PreferenceSupplier.setPathExport(file.getParentFile().getAbsolutePath());
-			execute(file, document);
+			execute(file, document, openInEditor);
 		}
 	}
 
-	private void execute(File file, Document document) {
+	private void execute(File file, Document document, boolean openInEditor) {
 
 		try (FileOutputStream outputStream = new FileOutputStream(file)) {
 			document.writeTo(outputStream);
-			SystemEditor.open(file);
+			if(openInEditor) {
+				SystemEditor.open(file);
+			}
 		} catch(IOException e) {
 			logger.warn(e);
 		}
@@ -175,7 +177,7 @@ public abstract class AbstractExportHandler extends AbstractSeriesExportHandler 
 	 * EPS is deactivated in MS Office.
 	 * https://support.microsoft.com/de-de/office/unterst%C3%BCtzung-f%C3%BCr-eps-bilder-wurde-in-office-deaktiviert-a069d664-4bcf-415e-a1b5-cbb0c334a840
 	 */
-	private CommandSequence getCommandSequence(Shell shell, PageSizeOption pageSizeOption, ScrollableChart scrollableChart) {
+	private CommandSequence getCommandSequence(Shell shell, PageSizeOption pageSizeOption, int indexAxisX, int indexAxisY, ScrollableChart scrollableChart) {
 
 		IChartCommandGenerator commandGenerator = null;
 		if(scrollableChart instanceof LineChart) {
@@ -196,7 +198,11 @@ public abstract class AbstractExportHandler extends AbstractSeriesExportHandler 
 		 * Check that the generator is available.
 		 */
 		if(commandGenerator != null) {
-			return commandGenerator.getCommandSequence(shell, pageSizeOption, scrollableChart);
+			if(indexAxisX >= 0 && indexAxisY >= 0) {
+				return commandGenerator.getCommandSequence(pageSizeOption, indexAxisX, indexAxisY, scrollableChart);
+			} else {
+				return commandGenerator.getCommandSequence(shell, pageSizeOption, scrollableChart);
+			}
 		}
 		//
 		return null;
