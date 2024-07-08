@@ -1240,7 +1240,7 @@
             groupId="net.openchrom.xxd.converter"
             id="net.openchrom.xxd.converter.supplier.n2000.feature"
             kind="converter"
-            license="End User License"
+            license="Converter End User License"
             name="N2000 GC-TCD"
             provider="Lablicate"
             url="https://converter.openchrom.net/">
@@ -1248,6 +1248,40 @@
          </icon>
          <overview
                summary="Free for commercial use. Must not be used with other software.">
+         </overview>
+      </pluginDescriptor>
+
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.converters.proprietary"
+            description="Reads and writes *.adf files."
+            groupId="net.openchrom.xxd.converter"
+            id="com.lablicate.xxd.converter.supplier.adf.feature"
+            kind="converter"
+            license="End User License"
+            name="Allotrope Data Format"
+            provider="Lablicate"
+            url="https://plugins.openchrom.net/allotrope">
+         <icon image32="icons/32x32/ADF.png">
+         </icon>
+         <overview
+               summary="Commercial product. Requires valid license.">
+         </overview>
+      </pluginDescriptor>
+
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.converters.proprietary"
+            description="Reads and writes *.asm files."
+            groupId="net.openchrom.xxd.converter"
+            id="com.lablicate.xxd.converter.supplier.asm.feature"
+            kind="converter"
+            license="End User License"
+            name="Allotrope Data Format"
+            provider="Lablicate"
+            url="https://plugins.openchrom.net/allotrope">
+         <icon image32="icons/32x32/ASM.png">
+         </icon>
+         <overview
+               summary="Commercial product. Requires valid license.">
          </overview>
       </pluginDescriptor>
 
