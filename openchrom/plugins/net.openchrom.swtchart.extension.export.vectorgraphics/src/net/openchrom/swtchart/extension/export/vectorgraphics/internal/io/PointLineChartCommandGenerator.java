@@ -40,6 +40,7 @@ import org.eclipse.swtchart.extensions.core.RangeRestriction;
 import org.eclipse.swtchart.extensions.core.ScrollableChart;
 import org.eclipse.swtchart.extensions.linecharts.ILineSeriesSettings;
 import org.eclipse.swtchart.extensions.model.ElementLine;
+import org.eclipse.swtchart.extensions.model.ElementPolygon;
 import org.eclipse.swtchart.extensions.model.ElementRectangle;
 import org.eclipse.swtchart.extensions.model.ICustomSeries;
 import org.eclipse.swtchart.extensions.model.IElement;
@@ -448,6 +449,26 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 								int width1 = getWidth(factorX, elementRectangle.getWidth(), width, xBorderLeft, xBorderRight);
 								int height1 = getHeight(factorY, elementRectangle.getHeight(), height, yBorderTop, yBorderBottom);
 								graphics2D.fillRect(x1, y1, width1, height1);
+							} else if(graphicElement instanceof ElementPolygon elementPolygon) {
+								/*
+								 * Polygon
+								 */
+								if(elementPolygon.hasData()) {
+									double[] polygon = elementPolygon.getPolygon();
+									int size = polygon.length;
+									int nPoints = size / 2;
+									int[] xPoints = new int[nPoints];
+									int[] yPoints = new int[nPoints];
+									int index = 0;
+									for(int i = 0; i < (size - 1); i++) {
+										if(i % 2 == 0) {
+											xPoints[index] = getX(factorX, polygon[i], width, xMin, xBorderLeft, xBorderRight);
+											yPoints[index] = getY(factorY, polygon[i + 1], height, yMin, yBorderTop, yBorderBottom);
+											index++;
+										}
+									}
+									graphics2D.fillPolygon(xPoints, yPoints, nPoints);
+								}
 							} else if(graphicElement instanceof ElementLine elementLine) {
 								/*
 								 * Line
