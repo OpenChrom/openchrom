@@ -29,7 +29,6 @@ import org.xml.sax.SAXException;
 
 import net.openchrom.vsd.converter.supplier.gaml.model.IVendorSpectrumVSD;
 import net.openchrom.vsd.converter.supplier.gaml.model.VendorSpectrumVSD;
-import net.openchrom.xxd.converter.supplier.gaml.internal.io.IConstants;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.Experiment;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.GAML;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.ObjectFactory;
@@ -37,6 +36,7 @@ import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.Parameter;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.Trace;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.Xdata;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.Ydata;
+import net.openchrom.xxd.converter.supplier.gaml.io.Reader;
 import net.openchrom.xxd.converter.supplier.gaml.io.Reader120;
 
 import jakarta.xml.bind.JAXBContext;
@@ -54,7 +54,7 @@ public class ScanReaderVersion120 {
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			Document document = documentBuilder.parse(file);
-			NodeList nodeList = document.getElementsByTagName(IConstants.NODE_GAML);
+			NodeList nodeList = document.getElementsByTagName(Reader.NODE_GAML);
 			JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 			GAML gaml = (GAML)unmarshaller.unmarshal(nodeList.item(0));

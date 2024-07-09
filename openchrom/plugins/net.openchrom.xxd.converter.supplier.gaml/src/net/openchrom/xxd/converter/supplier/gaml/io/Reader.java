@@ -9,13 +9,13 @@
  * Contributors:
  * Matthias Mailänder - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.converter.supplier.gaml.internal.io;
+package net.openchrom.xxd.converter.supplier.gaml.io;
 
-public interface IConstants {
+public class Reader {
 
-	String GAML_V_100 = "1.00";
-	String GAML_V_110 = "1.10";
-	String GAML_V_120 = "1.20";
-	//
-	String NODE_GAML = "GAML";
+	private Reader() {
+
+	}
+
+	public static final String NODE_GAML = "GAML";
 }

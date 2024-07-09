@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Lablicate GmbH.
+ * Copyright (c) 2021, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -44,19 +44,19 @@ import org.xml.sax.SAXException;
 import net.openchrom.csd.converter.supplier.gaml.model.IVendorChromatogram;
 import net.openchrom.csd.converter.supplier.gaml.model.VendorChromatogram;
 import net.openchrom.csd.converter.supplier.gaml.model.VendorScan;
-import net.openchrom.xxd.converter.supplier.gaml.internal.io.IConstants;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v100.model.ObjectFactory;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.Experiment;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.GAML;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.Parameter;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.Peaktable;
-import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.Peaktable.Peak;
-import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.Peaktable.Peak.Baseline;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.Technique;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.Trace;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.Units;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.Xdata;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.Ydata;
+import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.Peaktable.Peak;
+import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.Peaktable.Peak.Baseline;
+import net.openchrom.xxd.converter.supplier.gaml.io.Reader;
 import net.openchrom.xxd.converter.supplier.gaml.io.Reader110;
 
 import jakarta.xml.bind.JAXBContext;
@@ -90,7 +90,7 @@ public class ChromatogramReaderVersion110 extends AbstractChromatogramReader imp
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			Document document = documentBuilder.parse(file);
-			NodeList nodeList = document.getElementsByTagName(IConstants.NODE_GAML);
+			NodeList nodeList = document.getElementsByTagName(Reader.NODE_GAML);
 			JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 			GAML gaml = (GAML)unmarshaller.unmarshal(nodeList.item(0));
@@ -176,7 +176,7 @@ public class ChromatogramReaderVersion110 extends AbstractChromatogramReader imp
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			Document document = documentBuilder.parse(file);
-			NodeList nodeList = document.getElementsByTagName(IConstants.NODE_GAML);
+			NodeList nodeList = document.getElementsByTagName(Reader.NODE_GAML);
 			//
 			JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();

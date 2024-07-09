@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -34,7 +34,6 @@ import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
 import net.openchrom.nmr.converter.supplier.gaml.model.VendorFIDMeasurement;
 import net.openchrom.nmr.converter.supplier.gaml.model.VendorFIDSignal;
-import net.openchrom.xxd.converter.supplier.gaml.internal.io.IConstants;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.Experiment;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.GAML;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.ObjectFactory;
@@ -42,6 +41,7 @@ import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.Parameter;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.Trace;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.Xdata;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.Ydata;
+import net.openchrom.xxd.converter.supplier.gaml.io.Reader;
 import net.openchrom.xxd.converter.supplier.gaml.io.Reader120;
 
 public class ScanReaderVersion120 {
@@ -55,7 +55,7 @@ public class ScanReaderVersion120 {
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			Document document = documentBuilder.parse(file);
-			NodeList nodeList = document.getElementsByTagName(IConstants.NODE_GAML);
+			NodeList nodeList = document.getElementsByTagName(Reader.NODE_GAML);
 			JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 			GAML gaml = (GAML)unmarshaller.unmarshal(nodeList.item(0));

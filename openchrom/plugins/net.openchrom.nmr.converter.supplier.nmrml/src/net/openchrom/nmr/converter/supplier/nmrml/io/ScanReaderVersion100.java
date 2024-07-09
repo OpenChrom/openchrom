@@ -34,7 +34,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import net.openchrom.nmr.converter.supplier.nmrml.internal.io.IConstants;
 import net.openchrom.nmr.converter.supplier.nmrml.internal.v100.model.Acquisition1DType;
 import net.openchrom.nmr.converter.supplier.nmrml.internal.v100.model.AcquisitionDimensionParameterSetType;
 import net.openchrom.nmr.converter.supplier.nmrml.internal.v100.model.AcquisitionParameterSet1DType;
@@ -66,7 +65,7 @@ public class ScanReaderVersion100 {
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			Document document = documentBuilder.parse(file);
-			NodeList nodeList = document.getElementsByTagName(IConstants.NODE_NMRML);
+			NodeList nodeList = document.getElementsByTagName("nmrML");
 			JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 			NmrMLType nmrML = (NmrMLType)unmarshaller.unmarshal(nodeList.item(0));
