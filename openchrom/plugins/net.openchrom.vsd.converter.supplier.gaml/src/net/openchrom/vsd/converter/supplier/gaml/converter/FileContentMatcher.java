@@ -23,11 +23,11 @@ import org.eclipse.chemclipse.converter.core.IFileContentMatcher;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
-import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.GAML;
-import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.ObjectFactory;
-import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.Technique;
-import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.Trace;
 import net.openchrom.xxd.converter.supplier.gaml.io.Reader;
+import net.openchrom.xxd.converter.supplier.gaml.v120.model.GAML;
+import net.openchrom.xxd.converter.supplier.gaml.v120.model.ObjectFactory;
+import net.openchrom.xxd.converter.supplier.gaml.v120.model.Technique;
+import net.openchrom.xxd.converter.supplier.gaml.v120.model.Trace;
 
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.Unmarshaller;

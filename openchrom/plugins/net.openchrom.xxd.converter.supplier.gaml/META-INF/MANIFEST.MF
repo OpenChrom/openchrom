@@ -11,10 +11,10 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: net.openchrom.xxd.converter.supplier.gaml.converter,
- net.openchrom.xxd.converter.supplier.gaml.internal.v100.model,
- net.openchrom.xxd.converter.supplier.gaml.internal.v110.model,
- net.openchrom.xxd.converter.supplier.gaml.internal.v120.model,
- net.openchrom.xxd.converter.supplier.gaml.io
+ net.openchrom.xxd.converter.supplier.gaml.io,
+ net.openchrom.xxd.converter.supplier.gaml.v100.model,
+ net.openchrom.xxd.converter.supplier.gaml.v110.model,
+ net.openchrom.xxd.converter.supplier.gaml.v120.model
 Import-Package: jakarta.xml.bind,
  jakarta.xml.bind.annotation,
  jakarta.xml.bind.annotation.adapters

@@ -34,15 +34,15 @@ import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
 import net.openchrom.nmr.converter.supplier.gaml.model.VendorFIDMeasurement;
 import net.openchrom.nmr.converter.supplier.gaml.model.VendorFIDSignal;
-import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.Experiment;
-import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.GAML;
-import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.ObjectFactory;
-import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.Parameter;
-import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.Trace;
-import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.Xdata;
-import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.Ydata;
 import net.openchrom.xxd.converter.supplier.gaml.io.Reader;
 import net.openchrom.xxd.converter.supplier.gaml.io.Reader120;
+import net.openchrom.xxd.converter.supplier.gaml.v120.model.Experiment;
+import net.openchrom.xxd.converter.supplier.gaml.v120.model.GAML;
+import net.openchrom.xxd.converter.supplier.gaml.v120.model.ObjectFactory;
+import net.openchrom.xxd.converter.supplier.gaml.v120.model.Parameter;
+import net.openchrom.xxd.converter.supplier.gaml.v120.model.Trace;
+import net.openchrom.xxd.converter.supplier.gaml.v120.model.Xdata;
+import net.openchrom.xxd.converter.supplier.gaml.v120.model.Ydata;
 
 public class ScanReaderVersion120 {
 

@@ -29,15 +29,15 @@ import org.xml.sax.SAXException;
 
 import net.openchrom.vsd.converter.supplier.gaml.model.IVendorSpectrumVSD;
 import net.openchrom.vsd.converter.supplier.gaml.model.VendorSpectrumVSD;
-import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.Experiment;
-import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.GAML;
-import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.ObjectFactory;
-import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.Parameter;
-import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.Trace;
-import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.Xdata;
-import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.Ydata;
 import net.openchrom.xxd.converter.supplier.gaml.io.Reader;
 import net.openchrom.xxd.converter.supplier.gaml.io.Reader120;
+import net.openchrom.xxd.converter.supplier.gaml.v120.model.Experiment;
+import net.openchrom.xxd.converter.supplier.gaml.v120.model.GAML;
+import net.openchrom.xxd.converter.supplier.gaml.v120.model.ObjectFactory;
+import net.openchrom.xxd.converter.supplier.gaml.v120.model.Parameter;
+import net.openchrom.xxd.converter.supplier.gaml.v120.model.Trace;
+import net.openchrom.xxd.converter.supplier.gaml.v120.model.Xdata;
+import net.openchrom.xxd.converter.supplier.gaml.v120.model.Ydata;
 
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
