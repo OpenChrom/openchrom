@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 
+import org.eclipse.chemclipse.converter.l10n.ConverterMessages;
 import org.eclipse.chemclipse.csd.converter.io.AbstractChromatogramCSDReader;
 import org.eclipse.chemclipse.csd.converter.io.IChromatogramCSDReader;
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
@@ -28,7 +29,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import net.openchrom.csd.converter.supplier.cdf.exceptions.NoCDFAttributeDataFound;
 import net.openchrom.csd.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
 import net.openchrom.csd.converter.supplier.cdf.exceptions.NotEnoughScanDataStored;
-import net.openchrom.csd.converter.supplier.cdf.internal.converter.IConstants;
 import net.openchrom.csd.converter.supplier.cdf.io.support.CDFChromtogramArrayReader;
 import net.openchrom.csd.converter.supplier.cdf.io.support.DateSupport;
 import net.openchrom.csd.converter.supplier.cdf.io.support.IAbstractCDFChromatogramArrayReader;
@@ -62,10 +62,16 @@ public class ChromatogramReaderCSD extends AbstractChromatogramCSDReader impleme
 		}
 		// If it is a valid file, try to read it.
 		try {
-			monitor.subTask(IConstants.IMPORT_CDF_CHROMATOGRAM);
+			monitor.subTask(ConverterMessages.importChromatogram);
 			chromatogram = readChromatogram(file, monitor);
-		} catch(Exception e) {
-			logger.warn(e);
+		} catch(IOException e) {
+			logger.error(e);
+			return null;
+		} catch(NoCDFVariableDataFound e) {
+			logger.error(e);
+			return null;
+		} catch(NotEnoughScanDataStored e) {
+			logger.error(e);
 			return null;
 		}
 		return chromatogram;
@@ -108,12 +114,12 @@ public class ChromatogramReaderCSD extends AbstractChromatogramCSDReader impleme
 	 */
 	private VendorChromatogramCSD readChromatogram(File file, IProgressMonitor monitor) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
 
-		monitor.subTask("Import");
+		monitor.subTask(ConverterMessages.importChromatogram);
 		NetcdfFile cdfChromatogram = NetcdfFiles.open(file.getAbsolutePath());
 		CDFChromtogramArrayReader in = new CDFChromtogramArrayReader(cdfChromatogram);
 		VendorChromatogramCSD chromatogram = new VendorChromatogramCSD();
 		setChromatogramEntries(chromatogram, in, file);
-		monitor.subTask(IConstants.PARSE_SCANS);
+		monitor.subTask(ConverterMessages.importScan);
 		int retentionTime = in.getScanDelay();
 		int scans = in.getNumberOfScans();
 		for(int i = 0; i < scans; i++) {
