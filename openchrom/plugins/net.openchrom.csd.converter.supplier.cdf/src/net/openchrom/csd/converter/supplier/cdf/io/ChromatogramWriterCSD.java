@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2022 Lablicate GmbH.
+ * Copyright (c) 2014, 2024 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -12,22 +12,22 @@
 package net.openchrom.csd.converter.supplier.cdf.io;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
 import org.eclipse.chemclipse.converter.io.AbstractChromatogramWriter;
+import org.eclipse.chemclipse.converter.l10n.ConverterMessages;
 import org.eclipse.chemclipse.csd.converter.io.IChromatogramCSDWriter;
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.csd.converter.supplier.cdf.internal.converter.IConstants;
 import net.openchrom.csd.converter.supplier.cdf.io.support.AttributeSupport;
 import net.openchrom.csd.converter.supplier.cdf.io.support.CDFConstants;
 import net.openchrom.csd.converter.supplier.cdf.io.support.DimensionSupport;
 import net.openchrom.csd.converter.supplier.cdf.io.support.IDataEntry;
+
 import ucar.ma2.InvalidRangeException;
 import ucar.nc2.Dimension;
 import ucar.nc2.NetcdfFileWriter;
@@ -38,9 +38,9 @@ public class ChromatogramWriterCSD extends AbstractChromatogramWriter implements
 	private static final Logger logger = Logger.getLogger(ChromatogramWriterCSD.class);
 
 	@Override
-	public void writeChromatogram(File file, IChromatogramCSD chromatogram, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotWriteableException, IOException {
+	public void writeChromatogram(File file, IChromatogramCSD chromatogram, IProgressMonitor monitor) throws FileIsNotWriteableException, IOException {
 
-		monitor.subTask(IConstants.EXPORT_CDF_CHROMATOGRAM);
+		monitor.subTask(ConverterMessages.exportChromatogram);
 		writeCDFChromatogram(file, chromatogram, monitor);
 	}
 
@@ -54,7 +54,6 @@ public class ChromatogramWriterCSD extends AbstractChromatogramWriter implements
 		dimensionSupport.addVariableDoubleD1(CDFConstants.VARIABLE_ORDINATE_VALUES, numberOfScans, dimensionSupport.NULL_VALUE_DOUBLE);
 		dimensionSupport.addVariableOrdinateValues();
 		try {
-			monitor.subTask(IConstants.EXPORT_DATA_ENTRIES);
 			cdfChromatogram.create();
 			ArrayList<IDataEntry> dataEntries = dimensionSupport.getDataEntries();
 			for(IDataEntry entry : dataEntries) {
