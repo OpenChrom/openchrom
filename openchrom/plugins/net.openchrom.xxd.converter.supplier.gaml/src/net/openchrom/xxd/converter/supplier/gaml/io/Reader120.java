@@ -16,8 +16,8 @@ import java.nio.ByteOrder;
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 
-import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.Units;
-import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.Values;
+import net.openchrom.xxd.converter.supplier.gaml.v120.model.Units;
+import net.openchrom.xxd.converter.supplier.gaml.v120.model.Values;
 
 public class Reader120 {
 
