@@ -23,11 +23,11 @@ import org.eclipse.chemclipse.converter.core.IFileContentMatcher;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
-import net.openchrom.xxd.converter.supplier.gaml.internal.io.IConstants;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.GAML;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.ObjectFactory;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.Technique;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.Trace;
+import net.openchrom.xxd.converter.supplier.gaml.io.Reader;
 
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.Unmarshaller;
@@ -42,7 +42,7 @@ public class FileContentMatcher extends AbstractFileContentMatcher implements IF
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			Document document = documentBuilder.parse(file);
-			NodeList nodeList = document.getElementsByTagName(IConstants.NODE_GAML);
+			NodeList nodeList = document.getElementsByTagName(Reader.NODE_GAML);
 			//
 			JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();

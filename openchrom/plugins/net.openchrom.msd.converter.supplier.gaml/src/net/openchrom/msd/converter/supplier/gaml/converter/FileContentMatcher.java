@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Lablicate GmbH.
+ * Copyright (c) 2021, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -21,11 +21,11 @@ import org.eclipse.chemclipse.converter.core.IFileContentMatcher;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
-import net.openchrom.xxd.converter.supplier.gaml.internal.io.IConstants;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.GAML;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.ObjectFactory;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.Technique;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v120.model.Trace;
+import net.openchrom.xxd.converter.supplier.gaml.io.Reader;
 
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.Unmarshaller;
@@ -40,7 +40,7 @@ public class FileContentMatcher extends AbstractFileContentMatcher implements IF
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			Document document = documentBuilder.parse(file);
-			NodeList nodeList = document.getElementsByTagName(IConstants.NODE_GAML);
+			NodeList nodeList = document.getElementsByTagName(Reader.NODE_GAML);
 			//
 			JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();

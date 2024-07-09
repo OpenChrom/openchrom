@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Lablicate GmbH.
+ * Copyright (c) 2021, 2024 Lablicate GmbH.
  *
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -22,7 +22,9 @@ import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.xxd.converter.supplier.io.exception.UnknownVersionException;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.xxd.converter.supplier.gaml.internal.io.IConstants;
+import net.openchrom.xxd.converter.supplier.gaml.io.Reader100;
+import net.openchrom.xxd.converter.supplier.gaml.io.Reader110;
+import net.openchrom.xxd.converter.supplier.gaml.io.Reader120;
 
 public class ChromatogramReader extends AbstractChromatogramCSDReader implements IChromatogramCSDReader {
 
@@ -33,11 +35,11 @@ public class ChromatogramReader extends AbstractChromatogramCSDReader implements
 			final char[] charBuffer = new char[100];
 			fileReader.read(charBuffer);
 			final String header = new String(charBuffer);
-			if(header.contains(IConstants.GAML_V_100)) {
+			if(header.contains(Reader100.VERSION)) {
 				chromatogramReader = new ChromatogramReaderVersion100();
-			} else if(header.contains(IConstants.GAML_V_110)) {
+			} else if(header.contains(Reader110.VERSION)) {
 				chromatogramReader = new ChromatogramReaderVersion110();
-			} else if(header.contains(IConstants.GAML_V_120)) {
+			} else if(header.contains(Reader120.VERSION)) {
 				chromatogramReader = new ChromatogramReaderVersion120();
 			} else {
 				throw new UnknownVersionException();

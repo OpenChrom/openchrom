@@ -24,7 +24,6 @@ import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.chemclipse.xxd.converter.supplier.io.exception.UnknownVersionException;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.nmr.converter.supplier.nmrml.internal.io.IConstants;
 import net.openchrom.nmr.converter.supplier.nmrml.io.ScanReaderVersion100;
 
 public class ScanImportConverter extends AbstractScanImportConverter<Collection<IComplexSignalMeasurement<?>>> implements IScanImportConverter<Collection<IComplexSignalMeasurement<?>>> {
@@ -45,7 +44,7 @@ public class ScanImportConverter extends AbstractScanImportConverter<Collection<
 			fileReader.close();
 			//
 			final String header = new String(charBuffer);
-			if(header.contains(IConstants.NODE_NMRML)) {
+			if(header.contains("nmrML")) {
 				ScanReaderVersion100 scanReader = new ScanReaderVersion100();
 				Collection<IComplexSignalMeasurement<?>> result = scanReader.read(file, monitor);
 				processingInfo.setProcessingResult(result);

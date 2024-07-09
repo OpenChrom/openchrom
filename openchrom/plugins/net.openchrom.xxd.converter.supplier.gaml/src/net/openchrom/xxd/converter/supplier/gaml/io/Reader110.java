@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -9,7 +9,6 @@
  * Contributors:
  * Matthias Mailänder - initial API and implementation
  *******************************************************************************/
-
 package net.openchrom.xxd.converter.supplier.gaml.io;
 
 import java.nio.ByteBuffer;
@@ -21,6 +20,8 @@ import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.Units;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.Values;
 
 public class Reader110 {
+
+	public static final String VERSION = "1.10";
 
 	public static double[] parseValues(Values values) {
 

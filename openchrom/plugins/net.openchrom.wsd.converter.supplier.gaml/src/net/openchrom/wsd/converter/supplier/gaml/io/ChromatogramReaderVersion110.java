@@ -39,7 +39,6 @@ import net.openchrom.wsd.converter.supplier.gaml.model.IVendorScanSignalWSD;
 import net.openchrom.wsd.converter.supplier.gaml.model.VendorChromatogram;
 import net.openchrom.wsd.converter.supplier.gaml.model.VendorScan;
 import net.openchrom.wsd.converter.supplier.gaml.model.VendorScanSignalWSD;
-import net.openchrom.xxd.converter.supplier.gaml.internal.io.IConstants;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.Coordinates;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.Experiment;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.GAML;
@@ -50,6 +49,7 @@ import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.Trace;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.Units;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.Xdata;
 import net.openchrom.xxd.converter.supplier.gaml.internal.v110.model.Ydata;
+import net.openchrom.xxd.converter.supplier.gaml.io.Reader;
 import net.openchrom.xxd.converter.supplier.gaml.io.Reader110;
 
 import jakarta.xml.bind.JAXBContext;
@@ -85,7 +85,7 @@ public class ChromatogramReaderVersion110 extends AbstractChromatogramReader imp
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			Document document = documentBuilder.parse(file);
-			NodeList nodeList = document.getElementsByTagName(IConstants.NODE_GAML);
+			NodeList nodeList = document.getElementsByTagName(Reader.NODE_GAML);
 			JAXBContext jaxbContext = JAXBContext.newInstance(contextPath);
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 			GAML gaml = (GAML)unmarshaller.unmarshal(nodeList.item(0));
@@ -179,7 +179,7 @@ public class ChromatogramReaderVersion110 extends AbstractChromatogramReader imp
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			Document document = documentBuilder.parse(file);
-			NodeList nodeList = document.getElementsByTagName(IConstants.NODE_GAML);
+			NodeList nodeList = document.getElementsByTagName(Reader.NODE_GAML);
 			//
 			JAXBContext jaxbContext = JAXBContext.newInstance(contextPath);
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();

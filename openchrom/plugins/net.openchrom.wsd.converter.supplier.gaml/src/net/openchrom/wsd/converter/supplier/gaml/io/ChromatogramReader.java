@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Lablicate GmbH.
+ * Copyright (c) 2021, 2024 Lablicate GmbH.
  *
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -22,7 +22,7 @@ import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.chemclipse.xxd.converter.supplier.io.exception.UnknownVersionException;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.xxd.converter.supplier.gaml.internal.io.IConstants;
+import net.openchrom.xxd.converter.supplier.gaml.io.Reader120;
 
 public class ChromatogramReader extends AbstractChromatogramWSDReader implements IChromatogramWSDReader {
 
@@ -36,7 +36,7 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader implements
 		}
 		//
 		final String header = new String(charBuffer);
-		if(header.contains(IConstants.GAML_V_120)) {
+		if(header.contains(Reader120.VERSION)) {
 			chromatogramReader = new ChromatogramReaderVersion120();
 		} else {
 			throw new UnknownVersionException();
