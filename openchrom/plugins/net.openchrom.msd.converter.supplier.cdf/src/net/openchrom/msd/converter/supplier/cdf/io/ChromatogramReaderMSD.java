@@ -41,11 +41,11 @@ import net.openchrom.msd.converter.supplier.cdf.preferences.PreferenceSupplier;
 
 import ucar.nc2.NetcdfFile;
 
-public class ChromatogramReader extends AbstractChromatogramMSDReader implements IChromatogramMSDReader {
+public class ChromatogramReaderMSD extends AbstractChromatogramMSDReader implements IChromatogramMSDReader {
 
 	public static final String CONVERTER_ID = "net.openchrom.msd.converter.supplier.cdf";
 	//
-	private static final Logger logger = Logger.getLogger(ChromatogramReader.class);
+	private static final Logger logger = Logger.getLogger(ChromatogramReaderMSD.class);
 
 	@Override
 	public IChromatogramMSD read(File file, IProgressMonitor monitor) throws IOException {

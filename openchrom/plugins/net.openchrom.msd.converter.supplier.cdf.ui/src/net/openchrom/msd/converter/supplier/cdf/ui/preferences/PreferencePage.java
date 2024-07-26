@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2019 Lablicate GmbH.
+ * Copyright (c) 2013, 2024 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -7,10 +7,11 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
+ * Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cdf.ui.preferences;
 
+import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.ExtendedIntegerFieldEditor;
 import org.eclipse.chemclipse.support.ui.preferences.fieldeditors.SpinnerFieldEditor;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -23,6 +24,7 @@ import net.openchrom.msd.converter.supplier.cdf.ui.Activator;
 public class PreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	public PreferencePage() {
+
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
 		setDescription("Set the NetCDF converter settings.");
@@ -38,5 +40,6 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 
 		addField(new SpinnerFieldEditor(PreferenceSupplier.P_PRECISION, "Precision Ions", PreferenceSupplier.MIN_PRECISION, PreferenceSupplier.MAX_PRECISION, getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_FORCE_PARSE_NOMINAL, "Force Parse Nominal", getFieldEditorParent()));
+		addField(new ExtendedIntegerFieldEditor(PreferenceSupplier.P_MODULATION_TIME_2D, "Modulation Time (GCxGC) [ms]", PreferenceSupplier.MIN_MODULATION_TIME, PreferenceSupplier.MAX_MODULATION_TIME, getFieldEditorParent()));
 	}
 }

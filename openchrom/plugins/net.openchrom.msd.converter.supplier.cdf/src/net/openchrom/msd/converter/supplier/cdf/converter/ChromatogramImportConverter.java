@@ -7,7 +7,7 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
+ * Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cdf.converter;
 
@@ -25,7 +25,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.osgi.util.NLS;
 
 import net.openchrom.msd.converter.supplier.cdf.internal.converter.SpecificationValidator;
-import net.openchrom.msd.converter.supplier.cdf.io.ChromatogramReader;
+import net.openchrom.msd.converter.supplier.cdf.io.ChromatogramReaderMSD;
 
 public class ChromatogramImportConverter extends AbstractChromatogramImportConverter<IChromatogramMSD> {
 
@@ -38,7 +38,7 @@ public class ChromatogramImportConverter extends AbstractChromatogramImportConve
 		IProcessingInfo<IChromatogramMSD> processingInfo = super.validate(file);
 		if(!processingInfo.hasErrorMessages()) {
 			file = SpecificationValidator.validateSpecification(file);
-			IChromatogramMSDReader reader = new ChromatogramReader();
+			IChromatogramMSDReader reader = new ChromatogramReaderMSD();
 			try {
 				IChromatogramMSD chromatogram = reader.read(file, monitor);
 				processingInfo.setProcessingResult(chromatogram);
@@ -59,7 +59,7 @@ public class ChromatogramImportConverter extends AbstractChromatogramImportConve
 		IProcessingInfo<IChromatogramOverview> processingInfo = super.validate(file);
 		if(!processingInfo.hasErrorMessages()) {
 			file = SpecificationValidator.validateSpecification(file);
-			IChromatogramMSDReader reader = new ChromatogramReader();
+			IChromatogramMSDReader reader = new ChromatogramReaderMSD();
 			try {
 				IChromatogramOverview chromatogramOverview = reader.readOverview(file, monitor);
 				processingInfo.setProcessingResult(chromatogramOverview);

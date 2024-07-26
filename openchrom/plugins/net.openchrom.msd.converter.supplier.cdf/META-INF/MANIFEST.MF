@@ -23,7 +23,9 @@ Require-Bundle: org.eclipse.core.runtime,
  wrapped.org.jdom.jdom2;bundle-version="2.0.6",
  wrapped.org.apache.httpcomponents.httpclient;bundle-version="4.5.14",
  wrapped.org.apache.httpcomponents.httpcore;bundle-version="4.4.16",
- org.slf4j.api;bundle-version="1.7.30"
+ org.slf4j.api;bundle-version="1.7.30",
+ org.eclipse.chemclipse.tsd.converter;bundle-version="0.9.0",
+ org.eclipse.chemclipse.tsd.model;bundle-version="0.9.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-Vendor: ChemClipse
@@ -33,3 +35,4 @@ Export-Package: net.openchrom.msd.converter.supplier.cdf.converter,
  net.openchrom.msd.converter.supplier.cdf.io.support,
  net.openchrom.msd.converter.supplier.cdf.model,
  net.openchrom.msd.converter.supplier.cdf.preferences
+Service-Component: OSGI-INF/net.openchrom.msd.converter.supplier.cdf.converter.ChromatogramImportConverterTSD.xml

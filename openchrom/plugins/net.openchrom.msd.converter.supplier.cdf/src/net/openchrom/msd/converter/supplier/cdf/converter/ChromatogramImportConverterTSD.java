@@ -9,7 +9,7 @@
  * Contributors:
  * Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.csd.converter.supplier.cdf.converter;
+package net.openchrom.msd.converter.supplier.cdf.converter;
 
 import java.io.File;
 
@@ -22,7 +22,7 @@ import org.eclipse.chemclipse.tsd.converter.service.IConverterServiceTSD;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
 
-import net.openchrom.csd.converter.supplier.cdf.io.ChromatogramReaderTSD;
+import net.openchrom.msd.converter.supplier.cdf.io.ChromatogramReaderTSD;
 
 @Component(service = {IConverterServiceTSD.class}, configurationPolicy = ConfigurationPolicy.OPTIONAL)
 public class ChromatogramImportConverterTSD implements IConverterServiceTSD {
@@ -30,13 +30,13 @@ public class ChromatogramImportConverterTSD implements IConverterServiceTSD {
 	@Override
 	public String getId() {
 
-		return "net.openchrom.csd.converter.supplier.cdf";
+		return "net.openchrom.msd.converter.supplier.cdf";
 	}
 
 	@Override
 	public String getDescription() {
 
-		return "GCxGC-FID (CDF)";
+		return "GCxGC-MS (CDF)";
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class ChromatogramImportConverterTSD implements IConverterServiceTSD {
 	@Override
 	public String getFileExtension() {
 
-		return ".cdfx";
+		return ".cdfy";
 	}
 
 	@Override

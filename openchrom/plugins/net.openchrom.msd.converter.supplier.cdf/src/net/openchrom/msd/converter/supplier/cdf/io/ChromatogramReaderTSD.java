@@ -9,7 +9,7 @@
  * Contributors:
  * Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.csd.converter.supplier.cdf.io;
+package net.openchrom.msd.converter.supplier.cdf.io;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,10 +17,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.core.IScan;
+import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.chemclipse.tsd.converter.core.IImportConverterTSD;
@@ -29,8 +29,8 @@ import org.eclipse.chemclipse.tsd.model.core.IScanTSD;
 import org.eclipse.chemclipse.tsd.model.core.ScanTSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.csd.converter.supplier.cdf.model.VendorChromatogramTSD;
-import net.openchrom.csd.converter.supplier.cdf.preferences.PreferenceSupplier;
+import net.openchrom.msd.converter.supplier.cdf.model.VendorChromatogramTSD;
+import net.openchrom.msd.converter.supplier.cdf.preferences.PreferenceSupplier;
 
 public class ChromatogramReaderTSD implements IImportConverterTSD {
 
@@ -69,14 +69,14 @@ public class ChromatogramReaderTSD implements IImportConverterTSD {
 		 * GCxGC
 		 */
 		int modulationTime = PreferenceSupplier.getModulationTime2D();
-		ChromatogramReaderCSD chromatogramReader = new ChromatogramReaderCSD();
-		IChromatogramCSD chromatogramCSD = chromatogramReader.read(file, monitor);
+		ChromatogramReaderMSD chromatogramReader = new ChromatogramReaderMSD();
+		IChromatogramMSD chromatogramMSD = chromatogramReader.read(file, monitor);
 		//
 		IChromatogramTSD chromatogram = new VendorChromatogramTSD();
 		int offset = 0;
 		List<Float> signals = new ArrayList<>();
 		//
-		for(IScan scan : chromatogramCSD.getScans()) {
+		for(IScan scan : chromatogramMSD.getScans()) {
 			int retentionTime = scan.getRetentionTime();
 			float intensity = scan.getTotalSignal();
 			//
