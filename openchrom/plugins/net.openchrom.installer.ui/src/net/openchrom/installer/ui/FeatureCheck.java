@@ -103,36 +103,41 @@ public class FeatureCheck implements IStartup {
 				return;
 			}
 		}
-		//
-		if(PreferenceSupplier.getProprietaryConverters().equals(MessageDialogWithToggle.NEVER)) {
-			return;
-		}
-		try {
-			DisplayUtils.executeInUserInterfaceThread(new Runnable() {
+		/*
+		 * Show dialog on demand.
+		 */
+		if(PreferenceSupplier.getProprietaryConverters().equals(MessageDialogWithToggle.ALWAYS)) {
+			try {
+				DisplayUtils.executeInUserInterfaceThread(new Runnable() {
 
-				@Override
-				public void run() {
+					@Override
+					public void run() {
 
-					MessageDialogWithToggle dialog = MessageDialogWithToggle.openYesNoQuestion(DisplayUtils.getShell(), "Vendor plugins missing", //
-							"You currently have no proprietary converters installed. These are required to open instrument vendor files. Do you want to install converter plug-ins now?", //
-							"Don't ask again.", false, net.openchrom.installer.ui.Activator.getDefault().getPreferenceStore(), PreferenceSupplier.P_PROPRIETARY_CONVERTERS);
-					if(dialog.getReturnCode() == IDialogConstants.YES_ID) {
-						try {
-							IPluginInstallJob installJob = new PrepareInstallProfileJob();
-							PluginDiscoveryWizard wizard = new PluginDiscoveryWizard(installJob);
-							WizardDialog wizardDialog = new WizardDialog(DisplayUtils.getShell(), wizard);
-							wizardDialog.open();
-						} catch(IllegalArgumentException e) {
-							logger.warn(e);
+						MessageDialogWithToggle dialog = MessageDialogWithToggle.openYesNoQuestion(DisplayUtils.getShell(), "Vendor plugins missing", //
+								"You currently have no proprietary converters installed. These are required to open instrument vendor files. Do you want to install converter plug-ins now?", //
+								"Don't ask again.", false, Activator.getDefault().getPreferenceStore(), PreferenceSupplier.P_PROPRIETARY_CONVERTERS);
+						/*
+						 * Process the decision
+						 */
+						PreferenceSupplier.setProprietaryConverters(dialog.getToggleState() ? MessageDialogWithToggle.NEVER : MessageDialogWithToggle.ALWAYS);
+						if(dialog.getReturnCode() == IDialogConstants.YES_ID) {
+							try {
+								IPluginInstallJob installJob = new PrepareInstallProfileJob();
+								PluginDiscoveryWizard wizard = new PluginDiscoveryWizard(installJob);
+								WizardDialog wizardDialog = new WizardDialog(DisplayUtils.getShell(), wizard);
+								wizardDialog.open();
+							} catch(IllegalArgumentException e) {
+								logger.warn(e);
+							}
 						}
 					}
-				}
-			});
-		} catch(InterruptedException e) {
-			Thread.currentThread().interrupt();
-			logger.warn(e);
-		} catch(ExecutionException e) {
-			logger.warn(e);
+				});
+			} catch(InterruptedException e) {
+				Thread.currentThread().interrupt();
+				logger.warn(e);
+			} catch(ExecutionException e) {
+				logger.warn(e);
+			}
 		}
 	}
 }

@@ -8,6 +8,7 @@
  * 
  * Contributors:
  * Matthias Mailänder - initial API and implementation
+ * Philip Wenig - title
  *******************************************************************************/
 package net.openchrom.installer.ui.preferences;
 
@@ -30,6 +31,7 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 	public PreferencePage() {
 
 		super(GRID);
+		setTitle("Plugin Installer");
 		setDescription("Plugin installer user interface options");
 	}
 

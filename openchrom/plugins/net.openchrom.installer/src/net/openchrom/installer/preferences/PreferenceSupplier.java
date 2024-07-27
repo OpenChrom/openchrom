@@ -14,14 +14,14 @@ package net.openchrom.installer.preferences;
 
 import org.eclipse.chemclipse.support.preferences.AbstractPreferenceSupplier;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 
 import net.openchrom.installer.Activator;
 
 public class PreferenceSupplier extends AbstractPreferenceSupplier implements IPreferenceSupplier {
 
 	public static final String P_PROPRIETARY_CONVERTERS = "proprietaryConverters";
-	public static final String DEF_PROPRIETARY_CONVERTERS = "";
+	public static final String DEF_PROPRIETARY_CONVERTERS = MessageDialogWithToggle.ALWAYS;
 
 	public static IPreferenceSupplier INSTANCE() {
 
@@ -42,7 +42,11 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 
 	public static String getProprietaryConverters() {
 
-		IEclipsePreferences preferences = INSTANCE().getPreferences();
-		return preferences.get(P_PROPRIETARY_CONVERTERS, DEF_PROPRIETARY_CONVERTERS);
+		return INSTANCE().get(P_PROPRIETARY_CONVERTERS, DEF_PROPRIETARY_CONVERTERS);
+	}
+
+	public static void setProprietaryConverters(String selection) {
+
+		INSTANCE().set(P_PROPRIETARY_CONVERTERS, selection);
 	}
 }
