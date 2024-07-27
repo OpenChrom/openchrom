@@ -91,6 +91,7 @@ public class FeatureCheck implements IStartup {
 			"net.openchrom.msd.converter.supplier.markes.lsc", //
 			"net.openchrom.xxd.converter.supplier.tetrascience", //
 			"net.openchrom.vsd.converter.supplier.andor", //
+			"net.openchrom.csd.converter.supplier.chromatotec" //
 	};
 
 	@Override
@@ -102,6 +103,7 @@ public class FeatureCheck implements IStartup {
 				return;
 			}
 		}
+		//
 		if(PreferenceSupplier.getProprietaryConverters().equals(MessageDialogWithToggle.NEVER)) {
 			return;
 		}
