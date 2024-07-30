@@ -26,7 +26,6 @@ import org.eclipse.chemclipse.msd.model.implementation.MassSpectra;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.pkf.converter.model.PkfMassSpectrum;
-
 import us.hebi.matlab.mat.format.Mat5;
 import us.hebi.matlab.mat.types.Char;
 import us.hebi.matlab.mat.types.MatFile;
@@ -43,6 +42,9 @@ public class PkfReader extends AbstractMassSpectraReader implements IMassSpectra
 		MatFile matFile = Mat5.readFromFile(file);
 		Struct c = matFile.getStruct("C");
 		for(int col = 0; col < c.getNumCols(); col++) {
+			if(monitor.isCanceled()) {
+				return massSpectra;
+			}
 			PkfMassSpectrum pkf = new PkfMassSpectrum();
 			ILibraryInformation libraryInformation = new PeakLibraryInformation();
 			Char spectraId = c.get("nam", 0, col);

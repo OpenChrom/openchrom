@@ -52,6 +52,9 @@ public class MainSpectraProjectionReader extends AbstractMassSpectraReader imple
 		try (ZipFile zipFile = new ZipFile(file)) {
 			Enumeration<? extends ZipEntry> zipEntries = zipFile.entries();
 			while(zipEntries.hasMoreElements()) {
+				if(monitor.isCanceled()) {
+					return massSpectra;
+				}
 				ZipEntry zipEntry = zipEntries.nextElement(); // UTF8, no BOM
 				if(zipEntry.getName().equals("[Content_Types].xml")) {
 					continue;

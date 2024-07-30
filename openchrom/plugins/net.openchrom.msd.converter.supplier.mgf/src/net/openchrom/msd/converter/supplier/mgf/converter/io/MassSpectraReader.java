@@ -50,6 +50,9 @@ public class MassSpectraReader extends AbstractMassSpectraReader implements IMas
 				String line = null;
 				IRegularLibraryMassSpectrum massSpectrum = null;
 				while((line = bufferedReader.readLine()) != null) {
+					if(monitor.isCanceled()) {
+						return massSpectra;
+					}
 					if(line.equals(BEGIN_IONS)) {
 						massSpectrum = new RegularLibraryMassSpectrum();
 					}
