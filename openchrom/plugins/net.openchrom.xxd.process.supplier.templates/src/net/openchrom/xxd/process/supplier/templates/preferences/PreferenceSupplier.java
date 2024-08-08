@@ -97,6 +97,8 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static final boolean DEF_REVIEW_SETTINGS_SORT = false;
 	public static final String P_REPORT_SETTINGS_SORT = "reportSettingsSort";
 	public static final boolean DEF_REPORT_SETTINGS_SORT = false;
+	public static final String P_OPEN_REPORT_AFTER_PROCESSING = "openReportAfterProcessing";
+	public static final boolean DEF_OPEN_REPORT_AFTER_PROCESSING = true;
 	/*
 	 * Detector
 	 */
@@ -332,6 +334,7 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 		putDefault(P_EXPORT_DELTA_RIGHT_MILLISECONDS_REPORT, Double.toString(DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_REPORT));
 		//
 		putDefault(P_STANDARDS_EXTRACTOR_CONCENTRATION_UNIT, DEF_STANDARDS_EXTRACTOR_CONCENTRATION_UNIT);
+		putDefault(P_OPEN_REPORT_AFTER_PROCESSING, Boolean.toString(DEF_OPEN_REPORT_AFTER_PROCESSING));
 		/*
 		 * Transfer
 		 */
@@ -901,6 +904,11 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static String getStandardsExtractorConcentrationUnit() {
 
 		return INSTANCE().get(P_STANDARDS_EXTRACTOR_CONCENTRATION_UNIT, DEF_STANDARDS_EXTRACTOR_CONCENTRATION_UNIT);
+	}
+
+	public static boolean isOpenReportAfterProcessing() {
+
+		return INSTANCE().getBoolean(P_OPEN_REPORT_AFTER_PROCESSING, DEF_OPEN_REPORT_AFTER_PROCESSING);
 	}
 
 	public static boolean isTransferUseIdentifiedPeaksOnly() {

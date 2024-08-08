@@ -21,8 +21,9 @@ import org.eclipse.chemclipse.chromatogram.xxd.report.settings.IChromatogramRepo
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
+import org.eclipse.chemclipse.model.notifier.UpdateNotifier;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
-import org.eclipse.chemclipse.support.editor.SystemEditor;
+import org.eclipse.chemclipse.support.events.IChemClipseEvents;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.xxd.process.supplier.templates.core.ReportWriter;
@@ -49,9 +50,7 @@ public class ChromatogramReport extends AbstractChromatogramReportGenerator {
 					ReportWriter reportWriter = new ReportWriter();
 					reportWriter.generate(file, append, chromatograms, reportSettings, monitor);
 					processingInfo.setProcessingResult(file);
-					if(reportSettings.isOpenReportAfterProcessing()) {
-						SystemEditor.open(file);
-					}
+					UpdateNotifier.update(IChemClipseEvents.TOPIC_PROCESSING_FILE_CREATED, file);
 				} catch(IOException e) {
 					logger.warn(e);
 					processingInfo.addErrorMessage(DESCRIPTION, "The report couldn't be created. An error occured.");

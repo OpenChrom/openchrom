@@ -63,9 +63,6 @@ public class ChromatogramReportSettings extends DefaultChromatogramReportSetting
 	@JsonProperty(value = "Format Concentration (Pattern)", defaultValue = "0.000")
 	@JsonPropertyDescription(value = "Use the decimal format pattern to print concentrations. If empty, print value wihtout formatting.")
 	private String formatConcentration = "0.000";
-	@JsonProperty(value = "Open Report (External)", defaultValue = "false")
-	@JsonPropertyDescription(value = "The report will be opened in the system application after creation.")
-	private boolean openReportAfterProcessing = false;
 
 	public boolean isPrintHeader() {
 
@@ -175,15 +172,5 @@ public class ChromatogramReportSettings extends DefaultChromatogramReportSetting
 	public void setFormatConcentration(String formatConcentration) {
 
 		this.formatConcentration = formatConcentration;
-	}
-
-	public boolean isOpenReportAfterProcessing() {
-
-		return openReportAfterProcessing;
-	}
-
-	public void setOpenReportAfterProcessing(boolean openReportAfterProcessing) {
-
-		this.openReportAfterProcessing = openReportAfterProcessing;
 	}
 }
