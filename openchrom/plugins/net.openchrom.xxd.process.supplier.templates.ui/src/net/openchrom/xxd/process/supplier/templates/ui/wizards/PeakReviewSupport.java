@@ -23,7 +23,6 @@ public class PeakReviewSupport {
 
 	public static final String DESCRIPTION = "Template Review UI";
 
-	@SuppressWarnings("rawtypes")
 	public void addSettings(Shell shell, ProcessReviewSettings processSettings) {
 
 		PeakReviewWizard wizard = new PeakReviewWizard(processSettings);
@@ -52,7 +51,7 @@ public class PeakReviewSupport {
 			wizardDialog.create();
 			wizardDialog.getShell().setBackgroundMode(SWT.INHERIT_DEFAULT);
 			//
-			IProcessingInfo processingInfo = processSettings.getProcessingInfo();
+			IProcessingInfo<?> processingInfo = processSettings.getProcessingInfo();
 			if(Window.OK == wizardDialog.open()) {
 				processingInfo.addInfoMessage(DESCRIPTION, "Successfully reviewed the peaks.");
 			} else {

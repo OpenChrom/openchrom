@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Lablicate GmbH.
+ * Copyright (c) 2019, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -17,6 +17,7 @@ import java.util.List;
 import org.eclipse.chemclipse.converter.chromatogram.AbstractChromatogramExportConverter;
 import org.eclipse.chemclipse.converter.chromatogram.IChromatogramExportConverter;
 import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.quantitation.IInternalStandard;
@@ -51,8 +52,8 @@ public class StandardsExport extends AbstractChromatogramExportConverter impleme
 				for(IInternalStandard internalStandard : internalStandards) {
 					AssignerStandard setting = new AssignerStandard();
 					setting.setPositionDirective(PositionDirective.RETENTION_TIME_MIN);
-					setting.setPositionStart((peakModel.getStartRetentionTime() - deltaLeft) / IChromatogram.MINUTE_CORRELATION_FACTOR);
-					setting.setPositionStop((peakModel.getStopRetentionTime() + deltaRight) / IChromatogram.MINUTE_CORRELATION_FACTOR);
+					setting.setPositionStart((peakModel.getStartRetentionTime() - deltaLeft) / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
+					setting.setPositionStop((peakModel.getStopRetentionTime() + deltaRight) / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 					setting.setName(internalStandard.getName());
 					setting.setConcentration(internalStandard.getConcentration());
 					setting.setConcentrationUnit(internalStandard.getConcentrationUnit());

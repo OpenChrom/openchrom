@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Lablicate GmbH.
+ * Copyright (c) 2022, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -14,7 +14,7 @@ package net.openchrom.xxd.process.supplier.templates.compiler;
 import java.io.File;
 import java.util.List;
 
-import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
@@ -43,8 +43,8 @@ public class ReviewTemplateCompiler implements ITemplateExport {
 			if(libraryInformation != null) {
 				ReviewSetting setting = new ReviewSetting();
 				setting.setPositionDirective(PositionDirective.RETENTION_TIME_MIN);
-				setting.setPositionStart((peakModel.getStartRetentionTime() - deltaLeft) / IChromatogram.MINUTE_CORRELATION_FACTOR);
-				setting.setPositionStop((peakModel.getStopRetentionTime() + deltaRight) / IChromatogram.MINUTE_CORRELATION_FACTOR);
+				setting.setPositionStart((peakModel.getStartRetentionTime() - deltaLeft) / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
+				setting.setPositionStop((peakModel.getStopRetentionTime() + deltaRight) / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 				setting.setName(libraryInformation.getName());
 				setting.setCasNumber(libraryInformation.getCasNumber());
 				setting.setTraces(extractTraces(peak, numberTraces));

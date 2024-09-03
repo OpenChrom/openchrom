@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Lablicate GmbH.
+ * Copyright (c) 2021, 2024 Lablicate GmbH.
  *
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -49,9 +49,8 @@ public class VendorChromatogramTSD extends AbstractChromatogramTSD {
 		return 0;
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public void fireUpdate(IChromatogramSelection chromatogramSelection) {
+	public void fireUpdate(IChromatogramSelection<?, ?> chromatogramSelection) {
 
 	}
 }
