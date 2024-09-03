@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Lablicate GmbH.
+ * Copyright (c) 2019, 2024 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -412,7 +412,6 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 						int stopRetentionTime = detectorRange.getRetentionTimeStop();
 						removeClosestPeak(peak, chromatogram, startRetentionTime, stopRetentionTime, replacePeakDelta);
 					}
-					//
 					chromatogram.addPeak(peak);
 					fireUpdate(peak);
 				}
@@ -445,11 +444,15 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 				}
 			}
 		}
-		/*
-		 * Delete the peak if a specific peak was found and
-		 * the peak top is inside the delta range of the existing peak.
-		 */
 		if(peakDelete != null) {
+			/*
+			 * Keep identification results.
+			 */
+			peakSource.getTargets().addAll(peakDelete.getTargets());
+			/*
+			 * Delete the peak if a specific peak was found and
+			 * the peak top is inside the delta range of the existing peak.
+			 */
 			int retentionTimeTarget = peakDelete.getPeakModel().getRetentionTimeAtPeakMaximum();
 			if(Math.abs(retentionTimeSource - retentionTimeTarget) <= replacePeakDelta) {
 				chromatogram.removePeak(peakDelete);
