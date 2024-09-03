@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2023 Lablicate GmbH.
+ * Copyright (c) 2018, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -33,7 +33,6 @@ import net.openchrom.xxd.process.supplier.templates.settings.StandardsAssignerSe
 import net.openchrom.xxd.process.supplier.templates.support.RetentionIndexSupport;
 import net.openchrom.xxd.process.supplier.templates.util.TracesUtil;
 
-@SuppressWarnings("rawtypes")
 public class StandardsAssigner extends AbstractPeakQuantifier implements IPeakQuantifier {
 
 	private static final Logger logger = Logger.getLogger(StandardsAssigner.class);
@@ -41,7 +40,7 @@ public class StandardsAssigner extends AbstractPeakQuantifier implements IPeakQu
 	@Override
 	public IProcessingInfo<?> quantify(List<IPeak> peaks, IPeakQuantifierSettings settings, IProgressMonitor monitor) {
 
-		IProcessingInfo processingInfo = validate(peaks, settings);
+		IProcessingInfo<?> processingInfo = validate(peaks, settings);
 		if(!processingInfo.hasErrorMessages()) {
 			if(settings instanceof StandardsAssignerSettings standardsAssignerSettings) {
 				RetentionIndexMap retentionIndexMap = RetentionIndexSupport.getRetentionIndexMap(peaks);
@@ -127,9 +126,9 @@ public class StandardsAssigner extends AbstractPeakQuantifier implements IPeakQu
 		}
 	}
 
-	private IProcessingInfo validate(List<IPeak> peaks, IPeakQuantifierSettings settings) {
+	private IProcessingInfo<?> validate(List<IPeak> peaks, IPeakQuantifierSettings settings) {
 
-		IProcessingInfo processingInfo = new ProcessingInfo();
+		IProcessingInfo<?> processingInfo = new ProcessingInfo<>();
 		if(peaks == null) {
 			processingInfo.addErrorMessage(StandardsAssignerSettings.DESCRIPTION, "The peaks selection must not be null.");
 		}

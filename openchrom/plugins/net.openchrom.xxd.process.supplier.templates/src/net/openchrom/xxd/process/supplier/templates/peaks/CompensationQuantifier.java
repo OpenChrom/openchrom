@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Lablicate GmbH.
+ * Copyright (c) 2019, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -33,7 +33,6 @@ import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSuppli
 import net.openchrom.xxd.process.supplier.templates.settings.CompensationQuantifierSettings;
 import net.openchrom.xxd.process.supplier.templates.settings.StandardsAssignerSettings;
 
-@SuppressWarnings("rawtypes")
 public class CompensationQuantifier extends AbstractPeakQuantifier implements IPeakQuantifier {
 
 	private static final String LABEL_ADJUSTED = " [adjusted]";
@@ -41,7 +40,7 @@ public class CompensationQuantifier extends AbstractPeakQuantifier implements IP
 	@Override
 	public IProcessingInfo<?> quantify(List<IPeak> peaks, IPeakQuantifierSettings settings, IProgressMonitor monitor) {
 
-		IProcessingInfo processingInfo = validate(peaks, settings);
+		IProcessingInfo<?> processingInfo = validate(peaks, settings);
 		if(!processingInfo.hasErrorMessages()) {
 			if(settings instanceof CompensationQuantifierSettings compensationQuantifierSettings) {
 				for(CompensationSetting compensationSetting : compensationQuantifierSettings.getCompensationSettingsList()) {
@@ -200,9 +199,9 @@ public class CompensationQuantifier extends AbstractPeakQuantifier implements IP
 		return quantitationEntries;
 	}
 
-	private IProcessingInfo validate(List<IPeak> peaks, IPeakQuantifierSettings settings) {
+	private IProcessingInfo<?> validate(List<IPeak> peaks, IPeakQuantifierSettings settings) {
 
-		IProcessingInfo processingInfo = new ProcessingInfo();
+		IProcessingInfo<?> processingInfo = new ProcessingInfo<>();
 		if(peaks == null) {
 			processingInfo.addErrorMessage(StandardsAssignerSettings.DESCRIPTION, "The peaks selection must not be null.");
 		}

@@ -49,9 +49,8 @@ public class VendorChromatogramTSD extends AbstractChromatogramTSD {
 		return 0;
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public void fireUpdate(IChromatogramSelection chromatogramSelection) {
+	public void fireUpdate(IChromatogramSelection<?, ?> chromatogramSelection) {
 
 	}
 }

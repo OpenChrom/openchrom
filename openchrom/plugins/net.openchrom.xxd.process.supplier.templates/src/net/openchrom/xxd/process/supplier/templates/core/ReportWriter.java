@@ -76,12 +76,12 @@ public class ReportWriter {
 		Collections.sort(traces);
 		//
 		try (PrintWriter printWriter = new PrintWriter(new FileWriter(file, append))) {
-			printResults(chromatograms, chromatogramReportSettings, printWriter, fileExists, traces, monitor);
+			printResults(chromatograms, chromatogramReportSettings, printWriter, fileExists, traces);
 			printWriter.flush();
 		}
 	}
 
-	private void printResults(List<IChromatogram<? extends IPeak>> chromatograms, ChromatogramReportSettings chromatogramReportSettings, PrintWriter printWriter, boolean fileExists, List<Integer> traces, IProgressMonitor monitor) {
+	private void printResults(List<IChromatogram<? extends IPeak>> chromatograms, ChromatogramReportSettings chromatogramReportSettings, PrintWriter printWriter, boolean fileExists, List<Integer> traces) {
 
 		Map<ReportSetting, List<IPeak>> sumResults = new HashMap<>();
 		int reports = 0;
@@ -489,7 +489,7 @@ public class ReportWriter {
 
 	private String getRetentionTimeMinutes(int retentionTime) {
 
-		return RETENTION_TIME_FORMAT.format(retentionTime / IChromatogram.MINUTE_CORRELATION_FACTOR);
+		return RETENTION_TIME_FORMAT.format(retentionTime / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 	}
 
 	private double[] extractPeakAreas(List<IPeak> peaks) {

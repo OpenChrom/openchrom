@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Lablicate GmbH.
+ * Copyright (c) 2019, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -37,7 +37,6 @@ import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSuppli
 import net.openchrom.xxd.process.supplier.templates.settings.StandardsAssignerSettings;
 import net.openchrom.xxd.process.supplier.templates.settings.StandardsExtractorSettings;
 
-@SuppressWarnings("rawtypes")
 public class StandardsExtractor extends AbstractPeakQuantifier implements IPeakQuantifier {
 
 	private static final Logger logger = Logger.getLogger(StandardsExtractor.class);
@@ -73,10 +72,9 @@ public class StandardsExtractor extends AbstractPeakQuantifier implements IPeakQ
 	@Override
 	public IProcessingInfo<?> quantify(List<IPeak> peaks, IPeakQuantifierSettings settings, IProgressMonitor monitor) {
 
-		IProcessingInfo processingInfo = validate(peaks, settings, monitor);
+		IProcessingInfo<?> processingInfo = validate(peaks, settings);
 		if(!processingInfo.hasErrorMessages()) {
-			if(settings instanceof StandardsExtractorSettings) {
-				StandardsExtractorSettings extractorSettings = (StandardsExtractorSettings)settings;
+			if(settings instanceof StandardsExtractorSettings extractorSettings) {
 				assignPeaks(peaks, extractorSettings);
 			} else {
 				processingInfo.addErrorMessage(StandardsAssignerSettings.DESCRIPTION, "The settings instance is wrong.");
@@ -88,7 +86,7 @@ public class StandardsExtractor extends AbstractPeakQuantifier implements IPeakQ
 	@Override
 	public IProcessingInfo<?> quantify(IPeak peak, IPeakQuantifierSettings settings, IProgressMonitor monitor) {
 
-		List<IPeak> peaks = new ArrayList<IPeak>();
+		List<IPeak> peaks = new ArrayList<>();
 		peaks.add(peak);
 		return quantify(peaks, settings, monitor);
 	}
@@ -96,7 +94,7 @@ public class StandardsExtractor extends AbstractPeakQuantifier implements IPeakQ
 	@Override
 	public IProcessingInfo<?> quantify(IPeak peak, IProgressMonitor monitor) {
 
-		List<IPeak> peaks = new ArrayList<IPeak>();
+		List<IPeak> peaks = new ArrayList<>();
 		peaks.add(peak);
 		StandardsExtractorSettings settings = getSettings();
 		return quantify(peaks, settings, monitor);
@@ -119,7 +117,7 @@ public class StandardsExtractor extends AbstractPeakQuantifier implements IPeakQ
 	private void assignPeaks(List<? extends IPeak> peaks, StandardsExtractorSettings extractorSettings) {
 
 		try {
-			IChromatogram chromatogram = getChromatogram(peaks);
+			IChromatogram<?> chromatogram = getChromatogram(peaks);
 			if(chromatogram != null) {
 				Standard standard = extractReferenceId(chromatogram.getMiscInfo());
 				if(isValidStandard(standard)) {
@@ -167,7 +165,7 @@ public class StandardsExtractor extends AbstractPeakQuantifier implements IPeakQ
 		return null;
 	}
 
-	private IChromatogram getChromatogram(List<? extends IPeak> peaks) {
+	private IChromatogram<?> getChromatogram(List<? extends IPeak> peaks) {
 
 		for(IPeak peak : peaks) {
 			if(peak instanceof IChromatogramPeakCSD chromatogramPeakCSD) {
@@ -197,9 +195,9 @@ public class StandardsExtractor extends AbstractPeakQuantifier implements IPeakQ
 		return null;
 	}
 
-	private IProcessingInfo validate(List<IPeak> peaks, IPeakQuantifierSettings settings, IProgressMonitor monitor) {
+	private IProcessingInfo<?> validate(List<IPeak> peaks, IPeakQuantifierSettings settings) {
 
-		IProcessingInfo processingInfo = new ProcessingInfo();
+		IProcessingInfo<?> processingInfo = new ProcessingInfo<>();
 		if(peaks == null) {
 			processingInfo.addErrorMessage(StandardsAssignerSettings.DESCRIPTION, "The peaks selection must not be null.");
 		}

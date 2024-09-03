@@ -87,7 +87,7 @@ public class ChromatogramReport extends AbstractChromatogramReportGenerator {
 
 	private List<IChromatogram<? extends IPeak>> getChromatogramList(IChromatogram<? extends IPeak> chromatogram) {
 
-		List<IChromatogram<? extends IPeak>> chromatograms = new ArrayList<IChromatogram<? extends IPeak>>();
+		List<IChromatogram<? extends IPeak>> chromatograms = new ArrayList<>();
 		chromatograms.add(chromatogram);
 		return chromatograms;
 	}

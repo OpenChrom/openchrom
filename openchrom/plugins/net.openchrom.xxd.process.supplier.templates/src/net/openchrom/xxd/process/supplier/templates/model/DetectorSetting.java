@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2022 Lablicate GmbH.
+ * Copyright (c) 2018, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -50,7 +50,7 @@ public class DetectorSetting extends AbstractSetting {
 
 	public boolean isIncludeBackground() {
 
-		return (PeakType.VV.equals(peakType)) ? true : false;
+		return (PeakType.VV.equals(peakType));
 	}
 
 	public String getTraces() {
@@ -105,12 +105,15 @@ public class DetectorSetting extends AbstractSetting {
 	@Override
 	public boolean equals(Object obj) {
 
-		if(this == obj)
+		if(this == obj) {
 			return true;
-		if(!super.equals(obj))
+		}
+		if(!super.equals(obj)) {
 			return false;
-		if(getClass() != obj.getClass())
+		}
+		if(getClass() != obj.getClass()) {
 			return false;
+		}
 		DetectorSetting other = (DetectorSetting)obj;
 		return Objects.equals(traces, other.traces);
 	}

@@ -704,9 +704,8 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 		return null;
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public void setParentChromatogram(IChromatogram parentChromatogram) {
+	public void setParentChromatogram(IChromatogram<?> parentChromatogram) {
 
 	}
 
