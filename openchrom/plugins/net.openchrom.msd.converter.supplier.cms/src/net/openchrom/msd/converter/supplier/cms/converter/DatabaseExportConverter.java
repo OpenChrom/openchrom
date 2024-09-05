@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2021 Walter Whitlock, Philip Wenig.
+ * Copyright (c) 2016, 2024 Walter Whitlock, Philip Wenig.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -17,6 +17,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
+import org.eclipse.chemclipse.converter.l10n.ConverterMessages;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.converter.database.AbstractDatabaseExportConverter;
 import org.eclipse.chemclipse.msd.converter.io.IMassSpectraWriter;
@@ -25,6 +26,7 @@ import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.osgi.util.NLS;
 
 import net.openchrom.msd.converter.supplier.cms.io.MassSpectrumWriter;
 import net.openchrom.msd.converter.supplier.cms.io.SpecificationValidator;
@@ -49,13 +51,13 @@ public class DatabaseExportConverter extends AbstractDatabaseExportConverter {
 				processingInfo.setProcessingResult(file);
 			} catch(FileNotFoundException e) {
 				logger.warn(e);
-				processingInfo.addErrorMessage(DESCRIPTION, "The file couldn't be found: " + file.getAbsolutePath());
+				processingInfo.addErrorMessage(DESCRIPTION, NLS.bind(ConverterMessages.fileNotFound, file.getAbsolutePath()));
 			} catch(FileIsNotWriteableException e) {
 				logger.warn(e);
-				processingInfo.addErrorMessage(DESCRIPTION, "The file is not writeable: " + file.getAbsolutePath());
+				processingInfo.addErrorMessage(DESCRIPTION, NLS.bind(ConverterMessages.fileNotWritable, file.getAbsolutePath()));
 			} catch(IOException e) {
 				logger.warn(e);
-				processingInfo.addErrorMessage(DESCRIPTION, "Something has gone completely wrong: " + file.getAbsolutePath());
+				processingInfo.addErrorMessage(DESCRIPTION, NLS.bind(ConverterMessages.failedToWriteFile, file.getAbsolutePath()));
 			}
 		}
 		return processingInfo;
@@ -76,13 +78,13 @@ public class DatabaseExportConverter extends AbstractDatabaseExportConverter {
 				processingInfo.setProcessingResult(file);
 			} catch(FileNotFoundException e) {
 				logger.warn(e);
-				processingInfo.addErrorMessage(DESCRIPTION, "The file couldn't be found: " + file.getAbsolutePath());
+				processingInfo.addErrorMessage(DESCRIPTION, NLS.bind(ConverterMessages.fileNotFound, file.getAbsolutePath()));
 			} catch(FileIsNotWriteableException e) {
 				logger.warn(e);
-				processingInfo.addErrorMessage(DESCRIPTION, "The file is not writeable: " + file.getAbsolutePath());
+				processingInfo.addErrorMessage(DESCRIPTION, NLS.bind(ConverterMessages.fileNotWritable, file.getAbsolutePath()));
 			} catch(IOException e) {
 				logger.warn(e);
-				processingInfo.addErrorMessage(DESCRIPTION, "Something has gone completely wrong: " + file.getAbsolutePath());
+				processingInfo.addErrorMessage(DESCRIPTION, NLS.bind(ConverterMessages.failedToWriteFile, file.getAbsolutePath()));
 			}
 		}
 		return processingInfo;
@@ -90,7 +92,7 @@ public class DatabaseExportConverter extends AbstractDatabaseExportConverter {
 
 	private IProcessingInfo<File> validate(File file, IScanMSD massSpectrum) {
 
-		IProcessingInfo<File> processingInfo = new ProcessingInfo<File>();
+		IProcessingInfo<File> processingInfo = new ProcessingInfo<>();
 		processingInfo.addMessages(super.validate(file));
 		processingInfo.addMessages(super.validate(massSpectrum));
 		return processingInfo;
@@ -98,7 +100,7 @@ public class DatabaseExportConverter extends AbstractDatabaseExportConverter {
 
 	private IProcessingInfo<File> validate(File file, IMassSpectra massSpectra) {
 
-		IProcessingInfo<File> processingInfo = new ProcessingInfo<File>();
+		IProcessingInfo<File> processingInfo = new ProcessingInfo<>();
 		processingInfo.addMessages(super.validate(file));
 		processingInfo.addMessages(super.validate(massSpectra));
 		return processingInfo;

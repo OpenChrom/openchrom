@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2022 Walter Whitlock, Philip Wenig.
+ * Copyright (c) 2016, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,7 +7,6 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * Walter Whitlock - initial API and implementation
  * Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.animl.converter;
@@ -17,6 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
+import org.eclipse.chemclipse.converter.l10n.ConverterMessages;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.converter.database.AbstractDatabaseExportConverter;
 import org.eclipse.chemclipse.msd.converter.io.IMassSpectraWriter;
@@ -25,6 +25,7 @@ import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.osgi.util.NLS;
 
 import net.openchrom.msd.converter.supplier.animl.io.MassSpectrumWriter;
 
@@ -47,13 +48,13 @@ public class DatabaseExportConverter extends AbstractDatabaseExportConverter {
 				processingInfo.setProcessingResult(file);
 			} catch(FileNotFoundException e) {
 				logger.warn(e);
-				processingInfo.addErrorMessage(DESCRIPTION, "The file couldn't be found: " + file.getAbsolutePath());
+				processingInfo.addErrorMessage(DESCRIPTION, NLS.bind(ConverterMessages.fileNotFound, file.getAbsolutePath()));
 			} catch(FileIsNotWriteableException e) {
 				logger.warn(e);
-				processingInfo.addErrorMessage(DESCRIPTION, "The file is not writeable: " + file.getAbsolutePath());
+				processingInfo.addErrorMessage(DESCRIPTION, NLS.bind(ConverterMessages.fileNotWritable, file.getAbsolutePath()));
 			} catch(IOException e) {
 				logger.warn(e);
-				processingInfo.addErrorMessage(DESCRIPTION, "Something has gone completely wrong: " + file.getAbsolutePath());
+				processingInfo.addErrorMessage(DESCRIPTION, NLS.bind(ConverterMessages.failedToWriteFile, file.getAbsolutePath()));
 			}
 		}
 		return processingInfo;
@@ -73,13 +74,13 @@ public class DatabaseExportConverter extends AbstractDatabaseExportConverter {
 				processingInfo.setProcessingResult(file);
 			} catch(FileNotFoundException e) {
 				logger.warn(e);
-				processingInfo.addErrorMessage(DESCRIPTION, "The file couldn't be found: " + file.getAbsolutePath());
+				processingInfo.addErrorMessage(DESCRIPTION, NLS.bind(ConverterMessages.fileNotFound, file.getAbsolutePath()));
 			} catch(FileIsNotWriteableException e) {
 				logger.warn(e);
-				processingInfo.addErrorMessage(DESCRIPTION, "The file is not writeable: " + file.getAbsolutePath());
+				processingInfo.addErrorMessage(DESCRIPTION, NLS.bind(ConverterMessages.fileNotWritable, file.getAbsolutePath()));
 			} catch(IOException e) {
 				logger.warn(e);
-				processingInfo.addErrorMessage(DESCRIPTION, "Something has gone completely wrong: " + file.getAbsolutePath());
+				processingInfo.addErrorMessage(DESCRIPTION, NLS.bind(ConverterMessages.failedToWriteFile, file.getAbsolutePath()));
 			}
 		}
 		return processingInfo;

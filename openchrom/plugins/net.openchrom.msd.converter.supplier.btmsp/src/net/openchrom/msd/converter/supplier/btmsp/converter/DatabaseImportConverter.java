@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2023 Lablicate GmbH.
+ * Copyright (c) 2015, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -18,11 +18,13 @@ import java.io.IOException;
 
 import org.eclipse.chemclipse.converter.exceptions.FileIsEmptyException;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
+import org.eclipse.chemclipse.converter.l10n.ConverterMessages;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.converter.database.AbstractDatabaseImportConverter;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.osgi.util.NLS;
 
 import net.openchrom.msd.converter.supplier.btmsp.converter.io.MainSpectraProjectionReader;
 
@@ -46,16 +48,16 @@ public class DatabaseImportConverter extends AbstractDatabaseImportConverter {
 				}
 			} catch(final FileNotFoundException e) {
 				logger.warn(e);
-				processingInfo.addErrorMessage(DESCRIPTION, "The file couldn't be found: " + file.getAbsolutePath());
+				processingInfo.addErrorMessage(DESCRIPTION, NLS.bind(ConverterMessages.fileNotFound, file.getAbsolutePath()));
 			} catch(final FileIsNotReadableException e) {
 				logger.warn(e);
-				processingInfo.addErrorMessage(DESCRIPTION, "The file is not readable: " + file.getAbsolutePath());
+				processingInfo.addErrorMessage(DESCRIPTION, NLS.bind(ConverterMessages.fileNotReadable, file.getAbsolutePath()));
 			} catch(final FileIsEmptyException e) {
 				logger.warn(e);
-				processingInfo.addErrorMessage(DESCRIPTION, "The file is empty: " + file.getAbsolutePath());
+				processingInfo.addErrorMessage(DESCRIPTION, NLS.bind(ConverterMessages.emptyFile, file.getAbsolutePath()));
 			} catch(final IOException e) {
-				logger.warn(e.getLocalizedMessage(), e);
-				processingInfo.addErrorMessage(DESCRIPTION, "Failed or interrupted file access: " + file.getAbsolutePath());
+				logger.warn(e);
+				processingInfo.addErrorMessage(DESCRIPTION, NLS.bind(ConverterMessages.failedToWriteFile, file.getAbsolutePath()));
 			}
 		}
 		return processingInfo;
