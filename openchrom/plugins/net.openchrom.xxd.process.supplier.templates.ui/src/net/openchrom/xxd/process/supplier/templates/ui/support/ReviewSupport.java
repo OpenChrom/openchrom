@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Lablicate GmbH.
+ * Copyright (c) 2020, 2024 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -54,20 +54,19 @@ public class ReviewSupport {
 	public static void setReview(IPeak peak, ReviewSetting reviewSetting, boolean setTarget, boolean reviewSuccessful) {
 
 		if(peak != null) {
-			//
 			IIdentificationTarget identificationTarget = null;
 			if(reviewSetting != null && setTarget) {
 				String name = reviewSetting.getName();
 				String casNumber = reviewSetting.getCasNumber();
 				identificationTarget = IIdentificationTarget.createDefaultTarget(name, casNumber, TargetValidator.IDENTIFIER);
 			}
-			//
 			if(reviewSuccessful) {
 				/*
 				 * OK
 				 */
 				peak.addClassifier(ReviewSetting.CLASSIFIER_REVIEW_OK);
 				if(identificationTarget != null) {
+					peak.getTargets().clear();
 					peak.getTargets().add(identificationTarget);
 				}
 			} else {
