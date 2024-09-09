@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Lablicate GmbH.
+ * Copyright (c) 2023, 2024 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -32,12 +32,9 @@ import org.eclipse.chemclipse.msd.converter.io.IMassSpectraWriter;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
-import org.eclipse.chemclipse.msd.model.core.IVendorStandaloneMassSpectrum;
+import org.eclipse.chemclipse.msd.model.core.IStandaloneMassSpectrum;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Marshaller;
 import net.openchrom.msd.converter.supplier.microbenet.model.Analytes;
 import net.openchrom.msd.converter.supplier.microbenet.model.Analytes.Analyte;
 import net.openchrom.msd.converter.supplier.microbenet.model.MspMatchResult;
@@ -46,6 +43,10 @@ import net.openchrom.msd.converter.supplier.microbenet.model.Peak;
 import net.openchrom.msd.converter.supplier.microbenet.model.Peaklist;
 import net.openchrom.msd.converter.supplier.microbenet.model.Peaks;
 import net.openchrom.msd.converter.supplier.microbenet.model.ProjectInfo;
+
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
 
 public class MicrobeNetWriter extends AbstractMassSpectraWriter implements IMassSpectraWriter {
 
@@ -96,7 +97,7 @@ public class MicrobeNetWriter extends AbstractMassSpectraWriter implements IMass
 
 		Analyte analyte = new Analyte();
 		analyte.setTypeName("Sample");
-		if(scanMSD instanceof IVendorStandaloneMassSpectrum standaloneMassSpectrum) {
+		if(scanMSD instanceof IStandaloneMassSpectrum standaloneMassSpectrum) {
 			analyte.setTimestamp(createTimestamp(standaloneMassSpectrum));
 			analyte.setName(standaloneMassSpectrum.getName());
 		}
@@ -140,7 +141,7 @@ public class MicrobeNetWriter extends AbstractMassSpectraWriter implements IMass
 		projectInfo.setName(createProjectName());
 		projectInfo.setTotalSampleNumber(1);
 		projectInfo.setUuid(UUID.randomUUID().toString());
-		if(scanMSD instanceof IVendorStandaloneMassSpectrum standaloneMassSpectrum) {
+		if(scanMSD instanceof IStandaloneMassSpectrum standaloneMassSpectrum) {
 			projectInfo.setInstrumentId(standaloneMassSpectrum.getInstrument());
 			projectInfo.setComment(standaloneMassSpectrum.getDescription());
 			projectInfo.setCreator(standaloneMassSpectrum.getOperator());
@@ -157,7 +158,7 @@ public class MicrobeNetWriter extends AbstractMassSpectraWriter implements IMass
 		return localDateTime.format(formatter);
 	}
 
-	private XMLGregorianCalendar createTimestamp(IVendorStandaloneMassSpectrum standaloneMassSpectrum) {
+	private XMLGregorianCalendar createTimestamp(IStandaloneMassSpectrum standaloneMassSpectrum) {
 
 		Date date = standaloneMassSpectrum.getDate();
 		if(date == null) {

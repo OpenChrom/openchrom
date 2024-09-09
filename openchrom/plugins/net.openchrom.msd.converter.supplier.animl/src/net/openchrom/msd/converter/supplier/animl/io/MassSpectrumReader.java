@@ -23,7 +23,7 @@ import org.eclipse.chemclipse.msd.converter.io.AbstractMassSpectraReader;
 import org.eclipse.chemclipse.msd.converter.io.IMassSpectraReader;
 import org.eclipse.chemclipse.msd.model.core.AbstractIon;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
-import org.eclipse.chemclipse.msd.model.core.IVendorStandaloneMassSpectrum;
+import org.eclipse.chemclipse.msd.model.core.IStandaloneMassSpectrum;
 import org.eclipse.chemclipse.msd.model.implementation.VendorMassSpectrum;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.xml.sax.SAXException;
@@ -57,7 +57,7 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 		if(file.isDirectory() || !file.getName().endsWith(".animl")) {
 			return null;
 		}
-		IVendorStandaloneMassSpectrum massSpectrum = null;
+		IStandaloneMassSpectrum massSpectrum = null;
 		//
 		try {
 			AnIMLType animl = Common.getAnIML(file);
@@ -140,7 +140,7 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 		return massSpectra;
 	}
 
-	private IVendorStandaloneMassSpectrum readSample(AnIMLType animl, IVendorStandaloneMassSpectrum massSpectrum) {
+	private IStandaloneMassSpectrum readSample(AnIMLType animl, IStandaloneMassSpectrum massSpectrum) {
 
 		SampleType sample = animl.getSampleSet().getSample().get(0);
 		massSpectrum.setIdentifier(sample.getSampleID());

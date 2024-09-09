@@ -22,8 +22,7 @@ import org.eclipse.chemclipse.msd.converter.io.IMassSpectraWriter;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
-import org.eclipse.chemclipse.msd.model.core.IVendorMassSpectrum;
-import org.eclipse.chemclipse.msd.model.core.IVendorStandaloneMassSpectrum;
+import org.eclipse.chemclipse.msd.model.core.IStandaloneMassSpectrum;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.xxd.converter.supplier.animl.converter.BinaryReader;
@@ -89,15 +88,15 @@ public class MassSpectrumWriter implements IMassSpectraWriter {
 	public void writeMassSpectrum(FileWriter fileWriter, IScanMSD massSpectrum, IProgressMonitor monitor) throws IOException {
 
 		try {
-			if(massSpectrum instanceof IVendorStandaloneMassSpectrum) {
-				writeAnIML(fileWriter, (IVendorStandaloneMassSpectrum)massSpectrum);
+			if(massSpectrum instanceof IStandaloneMassSpectrum standaloneMassSpectrum) {
+				writeAnIML(fileWriter, standaloneMassSpectrum);
 			}
 		} catch(JAXBException e) {
 			logger.warn(e);
 		}
 	}
 
-	private void writeAnIML(FileWriter fileWriter, IVendorStandaloneMassSpectrum massSpectrum) throws JAXBException {
+	private void writeAnIML(FileWriter fileWriter, IStandaloneMassSpectrum massSpectrum) throws JAXBException {
 
 		JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
 		Marshaller marshaller = jaxbContext.createMarshaller();
@@ -110,7 +109,7 @@ public class MassSpectrumWriter implements IMassSpectraWriter {
 		marshaller.marshal(anIML, fileWriter);
 	}
 
-	private SampleSetType createSampleSet(IVendorStandaloneMassSpectrum massSpectrum) {
+	private SampleSetType createSampleSet(IStandaloneMassSpectrum massSpectrum) {
 
 		SampleSetType sampleSet = new SampleSetType();
 		SampleType sample = new SampleType();
@@ -123,7 +122,7 @@ public class MassSpectrumWriter implements IMassSpectraWriter {
 		return sampleSet;
 	}
 
-	private ExperimentStepSetType createExperimentStep(IVendorMassSpectrum massSpectrum) {
+	private ExperimentStepSetType createExperimentStep(IStandaloneMassSpectrum massSpectrum) {
 
 		ExperimentStepSetType experimentStepSet = new ExperimentStepSetType();
 		ExperimentStepType massSpecStep = new ExperimentStepType();
@@ -144,7 +143,7 @@ public class MassSpectrumWriter implements IMassSpectraWriter {
 		return technique;
 	}
 
-	private ResultType createResult(IVendorMassSpectrum massSpectrum) {
+	private ResultType createResult(IStandaloneMassSpectrum massSpectrum) {
 
 		SeriesSetType seriesSet = new SeriesSetType();
 		seriesSet.setName("Spectrum");
