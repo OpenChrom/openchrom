@@ -11,43 +11,16 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.gaml.model;
 
-import org.eclipse.chemclipse.msd.model.core.AbstractVendorMassSpectrum;
+import org.eclipse.chemclipse.msd.model.core.AbstractRegularMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 
-public class VendorScan extends AbstractVendorMassSpectrum implements IVendorScan {
+public class VendorScan extends AbstractRegularMassSpectrum implements IVendorScan {
 
 	/**
 	 * Renew the serialVersionUID any time you have changed some fields or
 	 * methods.
 	 */
-	private static final long serialVersionUID = -6325717916001851511L;
-	/**
-	 * MAX_IONS The total amount of ions to be stored in the
-	 * cdf chromatogram.<br/>
-	 * It does not mean, that ion 65535 is the upper bound, but only 65535 mass
-	 * fragments can be stored in a mass spectrum.
-	 */
-	public static final int MAX_IONS = 65535;
-	public static final int MIN_RETENTION_TIME = 0;
-	public static final int MAX_RETENTION_TIME = Integer.MAX_VALUE;
-
-	@Override
-	public int getMaxPossibleIons() {
-
-		return MAX_IONS;
-	}
-
-	@Override
-	public int getMaxPossibleRetentionTime() {
-
-		return MAX_RETENTION_TIME;
-	}
-
-	@Override
-	public int getMinPossibleRetentionTime() {
-
-		return MIN_RETENTION_TIME;
-	}
+	private static final long serialVersionUID = -6325717916051851511L;
 
 	@Override
 	public IVendorScan makeDeepCopy() throws CloneNotSupportedException {
@@ -62,8 +35,8 @@ public class VendorScan extends AbstractVendorMassSpectrum implements IVendorSca
 		 * Make a deep copy of all ions.
 		 */
 		for(IIon ion : getIons()) {
-			IVendorIon mzXMLIon = new VendorIon(ion.getIon(), ion.getAbundance());
-			massSpectrum.addIon(mzXMLIon);
+			IVendorIon vendorIon = new VendorIon(ion.getIon(), ion.getAbundance());
+			massSpectrum.addIon(vendorIon);
 		}
 		return massSpectrum;
 	}

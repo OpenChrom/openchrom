@@ -11,44 +11,17 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.animl.model;
 
-import org.eclipse.chemclipse.msd.model.core.AbstractVendorMassSpectrum;
+import org.eclipse.chemclipse.msd.model.core.AbstractRegularMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IIon;
-import org.eclipse.chemclipse.msd.model.core.IVendorMassSpectrum;
+import org.eclipse.chemclipse.msd.model.core.IRegularMassSpectrum;
 
-public class VendorScan extends AbstractVendorMassSpectrum implements IVendorMassSpectrum {
+public class VendorScan extends AbstractRegularMassSpectrum implements IRegularMassSpectrum {
 
-	private static final long serialVersionUID = -2505351166336950677L;
-	/**
-	 * MAX_MASSFRAGMENTS The total amount of ions to be stored in the
-	 * chemclipse chromatogram.<br/>
-	 * It does not mean, that ion 65535 is the upper bound, but only 65535 mass
-	 * fragments can be stored in a mass spectrum.
-	 */
-	public static final int MAX_MASSFRAGMENTS = 65535;
-	public static final int MIN_RETENTION_TIME = 0;
-	public static final int MAX_RETENTION_TIME = Integer.MAX_VALUE;
+	private static final long serialVersionUID = -2505351146336950677L;
 
 	public VendorScan() {
 
 		super();
-	}
-
-	@Override
-	public int getMaxPossibleIons() {
-
-		return MAX_MASSFRAGMENTS;
-	}
-
-	@Override
-	public int getMinPossibleRetentionTime() {
-
-		return MIN_RETENTION_TIME;
-	}
-
-	@Override
-	public int getMaxPossibleRetentionTime() {
-
-		return MAX_RETENTION_TIME;
 	}
 
 	@Override

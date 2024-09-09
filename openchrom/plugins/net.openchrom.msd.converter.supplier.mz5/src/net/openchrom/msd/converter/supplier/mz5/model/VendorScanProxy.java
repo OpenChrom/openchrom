@@ -14,53 +14,31 @@ package net.openchrom.msd.converter.supplier.mz5.model;
 import java.io.IOException;
 
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.msd.model.core.AbstractVendorMassSpectrumProxy;
+import org.eclipse.chemclipse.msd.model.core.AbstractRegularMassSpectrumProxy;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.mz5.internal.io.ProxyReader;
 import net.openchrom.msd.converter.supplier.mz5.io.support.IScanMarker;
 
-public class VendorScanProxy extends AbstractVendorMassSpectrumProxy implements IVendorScanProxy {
+public class VendorScanProxy extends AbstractRegularMassSpectrumProxy implements IVendorScanProxy {
 
 	/**
 	 * Renew the serialVersionUID any time you have changed some fields or
 	 * methods.
 	 */
-	private static final long serialVersionUID = 6033054781323948805L;
+	private static final long serialVersionUID = 6033054791323948805L;
 	private static final Logger logger = Logger.getLogger(VendorScanProxy.class);
 	//
 	private double[] mzs;
 	private float[] spectrumIntensity;
 	private IScanMarker scanMarker;
-	//
-	public static final int MAX_IONS = 200000;
-	public static final int MIN_RETENTION_TIME = 0;
-	public static final int MAX_RETENTION_TIME = Integer.MAX_VALUE;
 
 	public VendorScanProxy(double[] mzs, float[] spectrumIntensity, IScanMarker scanMarker) {
 
 		this.mzs = mzs;
 		this.spectrumIntensity = spectrumIntensity;
 		this.scanMarker = scanMarker;
-	}
-
-	@Override
-	public int getMaxPossibleIons() {
-
-		return MAX_IONS;
-	}
-
-	@Override
-	public int getMinPossibleRetentionTime() {
-
-		return MIN_RETENTION_TIME;
-	}
-
-	@Override
-	public int getMaxPossibleRetentionTime() {
-
-		return MAX_RETENTION_TIME;
 	}
 
 	@Override

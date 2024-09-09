@@ -14,7 +14,7 @@ package net.openchrom.msd.converter.supplier.mzmlb.model;
 import java.io.IOException;
 
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.msd.model.core.AbstractVendorMassSpectrumProxy;
+import org.eclipse.chemclipse.msd.model.core.AbstractRegularMassSpectrumProxy;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
@@ -23,44 +23,22 @@ import net.openchrom.msd.converter.supplier.mzmlb.io.support.IScanMarker;
 
 import ch.systemsx.cisd.hdf5.IHDF5SimpleReader;
 
-public class VendorScanProxy extends AbstractVendorMassSpectrumProxy implements IVendorScanProxy {
+public class VendorScanProxy extends AbstractRegularMassSpectrumProxy implements IVendorScanProxy {
 
 	/**
 	 * Renew the serialVersionUID any time you have changed some fields or
 	 * methods.
 	 */
-	private static final long serialVersionUID = 7237916814647121133L;
+	private static final long serialVersionUID = 7247916814647121133L;
 	private static final Logger logger = Logger.getLogger(VendorScanProxy.class);
 	//
 	private IHDF5SimpleReader reader;
 	private IScanMarker scanMarker;
-	//
-	public static final int MAX_IONS = 200000;
-	public static final int MIN_RETENTION_TIME = 0;
-	public static final int MAX_RETENTION_TIME = Integer.MAX_VALUE;
 
 	public VendorScanProxy(IHDF5SimpleReader reader, IScanMarker scanMarker) {
 
 		this.reader = reader;
 		this.scanMarker = scanMarker;
-	}
-
-	@Override
-	public int getMaxPossibleIons() {
-
-		return MAX_IONS;
-	}
-
-	@Override
-	public int getMinPossibleRetentionTime() {
-
-		return MIN_RETENTION_TIME;
-	}
-
-	@Override
-	public int getMaxPossibleRetentionTime() {
-
-		return MAX_RETENTION_TIME;
 	}
 
 	@Override

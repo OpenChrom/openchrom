@@ -11,47 +11,20 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.mzdb.model;
 
-import org.eclipse.chemclipse.msd.model.core.AbstractVendorMassSpectrum;
+import org.eclipse.chemclipse.msd.model.core.AbstractRegularMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 
-public class VendorScan extends AbstractVendorMassSpectrum implements IVendorScan {
+public class VendorScan extends AbstractRegularMassSpectrum implements IVendorScan {
 
 	/**
 	 * Renew the serialVersionUID any time you have changed some fields or
 	 * methods.
 	 */
-	private static final long serialVersionUID = -7048549368402063030L;
-	/**
-	 * MAX_MASSFRAGMENTS The total amount of ions to be stored in the
-	 * chemclipse chromatogram.<br/>
-	 * It does not mean, that ion 65535 is the upper bound, but only 65535 mass
-	 * fragments can be stored in a mass spectrum.
-	 */
-	public static final int MAX_MASSFRAGMENTS = 65535;
-	public static final int MIN_RETENTION_TIME = 0;
-	public static final int MAX_RETENTION_TIME = Integer.MAX_VALUE;
+	private static final long serialVersionUID = -7048549378402063030L;
 
 	public VendorScan() {
 
 		super();
-	}
-
-	@Override
-	public int getMaxPossibleIons() {
-
-		return MAX_MASSFRAGMENTS;
-	}
-
-	@Override
-	public int getMinPossibleRetentionTime() {
-
-		return MIN_RETENTION_TIME;
-	}
-
-	@Override
-	public int getMaxPossibleRetentionTime() {
-
-		return MAX_RETENTION_TIME;
 	}
 
 	@Override

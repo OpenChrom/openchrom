@@ -11,7 +11,7 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.animl.model;
 
-import org.eclipse.chemclipse.msd.model.core.IVendorMassSpectrum;
+import org.eclipse.chemclipse.msd.model.core.IRegularMassSpectrum;
 
-public interface IVendorScan extends IVendorMassSpectrum {
+public interface IVendorScan extends IRegularMassSpectrum {
 }

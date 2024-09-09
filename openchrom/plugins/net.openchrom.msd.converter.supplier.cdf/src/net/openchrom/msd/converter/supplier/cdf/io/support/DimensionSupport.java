@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2022 Lablicate GmbH.
+ * Copyright (c) 2013, 2024 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import org.eclipse.chemclipse.msd.model.core.AbstractIon;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IIon;
-import org.eclipse.chemclipse.msd.model.core.IVendorMassSpectrum;
+import org.eclipse.chemclipse.msd.model.core.IRegularMassSpectrum;
 
 import ucar.ma2.ArrayChar;
 import ucar.ma2.ArrayDouble;
@@ -229,7 +229,7 @@ public class DimensionSupport implements IDimensionSupport {
 	@Override
 	public void addVariableScanValues() {
 
-		IVendorMassSpectrum scan;
+		IRegularMassSpectrum scan;
 		String varNameMassValues = CDFConstants.VARIABLE_MASS_VALUES;
 		ArrayList<Dimension> dimensionMassValues = new ArrayList<Dimension>();
 		dimensionMassValues.add(numberOfScanIons);
