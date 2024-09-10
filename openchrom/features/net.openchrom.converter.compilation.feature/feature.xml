@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="net.openchrom.converter.compilation.feature"
+      label="Converter Compilation"
+      version="1.5.0.qualifier"
+      provider-name="OpenChrom"
+      plugin="net.openchrom.feature.branding"
+      license-feature="org.eclipse.license"
+      license-feature-version="1.0.0.qualifier">
+
+   <description url="https://www.openchrom.net">
+      Open Source data format import converters for OpenChrom
+   </description>
+
+   <copyright url="http://www.lablicate.com">
+      Copyright (c) 2013, 2024 Lablicate GmbH.
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <includes
+         id="net.openchrom.msd.converter.supplier.cdf.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="net.openchrom.csd.converter.supplier.cdf.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="net.openchrom.msd.converter.supplier.mgf.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="net.openchrom.wsd.converter.supplier.abif.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="net.openchrom.msd.converter.supplier.cms.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="net.openchrom.nmr.converter.supplier.nmrml.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="net.openchrom.xxd.converter.supplier.animl.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="net.openchrom.xxd.converter.supplier.gaml.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="net.openchrom.msd.converter.supplier.btmsp.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="net.openchrom.msd.converter.supplier.microbenet.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="net.openchrom.msd.converter.supplier.mz5.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="net.openchrom.msd.converter.supplier.mzmlb.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="net.openchrom.msd.converter.supplier.mzdb.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="net.openchrom.msd.converter.supplier.pkf.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="net.openchrom.wsd.converter.supplier.abif.feature"
+         version="0.0.0"/>
+
+</feature>
