@@ -19,7 +19,7 @@ import org.eclipse.chemclipse.csd.converter.io.AbstractChromatogramCSDReader;
 import org.eclipse.chemclipse.csd.converter.io.IChromatogramCSDReader;
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
-import org.eclipse.chemclipse.xxd.converter.supplier.io.exception.UnknownVersionException;
+import org.eclipse.chemclipse.converter.exceptions.UnknownVersionException;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.xxd.converter.supplier.gaml.io.Reader100;

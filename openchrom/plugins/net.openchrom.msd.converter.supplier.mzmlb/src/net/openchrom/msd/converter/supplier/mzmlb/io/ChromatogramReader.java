@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Lablicate GmbH.
+ * Copyright (c) 2021, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -25,15 +25,15 @@ import org.eclipse.chemclipse.converter.l10n.ConverterMessages;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.msd.converter.io.IChromatogramMSDReader;
-import org.eclipse.chemclipse.msd.converter.supplier.mzml.internal.converter.XmlReader110;
-import org.eclipse.chemclipse.msd.converter.supplier.mzml.internal.v110.model.BinaryDataArrayType;
-import org.eclipse.chemclipse.msd.converter.supplier.mzml.internal.v110.model.CVParamType;
-import org.eclipse.chemclipse.msd.converter.supplier.mzml.internal.v110.model.MzMLType;
-import org.eclipse.chemclipse.msd.converter.supplier.mzml.internal.v110.model.RunType;
-import org.eclipse.chemclipse.msd.converter.supplier.mzml.internal.v110.model.ScanType;
-import org.eclipse.chemclipse.msd.converter.supplier.mzml.internal.v110.model.SpectrumListType;
-import org.eclipse.chemclipse.msd.converter.supplier.mzml.internal.v110.model.SpectrumType;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
+import org.eclipse.chemclipse.xxd.converter.supplier.mzml.io.XmlReader110;
+import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.BinaryDataArrayType;
+import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.CVParamType;
+import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.MzMLType;
+import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.RunType;
+import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.ScanType;
+import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.SpectrumListType;
+import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.SpectrumType;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.osgi.util.NLS;
 import org.w3c.dom.Document;
