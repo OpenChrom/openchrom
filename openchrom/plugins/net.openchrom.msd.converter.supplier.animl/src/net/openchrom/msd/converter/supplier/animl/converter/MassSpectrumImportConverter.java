@@ -46,7 +46,7 @@ public class MassSpectrumImportConverter extends AbstractMassSpectrumImportConve
 				if(massSpectra != null && !massSpectra.isEmpty()) {
 					processingInfo.setProcessingResult(massSpectra);
 				} else {
-					processingInfo.addErrorMessage(DESCRIPTION, "No mass spectra are stored." + file.getAbsolutePath());
+					processingInfo.addErrorMessage(DESCRIPTION, NLS.bind(ConverterMessages.noMassSpectraStored, file.getAbsolutePath()));
 				}
 			} catch(final FileNotFoundException e) {
 				logger.warn(e);
