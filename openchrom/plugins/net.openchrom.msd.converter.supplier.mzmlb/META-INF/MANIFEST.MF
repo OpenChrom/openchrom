@@ -14,8 +14,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.converter;bundle-version="0.8.0",
  org.eclipse.chemclipse.model;bundle-version="0.8.0",
  org.eclipse.chemclipse.support;bundle-version="0.8.0",
- net.openchrom.thirdparty.jhdf5,
- org.eclipse.chemclipse.msd.converter.supplier.mzml
+ net.openchrom.thirdparty.jhdf5;bundle-version="19.4.1",
+ org.eclipse.chemclipse.xxd.converter.supplier.mzml;bundle-version="0.9.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Import-Package: jakarta.xml.bind,

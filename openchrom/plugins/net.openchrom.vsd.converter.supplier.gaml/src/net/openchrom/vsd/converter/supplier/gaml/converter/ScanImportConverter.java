@@ -21,7 +21,7 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.chemclipse.vsd.converter.core.AbstractScanImportConverter;
 import org.eclipse.chemclipse.vsd.converter.core.IScanImportConverter;
-import org.eclipse.chemclipse.xxd.converter.supplier.io.exception.UnknownVersionException;
+import org.eclipse.chemclipse.converter.exceptions.UnknownVersionException;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.vsd.converter.supplier.gaml.io.ScanReaderVersion100;
