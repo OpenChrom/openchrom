@@ -38,8 +38,8 @@ public class InstallErrorDialog {
 
 				MultiStatus status = createMultiStatus(e);
 				String errorMessage = message + System.lineSeparator() + System.lineSeparator();
-				errorMessage = errorMessage + "Ensure that the program is not blocked by any firewalls.";
-				errorMessage = errorMessage + System.lineSeparator() + "Contact support@lablicate.com if the problem persists.";
+				errorMessage = errorMessage + "Visit faq.openchrom.net for solutions to common problems." + System.lineSeparator();
+				errorMessage = errorMessage + "Contact support@lablicate.com if the problem persists.";
 				ErrorDialog.openError(parentShell, "Converter Installation", errorMessage, status);
 			}
 		});
