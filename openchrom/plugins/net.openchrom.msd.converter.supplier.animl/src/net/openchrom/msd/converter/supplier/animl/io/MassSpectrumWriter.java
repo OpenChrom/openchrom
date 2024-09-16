@@ -23,6 +23,7 @@ import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.core.IStandaloneMassSpectrum;
+import org.eclipse.chemclipse.msd.model.core.MassSpectrumType;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.xxd.converter.supplier.animl.converter.BinaryReader;
@@ -203,7 +204,7 @@ public class MassSpectrumWriter implements IMassSpectraWriter {
 		CategoryType category = new CategoryType();
 		ParameterType parameter = new ParameterType();
 		parameter.setName("Type");
-		if(massSpectrum.getMassSpectrumType() == 0) {
+		if(massSpectrum.getMassSpectrumType() == MassSpectrumType.CENTROID) {
 			parameter.getS().add("Centroided");
 		} else {
 			parameter.getS().add("Continuous");

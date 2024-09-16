@@ -26,6 +26,7 @@ import org.eclipse.chemclipse.msd.model.core.AbstractScanMSD;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IIonBounds;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
+import org.eclipse.chemclipse.msd.model.core.MassSpectrumType;
 import org.eclipse.chemclipse.msd.model.core.support.IMarkedIons;
 import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
 
@@ -524,19 +525,13 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	}
 
 	@Override
-	public short getMassSpectrumType() {
+	public MassSpectrumType getMassSpectrumType() {
 
-		return 0;
+		return MassSpectrumType.CENTROID;
 	}
 
 	@Override
-	public String getMassSpectrumTypeDescription() {
-
-		return null;
-	}
-
-	@Override
-	public void setMassSpectrumType(short massSpectrumType) {
+	public void setMassSpectrumType(MassSpectrumType massSpectrumType) {
 
 	}
 

@@ -24,6 +24,7 @@ import org.eclipse.chemclipse.msd.converter.io.IMassSpectraReader;
 import org.eclipse.chemclipse.msd.model.core.AbstractIon;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IStandaloneMassSpectrum;
+import org.eclipse.chemclipse.msd.model.core.MassSpectrumType;
 import org.eclipse.chemclipse.msd.model.implementation.VendorMassSpectrum;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.xml.sax.SAXException;
@@ -78,9 +79,9 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 							for(ParameterType parameter : categeory.getParameter()) {
 								if(parameter.getName().equals("Type")) {
 									if(parameter.getS().contains("Centroided")) {
-										massSpectrum.setMassSpectrumType((short)0);
+										massSpectrum.setMassSpectrumType(MassSpectrumType.CENTROID);
 									} else if(parameter.getS().contains("Continuous")) {
-										massSpectrum.setMassSpectrumType((short)1);
+										massSpectrum.setMassSpectrumType(MassSpectrumType.PROFILE);
 									}
 								}
 							}
