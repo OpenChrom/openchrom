@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Lablicate GmbH.
+ * Copyright (c) 2019, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
+ * Philip Wenig - initial API and implementation
  * Christoph Läubrich - adjust API
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.core;
@@ -50,6 +50,7 @@ public class TraceRatioClassifier extends AbstractRatioClassifier {
 		} else {
 			settings = PreferenceSupplier.getSettingsTrace();
 		}
+		//
 		IProcessingInfo<IChromatogramClassifierResult> processingInfo = validate(chromatogramSelection, chromatogramClassifierSettings);
 		if(!processingInfo.hasErrorMessages()) {
 			/*
@@ -61,6 +62,7 @@ public class TraceRatioClassifier extends AbstractRatioClassifier {
 			chromatogramSelection.getChromatogram().addMeasurementResult(measurementResult);
 			processingInfo.setProcessingResult(classifierResult);
 		}
+		//
 		return processingInfo;
 	}
 
@@ -75,25 +77,30 @@ public class TraceRatioClassifier extends AbstractRatioClassifier {
 					String[] values = traceRatio.getTestCase().split(":");
 					if(values.length == 2) {
 						try {
-							/*
-							 * E.g. 104:103
-							 */
-							int reference = Integer.parseInt(values[0]);
-							int target = Integer.parseInt(values[1]);
-							//
 							IPeakModel peakModel = peak.getPeakModel();
 							if(peakModel instanceof IPeakModelMSD peakModelMSD) {
+								/*
+								 * E.g. 104:103
+								 * By default, set the ratio and deviation as not being calculated.
+								 */
+								int reference = Integer.parseInt(values[0]);
+								int target = Integer.parseInt(values[1]);
 								ExtractedIonSignal extractedIonSignal = new ExtractedIonSignal(peakModelMSD.getPeakMassSpectrum().getIons());
 								float intensityReference = extractedIonSignal.getAbundance(reference);
+								traceRatio.setPeak(peak);
+								traceRatio.setRatio(Double.NaN);
+								traceRatio.setDeviation(Double.NaN);
+								//
 								if(intensityReference != 0) {
 									double expectedRatio = traceRatio.getExpectedRatio();
 									if(expectedRatio != 0) {
 										float intensityTarget = extractedIonSignal.getAbundance(target);
-										double actualRatio = 100.0d / intensityReference * intensityTarget;
-										traceRatio.setPeak(peak);
-										traceRatio.setRatio(actualRatio);
-										double deviation = Math.abs(100.0d - (100.0d / expectedRatio * actualRatio));
-										traceRatio.setDeviation(deviation);
+										if(intensityReference > 0 && intensityTarget > 0) {
+											double actualRatio = 100.0d / intensityReference * intensityTarget;
+											double deviation = Math.abs(100.0d - (100.0d / expectedRatio * actualRatio));
+											traceRatio.setRatio(actualRatio);
+											traceRatio.setDeviation(deviation);
+										}
 									}
 								}
 							}

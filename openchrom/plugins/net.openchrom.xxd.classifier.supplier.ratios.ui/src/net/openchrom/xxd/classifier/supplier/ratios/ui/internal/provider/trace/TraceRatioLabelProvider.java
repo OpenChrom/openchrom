@@ -119,10 +119,18 @@ public class TraceRatioLabelProvider extends AbstractTraceRatioLabelProvider {
 					text = decimalFormat.format(traceRatio.getExpectedRatio());
 					break;
 				case 4:
-					text = decimalFormat.format(traceRatio.getRatio());
+					if(Double.isNaN(traceRatio.getRatio())) {
+						text = "n.a.";
+					} else {
+						text = decimalFormat.format(traceRatio.getRatio());
+					}
 					break;
 				case 5:
-					text = decimalFormat.format(traceRatio.getDeviation());
+					if(Double.isNaN(traceRatio.getDeviation())) {
+						text = "n.a.";
+					} else {
+						text = decimalFormat.format(traceRatio.getDeviation());
+					}
 					break;
 			}
 		}

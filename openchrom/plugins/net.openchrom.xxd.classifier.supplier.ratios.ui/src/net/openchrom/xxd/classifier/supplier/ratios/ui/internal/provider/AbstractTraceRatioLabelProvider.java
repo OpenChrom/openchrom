@@ -38,15 +38,18 @@ public abstract class AbstractTraceRatioLabelProvider extends AbstractChemClipse
 		if(deviationColumns.contains(columnIndex)) {
 			if(element instanceof IPeakRatio peakRatio) {
 				double deviation = peakRatio.getDeviation();
-				double deviationWarn = peakRatio.getDeviationWarn();
-				double deviationError = peakRatio.getDeviationError();
-				//
-				if(deviation < deviationWarn) {
-					return Colors.getColor(Colors.LIGHT_GREEN);
-				} else if(deviation < deviationError) {
-					return Colors.getColor(Colors.LIGHT_YELLOW);
+				if(Double.isNaN(deviation)) {
+					return Colors.RED;
 				} else {
-					return Colors.getColor(Colors.LIGHT_RED);
+					double deviationWarn = peakRatio.getDeviationWarn();
+					double deviationError = peakRatio.getDeviationError();
+					if(deviation < deviationWarn) {
+						return Colors.getColor(Colors.LIGHT_GREEN);
+					} else if(deviation < deviationError) {
+						return Colors.getColor(Colors.LIGHT_YELLOW);
+					} else {
+						return Colors.getColor(Colors.LIGHT_RED);
+					}
 				}
 			}
 		}
@@ -60,13 +63,8 @@ public abstract class AbstractTraceRatioLabelProvider extends AbstractChemClipse
 		if(deviationColumns.contains(columnIndex)) {
 			if(element instanceof IPeakRatio peakRatio) {
 				double deviation = peakRatio.getDeviation();
-				double deviationWarn = peakRatio.getDeviationWarn();
-				double deviationError = peakRatio.getDeviationError();
-				//
-				if(deviation < deviationWarn) {
-					return Colors.BLACK;
-				} else if(deviation < deviationError) {
-					return Colors.BLACK;
+				if(Double.isNaN(deviation)) {
+					return Colors.WHITE;
 				} else {
 					return Colors.BLACK;
 				}
