@@ -58,7 +58,7 @@ public class MicrobeNetWriter extends AbstractMassSpectraWriter implements IMass
 	public void write(File file, IScanMSD scanMSD, boolean append, IProgressMonitor monitor) throws FileIsNotWriteableException, IOException {
 
 		try (FileWriter fileWriter = new FileWriter(file, append)) {
-			writeMassSpectrum(fileWriter, scanMSD, monitor);
+			writeMassSpectrum(fileWriter, scanMSD);
 		}
 	}
 
@@ -70,8 +70,7 @@ public class MicrobeNetWriter extends AbstractMassSpectraWriter implements IMass
 		}
 	}
 
-	@Override
-	public void writeMassSpectrum(FileWriter fileWriter, IScanMSD scanMSD, IProgressMonitor monitor) throws IOException {
+	private void writeMassSpectrum(FileWriter fileWriter, IScanMSD scanMSD) {
 
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);

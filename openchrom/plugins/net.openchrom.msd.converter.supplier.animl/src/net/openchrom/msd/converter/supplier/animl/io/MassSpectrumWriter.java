@@ -63,7 +63,7 @@ public class MassSpectrumWriter implements IMassSpectraWriter {
 	public void write(File file, IScanMSD massSpectrum, boolean append, IProgressMonitor monitor) throws FileIsNotWriteableException, IOException {
 
 		FileWriter fileWriter = new FileWriter(file, append);
-		writeMassSpectrum(fileWriter, massSpectrum, monitor);
+		writeMassSpectrum(fileWriter, massSpectrum);
 		fileWriter.close();
 	}
 
@@ -80,13 +80,12 @@ public class MassSpectrumWriter implements IMassSpectraWriter {
 		for(int i = 1; i <= massSpectra.size(); i++) {
 			IScanMSD massSpectrum = massSpectra.getMassSpectrum(i);
 			if(massSpectrum != null && massSpectrum.getNumberOfIons() > 0) {
-				writeMassSpectrum(fileWriter, massSpectrum, monitor);
+				writeMassSpectrum(fileWriter, massSpectrum);
 			}
 		}
 	}
 
-	@Override
-	public void writeMassSpectrum(FileWriter fileWriter, IScanMSD massSpectrum, IProgressMonitor monitor) throws IOException {
+	private void writeMassSpectrum(FileWriter fileWriter, IScanMSD massSpectrum) {
 
 		try {
 			if(massSpectrum instanceof IStandaloneMassSpectrum standaloneMassSpectrum) {

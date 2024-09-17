@@ -13,7 +13,6 @@
 package net.openchrom.msd.converter.supplier.cms.io;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
@@ -65,32 +64,31 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 	private static final String INAME = "INAME: ";
 
 	@Override
-	public void write(File file, IScanMSD massSpectrum, boolean append, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotWriteableException, IOException {
+	public void write(File file, IScanMSD massSpectrum, boolean append, IProgressMonitor monitor) throws FileIsNotWriteableException, IOException {
 
 		FileWriter fileWriter = new FileWriter(file, append);
-		writeMassSpectrum(fileWriter, massSpectrum, monitor);
+		writeMassSpectrum(fileWriter, massSpectrum);
 		fileWriter.close();
 	}
 
 	@Override
-	public void write(File file, IMassSpectra massSpectra, boolean append, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotWriteableException, IOException {
+	public void write(File file, IMassSpectra massSpectra, boolean append, IProgressMonitor monitor) throws FileIsNotWriteableException, IOException {
 
 		FileWriter fileWriter = new FileWriter(file, append);
 		writeMassSpectra(fileWriter, massSpectra, monitor);
 		fileWriter.close();
 	}
 
-	@Override
-	public void writeMassSpectrum(FileWriter fileWriter, IScanMSD massSpectrum, IProgressMonitor monitor) throws IOException {
+	private void writeMassSpectrum(FileWriter fileWriter, IScanMSD massSpectrum) throws IOException {
 
 		try {
-			writeCMS(fileWriter, massSpectrum, monitor);
+			writeCMS(fileWriter, massSpectrum);
 		} catch(NotCalibratedVendorMassSpectrumException e) {
 			logger.warn(e);
 		}
 	}
 
-	private void writeCMS(FileWriter fileWriter, IScanMSD massSpectrum, IProgressMonitor monitor) throws IOException, NotCalibratedVendorMassSpectrumException {
+	private void writeCMS(FileWriter fileWriter, IScanMSD massSpectrum) throws IOException, NotCalibratedVendorMassSpectrumException {
 
 		ICalibratedVendorLibraryMassSpectrum cvmSpectrum = null;
 		String line;
@@ -492,7 +490,7 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 			 * There must be at least one ion.
 			 */
 			if(massSpectrum != null && massSpectrum.getNumberOfIons() > 0) {
-				writeMassSpectrum(fileWriter, massSpectrum, monitor);
+				writeMassSpectrum(fileWriter, massSpectrum);
 			}
 		}
 	}
