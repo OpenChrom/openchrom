@@ -40,6 +40,7 @@ import net.openchrom.msd.converter.supplier.cdf.model.VendorScan;
 import net.openchrom.msd.converter.supplier.cdf.preferences.PreferenceSupplier;
 
 import ucar.nc2.NetcdfFile;
+import ucar.nc2.NetcdfFiles;
 
 public class ChromatogramReaderMSD extends AbstractChromatogramMSDReader implements IChromatogramMSDReader {
 
@@ -113,8 +114,7 @@ public class ChromatogramReaderMSD extends AbstractChromatogramMSDReader impleme
 
 		VendorChromatogram chromatogram;
 		VendorScan massSpectrum;
-		@SuppressWarnings("deprecation")
-		NetcdfFile cdfChromatogram = new NetcdfFile(file.getAbsolutePath());
+		NetcdfFile cdfChromatogram = NetcdfFiles.open(file.getAbsolutePath());
 		CDFChromtogramArrayReader in = new CDFChromtogramArrayReader(cdfChromatogram);
 		chromatogram = new VendorChromatogram();
 		setChromatogramEntries(chromatogram, in, file);
@@ -130,7 +130,6 @@ public class ChromatogramReaderMSD extends AbstractChromatogramMSDReader impleme
 				logger.warn(e);
 			}
 		}
-		// Close the cdf chromatogram.
 		cdfChromatogram.close();
 		return chromatogram;
 	}
@@ -148,8 +147,7 @@ public class ChromatogramReaderMSD extends AbstractChromatogramMSDReader impleme
 	 */
 	private VendorChromatogram readChromatogramOverview(File file, IProgressMonitor monitor) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
 
-		@SuppressWarnings("deprecation")
-		NetcdfFile cdfChromatogram = new NetcdfFile(file.getAbsolutePath());
+		NetcdfFile cdfChromatogram = NetcdfFiles.open(file.getAbsolutePath());
 		CDFChromatogramOverviewArrayReader in = new CDFChromatogramOverviewArrayReader(cdfChromatogram);
 		VendorChromatogram chromatogram = new VendorChromatogram();
 		setChromatogramEntries(chromatogram, in, file);
@@ -166,7 +164,6 @@ public class ChromatogramReaderMSD extends AbstractChromatogramMSDReader impleme
 				//
 			}
 		}
-		// Close the cdf chromatogram.
 		cdfChromatogram.close();
 		return chromatogram;
 	}

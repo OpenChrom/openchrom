@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2022 Lablicate GmbH.
+ * Copyright (c) 2014, 2024 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -41,7 +41,7 @@ public class DimensionSupport implements IDimensionSupport {
 
 	public DimensionSupport(NetcdfFileWriter cdfChromatogram, IChromatogramCSD chromatogram) {
 
-		dataEntries = new ArrayList<IDataEntry>();
+		dataEntries = new ArrayList<>();
 		this.cdfChromatogram = cdfChromatogram;
 		this.chromatogram = chromatogram;
 		initializeDimensions();

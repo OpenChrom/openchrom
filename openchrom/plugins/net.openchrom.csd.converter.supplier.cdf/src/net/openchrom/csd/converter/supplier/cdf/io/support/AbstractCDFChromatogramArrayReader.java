@@ -74,12 +74,6 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 		if(valueScanInterval == null) {
 			throw new NoCDFVariableDataFound("There could be no data found for the variable: " + variable);
 		}
-		/*
-		 * Calculate the scan delay and interval.
-		 */
-		scanDelay = 0; // milliseconds
-		scanInterval = 0; // milliseconds
-		//
 		double retentionTimeScaleFactor;
 		Attribute retentionUnit = chromatogram.findGlobalAttribute(CDFConstants.ATTRIBUTE_RETENTION_UNIT);
 		if(retentionUnit != null) {
@@ -102,6 +96,11 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 		 */
 		variable = CDFConstants.VARIABLE_ACTUAL_RUN_TIME_LENGTH;
 		Variable valueRunTimeLength = chromatogram.findVariable(variable);
+		/*
+		 * Calculate the scan delay and interval.
+		 */
+		scanDelay = 0; // milliseconds
+		scanInterval = 0; // milliseconds
 		if(valueRunTimeLength == null) {
 			/*
 			 * Normal

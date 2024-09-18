@@ -145,7 +145,7 @@ public class DimensionSupport implements IDimensionSupport {
 	public void addVariableActualScanNumber() {
 
 		String varName = CDFConstants.VARIABLE_ACTUAL_SCAN_NUMBER;
-		ArrayList<Dimension> dimension = new ArrayList<Dimension>();
+		ArrayList<Dimension> dimension = new ArrayList<>();
 		dimension.add(numberOfScans);
 		cdfChromatogram.addVariable(varName, DataType.INT, dimension);
 		ArrayInt.D1 values = new ArrayInt.D1(numberOfScans.getLength(), false);
@@ -216,7 +216,7 @@ public class DimensionSupport implements IDimensionSupport {
 	public void addVariablePointCount() {
 
 		String varName = CDFConstants.VARIABLE_POINT_COUNT;
-		ArrayList<Dimension> dimension = new ArrayList<Dimension>();
+		ArrayList<Dimension> dimension = new ArrayList<>();
 		dimension.add(numberOfScans);
 		cdfChromatogram.addVariable(varName, DataType.INT, dimension);
 		ArrayInt.D1 values = new ArrayInt.D1(numberOfScans.getLength(), false);
@@ -231,17 +231,17 @@ public class DimensionSupport implements IDimensionSupport {
 
 		IRegularMassSpectrum scan;
 		String varNameMassValues = CDFConstants.VARIABLE_MASS_VALUES;
-		ArrayList<Dimension> dimensionMassValues = new ArrayList<Dimension>();
+		ArrayList<Dimension> dimensionMassValues = new ArrayList<>();
 		dimensionMassValues.add(numberOfScanIons);
 		cdfChromatogram.addVariable(varNameMassValues, DataType.FLOAT, dimensionMassValues);
 		ArrayDouble.D1 valuesIons = new ArrayDouble.D1(numberOfScanIons.getLength());
 		String varNameTimeValues = CDFConstants.VARIABLE_TIME_VALUES;
-		ArrayList<Dimension> dimensionTimeValues = new ArrayList<Dimension>();
+		ArrayList<Dimension> dimensionTimeValues = new ArrayList<>();
 		dimensionTimeValues.add(numberOfScanIons);
 		cdfChromatogram.addVariable(varNameTimeValues, DataType.FLOAT, dimensionTimeValues);
 		ArrayFloat.D1 valuesTime = new ArrayFloat.D1(numberOfScanIons.getLength());
 		String varNameAbundanceValues = CDFConstants.VARIABLE_INTENSITY_VALUES;
-		ArrayList<Dimension> dimensionAbundanceValues = new ArrayList<Dimension>();
+		ArrayList<Dimension> dimensionAbundanceValues = new ArrayList<>();
 		dimensionAbundanceValues.add(numberOfScanIons);
 		cdfChromatogram.addVariable(varNameAbundanceValues, DataType.FLOAT, dimensionAbundanceValues);
 		ArrayFloat.D1 valuesAbundance = new ArrayFloat.D1(numberOfScanIons.getLength());
