@@ -9,14 +9,12 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.msd.converter.supplier.cdf.io.support.io.support;
+package net.openchrom.msd.converter.supplier.cdf.io.support;
 
 import java.text.ParseException;
 import java.util.Date;
 
 import org.junit.Ignore;
-
-import net.openchrom.msd.converter.supplier.cdf.io.support.DateSupport;
 
 import junit.framework.TestCase;
 

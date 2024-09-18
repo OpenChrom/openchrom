@@ -1,0 +1,37 @@
+                 NEW VERSION OF FILES - Created 9/13/93
+        NOTE: this version should have the correct endian byte order
+
+      The files on this diskette were converted from Teknivent Corp.
+   Vector/Two (tm) data system files into the AIA netCDF format.
+   This diskette should contain the following files:
+
+        README.TXT      This file
+
+        CONTINUM.CDF    A file of multiple-scan continuum high-resolution
+                        data converted from n50allch.tkf, a Teknivent
+                        Scan Raw file.
+
+        CENTSCNL.CDF    A file of multiple-scan centroided low-resolution
+                        (integer mass) data converted from umfc43.tkf, a
+                        Teknivent Scan file.
+
+        CENTSIDL.CDF    A file of multiple-scan centroided low-resolution
+                        Selected Ion Detection data converted from data.tkf,
+                        a Teknivent SIM file (This file was originally
+                        acquired on a Teknivent Vector/One data system, and
+                        was converted to the Vector/Two data format).
+
+
+      The Vector/Two data system and the utilities that convert files to
+   and from the netCDF format both run on OS/2 (version 1.3 or higher).
+
+      If you have any questions or comments concerning this conversion,
+   please contact
+
+   Chris Gill
+   Teknivent Corp
+   149 Weldon Parkway, Suite 115
+   St. Louis, MO   63043
+   TEL (314) 994-0500
+   FAX (314) 994-0505
+

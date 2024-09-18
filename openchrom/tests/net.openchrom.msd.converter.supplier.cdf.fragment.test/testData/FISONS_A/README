@@ -1,0 +1,24 @@
+Fisons/VG Analytical andi/MS round-robin test files:
+
+library.cdf	42 entries retrieved from the NIST library database by
+		structural similarity to naphthalenediol, restricted to
+		molecular weights from 160 to 175 inclusive.
+
+continum.cdf	1 continuum spectrum of glucagon by FAB, mass range
+                approximately 3322 to 3580, resolution 2000 10% valley,
+                4488 mass peaks.
+
+centscnl.cdf	21 scans of a Grob mixture by GC.
+
+centscnh.cdf	5 scans of PFK with accurate mass assignment.
+
+centsidh.cdf	409 scans of high resolution SID, with 12 masses monitored.
+
+For more information, contact
+
+	David Stranz or Scott Campbell
+	Fisons Instruments
+	809 Sylvan Ave, Suite 102
+	Modesto, CA  95350-1500
+
+	(209) 521-0708
