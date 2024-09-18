@@ -66,16 +66,6 @@
 	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
 		<dependencies>
 			<dependency>
-				<groupId>de.erichseifert.vectorgraphics2d</groupId>
-				<artifactId>VectorGraphics2D</artifactId>
-				<version>0.13</version>
-				<type>jar</type>
-			</dependency>
-		</dependencies>
-	</location>
-	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
-		<dependencies>
-			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-imaging</artifactId>
 				<version>1.0-alpha2</version>

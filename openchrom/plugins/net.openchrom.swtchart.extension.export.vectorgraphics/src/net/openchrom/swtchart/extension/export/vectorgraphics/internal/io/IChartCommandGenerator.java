@@ -13,10 +13,9 @@ package net.openchrom.swtchart.extension.export.vectorgraphics.internal.io;
 
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtchart.extensions.core.ScrollableChart;
+import org.eclipse.swtchart.vectorgraphics2d.intermediate.CommandSequence;
 
 import net.openchrom.swtchart.extension.export.vectorgraphics.model.PageSizeOption;
-
-import de.erichseifert.vectorgraphics2d.intermediate.CommandSequence;
 
 public interface IChartCommandGenerator {
 

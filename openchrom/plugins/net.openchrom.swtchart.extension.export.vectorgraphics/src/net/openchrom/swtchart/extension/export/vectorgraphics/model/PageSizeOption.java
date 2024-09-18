@@ -12,8 +12,7 @@
 package net.openchrom.swtchart.extension.export.vectorgraphics.model;
 
 import org.eclipse.chemclipse.support.text.ILabel;
-
-import de.erichseifert.vectorgraphics2d.util.PageSize;
+import org.eclipse.swtchart.vectorgraphics2d.util.PageSize;
 
 public enum PageSizeOption implements ILabel {
 

@@ -20,11 +20,10 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtchart.export.core.ISeriesExportConverter;
 import org.eclipse.swtchart.extensions.core.ScrollableChart;
+import org.eclipse.swtchart.vectorgraphics2d.svg.SVGProcessor;
 
 import net.openchrom.swtchart.extension.export.vectorgraphics.internal.io.AbstractExportHandler;
 import net.openchrom.swtchart.extension.export.vectorgraphics.model.PageSizeOption;
-
-import de.erichseifert.vectorgraphics2d.svg.SVGProcessor;
 
 public class SVGExportHandler extends AbstractExportHandler implements ISeriesExportConverter {
 

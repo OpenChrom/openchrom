@@ -46,14 +46,13 @@ import org.eclipse.swtchart.extensions.model.ICustomSeries;
 import org.eclipse.swtchart.extensions.model.IElement;
 import org.eclipse.swtchart.extensions.model.IGraphicElement;
 import org.eclipse.swtchart.extensions.model.ITextElement;
+import org.eclipse.swtchart.vectorgraphics2d.core.VectorGraphics2D;
+import org.eclipse.swtchart.vectorgraphics2d.intermediate.CommandSequence;
+import org.eclipse.swtchart.vectorgraphics2d.util.PageSize;
 
 import net.openchrom.swtchart.extension.export.vectorgraphics.model.PageSettings;
 import net.openchrom.swtchart.extension.export.vectorgraphics.model.PageSizeOption;
 import net.openchrom.swtchart.extension.export.vectorgraphics.support.AWTUtils;
-
-import de.erichseifert.vectorgraphics2d.VectorGraphics2D;
-import de.erichseifert.vectorgraphics2d.intermediate.CommandSequence;
-import de.erichseifert.vectorgraphics2d.util.PageSize;
 
 /*
  * Important to now:

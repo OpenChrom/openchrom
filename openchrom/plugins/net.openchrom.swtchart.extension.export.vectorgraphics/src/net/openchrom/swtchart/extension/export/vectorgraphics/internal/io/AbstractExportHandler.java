@@ -34,14 +34,13 @@ import org.eclipse.swtchart.extensions.core.IChartSettings;
 import org.eclipse.swtchart.extensions.core.RangeRestriction;
 import org.eclipse.swtchart.extensions.core.ScrollableChart;
 import org.eclipse.swtchart.extensions.linecharts.LineChart;
+import org.eclipse.swtchart.vectorgraphics2d.core.Document;
+import org.eclipse.swtchart.vectorgraphics2d.core.Processor;
+import org.eclipse.swtchart.vectorgraphics2d.intermediate.CommandSequence;
 
 import net.openchrom.swtchart.extension.export.vectorgraphics.dialogs.PageSizeDialog;
 import net.openchrom.swtchart.extension.export.vectorgraphics.model.PageSizeOption;
 import net.openchrom.swtchart.extension.export.vectorgraphics.preferences.PreferenceSupplier;
-
-import de.erichseifert.vectorgraphics2d.Document;
-import de.erichseifert.vectorgraphics2d.Processor;
-import de.erichseifert.vectorgraphics2d.intermediate.CommandSequence;
 
 public abstract class AbstractExportHandler extends AbstractSeriesExportHandler implements ISeriesExportConverter {
 

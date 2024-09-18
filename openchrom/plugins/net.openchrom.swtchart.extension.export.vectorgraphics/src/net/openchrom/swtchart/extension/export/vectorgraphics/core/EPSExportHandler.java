@@ -20,11 +20,10 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtchart.export.core.ISeriesExportConverter;
 import org.eclipse.swtchart.extensions.core.ScrollableChart;
+import org.eclipse.swtchart.vectorgraphics2d.eps.EPSProcessor;
 
 import net.openchrom.swtchart.extension.export.vectorgraphics.internal.io.AbstractExportHandler;
 import net.openchrom.swtchart.extension.export.vectorgraphics.model.PageSizeOption;
-
-import de.erichseifert.vectorgraphics2d.eps.EPSProcessor;
 
 public class EPSExportHandler extends AbstractExportHandler implements ISeriesExportConverter {
 
