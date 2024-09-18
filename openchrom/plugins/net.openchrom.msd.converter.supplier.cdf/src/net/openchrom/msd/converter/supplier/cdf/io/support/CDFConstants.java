@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Lablicate GmbH.
+ * Copyright (c) 2013, 2024 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -14,10 +14,12 @@ package net.openchrom.msd.converter.supplier.cdf.io.support;
 /**
  * This class stores all the dimensions, variables and attributes which are
  * important to read and write a valid cdf file.
- * 
- * @author eselmeister
  */
 public class CDFConstants {
+
+	private CDFConstants() {
+
+	}
 
 	public static final String DIMENSION_2_BYTE_STRING = "_2_byte_string";
 	public static final String DIMENSION_4_BYTE_STRING = "_4_byte_string";

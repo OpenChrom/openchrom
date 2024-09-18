@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2022 Lablicate GmbH.
+ * Copyright (c) 2013, 2024 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -12,7 +12,6 @@
 package net.openchrom.msd.converter.supplier.cdf.io;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -27,17 +26,18 @@ import net.openchrom.msd.converter.supplier.cdf.io.support.AttributeSupport;
 import net.openchrom.msd.converter.supplier.cdf.io.support.CDFConstants;
 import net.openchrom.msd.converter.supplier.cdf.io.support.DimensionSupport;
 import net.openchrom.msd.converter.supplier.cdf.io.support.IDataEntry;
+
 import ucar.ma2.InvalidRangeException;
 import ucar.nc2.Dimension;
-import ucar.nc2.NetcdfFileWriter;
+import ucar.nc2.write.NetcdfFormatWriter;
+import ucar.nc2.write.NetcdfFormatWriter.Builder;
 
-@SuppressWarnings("deprecation")
 public class ChromatogramWriter extends AbstractChromatogramWriter implements IChromatogramMSDWriter {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramWriter.class);
 
 	@Override
-	public void writeChromatogram(File file, IChromatogramMSD chromatogram, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotWriteableException, IOException {
+	public void writeChromatogram(File file, IChromatogramMSD chromatogram, IProgressMonitor monitor) throws FileIsNotWriteableException, IOException {
 
 		// Do not distinguish between CDFChromatogram and others.
 		writeCDFChromatogram(file, chromatogram, monitor);
@@ -45,9 +45,9 @@ public class ChromatogramWriter extends AbstractChromatogramWriter implements IC
 
 	private void writeCDFChromatogram(File file, IChromatogramMSD chromatogram, IProgressMonitor monitor) throws IOException {
 
-		NetcdfFileWriter cdfChromatogram = NetcdfFileWriter.createNew(file.getAbsolutePath(), false);
-		DimensionSupport dimensionSupport = new DimensionSupport(cdfChromatogram, chromatogram);
-		AttributeSupport.setAttributes(cdfChromatogram, chromatogram);
+		Builder builder = NetcdfFormatWriter.createNewNetcdf3(file.getAbsolutePath());
+		DimensionSupport dimensionSupport = new DimensionSupport(builder, chromatogram);
+		AttributeSupport.setAttributes(builder, chromatogram);
 		Dimension errorNumber = dimensionSupport.getErrorNumber();
 		Dimension byteString64 = dimensionSupport.getByteString64();
 		Dimension byteString32 = dimensionSupport.getByteString32();
@@ -84,26 +84,18 @@ public class ChromatogramWriter extends AbstractChromatogramWriter implements IC
 		dimensionSupport.addVariableCharD2(CDFConstants.VARIABLE_INSTRUMENT_OS_VERSION, instrumentNumber, byteString32, "");
 		dimensionSupport.addVariableCharD2(CDFConstants.VARIABLE_INSTRUMENT_APP_VERSION, instrumentNumber, byteString32, "");
 		dimensionSupport.addVariableCharD2(CDFConstants.VARIABLE_INSTRUMENT_COMMENTS, instrumentNumber, byteString32, "");
-		try {
-			cdfChromatogram.create();
+		/*
+		 * Write to disk.
+		 */
+		try (NetcdfFormatWriter writer = builder.build()) {
 			ArrayList<IDataEntry> dataEntries = dimensionSupport.getDataEntries();
 			for(IDataEntry entry : dataEntries) {
-				cdfChromatogram.write(entry.getVarName(), entry.getValues());
+				writer.write(entry.getVarName(), entry.getValues());
 			}
-			cdfChromatogram.close();
-			cdfChromatogram = null;
 		} catch(IOException e) {
 			logger.warn(e);
 		} catch(InvalidRangeException e) {
 			logger.warn(e);
-		} finally {
-			if(cdfChromatogram != null) {
-				try {
-					cdfChromatogram.close();
-				} catch(IOException e) {
-					logger.warn(e);
-				}
-			}
 		}
 	}
 }

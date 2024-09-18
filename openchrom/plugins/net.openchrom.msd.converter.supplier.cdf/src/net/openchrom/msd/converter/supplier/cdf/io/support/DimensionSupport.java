@@ -24,10 +24,10 @@ import ucar.ma2.ArrayFloat;
 import ucar.ma2.ArrayInt;
 import ucar.ma2.ArrayShort;
 import ucar.ma2.DataType;
+import ucar.nc2.Attribute;
 import ucar.nc2.Dimension;
-import ucar.nc2.NetcdfFileWriter;
+import ucar.nc2.write.NetcdfFormatWriter.Builder;
 
-@SuppressWarnings("deprecation")
 public class DimensionSupport implements IDimensionSupport {
 
 	public final int NULL_VALUE = 0;
@@ -36,7 +36,7 @@ public class DimensionSupport implements IDimensionSupport {
 	public final float NULL_VALUE_TIME = 9.96921E36f;
 	private final String UNITS = "units";
 	private ArrayList<IDataEntry> dataEntries;
-	private NetcdfFileWriter cdfChromatogram;
+	private Builder builder;
 	private IChromatogramMSD chromatogram;
 	private ScanSupport scanSupport;
 	private Dimension byteString32;
@@ -46,10 +46,10 @@ public class DimensionSupport implements IDimensionSupport {
 	private Dimension instrumentNumber;
 	private Dimension errorNumber;
 
-	public DimensionSupport(NetcdfFileWriter cdfChromatogram, IChromatogramMSD chromatogram) {
+	public DimensionSupport(Builder builder, IChromatogramMSD chromatogram) {
 
 		dataEntries = new ArrayList<>();
-		this.cdfChromatogram = cdfChromatogram;
+		this.builder = builder;
 		this.chromatogram = chromatogram;
 		this.scanSupport = new ScanSupport(chromatogram);
 		initializeDimensions();
@@ -57,22 +57,22 @@ public class DimensionSupport implements IDimensionSupport {
 
 	private void initializeDimensions() {
 
-		cdfChromatogram.addDimension(CDFConstants.DIMENSION_2_BYTE_STRING, 2);
-		cdfChromatogram.addDimension(CDFConstants.DIMENSION_4_BYTE_STRING, 4);
-		cdfChromatogram.addDimension(CDFConstants.DIMENSION_8_BYTE_STRING, 8);
-		cdfChromatogram.addDimension(CDFConstants.DIMENSION_16_BYTE_STRING, 16);
+		builder.addDimension(CDFConstants.DIMENSION_2_BYTE_STRING, 2);
+		builder.addDimension(CDFConstants.DIMENSION_4_BYTE_STRING, 4);
+		builder.addDimension(CDFConstants.DIMENSION_8_BYTE_STRING, 8);
+		builder.addDimension(CDFConstants.DIMENSION_16_BYTE_STRING, 16);
 		// ----------
-		byteString32 = cdfChromatogram.addDimension(CDFConstants.DIMENSION_32_BYTE_STRING, 32);
-		byteString64 = cdfChromatogram.addDimension(CDFConstants.DIMENSION_64_BYTE_STRING, 64);
+		byteString32 = builder.addDimension(CDFConstants.DIMENSION_32_BYTE_STRING, 32);
+		byteString64 = builder.addDimension(CDFConstants.DIMENSION_64_BYTE_STRING, 64);
 		// ----------
-		cdfChromatogram.addDimension(CDFConstants.DIMENSION_128_BYTE_STRING, 128);
-		cdfChromatogram.addDimension(CDFConstants.DIMENSION_255_BYTE_STRING, 255);
-		cdfChromatogram.addDimension(CDFConstants.DIMENSION_RANGE, 2);
+		builder.addDimension(CDFConstants.DIMENSION_128_BYTE_STRING, 128);
+		builder.addDimension(CDFConstants.DIMENSION_255_BYTE_STRING, 255);
+		builder.addDimension(CDFConstants.DIMENSION_RANGE, 2);
 		// ----------
-		numberOfScanIons = cdfChromatogram.addDimension(CDFConstants.DIMENSION_POINT_NUMBER, chromatogram.getNumberOfScanIons());
-		errorNumber = cdfChromatogram.addDimension(CDFConstants.DIMENSION_ERROR_NUMBER, 1);
-		numberOfScans = cdfChromatogram.addDimension(CDFConstants.DIMENSION_SCAN_NUMBER, chromatogram.getNumberOfScans());
-		instrumentNumber = cdfChromatogram.addDimension(CDFConstants.DIMENSION_INSTRUMENT_NUMBER, 1);
+		numberOfScanIons = builder.addDimension(CDFConstants.DIMENSION_POINT_NUMBER, chromatogram.getNumberOfScanIons());
+		errorNumber = builder.addDimension(CDFConstants.DIMENSION_ERROR_NUMBER, 1);
+		numberOfScans = builder.addDimension(CDFConstants.DIMENSION_SCAN_NUMBER, chromatogram.getNumberOfScans());
+		instrumentNumber = builder.addDimension(CDFConstants.DIMENSION_INSTRUMENT_NUMBER, 1);
 		// ----------
 	}
 
@@ -82,7 +82,7 @@ public class DimensionSupport implements IDimensionSupport {
 		ArrayList<Dimension> dimension = new ArrayList<>();
 		dimension.add(firstDimension);
 		dimension.add(secondDimension);
-		cdfChromatogram.addVariable(varName, DataType.CHAR, dimension);
+		builder.addVariable(varName, DataType.CHAR, dimension);
 		ArrayChar.D2 values = new ArrayChar.D2(firstDimension.getLength(), secondDimension.getLength());
 		values.setString(0, content);
 		dataEntries.add(new DataEntry(varName, values));
@@ -93,7 +93,7 @@ public class DimensionSupport implements IDimensionSupport {
 
 		ArrayList<Dimension> dimension = new ArrayList<>();
 		dimension.add(firstDimension);
-		cdfChromatogram.addVariable(varName, DataType.DOUBLE, dimension);
+		builder.addVariable(varName, DataType.DOUBLE, dimension);
 		ArrayDouble.D1 values = new ArrayDouble.D1(firstDimension.getLength());
 		for(int i = 0; i < firstDimension.getLength(); i++) {
 			values.set(i, value);
@@ -106,7 +106,7 @@ public class DimensionSupport implements IDimensionSupport {
 
 		ArrayList<Dimension> dimension = new ArrayList<>();
 		dimension.add(firstDimension);
-		cdfChromatogram.addVariable(varName, DataType.SHORT, dimension);
+		builder.addVariable(varName, DataType.SHORT, dimension);
 		ArrayShort.D1 values = new ArrayShort.D1(firstDimension.getLength(), false);
 		for(int i = 0; i < firstDimension.getLength(); i++) {
 			values.set(i, value);
@@ -119,7 +119,7 @@ public class DimensionSupport implements IDimensionSupport {
 
 		ArrayList<Dimension> dimension = new ArrayList<>();
 		dimension.add(firstDimension);
-		cdfChromatogram.addVariable(varName, DataType.INT, dimension);
+		builder.addVariable(varName, DataType.INT, dimension);
 		ArrayInt.D1 values = new ArrayInt.D1(firstDimension.getLength(), false);
 		for(int i = 0; i < firstDimension.getLength(); i++) {
 			values.set(i, value);
@@ -133,7 +133,7 @@ public class DimensionSupport implements IDimensionSupport {
 		String varName = CDFConstants.VARIABLE_SCAN_ACQUISITION_TIME;
 		ArrayList<Dimension> dimension = new ArrayList<>();
 		dimension.add(numberOfScans);
-		cdfChromatogram.addVariable(varName, DataType.DOUBLE, dimension);
+		builder.addVariable(varName, DataType.DOUBLE, dimension);
 		ArrayDouble.D1 values = new ArrayDouble.D1(numberOfScans.getLength());
 		for(int i = 0; i < numberOfScans.getLength(); i++) {
 			values.set(i, chromatogram.getScan(i + 1).getRetentionTime() / 1000.0d);
@@ -147,7 +147,7 @@ public class DimensionSupport implements IDimensionSupport {
 		String varName = CDFConstants.VARIABLE_ACTUAL_SCAN_NUMBER;
 		ArrayList<Dimension> dimension = new ArrayList<>();
 		dimension.add(numberOfScans);
-		cdfChromatogram.addVariable(varName, DataType.INT, dimension);
+		builder.addVariable(varName, DataType.INT, dimension);
 		ArrayInt.D1 values = new ArrayInt.D1(numberOfScans.getLength(), false);
 		for(int i = 0; i < numberOfScans.getLength(); i++) {
 			values.set(i, i);
@@ -161,12 +161,12 @@ public class DimensionSupport implements IDimensionSupport {
 		String varName = CDFConstants.VARIABLE_TOTAL_INTENSITY;
 		ArrayList<Dimension> dimension = new ArrayList<>();
 		dimension.add(numberOfScans);
-		cdfChromatogram.addVariable(varName, DataType.DOUBLE, dimension);
+		builder.addVariable(varName, DataType.DOUBLE, dimension);
 		ArrayDouble.D1 values = new ArrayDouble.D1(numberOfScans.getLength());
 		for(int i = 0; i < numberOfScans.getLength(); i++) {
 			values.set(i, chromatogram.getScan(i + 1).getTotalSignal());
 		}
-		cdfChromatogram.addVariableAttribute(varName, UNITS, "Arbitrary Intensity Units");
+		builder.addAttribute(new Attribute(UNITS, "Arbitrary Intensity Units"));
 		dataEntries.add(new DataEntry(varName, values));
 	}
 
@@ -176,7 +176,7 @@ public class DimensionSupport implements IDimensionSupport {
 		String varName = CDFConstants.VARIABLE_MASS_RANGE_MIN;
 		ArrayList<Dimension> dimension = new ArrayList<>();
 		dimension.add(numberOfScans);
-		cdfChromatogram.addVariable(varName, DataType.DOUBLE, dimension);
+		builder.addVariable(varName, DataType.DOUBLE, dimension);
 		ArrayDouble.D1 values = new ArrayDouble.D1(numberOfScans.getLength());
 		for(int i = 0; i < numberOfScans.getLength(); i++) {
 			values.set(i, AbstractIon.getIon(scanSupport.getMinIon(i)));
@@ -190,7 +190,7 @@ public class DimensionSupport implements IDimensionSupport {
 		String varName = CDFConstants.VARIABLE_MASS_RANGE_MAX;
 		ArrayList<Dimension> dimension = new ArrayList<>();
 		dimension.add(numberOfScans);
-		cdfChromatogram.addVariable(varName, DataType.DOUBLE, dimension);
+		builder.addVariable(varName, DataType.DOUBLE, dimension);
 		ArrayDouble.D1 values = new ArrayDouble.D1(numberOfScans.getLength());
 		for(int i = 0; i < numberOfScans.getLength(); i++) {
 			values.set(i, AbstractIon.getIon(scanSupport.getMaxIon(i)));
@@ -204,7 +204,7 @@ public class DimensionSupport implements IDimensionSupport {
 		String varName = CDFConstants.VARIABLE_SCAN_INDEX;
 		ArrayList<Dimension> dimension = new ArrayList<>();
 		dimension.add(numberOfScans);
-		cdfChromatogram.addVariable(varName, DataType.INT, dimension);
+		builder.addVariable(varName, DataType.INT, dimension);
 		ArrayInt.D1 values = new ArrayInt.D1(numberOfScans.getLength(), false);
 		for(int i = 0; i < numberOfScans.getLength(); i++) {
 			values.set(i, scanSupport.getScanIndex(i + 1));
@@ -218,7 +218,7 @@ public class DimensionSupport implements IDimensionSupport {
 		String varName = CDFConstants.VARIABLE_POINT_COUNT;
 		ArrayList<Dimension> dimension = new ArrayList<>();
 		dimension.add(numberOfScans);
-		cdfChromatogram.addVariable(varName, DataType.INT, dimension);
+		builder.addVariable(varName, DataType.INT, dimension);
 		ArrayInt.D1 values = new ArrayInt.D1(numberOfScans.getLength(), false);
 		for(int i = 0; i < numberOfScans.getLength(); i++) {
 			values.set(i, scanSupport.getPointCount(i + 1));
@@ -233,17 +233,17 @@ public class DimensionSupport implements IDimensionSupport {
 		String varNameMassValues = CDFConstants.VARIABLE_MASS_VALUES;
 		ArrayList<Dimension> dimensionMassValues = new ArrayList<>();
 		dimensionMassValues.add(numberOfScanIons);
-		cdfChromatogram.addVariable(varNameMassValues, DataType.FLOAT, dimensionMassValues);
+		builder.addVariable(varNameMassValues, DataType.FLOAT, dimensionMassValues);
 		ArrayDouble.D1 valuesIons = new ArrayDouble.D1(numberOfScanIons.getLength());
 		String varNameTimeValues = CDFConstants.VARIABLE_TIME_VALUES;
 		ArrayList<Dimension> dimensionTimeValues = new ArrayList<>();
 		dimensionTimeValues.add(numberOfScanIons);
-		cdfChromatogram.addVariable(varNameTimeValues, DataType.FLOAT, dimensionTimeValues);
+		builder.addVariable(varNameTimeValues, DataType.FLOAT, dimensionTimeValues);
 		ArrayFloat.D1 valuesTime = new ArrayFloat.D1(numberOfScanIons.getLength());
 		String varNameAbundanceValues = CDFConstants.VARIABLE_INTENSITY_VALUES;
 		ArrayList<Dimension> dimensionAbundanceValues = new ArrayList<>();
 		dimensionAbundanceValues.add(numberOfScanIons);
-		cdfChromatogram.addVariable(varNameAbundanceValues, DataType.FLOAT, dimensionAbundanceValues);
+		builder.addVariable(varNameAbundanceValues, DataType.FLOAT, dimensionAbundanceValues);
 		ArrayFloat.D1 valuesAbundance = new ArrayFloat.D1(numberOfScanIons.getLength());
 		/*
 		 * F-Search could not show ion values correctly. Has F-Search
@@ -262,9 +262,9 @@ public class DimensionSupport implements IDimensionSupport {
 				counter++;
 			}
 		}
-		cdfChromatogram.addVariableAttribute(varNameMassValues, UNITS, "Ion");
-		cdfChromatogram.addVariableAttribute(varNameTimeValues, UNITS, "Seconds");
-		cdfChromatogram.addVariableAttribute(varNameAbundanceValues, UNITS, "Arbitrary Intensity Units");
+		builder.addAttribute(new Attribute(UNITS, "Ion"));
+		builder.addAttribute(new Attribute(UNITS, "Seconds"));
+		builder.addAttribute(new Attribute(UNITS, "Arbitrary Intensity Units"));
 		dataEntries.add(new DataEntry(varNameMassValues, valuesIons));
 		dataEntries.add(new DataEntry(varNameTimeValues, valuesTime));
 		dataEntries.add(new DataEntry(varNameAbundanceValues, valuesAbundance));

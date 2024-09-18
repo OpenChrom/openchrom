@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Lablicate GmbH.
+ * Copyright (c) 2013, 2024 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -28,10 +28,12 @@ import java.util.Locale;
  * 20080313003000+0200<br/>
  * 20080908131858+0200<br/>
  * 20080329065100+0200<br/>
- * 
- * @author eselmeister
  */
 public class DateSupport {
+
+	private DateSupport() {
+
+	}
 
 	private static final String pattern = "yyyyMMddHHmmssZ";
 
