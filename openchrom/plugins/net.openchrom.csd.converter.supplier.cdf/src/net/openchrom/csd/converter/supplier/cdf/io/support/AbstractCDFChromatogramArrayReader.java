@@ -14,6 +14,7 @@ package net.openchrom.csd.converter.supplier.cdf.io.support;
 import java.io.IOException;
 
 import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.identifier.ComparisonResult;
 import org.eclipse.chemclipse.model.identifier.IComparisonResult;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
@@ -79,9 +80,9 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 		if(retentionUnit != null) {
 			String unit = retentionUnit.getStringValue().trim();
 			if(unit.equals("seconds") || unit.equals("Seconds") || unit.equals("s")) {
-				retentionTimeScaleFactor = 1000;
+				retentionTimeScaleFactor = IChromatogramOverview.SECOND_CORRELATION_FACTOR;
 			} else if(unit.equals("minutes") || unit.equals("Minutes") || unit.equals("time in minutes")) {
-				retentionTimeScaleFactor = 1000 * 60;
+				retentionTimeScaleFactor = IChromatogramOverview.MINUTE_CORRELATION_FACTOR;
 			} else {
 				/*
 				 * Milliseconds
