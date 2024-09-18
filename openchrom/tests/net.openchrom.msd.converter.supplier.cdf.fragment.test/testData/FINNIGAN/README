@@ -1,0 +1,26 @@
+Description of the files in this directory:
+
+centscnh.cdf
+
+        first 100 scans of demo.dat, the complete file, an analysis of a GC
+        test mixture has 682 scans.
+
+centscnl.cdf
+
+        first 100 scans of demo.itd, the complete file, a purge & trap
+        analysis of organics in waters has 600 scans.
+
+continum.cdf
+
+        4 scans from myoglobin.dat, an ESI analysis of a 5pmol /ul myoglobin sample.
+
+
+library.cdf
+
+        first 100 entries from tx.lib, a toxicology library containing 2211
+        entries.
+
+BE SURE TO TRANSFER THESE FILES, AS WELL AS ALL OTHER .ZIP OR .Z FILES,
+IN BINARY MODE!
+
+

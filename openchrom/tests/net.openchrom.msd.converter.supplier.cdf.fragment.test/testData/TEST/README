@@ -1,0 +1,19 @@
+Description of the files in this directory:
+
+qd.cdf/cdl
+
+         An extract of a centroided GC/MS data file originally produced on a
+         a Finnigan INCOS data system, and converted using Fisons OPUS software.
+
+nist_50.cdf/cdl
+
+        50 entries extracted from the NIST mass spectral database.  In this file,
+        scans 0 through 24 are the first 25 entries from the NIST (provided because
+        the spectra are well-known) and scans 25 - 49 are the first 25 entries at
+        molecular weight 251 (provided because they have more peaks).
+
+
+BE SURE TO TRANSFER THESE FILES, AS WELL AS ALL OTHER .ZIP OR .Z FILES,
+IN BINARY MODE!
+
+

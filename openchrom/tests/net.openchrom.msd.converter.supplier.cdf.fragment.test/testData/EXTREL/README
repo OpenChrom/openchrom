@@ -1,0 +1,44 @@
+             Notes on Extrel FTMS AIA MS Round-Robin Test Files
+                             R. Kent Wenger
+                              Aug. 5, 1993
+
+General notes:
+
+None of the files on this disk are compressed.  The reason for this is
+that the CONTINUM.CDF file did not compress enough to make much difference,
+and the other files are so small in relation to it that it didn't make
+sense to compress them.
+
+
+Test 1, file CONTINUM.CDF: this file contains one scan of benzene and one
+scan of toluene (high-resolution, continuum FTMS spectra take up a large
+amount of disk space, which limited this file to two scans).  The most
+prominent peaks in the scan of benzene are at m/z 52, 77, and 78.  The most
+prominent peaks in the scan of toluene are at m/z 65, 91, and 92.  The mass
+and intensity data are in high-resolution format.
+
+Test 2, file CENTSCNL.CDF: this file contains five scans of pftba, with
+an experimental parameter increased with each scan.  The most prominent
+peaks in each scan are at m/z 69, 131, and 219.  The mass and intensity
+data are in low-resolution format.
+
+Test 3, file CENTSCNH.CDF: this is the same as the file for test 2, except
+that the mass and intensity data are in high-resolution format.
+
+Test 4, file CENTSIDL.CDF: this file contains nine scans of pftba, monitoring
+masses 69, 219, 264, 414, and 502, with an experimental parameter increased
+with each scan.  The mass and intensity data are in low-resolution format.
+This file contains no scan group information.
+
+Test 5, file CENTSIDH.CDF: this is the same as the file for test 5, except
+that the mass and intensity data are in high-resolution format.
+
+Test 6, file LIBRARY.CDF: this file contains two spectra.  The first is
+a spectrum of benzene (as in test 1, except in centroided form).  The second
+is a spectrum of toluene (as in test 1, except in centroided form).  Both
+scans contain only the minimum library information (the library entry name).
+The mass and intensity data are in low-resolution format.
+
+
+If you have any questions, please contact Kent Wenger at Extrel FTMS,
+Millipore Corp.  Phone: (608) 273-8262.  Fax: (608) 273-8719.

@@ -1,0 +1,36 @@
+README
+There are five NetCDF data files on this disk :
+CONTINUM.CDF
+CENTSCNH.CDF
+CENTSCNL.CDF
+CENTSIDH.CDF
+CENTSIDL.CDF
+
+The instrument used for the experiments is a PE SCIEX API III system,
+which includes the API III LC/MS/MS and an Apple Macintosh II series
+computer.  The API III data files are converted on a Macintosh IIfx
+computer by the PE-SCIEX FileTranslator program.
+
+The original files were in API III format.  FileTranslator is a
+software based on NetCDF 2.3.2 and AIA_MS 101 libraries.  It was
+developed using THINK C 6.0 under System 7.
+
+Currently, this program can convert files containing experimental
+data.  Since the API III system does not handle library files at this
+stage, this type of file is not converted by FileTranslator.  Only
+LC/MS data files are converted.  The API III LC/MS/MS data files are
+not converted.
+
+For any problems with these files,  please contact:
+
+Shengping Ma,
+SCIEX,
+55 Glen Cameron Rd.,
+Thornhill, Ontario,
+Canada L3T 1P2
+
+Tel: (416)881-4647 Ext. 338
+Fax:	(416)881-5329
+email: ping@elvis.sciex.com
+ 
+
