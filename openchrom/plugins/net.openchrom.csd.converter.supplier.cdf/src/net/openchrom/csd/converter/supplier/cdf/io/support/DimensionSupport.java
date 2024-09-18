@@ -17,6 +17,7 @@ import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 
 import ucar.ma2.ArrayChar;
 import ucar.ma2.ArrayDouble;
+import ucar.ma2.ArrayFloat;
 import ucar.ma2.ArrayInt;
 import ucar.ma2.ArrayShort;
 import ucar.ma2.DataType;
@@ -122,8 +123,8 @@ public class DimensionSupport implements IDimensionSupport {
 		String varName = CDFConstants.VARIABLE_ORDINATE_VALUES;
 		ArrayList<Dimension> dimension = new ArrayList<>();
 		dimension.add(numberOfScans);
-		builder.addVariable(varName, DataType.DOUBLE, dimension);
-		ArrayDouble.D1 values = new ArrayDouble.D1(numberOfScans.getLength());
+		builder.addVariable(varName, DataType.FLOAT, dimension);
+		ArrayFloat.D1 values = new ArrayFloat.D1(numberOfScans.getLength());
 		for(int i = 0; i < numberOfScans.getLength(); i++) {
 			values.set(i, chromatogram.getScan(i + 1).getTotalSignal());
 		}
