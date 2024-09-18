@@ -12,7 +12,7 @@
             importContentMatcher="net.openchrom.csd.converter.supplier.cdf.converter.FileContentMatcher"
             importConverter="net.openchrom.csd.converter.supplier.cdf.converter.ChromatogramImportConverterCSD"
             importMagicNumberMatcher="net.openchrom.csd.converter.supplier.cdf.converter.MagicNumberMatcher"
-            isExportable="false"
+            isExportable="true"
             isImportable="true">
       </ChromatogramSupplier>
    </extension>
