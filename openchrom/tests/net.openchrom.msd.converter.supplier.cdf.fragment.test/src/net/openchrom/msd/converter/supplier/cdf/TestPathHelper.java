@@ -13,6 +13,9 @@ package net.openchrom.msd.converter.supplier.cdf;
 
 public class TestPathHelper extends PathResolver {
 
+	public static final String TESTFILE_IMPORT_CHROMATOGRAM_2 = "testData/Chromatogram2.ocb";
+	public static final String DIRECTORY_EXPORT_TEST = "testData/export";
+	//
 	public static final String EXTREL_CENTSCNH = "testData/EXTREL/CENTSCNH.CDF";
 	public static final String EXTREL_CENTSCNL = "testData/EXTREL/CENTSCNL.CDF";
 	public static final String EXTREL_CENTSIDH = "testData/EXTREL/CENTSIDH.CDF";
