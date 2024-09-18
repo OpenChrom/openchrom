@@ -8,7 +8,6 @@
 
    <description url="https://projects.eclipse.org/projects/science.eavp">
       This is a SWTChart Extensions to support SVG, EPS and PDF export.
-      https://github.com/eseifert/vectorgraphics2d
    </description>
 
    <copyright url="https://www.lablicate.com">
@@ -21,16 +20,10 @@
 
    <plugin
          id="net.openchrom.swtchart.extension.export.vectorgraphics"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
-         id="wrapped.de.erichseifert.vectorgraphics2d.VectorGraphics2D"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         id="org.eclipse.swtchart.vectorgraphics2d"
+         version="0.0.0"/>
 
 </feature>
