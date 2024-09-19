@@ -150,19 +150,19 @@
 			<dependency>
 				<groupId>edu.ucar</groupId>
 				<artifactId>cdm-core</artifactId>
-				<version>5.5.3</version>
+				<version>5.6.0</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>edu.ucar</groupId>
 				<artifactId>httpservices</artifactId>
-				<version>5.5.3</version>
+				<version>5.6.0</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>edu.ucar</groupId>
 				<artifactId>udunits</artifactId>
-				<version>5.5.3</version>
+				<version>5.6.0</version>
 				<type>jar</type>
 			</dependency>
 		</dependencies>
