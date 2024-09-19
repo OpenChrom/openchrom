@@ -11,12 +11,14 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.wizards;
 
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.chemclipse.model.cas.CasSupport;
 import org.eclipse.chemclipse.model.cas.CasValidator;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.swt.IExtendedPartUI;
 import org.eclipse.core.databinding.validation.IValidator;
+import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
@@ -37,10 +39,12 @@ public class IdentifierSettingsPage extends WizardPage implements IExtendedPartU
 	private AtomicReference<Text> nameControl = new AtomicReference<>();
 	private AtomicReference<Text> casNumberControl = new AtomicReference<>();
 	private AtomicReference<Text> referenceIdentifierControl = new AtomicReference<>();
+	private AtomicReference<Text> commentsControl = new AtomicReference<>();
 	//
 	private IdentifierSetting identifierSetting = null;
+	private Set<String> invalidNames = null;
 
-	protected IdentifierSettingsPage(IdentifierSetting identifierSetting) {
+	protected IdentifierSettingsPage(IdentifierSetting identifierSetting, Set<String> invalidNames) {
 
 		super(IdentifierSettingsPage.class.getName());
 		//
@@ -48,6 +52,7 @@ public class IdentifierSettingsPage extends WizardPage implements IExtendedPartU
 		setDescription("Edit the identifier details.");
 		//
 		this.identifierSetting = identifierSetting;
+		this.invalidNames = invalidNames;
 	}
 
 	@Override
@@ -60,6 +65,7 @@ public class IdentifierSettingsPage extends WizardPage implements IExtendedPartU
 		createNameSection(composite);
 		createCasSection(composite);
 		createReferenceIdentifierSection(composite);
+		createCommentsSection(composite);
 		//
 		updateInput();
 		setControl(composite);
@@ -67,10 +73,48 @@ public class IdentifierSettingsPage extends WizardPage implements IExtendedPartU
 
 	private void createNameSection(Composite parent) {
 
-		createLabel(parent, "Name", "");
+		createLabel(parent, "Name", "Enter a substance name.");
 		//
 		Text text = createText(parent);
-		text.setEnabled(false);
+		IValidator<String> nameValidator = new IValidator<>() {
+
+			@Override
+			public IStatus validate(String value) {
+
+				String message = null;
+				if(value != null) {
+					if(value.isBlank()) {
+						message = "The name must not be empty.";
+					} else {
+						if(invalidNames != null) {
+							if(invalidNames.contains(value)) {
+								message = "The name exists already.";
+							}
+						}
+					}
+				} else {
+					message = "No name is supported yet.";
+				}
+				//
+				if(message != null) {
+					return ValidationStatus.error(message);
+				} else {
+					return ValidationStatus.ok();
+				}
+			}
+		};
+		ControlDecoration controlDecoration = new ControlDecoration(text, SWT.LEFT | SWT.TOP);
+		text.addModifyListener(new ModifyListener() {
+
+			@Override
+			public void modifyText(ModifyEvent e) {
+
+				if(identifierSetting != null) {
+					identifierSetting.setName(text.getText().trim());
+					validate(nameValidator, controlDecoration, text);
+				}
+			}
+		});
 		//
 		nameControl.set(text);
 	}
@@ -94,7 +138,6 @@ public class IdentifierSettingsPage extends WizardPage implements IExtendedPartU
 			}
 		});
 		//
-		//
 		casNumberControl.set(text);
 	}
 
@@ -115,6 +158,25 @@ public class IdentifierSettingsPage extends WizardPage implements IExtendedPartU
 		});
 		//
 		referenceIdentifierControl.set(text);
+	}
+
+	private void createCommentsSection(Composite parent) {
+
+		createLabel(parent, "Comments", "Enter e.g. an analysis hint.");
+		//
+		Text text = createText(parent);
+		text.addModifyListener(new ModifyListener() {
+
+			@Override
+			public void modifyText(ModifyEvent e) {
+
+				if(identifierSetting != null) {
+					identifierSetting.setComments(text.getText().trim());
+				}
+			}
+		});
+		//
+		commentsControl.set(text);
 	}
 
 	private void createLabel(Composite parent, String text, String tooltip) {
@@ -139,10 +201,12 @@ public class IdentifierSettingsPage extends WizardPage implements IExtendedPartU
 			nameControl.get().setText(identifierSetting.getName());
 			casNumberControl.get().setText(identifierSetting.getCasNumber().isBlank() ? CasSupport.CAS_DEFAULT : identifierSetting.getCasNumber());
 			referenceIdentifierControl.get().setText(identifierSetting.getReferenceIdentifier());
+			commentsControl.get().setText(identifierSetting.getComments());
 		} else {
 			nameControl.get().setText("");
 			casNumberControl.get().setText("");
 			referenceIdentifierControl.get().setText("");
+			commentsControl.get().setText("");
 		}
 	}
 
@@ -154,7 +218,7 @@ public class IdentifierSettingsPage extends WizardPage implements IExtendedPartU
 			setErrorMessage(null);
 		} else {
 			controlDecoration.setImage(FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_CONTENT_PROPOSAL).getImage());
-			controlDecoration.showHoverText("CAS#");
+			controlDecoration.showHoverText(status.getMessage());
 			controlDecoration.show();
 			setErrorMessage(status.getMessage());
 		}
