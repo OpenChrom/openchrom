@@ -216,11 +216,13 @@ public class IdentifierSettingsPage extends WizardPage implements IExtendedPartU
 		if(status.isOK()) {
 			controlDecoration.hide();
 			setErrorMessage(null);
+			setPageComplete(true);
 		} else {
 			controlDecoration.setImage(FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_CONTENT_PROPOSAL).getImage());
 			controlDecoration.showHoverText(status.getMessage());
 			controlDecoration.show();
 			setErrorMessage(status.getMessage());
+			setPageComplete(false);
 		}
 		//
 		return status;
