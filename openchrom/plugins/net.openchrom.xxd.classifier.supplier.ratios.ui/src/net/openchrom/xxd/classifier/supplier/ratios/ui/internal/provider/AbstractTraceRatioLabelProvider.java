@@ -44,11 +44,11 @@ public abstract class AbstractTraceRatioLabelProvider extends AbstractChemClipse
 					double deviationWarn = peakRatio.getDeviationWarn();
 					double deviationError = peakRatio.getDeviationError();
 					if(deviation < deviationWarn) {
-						return Colors.getColor(Colors.LIGHT_GREEN);
+						return Colors.LIGHT_GREEN;
 					} else if(deviation < deviationError) {
-						return Colors.getColor(Colors.LIGHT_YELLOW);
+						return Colors.LIGHT_YELLOW;
 					} else {
-						return Colors.getColor(Colors.LIGHT_RED);
+						return Colors.LIGHT_RED;
 					}
 				}
 			}

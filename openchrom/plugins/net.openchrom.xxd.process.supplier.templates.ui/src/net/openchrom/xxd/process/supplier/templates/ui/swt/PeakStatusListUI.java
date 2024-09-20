@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2022 Lablicate GmbH.
+ * Copyright (c) 2020, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -81,7 +81,7 @@ public class PeakStatusListUI extends ExtendedTableViewer {
 					if(cell != null) {
 						IPeak peak = (IPeak)cell.getElement();
 						boolean isCompoundAvailable = ReviewSupport.isCompoundAvailable(peak.getTargets(), reviewSetting);
-						Color background = isCompoundAvailable ? Colors.getColor(Colors.LIGHT_GREEN) : null;
+						Color background = isCompoundAvailable ? Colors.LIGHT_GREEN : null;
 						cell.setBackground(background);
 						cell.setForeground(Colors.BLACK);
 						cell.setText(ReviewSupport.getName(peak));
@@ -109,9 +109,9 @@ public class PeakStatusListUI extends ExtendedTableViewer {
 						Color background = null;
 						if(isCompoundAvailable) {
 							if(isPeakReviewed) {
-								background = Colors.getColor(Colors.LIGHT_GREEN);
+								background = Colors.LIGHT_GREEN;
 							} else {
-								background = Colors.getColor(Colors.LIGHT_YELLOW);
+								background = Colors.LIGHT_YELLOW;
 							}
 						} else {
 							background = Colors.GRAY;

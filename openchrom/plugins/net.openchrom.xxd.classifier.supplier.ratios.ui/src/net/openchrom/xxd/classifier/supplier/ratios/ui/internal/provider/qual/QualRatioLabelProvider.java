@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Lablicate GmbH.
+ * Copyright (c) 2019, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
+ * Philip Wenig - initial API and implementation
  * Christoph Läubrich - Color-support
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.qual;
@@ -112,19 +112,19 @@ public class QualRatioLabelProvider extends AbstractChemClipseLabelProvider impl
 		Color color;
 		switch(peakQuality) {
 			case VERY_GOOD:
-				color = (background) ? Colors.getColor(Colors.LIGHT_GREEN) : Colors.BLACK;
+				color = (background) ? Colors.LIGHT_GREEN : Colors.BLACK;
 				break;
 			case GOOD:
-				color = (background) ? Colors.getColor(Colors.LIGHT_GREEN) : Colors.BLACK;
+				color = (background) ? Colors.LIGHT_GREEN : Colors.BLACK;
 				break;
 			case ACCEPTABLE:
-				color = (background) ? Colors.getColor(Colors.LIGHT_YELLOW) : Colors.BLACK;
+				color = (background) ? Colors.LIGHT_YELLOW : Colors.BLACK;
 				break;
 			case BAD:
-				color = (background) ? Colors.getColor(Colors.LIGHT_RED) : Colors.BLACK;
+				color = (background) ? Colors.LIGHT_RED : Colors.BLACK;
 				break;
 			case VERY_BAD:
-				color = (background) ? Colors.getColor(Colors.LIGHT_RED) : Colors.BLACK;
+				color = (background) ? Colors.LIGHT_RED : Colors.BLACK;
 				break;
 			default:
 				color = null;

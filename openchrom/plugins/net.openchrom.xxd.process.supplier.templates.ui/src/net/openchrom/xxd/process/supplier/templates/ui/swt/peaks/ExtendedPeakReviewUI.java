@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Lablicate GmbH.
+ * Copyright (c) 2020, 2024 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -364,7 +364,7 @@ public class ExtendedPeakReviewUI extends Composite implements IExtendedPartUI {
 
 		if(reviewSetting != null) {
 			boolean isCompoundAvailable = ReviewSupport.isCompoundAvailable(peaks, reviewSetting);
-			textTarget.setBackground(isCompoundAvailable ? Colors.getColor(Colors.LIGHT_GREEN) : Colors.getColor(Colors.LIGHT_YELLOW));
+			textTarget.setBackground(isCompoundAvailable ? Colors.LIGHT_GREEN : Colors.LIGHT_YELLOW);
 			StringBuilder builder = new StringBuilder();
 			builder.append(reviewSetting.getName());
 			builder.append(" ");

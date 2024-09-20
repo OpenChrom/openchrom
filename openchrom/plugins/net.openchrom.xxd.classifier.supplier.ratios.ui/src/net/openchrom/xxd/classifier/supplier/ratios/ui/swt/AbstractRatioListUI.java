@@ -76,7 +76,7 @@ public abstract class AbstractRatioListUI extends ExtendedTableViewer {
 
 					if(cell != null) {
 						if(cell.getElement() instanceof IPeakRatio peakRatio) {
-							cell.setBackground(Colors.getColor(Colors.LIGHT_YELLOW));
+							cell.setBackground(Colors.LIGHT_YELLOW);
 							cell.setForeground(Colors.BLACK);
 							cell.setText("> " + Double.toString(peakRatio.getDeviationWarn()));
 							super.update(cell);
@@ -97,7 +97,7 @@ public abstract class AbstractRatioListUI extends ExtendedTableViewer {
 
 					if(cell != null) {
 						if(cell.getElement() instanceof IPeakRatio peakRatio) {
-							cell.setBackground(Colors.getColor(Colors.LIGHT_RED));
+							cell.setBackground(Colors.LIGHT_RED);
 							cell.setForeground(Colors.BLACK);
 							cell.setText("> " + Double.toString(peakRatio.getDeviationError()));
 							super.update(cell);

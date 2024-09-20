@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Lablicate GmbH.
+ * Copyright (c) 2020, 2024 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -392,7 +392,7 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 					if(cell != null) {
 						IIdentificationTarget target = (IIdentificationTarget)cell.getElement();
 						boolean isCompoundAvailable = ReviewSupport.isCompoundAvailable(target, reviewSetting);
-						Color background = isCompoundAvailable ? Colors.getColor(Colors.LIGHT_GREEN) : null;
+						Color background = isCompoundAvailable ? Colors.LIGHT_GREEN : null;
 						cell.setBackground(background);
 						cell.setForeground(Colors.BLACK);
 						cell.setText(target.getLibraryInformation().getName());
