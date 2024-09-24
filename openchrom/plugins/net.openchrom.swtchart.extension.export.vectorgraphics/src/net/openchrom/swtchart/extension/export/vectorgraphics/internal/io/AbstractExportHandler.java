@@ -59,9 +59,15 @@ public abstract class AbstractExportHandler extends AbstractSeriesExportHandler 
 		 */
 		CommandSequence commandSequene = getCommandSequenceAutofixChart(shell, pageSizeOption, -1, -1, scrollableChart);
 		if(commandSequene != null) {
-			Document document = processor.getDocument(commandSequene, pageSizeOption.pageSize());
-			executeFile(shell, document, filterName, filterExtension, fileName, true);
-			executeClipboard(document, typeName);
+			Document document;
+			try {
+				document = processor.getDocument(commandSequene, pageSizeOption.pageSize());
+				executeFile(shell, document, filterName, filterExtension, fileName, true);
+				executeClipboard(document, typeName);
+			} catch(IOException e) {
+				logger.error(e);
+				MessageDialog.openError(shell, "Error", e.getMessage());
+			}
 		} else {
 			MessageDialog.openInformation(shell, "VectorGraphics", "Sorry, the chart type is not supported yet. Please ask for support.");
 		}
@@ -71,11 +77,14 @@ public abstract class AbstractExportHandler extends AbstractSeriesExportHandler 
 
 		CommandSequence commandSequene = getCommandSequenceAutofixChart(shell, pageSizeOption, indexAxisX, indexAxisY, scrollableChart);
 		if(commandSequene != null) {
-			Document document = processor.getDocument(commandSequene, pageSizeOption.pageSize());
-			execute(file, document, false);
+			try {
+				Document document = processor.getDocument(commandSequene, pageSizeOption.pageSize());
+				execute(file, document, false);
+			} catch(IOException e) {
+				logger.error(e);
+			}
 			return true;
 		}
-		//
 		return false;
 	}
 
