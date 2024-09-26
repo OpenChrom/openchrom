@@ -19,11 +19,13 @@ import java.util.List;
 
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.chemclipse.tsd.converter.core.IImportConverterTSD;
+import org.eclipse.chemclipse.tsd.converter.core.model.TraceRangeMatcher;
 import org.eclipse.chemclipse.tsd.model.core.IChromatogramTSD;
 import org.eclipse.chemclipse.tsd.model.core.IScanTSD;
 import org.eclipse.chemclipse.tsd.model.core.ScanTSD;
@@ -61,6 +63,12 @@ public class ChromatogramReaderTSD implements IImportConverterTSD {
 	public IChromatogramOverview convertOverview(InputStream inputStream, IProgressMonitor monitor) throws IOException {
 
 		return null; // Not needed yet.
+	}
+
+	@Override
+	public IChromatogram<?> extract(IChromatogramTSD chromatogramTSD, TraceRangeMatcher traceRangeMatcher, IProgressMonitor monitor) throws IOException {
+
+		return null;
 	}
 
 	private IChromatogramTSD readChromatogram(File file, IProgressMonitor monitor) throws IOException {

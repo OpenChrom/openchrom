@@ -600,7 +600,7 @@
             categoryId="com.lablicate.openchrom.converters.proprietary"
             description="Reads *.peg files."
             groupId="net.openchrom.msd.converter"
-            id="net.openchrom.msd.converter.supplier.leco.feature"
+            id="net.openchrom.msd.converter.supplier.leco.peg.feature"
             kind="converter"
             license="Converter License Terms"
             name="LECO GC-MS"
