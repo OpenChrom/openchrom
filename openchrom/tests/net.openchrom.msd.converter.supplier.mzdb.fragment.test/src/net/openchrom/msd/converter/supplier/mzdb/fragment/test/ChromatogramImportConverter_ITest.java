@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Lablicate GmbH.
+ * Copyright (c) 2022, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -14,6 +14,7 @@ package net.openchrom.msd.converter.supplier.mzdb.fragment.test;
 import java.io.File;
 
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
+import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.support.history.IEditInformation;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -50,6 +51,14 @@ public class ChromatogramImportConverter_ITest extends TestCase {
 		assertEquals("1", chromatogram.getSampleName());
 	}
 
+	public void testHistory() {
+
+		assertEquals(2, chromatogram.getEditHistory().size());
+		IEditInformation info = chromatogram.getEditHistory().get(1);
+		assertEquals("mzML to mzDB conversion", info.getDescription());
+		assertEquals("Thermo2mzDB", info.getEditor());
+	}
+
 	public void testScans() {
 
 		assertEquals(48, chromatogram.getNumberOfScans());
@@ -57,11 +66,9 @@ public class ChromatogramImportConverter_ITest extends TestCase {
 		assertEquals(474, chromatogram.getScan(2).getRetentionTime());
 	}
 
-	public void testHistory() {
+	public void testFirstSpectrum() {
 
-		assertEquals(2, chromatogram.getEditHistory().size());
-		IEditInformation info = chromatogram.getEditHistory().get(1);
-		assertEquals("mzML to mzDB conversion", info.getDescription());
-		assertEquals("Thermo2mzDB", info.getEditor());
+		IScanMSD scanMSD = (IScanMSD)chromatogram.getScan(1);
+		assertEquals(1750, scanMSD.getNumberOfIons());
 	}
 }
