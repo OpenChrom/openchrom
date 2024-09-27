@@ -13,6 +13,8 @@ package net.openchrom.msd.converter.supplier.mzdb.io;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -24,12 +26,14 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.msd.converter.io.IChromatogramMSDWriter;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
+import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IRegularMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.support.history.IEditInformation;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.mzdb.Activator;
+import net.openchrom.msd.converter.supplier.mzdb.internal.DataMode;
 
 public class ChromatogramWriter extends AbstractChromatogramWriter implements IChromatogramMSDWriter {
 
@@ -55,7 +59,9 @@ public class ChromatogramWriter extends AbstractChromatogramWriter implements IC
 			createSample(connection, chromatogram);
 			createSoftware(connection);
 			createDataProcessing(connection, chromatogram);
-			createSpectrum(connection, chromatogram, monitor);
+			createSpectrum(connection, chromatogram);
+			createDataEncoding(connection);
+			createBoundingBox(connection, chromatogram, monitor);
 			connection.commit();
 			connection.setAutoCommit(true);
 		} catch(SQLException e) {
@@ -158,7 +164,7 @@ public class ChromatogramWriter extends AbstractChromatogramWriter implements IC
 		}
 	}
 
-	private void createSpectrum(Connection connection, IChromatogramMSD chromatogram, IProgressMonitor monitor) throws SQLException {
+	private void createSpectrum(Connection connection, IChromatogramMSD chromatogram) throws SQLException {
 
 		String createSpectrum = """
 				CREATE TABLE spectrum(
@@ -191,7 +197,6 @@ public class ChromatogramWriter extends AbstractChromatogramWriter implements IC
 		try (var statement = connection.createStatement()) {
 			statement.execute(createSpectrum);
 		}
-		monitor.beginTask(ConverterMessages.writeScans, chromatogram.getNumberOfScans());
 		String insert = "INSERT INTO spectrum(cycle,title,time,ms_level,tic,main_precursor_mz) VALUES(?,?,?,?,?,?)";
 		try (var prepareStatement = connection.prepareStatement(insert)) {
 			for(IScan scan : chromatogram.getScans()) {
@@ -206,9 +211,86 @@ public class ChromatogramWriter extends AbstractChromatogramWriter implements IC
 					}
 				}
 				prepareStatement.addBatch();
-				monitor.worked(1);
 			}
 			prepareStatement.executeBatch();
 		}
+	}
+
+	private void createDataEncoding(Connection connection) throws SQLException {
+
+		String createDataEncoding = """
+				CREATE TABLE data_encoding (
+				  id INTEGER PRIMARY KEY AUTOINCREMENT,
+				  mode TEXT(10) NOT NULL,
+				  compression TEXT,
+				  byte_order TEXT(13) NOT NULL,
+				  mz_precision INTEGER NOT NULL,
+				  intensity_precision INTEGER NOT NULL,
+				  param_tree TEXT
+				)
+				""";
+		try (var statement = connection.createStatement()) {
+			statement.execute(createDataEncoding);
+		}
+		String insert = "INSERT INTO data_encoding(mode,compression,byte_order,mz_precision,intensity_precision) VALUES(?,?,?,?,?)";
+		try (var prepareStatement = connection.prepareStatement(insert)) {
+			prepareStatement.setString(1, DataMode.CENTROID.name().toLowerCase());
+			prepareStatement.setString(2, "none");
+			prepareStatement.setString(3, "little_endian");
+			prepareStatement.setInt(4, 64);
+			prepareStatement.setInt(5, 32);
+			prepareStatement.executeUpdate();
+		}
+	}
+
+	private void createBoundingBox(Connection connection, IChromatogramMSD chromatogram, IProgressMonitor monitor) throws SQLException {
+
+		String createBoundingBox = """
+				CREATE TABLE bounding_box (
+				  id INTEGER PRIMARY KEY AUTOINCREMENT,
+				  data BLOB NOT NULL,
+				  run_slice_id INTEGER NOT NULL,
+				  first_spectrum_id INTEGER NOT NULL,
+				  last_spectrum_id INTEGER NOT NULL,
+				  FOREIGN KEY (run_slice_id) REFERENCES run_slice (id),
+				  FOREIGN KEY (first_spectrum_id) REFERENCES spectrum (id),
+				  FOREIGN KEY (last_spectrum_id) REFERENCES spectrum (id)
+				)
+				""";
+		try (var statement = connection.createStatement()) {
+			statement.execute(createBoundingBox);
+		}
+		monitor.beginTask(ConverterMessages.writeScans, chromatogram.getNumberOfScans());
+		String insert = "INSERT INTO bounding_box(run_slice_id, data, first_spectrum_id, last_spectrum_id) VALUES(?,?,?,?)";
+		try (var prepareStatement = connection.prepareStatement(insert)) {
+			// TODO: optimize slicing for data retrieval
+			for(IScan scan : chromatogram.getScans()) {
+				prepareStatement.setFloat(1, scan.getScanNumber());
+				if(scan instanceof IScanMSD scanMSD) {
+					prepareStatement.setBytes(2, scanToBlob(scanMSD));
+				}
+				prepareStatement.setFloat(3, scan.getScanNumber());
+				prepareStatement.setFloat(4, scan.getScanNumber());
+				monitor.worked(1);
+				prepareStatement.addBatch();
+			}
+			prepareStatement.executeBatch();
+		}
+	}
+
+	private static byte[] scanToBlob(IScanMSD scanMSD) {
+
+		int headerSize = Integer.SIZE * 2;
+		int mzSize = Double.SIZE / Byte.SIZE * scanMSD.getNumberOfIons();
+		int intensitySize = Float.SIZE / Byte.SIZE * scanMSD.getNumberOfIons();
+		ByteBuffer buffer = ByteBuffer.allocate(headerSize + mzSize + intensitySize);
+		buffer.order(ByteOrder.LITTLE_ENDIAN);
+		buffer.putInt(scanMSD.getScanNumber());
+		buffer.putInt(scanMSD.getNumberOfIons());
+		for(IIon ion : scanMSD.getIons()) {
+			buffer.putDouble(ion.getIon());
+			buffer.putFloat(ion.getAbundance());
+		}
+		return buffer.array();
 	}
 }

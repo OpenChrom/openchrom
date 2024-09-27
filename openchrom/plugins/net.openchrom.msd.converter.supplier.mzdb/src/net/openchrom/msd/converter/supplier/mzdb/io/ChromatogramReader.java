@@ -14,6 +14,8 @@ package net.openchrom.msd.converter.supplier.mzdb.io;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -26,6 +28,7 @@ import java.util.List;
 import org.eclipse.chemclipse.converter.io.AbstractChromatogramReader;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
+import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.msd.converter.io.IChromatogramMSDReader;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IIon;
@@ -33,9 +36,13 @@ import org.eclipse.chemclipse.msd.model.implementation.Ion;
 import org.eclipse.chemclipse.support.history.EditInformation;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import net.openchrom.msd.converter.supplier.mzdb.internal.DataEncoding;
+import net.openchrom.msd.converter.supplier.mzdb.internal.DataMode;
+import net.openchrom.msd.converter.supplier.mzdb.internal.Precision;
 import net.openchrom.msd.converter.supplier.mzdb.model.IVendorChromatogram;
 import net.openchrom.msd.converter.supplier.mzdb.model.IVendorScan;
 import net.openchrom.msd.converter.supplier.mzdb.model.VendorChromatogram;
+import net.openchrom.msd.converter.supplier.mzdb.model.VendorIon;
 import net.openchrom.msd.converter.supplier.mzdb.model.VendorScan;
 
 public class ChromatogramReader extends AbstractChromatogramReader implements IChromatogramMSDReader {
@@ -70,6 +77,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 				readName(statement, chromatogram);
 				readEditHistory(statement, chromatogram);
 				readSpectrum(statement, chromatogram);
+				readScans(statement, chromatogram);
 			}
 		} catch(SQLException e) {
 			logger.warn(e);
@@ -144,6 +152,67 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 				double mainPrecursorMZ = spectrumResultSet.getDouble("main_precursor_mz");
 				scan.setPrecursorIon(mainPrecursorMZ);
 				chromatogram.addScan(scan);
+			}
+		}
+	}
+
+	private DataEncoding readDataEncoding(Statement statement) throws SQLException {
+
+		DataEncoding dataEncoding = new DataEncoding();
+		try (ResultSet dataEncodingResultSet = statement.executeQuery("SELECT * FROM data_encoding;")) {
+			while(dataEncodingResultSet.next()) {
+				dataEncoding.setDataMode(DataMode.valueOf(dataEncodingResultSet.getString("mode").toUpperCase()));
+				dataEncoding.setCompression(dataEncodingResultSet.getString("compression"));
+				String byteOrder = dataEncodingResultSet.getString("byte_order");
+				if(byteOrder.equals("little_endian")) {
+					dataEncoding.setByteOrder(ByteOrder.LITTLE_ENDIAN);
+				} else if(byteOrder.equals("big_endian")) {
+					dataEncoding.setByteOrder(ByteOrder.BIG_ENDIAN);
+				}
+				dataEncoding.setMzPrecision(Precision.fromBits(dataEncodingResultSet.getInt("mz_precision")));
+				dataEncoding.setIntensityPrecision(Precision.fromBits(dataEncodingResultSet.getInt("intensity_precision")));
+			}
+		}
+		return dataEncoding;
+	}
+
+	private void readScans(Statement statement, IVendorChromatogram chromatogram) throws SQLException {
+
+		DataEncoding dataEncoding = readDataEncoding(statement);
+		String compression = dataEncoding.getCompression();
+		if(compression != null && !compression.isEmpty() && !compression.equals("none")) {
+			throw new UnsupportedOperationException("Compression is not yet supported.");
+		}
+		if(dataEncoding.getDataMode() != DataMode.CENTROID) {
+			throw new UnsupportedOperationException("Only centroided data is supported.");
+		}
+		try (ResultSet boundingBoxResultSet = statement.executeQuery("SELECT * FROM bounding_box;")) {
+			while(boundingBoxResultSet.next()) {
+				byte[] blobData = boundingBoxResultSet.getBytes("data");
+				ByteBuffer buffer = ByteBuffer.wrap(blobData).order(dataEncoding.getByteOrder());
+				while(buffer.hasRemaining()) {
+					int spectrumId = buffer.getInt();
+					IScan scan = chromatogram.getScan(spectrumId);
+					if(scan instanceof IVendorScan vendorScan) {
+						vendorScan.removeIon(0); // calculate TIC instead
+						int numberOfIons = buffer.getInt();
+						for(int i = 0; i < numberOfIons; i++) {
+							double mz = 0;
+							if(dataEncoding.getMzPrecision() == Precision.DOUBLE) {
+								mz = buffer.getDouble();
+							} else if(dataEncoding.getMzPrecision() == Precision.FLOAT) {
+								mz = buffer.getFloat();
+							}
+							float intensity = 0;
+							if(dataEncoding.getIntensityPrecision() == Precision.DOUBLE) {
+								intensity = (float)buffer.getDouble();
+							} else if(dataEncoding.getIntensityPrecision() == Precision.FLOAT) {
+								intensity = buffer.getFloat();
+							}
+							vendorScan.addIon(new VendorIon(mz, intensity));
+						}
+					}
+				}
 			}
 		}
 	}
