@@ -57,7 +57,6 @@ import jakarta.xml.bind.Unmarshaller;
 public class ChromatogramReader extends AbstractChromatogramReader implements IChromatogramMSDReader {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramReader.class);
-	private static final String IMPORT_CHROMATOGRAM = "Import mzMLb Chromatogram";
 
 	@Override
 	public IChromatogramOverview readOverview(File file, IProgressMonitor monitor) throws IOException {
@@ -84,7 +83,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 			chromatogram = new VendorChromatogram();
 			chromatogram.setFile(file);
 			SpectrumListType spectrumList = run.getSpectrumList();
-			monitor.beginTask(IMPORT_CHROMATOGRAM, spectrumList.getCount().intValue());
+			monitor.beginTask(ConverterMessages.importChromatogram, spectrumList.getCount().intValue());
 			for(SpectrumType spectrum : spectrumList.getSpectrum()) {
 				monitor.subTask(NLS.bind(ConverterMessages.scan, spectrum.getIndex()));
 				float abundance = 0.0f;

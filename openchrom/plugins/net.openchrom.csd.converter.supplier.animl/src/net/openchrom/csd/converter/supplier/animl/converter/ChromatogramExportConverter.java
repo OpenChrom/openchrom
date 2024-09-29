@@ -12,9 +12,12 @@
 package net.openchrom.csd.converter.supplier.animl.converter;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.eclipse.chemclipse.converter.chromatogram.AbstractChromatogramExportConverter;
 import org.eclipse.chemclipse.converter.chromatogram.IChromatogramExportConverter;
+import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
+import org.eclipse.chemclipse.converter.l10n.ConverterMessages;
 import org.eclipse.chemclipse.csd.converter.io.IChromatogramCSDWriter;
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
@@ -22,6 +25,7 @@ import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.osgi.util.NLS;
 
 import net.openchrom.csd.converter.supplier.animl.io.ChromatogramWriter;
 import net.openchrom.xxd.converter.supplier.animl.l10n.Messages;
@@ -43,9 +47,12 @@ public class ChromatogramExportConverter extends AbstractChromatogramExportConve
 			IChromatogramCSDWriter writer = new ChromatogramWriter();
 			try {
 				writer.writeChromatogram(file, chromatogramCSD, monitor);
-			} catch(Exception e) {
+			} catch(IOException e) {
 				logger.warn(e);
-				processingInfo.addErrorMessage(DESCRIPTION, "Failed to write file: " + file.getAbsolutePath());
+				processingInfo.addErrorMessage(DESCRIPTION, NLS.bind(ConverterMessages.failedToWriteFile, file.getAbsolutePath()));
+			} catch(FileIsNotWriteableException e) {
+				logger.error(e);
+				processingInfo.addErrorMessage(DESCRIPTION, NLS.bind(ConverterMessages.fileNotWritable, file.getAbsolutePath()));
 			}
 			processingInfo.setProcessingResult(file);
 		}
