@@ -81,7 +81,6 @@ public class ConfigurableReportWriter {
 		if(printHeader && fileExists) {
 			printHeader = reportSettings.isAppendResultsHeader();
 		}
-		//
 		if(printHeader) {
 			printHeader(csvPrinter, reportColumns);
 		}
@@ -450,7 +449,6 @@ public class ConfigurableReportWriter {
 			csvPrinter.printRecord(records);
 			records.clear();
 		}
-		//
 		if(printSectionSeparator) {
 			csvPrinter.println();
 		}
@@ -461,7 +459,6 @@ public class ConfigurableReportWriter {
 		if(totalPeakArea > 0) {
 			return 100.0d / totalPeakArea * peakArea;
 		}
-		//
 		return 0;
 	}
 }

@@ -195,6 +195,10 @@
          id="org.eclipse.swtchart.feature"
          version="0.0.0"/>
 
+   <includes
+         id="net.openchrom.chromatogram.xxd.report.supplier.excel.template.feature"
+         version="0.0.0"/>
+
    <plugin
          id="net.openchrom.rcp.compilation.community.ui"
          version="0.0.0"/>

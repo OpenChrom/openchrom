@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.eclipse.chemclipse.chromatogram.xxd.report.ui.preferences.reportPreferencePage"
+            class="net.openchrom.chromatogram.xxd.report.supplier.excel.template.ui.preferences.PreferencePage"
+            id="net.openchrom.chromatogram.xxd.report.supplier.csv.ui.preferences.preferencePage"
+            name="Excel Template Chromatogram Report">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.chemclipse.xxd.process.ui.menu.icon">
+      <icon
+            class="net.openchrom.chromatogram.xxd.report.supplier.csv.ui.icon.MenuIcon"
+            id="net.openchrom.chromatogram.xxd.report.supplier.excel.template">
+      </icon>
+   </extension>
+</plugin>

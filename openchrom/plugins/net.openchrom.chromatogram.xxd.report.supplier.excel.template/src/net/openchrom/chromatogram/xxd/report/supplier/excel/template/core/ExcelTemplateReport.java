@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2024 Lablicate GmbH.
+ * Copyright (c) 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,9 +7,9 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
+ * Matthias Mailänder - initial API and implementation
  *******************************************************************************/
-package net.openchrom.chromatogram.xxd.report.supplier.csv.core;
+package net.openchrom.chromatogram.xxd.report.supplier.excel.template.core;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,13 +24,13 @@ import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.chromatogram.xxd.report.supplier.csv.io.ConfigurableReportWriter;
-import net.openchrom.chromatogram.xxd.report.supplier.csv.preferences.PreferenceSupplier;
-import net.openchrom.chromatogram.xxd.report.supplier.csv.settings.ChromatogramReportSettings;
+import net.openchrom.chromatogram.xxd.report.supplier.excel.template.io.ExcelTemplateReportWriter;
+import net.openchrom.chromatogram.xxd.report.supplier.excel.template.preferences.PreferenceSupplier;
+import net.openchrom.chromatogram.xxd.report.supplier.excel.template.settings.ChromatogramReportSettings;
 
-public class ConfigurableReport extends AbstractChromatogramReportGenerator {
+public class ExcelTemplateReport extends AbstractChromatogramReportGenerator {
 
-	private static final Logger logger = Logger.getLogger(ConfigurableReport.class);
+	private static final Logger logger = Logger.getLogger(ExcelTemplateReport.class);
 
 	public IProcessingInfo<File> report(File file, boolean append, List<IChromatogram<? extends IPeak>> chromatograms, IChromatogramReportSettings settings, IProgressMonitor monitor) {
 
@@ -38,12 +38,12 @@ public class ConfigurableReport extends AbstractChromatogramReportGenerator {
 		if(!processingInfo.hasErrorMessages()) {
 			if(settings instanceof ChromatogramReportSettings reportSettings) {
 				try {
-					ConfigurableReportWriter chromatogramReport = new ConfigurableReportWriter();
+					ExcelTemplateReportWriter chromatogramReport = new ExcelTemplateReportWriter();
 					chromatogramReport.generate(file, append, chromatograms, reportSettings);
 					processingInfo.setProcessingResult(file);
 				} catch(IOException e) {
 					logger.warn(e);
-					processingInfo.addErrorMessage("OpenChrom CSV Chromatogram Report", "The report couldn't be created. ", e);
+					processingInfo.addErrorMessage("Excel Template Report", "The report couldn't be created.", e);
 				}
 			} else {
 				logger.warn("The settings are not of type: " + ChromatogramReportSettings.class);

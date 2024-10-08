@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.chemclipse.chromatogram.xxd.report.chromatogramReportSupplier">
+      <ChromatogramReportSupplier
+            description="Reports Chromatograms as Excel sheets based on Excel templates"
+            fileExtension=".xlsx"
+            fileName="Excel Template Report"
+            id="net.openchrom.chromatogram.xxd.report.supplier.excel.template"
+            reportGenerator="net.openchrom.chromatogram.xxd.report.supplier.excel.template.core.ExcelTemplateReport"
+            reportName="Excel Template Report (*.xlsx)"
+            reportSettings="net.openchrom.chromatogram.xxd.report.supplier.excel.template.settings.ChromatogramReportSettings">
+      </ChromatogramReportSupplier>
+   </extension>
+</plugin>
