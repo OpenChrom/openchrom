@@ -360,6 +360,23 @@
 
       <pluginDescriptor
             categoryId="com.lablicate.openchrom.converters.proprietary"
+            description="Reads *.t2d files."
+            groupId="net.openchrom.msd.converter"
+            id="net.openchrom.msd.converter.supplier.sciex.t2d.feature"
+            kind="converter"
+            license="Converter License Terms"
+            name="ABSciex MALDI TOF/TOF"
+            provider="Lablicate"
+            url="https://converter.openchrom.net/">
+         <icon image32="icons/32x32/Sciex.png">
+         </icon>
+         <overview
+               summary="Free for commercial use. Must not be used with other software.">
+         </overview>
+      </pluginDescriptor>
+
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.converters.proprietary"
             description="Reads .D/DATA.MS files."
             groupId="net.openchrom.msd.converter"
             id="net.openchrom.msd.converter.supplier.agilent.hp.feature"
