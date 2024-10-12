@@ -5,14 +5,14 @@
          point="org.eclipse.core.runtime.products">
       <product
             application="org.eclipse.chemclipse.rcp.app.ui.org.eclipse.chemclipse.rcp.application"
-            name="OpenChrom Analytics Edition (McLafferty)">
+            name="OpenChrom (McLafferty)">
          <property
                name="windowImages"
                value="icons/logo_16x16.png,icons/logo_32x32.png,icons/logo_48x48.png,icons/logo_64x64.png,icons/logo_128x128.png">
          </property>
          <property
                name="aboutText"
-               value="OpenChrom Analytics Edition (McLafferty) - the open source software for chromatography and spectrometry">
+               value="OpenChrom (McLafferty) - the open source software for chromatography and spectrometry">
          </property>
          <property
                name="aboutImage"
@@ -20,7 +20,7 @@
          </property>
          <property
                name="appName"
-               value="OpenChrom Analytics Edition (McLafferty)">
+               value="OpenChrom (McLafferty)">
          </property>
          <property
                name="applicationXMI"
