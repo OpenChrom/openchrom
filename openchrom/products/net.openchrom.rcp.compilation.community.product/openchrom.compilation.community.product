@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="OpenChrom Analytics Edition (McLafferty)" uid="net.openchrom.rcp.compilation.community.product.id" id="net.openchrom.rcp.compilation.community.ui.product" application="org.eclipse.chemclipse.rcp.app.ui.org.eclipse.chemclipse.rcp.application" version="1.5.0.qualifier" type="features" includeLaunchers="true" autoIncludeRequirements="true">
+<product name="OpenChrom (McLafferty)" uid="net.openchrom.rcp.compilation.community.product.id" id="net.openchrom.rcp.compilation.community.ui.product" application="org.eclipse.chemclipse.rcp.app.ui.org.eclipse.chemclipse.rcp.application" version="1.5.0.qualifier" type="features" includeLaunchers="true" autoIncludeRequirements="true">
 
    <aboutInfo>
       <image path="/net.openchrom.rcp.compilation.community.ui/icons/about_250x330.png"/>
       <text>
-         OpenChrom Analytics Edition (McLafferty) - the open source software for chromatography and spectrometry
+         OpenChrom (McLafferty) - the open source software for chromatography and spectrometry
       </text>
    </aboutInfo>
 
@@ -18,7 +18,7 @@
       </programArgs>
       <vmArgs>-Xms1024M
 -Xmx4096M
--Dapplication.name=OpenChrom_Analytics_Edition
+-Dapplication.name=OpenChrom
 -Dapplication.version=1.5.x
 -Dosgi.instance.area=@user.home/OpenChrom/1.5.x
 -Dosgi.user.area=@user.home/.openchrom/1.5.x

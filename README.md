@@ -1,6 +1,6 @@
 <img src="OpenChrom.png" height="50" align="right">
 
-# OpenChrom® Analytics Edition
+# OpenChrom®
 
 [OpenChrom®](https://en.wikipedia.org/wiki/OpenChrom) is an Open Source tool for the analysis and visualization of mass spectrometric and chromatographic data developed by [Lablicate GmbH](https://lablicate.com).
 
