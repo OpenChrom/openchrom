@@ -40,7 +40,7 @@ public class InstallErrorDialog {
 				String errorMessage = message + System.lineSeparator() + System.lineSeparator();
 				errorMessage = errorMessage + "Visit faq.openchrom.net for solutions to common problems." + System.lineSeparator();
 				errorMessage = errorMessage + "Contact support@lablicate.com if the problem persists.";
-				ErrorDialog.openError(parentShell, "Converter Installation", errorMessage, status);
+				ErrorDialog.openError(parentShell, "Plug-in Installation", errorMessage, status);
 			}
 		});
 		logger.error(e);

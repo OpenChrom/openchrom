@@ -56,7 +56,7 @@ public class PluginDiscoveryWizard extends Wizard {
 	public PluginDiscoveryWizard(IPluginInstallJob installJob) {
 
 		this.installJob = installJob;
-		setWindowTitle("Converter Installation");
+		setWindowTitle("Plug-In Installation");
 		setNeedsProgressMonitor(true);
 		Bundle bundle = Activator.getDefault().getBundle();
 		URL fullPathString = FileLocator.find(bundle, new Path("icons/32x32/Plugin.gif"));
