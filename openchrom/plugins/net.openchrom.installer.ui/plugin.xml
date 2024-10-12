@@ -708,23 +708,6 @@
 
       <pluginDescriptor
             categoryId="com.lablicate.openchrom.converters.proprietary"
-            description="Reads *.bin files."
-            groupId="net.openchrom.msd.converter"
-            id="net.openchrom.msd.converter.supplier.msforid.feature"
-            kind="converter"
-            license="Converter License Terms"
-            name="Wiley MSforID"
-            provider="Lablicate"
-            url="https://converter.openchrom.net/">
-         <icon image32="icons/32x32/Wiley.png">
-         </icon>
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
-      </pluginDescriptor>
-
-      <pluginDescriptor
-            categoryId="com.lablicate.openchrom.converters.proprietary"
             description="Reads *.lcd files."
             groupId="net.openchrom.msd.converter"
             id="net.openchrom.msd.converter.supplier.shimadzu.lcd.feature"
@@ -905,21 +888,6 @@
             url="https://converter.openchrom.net/">
          <icon image32="icons/32x32/Bruker.png">
          </icon>
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
-      </pluginDescriptor>
-
-      <pluginDescriptor
-            categoryId="com.lablicate.openchrom.converters.proprietary"
-            description="Reads *.dx files."
-            groupId="net.openchrom.nmr.converter"
-            id="net.openchrom.nmr.converter.supplier.jcampdx.feature"
-            kind="converter"
-            license="Converter License Terms"
-            name="JCAMP-DX NMR"
-            provider="Lablicate"
-            url="https://converter.openchrom.net/">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
