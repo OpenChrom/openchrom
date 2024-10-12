@@ -14,9 +14,10 @@ package net.openchrom.installer.model;
  * @author David Green
  * @author Igor Burilo
  */
-public enum PluginDescriptorKind { // TODO
+public enum PluginDescriptorKind {
 
-	CONVERTER("converter"); //$NON-NLS-1$
+	CONVERTER("converter"), //$NON-NLS-1$
+	EXTENSION("extension"); //$NON-NLS-1$
 
 	private final String value;
 

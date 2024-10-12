@@ -156,9 +156,9 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 	public PluginDiscoveryWizardMainPage() {
 
 		super(PluginDiscoveryWizardMainPage.class.getSimpleName());
-		setTitle("File Format Support");
+		setTitle("Plug-in Installation");
 		// setImageDescriptor(image);
-		setDescription("Install plug-ins to handle vendor file formats.");
+		setDescription("Install plug-ins to handle vendor file formats or extend the platform with additional features.");
 		setPageComplete(false);
 	}
 

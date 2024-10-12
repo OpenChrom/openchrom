@@ -39,15 +39,27 @@
 
    <extension
          point="net.openchrom.installer.pluginDiscovery">
+
       <pluginCategory
             description="Lablicate's collection of proprietary file format converters for OpenChrom. Installation is required for additional vendor support. Please select the converter depending on which instrument software is in use."
             id="com.lablicate.openchrom.converters.proprietary"
             name="Proprietary OpenChrom File Format Converters"
+            relevance="100">
+         <icon image32="icons/32x32/OpenChrom.png"/>
+         <group id="openchrom.converters"/>
+      </pluginCategory>
+
+      <pluginCategory
+            description="Commercial software to boost productivity. Requires marketplace account and a valid license. Students may a apply for significant discounts when registering with an institutional e-Mail address."
+            id="com.lablicate.openchrom.extensions.commercial"
+            name="OpenChrom Extensions"
             relevance="50">
          <icon image32="icons/32x32/OpenChrom.png"/>
-         <group id="openchrom.converters"/>         
+         <group id="openchrom.extensions"/>
       </pluginCategory>
+
    </extension>
+
 
    <extension
          point="net.openchrom.installer.pluginDiscovery">
@@ -221,7 +233,7 @@
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
       </pluginDescriptor>
-      
+
       <pluginDescriptor
             categoryId="com.lablicate.openchrom.converters.proprietary"
             description="Reads *.CHR files."
@@ -997,7 +1009,7 @@
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
       </pluginDescriptor>
-      
+
       <pluginDescriptor
             categoryId="com.lablicate.openchrom.converters.proprietary"
             description="Reads *.DFM files."
@@ -1233,7 +1245,7 @@
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
       </pluginDescriptor>
-      
+
       <pluginDescriptor
             categoryId="com.lablicate.openchrom.converters.proprietary"
             description="Reads *.Chrom files."
@@ -1296,6 +1308,176 @@
             provider="Lablicate"
             url="https://plugins.openchrom.net/allotrope">
          <icon image32="icons/32x32/ASM.png">
+         </icon>
+         <overview
+               summary="Commercial product. Requires valid license.">
+         </overview>
+      </pluginDescriptor>
+
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.extensions.commercial"
+            description="Automated and interactive peak deconvolution."
+            groupId="com.lablicate.xxd.peak.detector"
+            id="com.lablicate.xxd.processor.supplier.mcrar.feature"
+            kind="extension"
+            license="Commercial License Terms"
+            name="MCR-AR"
+            provider="Lablicate"
+            url="https://plugins.openchrom.net/mcrar">
+         <icon image32="icons/32x32/OpenChrom.png">
+         </icon>
+         <overview
+               summary="Commercial product. Requires valid license.">
+         </overview>
+      </pluginDescriptor>
+
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.extensions.commercial"
+            description="Chromatogram fingerprint comparision."
+            groupId="net.openchrom.chromatogram.msd.plugins.identifier.chromatogram"
+            id="com.lablicate.identifier.chromident.feature"
+            kind="extension"
+            license="Commercial License Terms"
+            name="ChromIdent"
+            provider="Lablicate"
+            url="https://plugins.openchrom.net/xident">
+         <icon image32="icons/32x32/OpenChrom.png">
+         </icon>
+         <overview
+               summary="Commercial product. Requires valid license.">
+         </overview>
+      </pluginDescriptor>
+
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.extensions.commercial"
+            description="External calibration and equivalents."
+            groupId="com.lablicate.xxd.processor"
+            id="com.lablicate.xxd.quantitation.supplier.compounds.feature"
+            kind="extension"
+            license="Commercial License Terms"
+            name="Quantitation"
+            provider="Lablicate"
+            url="https://plugins.openchrom.net/quantitation">
+         <icon image32="icons/32x32/OpenChrom.png">
+         </icon>
+         <overview
+               summary="Commercial product. Requires valid license.">
+         </overview>
+      </pluginDescriptor>
+
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.extensions.commercial"
+            description="NIST MS Search embedded into OpenChrom."
+            groupId="net.openchrom.chromatogram.msd.identifier.peak"
+            id="com.lablicate.identifier.database.feature"
+            kind="extension"
+            license="Commercial License Terms"
+            name="NIST Database Connector"
+            provider="Lablicate"
+            url="https://plugins.openchrom.net/nist">
+         <icon image32="icons/32x32/OpenChrom.png">
+         </icon>
+         <overview
+               summary="Commercial product. Requires valid license.">
+         </overview>
+      </pluginDescriptor>
+
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.extensions.commercial"
+            description="Integrated single-purpose chromatogram editors."
+            groupId="com.lablicate.xxd.powertools"
+            id="com.lablicate.xxd.ui.editor.feature"
+            kind="extension"
+            license="Commercial License Terms"
+            name="PowerTools"
+            provider="Lablicate"
+            url="https://plugins.openchrom.net/powertools">
+         <icon image32="icons/32x32/OpenChrom.png">
+         </icon>
+         <overview
+               summary="Commercial product. Requires valid license.">
+         </overview>
+      </pluginDescriptor>
+
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.extensions.commercial"
+            description="Relative response factor calculator"
+            groupId="com.lablicate.xxd.processor"
+            id="com.lablicate.chromatogram.csd.quantitation.supplier.rrf.feature"
+            kind="extension"
+            license="Commercial License Terms"
+            name="RRF"
+            provider="Lablicate"
+            url="https://plugins.openchrom.net/rrf">
+         <icon image32="icons/32x32/OpenChrom.png">
+         </icon>
+         <overview
+               summary="Commercial product. Requires valid license.">
+         </overview>
+      </pluginDescriptor>
+
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.extensions.commercial"
+            description="Streamlined workflow for GC-FID"
+            groupId="com.lablicate.xxd.processor"
+            id="com.lablicate.xxd.processor.supplier.ambientair.feature"
+            kind="extension"
+            license="Commercial License Terms"
+            name="Ambient Air Processor"
+            provider="Lablicate"
+            url="https://plugins.openchrom.net/ambientair">
+         <icon image32="icons/32x32/OpenChrom.png">
+         </icon>
+         <overview
+               summary="Commercial product. Requires valid license.">
+         </overview>
+      </pluginDescriptor>
+
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.extensions.commercial"
+            description="GC-MS and GC-FID chromatogram comparison"
+            groupId="com.lablicate.xxd.processor"
+            id="com.lablicate.xxd.processor.supplier.chrominspector.feature"
+            kind="extension"
+            license="Commercial License Terms"
+            name="ChromInspector"
+            provider="Lablicate"
+            url="https://plugins.openchrom.net/chrominspector">
+         <icon image32="icons/32x32/OpenChrom.png">
+         </icon>
+         <overview
+               summary="Commercial product. Requires valid license.">
+         </overview>
+      </pluginDescriptor>
+
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.extensions.commercial"
+            description="Volatiles according to VDA 278."
+            groupId="com.lablicate.xxd.processor"
+            id="com.lablicate.xxd.processor.supplier.tvoc.feature"
+            kind="extension"
+            license="Commercial License Terms"
+            name="TVOC"
+            provider="Lablicate"
+            url="https://plugins.openchrom.net/tvoc">
+         <icon image32="icons/32x32/OpenChrom.png">
+         </icon>
+         <overview
+               summary="Commercial product. Requires valid license.">
+         </overview>
+      </pluginDescriptor>
+
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.extensions.commercial"
+            description="Classic mass spectra search."
+            groupId="net.openchrom.chromatogram.msd.identifier.peak"
+            id="com.lablicate.identifier.pbm.feature"
+            kind="extension"
+            license="Commercial License Terms"
+            name="PBM"
+            provider="Lablicate"
+            url="https://plugins.openchrom.net/pbm">
+         <icon image32="icons/32x32/OpenChrom.png">
          </icon>
          <overview
                summary="Commercial product. Requires valid license.">
