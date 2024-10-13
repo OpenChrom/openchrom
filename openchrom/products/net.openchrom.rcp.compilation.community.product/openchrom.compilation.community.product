@@ -23,7 +23,7 @@
 -Dosgi.instance.area=@user.home/OpenChrom/1.5.x
 -Dosgi.user.area=@user.home/.openchrom/1.5.x
 -Dorg.eclipse.update.reconcile=false
--Dp2.trustedAuthorities=https://converter.openchrom.net
+-Dp2.trustedAuthorities=https://converter.openchrom.net,https://plugins.openchrom.net,https://update.openchrom.net
       </vmArgs>
       <vmArgsMac>-XstartOnFirstThread
       </vmArgsMac>
