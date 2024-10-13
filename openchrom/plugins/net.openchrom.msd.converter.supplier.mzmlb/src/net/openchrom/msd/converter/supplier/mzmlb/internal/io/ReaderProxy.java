@@ -47,10 +47,8 @@ public class ReaderProxy implements IReaderProxy {
 		for(int i = scanMarker.getOffset(); i < scanMarker.getOffset() + scanMarker.getLength(); i++) {
 			float abundance = Array.getFloat(intensities, i);
 			double mz = Array.getDouble(mzs, i);
-			if(abundance >= VendorIon.MIN_ABUNDANCE && abundance <= VendorIon.MAX_ABUNDANCE && mz > VendorIon.MIN_ION && mz < VendorIon.MAX_ION) {
-				IVendorIon ion = new VendorIon(mz, abundance);
-				massSpectrum.addIon(ion);
-			}
+			IVendorIon ion = new VendorIon(mz, abundance);
+			massSpectrum.addIon(ion);
 		}
 	}
 
