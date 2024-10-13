@@ -20,13 +20,7 @@ public class VendorIon extends AbstractIon implements IVendorIon {
 	 * Renew the serialVersionUID any time you have changed some fields or
 	 * methods.
 	 */
-	private static final long serialVersionUID = 7237916814647121133L;
-	// A max value for abundance
-	public static final float MIN_ABUNDANCE = Float.MIN_VALUE;
-	public static final float MAX_ABUNDANCE = Float.MAX_VALUE;
-	// A max value for m/z
-	public static final double MIN_ION = 1.0d;
-	public static final double MAX_ION = 65535.0d;
+	private static final long serialVersionUID = 7237916814647121134L;
 
 	public VendorIon(double ion, float abundance) {
 
