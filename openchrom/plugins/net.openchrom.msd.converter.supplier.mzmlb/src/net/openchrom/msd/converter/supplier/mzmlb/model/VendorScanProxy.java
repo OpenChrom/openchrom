@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.mzmlb.model;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.chemclipse.logging.core.Logger;
@@ -21,6 +22,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import net.openchrom.msd.converter.supplier.mzmlb.io.ProxyReader;
 import net.openchrom.msd.converter.supplier.mzmlb.io.support.IScanMarker;
 
+import ch.systemsx.cisd.hdf5.HDF5Factory;
 import ch.systemsx.cisd.hdf5.IHDF5SimpleReader;
 
 public class VendorScanProxy extends AbstractRegularMassSpectrumProxy implements IVendorScanProxy {
@@ -32,19 +34,19 @@ public class VendorScanProxy extends AbstractRegularMassSpectrumProxy implements
 	private static final long serialVersionUID = 7247916814647121133L;
 	private static final Logger logger = Logger.getLogger(VendorScanProxy.class);
 	//
-	private IHDF5SimpleReader reader;
+	private File file;
 	private IScanMarker scanMarker;
 
-	public VendorScanProxy(IHDF5SimpleReader reader, IScanMarker scanMarker) {
+	public VendorScanProxy(File file, IScanMarker scanMarker) {
 
-		this.reader = reader;
+		this.file = file;
 		this.scanMarker = scanMarker;
 	}
 
 	@Override
 	public void importIons() {
 
-		try {
+		try (IHDF5SimpleReader reader = HDF5Factory.openForReading(file)) {
 			ProxyReader scanProxyReader = new ProxyReader();
 			scanProxyReader.readMassSpectrum(reader, scanMarker, this, new NullProgressMonitor());
 		} catch(IOException e) {
