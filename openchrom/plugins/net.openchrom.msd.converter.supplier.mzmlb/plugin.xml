@@ -6,11 +6,12 @@
       <ChromatogramSupplier
             description="Reads mzMLb Chromatograms"
             fileExtension=".mzMLb"
-            filterName="mzML Chromatogram (*.mzMLb)"
+            filterName="mzMLb Chromatogram (*.mzMLb)"
             id="net.openchrom.msd.converter.supplier.mzmlb"
             importConverter="net.openchrom.msd.converter.supplier.mzmlb.converter.ChromatogramImportConverter"
             importMagicNumberMatcher="net.openchrom.msd.converter.supplier.mzmlb.converter.MagicNumberMatcher"
-            isExportable="false"
+            exportConverter="net.openchrom.msd.converter.supplier.mzmlb.converter.ChromatogramExportConverter"
+            isExportable="true"
             isImportable="true">
       </ChromatogramSupplier>
    </extension>
