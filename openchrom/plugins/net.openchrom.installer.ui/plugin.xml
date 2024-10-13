@@ -1412,6 +1412,24 @@
 
       <pluginDescriptor
             categoryId="com.lablicate.openchrom.extensions.commercial"
+            description="Store chromatograms."
+            groupId="com.lablicate.xxd.processor"
+            id="com.lablicate.xxd.findings.feature"
+            kind="extension"
+            license="Commercial License Terms"
+            name="Findings Database"
+            provider="Lablicate"
+            urls="https://plugins.openchrom.net/findingsdb,https://update.openchrom.net/">
+         <icon image32="icons/32x32/OpenChrom.png">
+         </icon>
+         <overview
+               summary="Commercial product. Requires valid license."
+               url="https://lablicate.com/marketplace/extensions/findingsdb">
+         </overview>
+      </pluginDescriptor>
+
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.extensions.commercial"
             description="GC-MS and GC-FID chromatogram comparison"
             groupId="com.lablicate.xxd.processor"
             id="com.lablicate.xxd.processor.supplier.chrominspector.feature"
