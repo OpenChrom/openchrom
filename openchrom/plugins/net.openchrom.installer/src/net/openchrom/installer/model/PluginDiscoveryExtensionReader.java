@@ -66,7 +66,13 @@ public class PluginDiscoveryExtensionReader {
 		pluginDescriptor.setCategoryId(element.getAttribute("categoryId")); //$NON-NLS-1$
 		pluginDescriptor.setPlatformFilter(element.getAttribute("platformFilter")); //$NON-NLS-1$
 		pluginDescriptor.setGroupId(element.getAttribute("groupId")); //$NON-NLS-1$
-		pluginDescriptor.setURL(element.getAttribute("url")); //$NON-NLS-1$
+		String urls = element.getAttribute("urls"); //$NON-NLS-1$
+		if(urls != null) {
+			String[] aids = urls.split("\\s*,\\s*"); //$NON-NLS-1$
+			for(String id : aids) {
+				pluginDescriptor.getURLs().add(id);
+			}
+		}
 		for(IConfigurationElement child : element.getChildren("featureFilter")) //$NON-NLS-1$
 		{
 			FeatureFilter featureFilterItem = readFeatureFilter(child);

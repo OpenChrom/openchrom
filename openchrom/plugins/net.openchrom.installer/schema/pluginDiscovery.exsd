@@ -107,10 +107,10 @@
                </appinfo>
             </annotation>
          </attribute>
-         <attribute name="url" type="string" use="required">
+         <attribute name="urls" type="string" use="required">
             <annotation>
                <documentation>
-                  The URL of the update site containing the plugin.
+                  The URLs of the update sites containing the plugin.
                </documentation>
             </annotation>
          </attribute>
