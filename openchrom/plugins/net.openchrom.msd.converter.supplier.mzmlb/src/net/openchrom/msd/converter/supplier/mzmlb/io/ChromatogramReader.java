@@ -21,7 +21,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.chemclipse.converter.io.AbstractChromatogramReader;
-import org.eclipse.chemclipse.converter.l10n.ConverterMessages;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.msd.converter.io.IChromatogramMSDReader;
@@ -35,7 +34,6 @@ import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.ScanType;
 import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.SpectrumListType;
 import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.SpectrumType;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.osgi.util.NLS;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -83,9 +81,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 			chromatogram = new VendorChromatogram();
 			chromatogram.setFile(file);
 			SpectrumListType spectrumList = run.getSpectrumList();
-			monitor.beginTask(ConverterMessages.importChromatogram, spectrumList.getCount().intValue());
 			for(SpectrumType spectrum : spectrumList.getSpectrum()) {
-				monitor.subTask(NLS.bind(ConverterMessages.scan, spectrum.getIndex()));
 				float abundance = 0.0f;
 				int retentionTime = 0;
 				short msLevel = 0;
