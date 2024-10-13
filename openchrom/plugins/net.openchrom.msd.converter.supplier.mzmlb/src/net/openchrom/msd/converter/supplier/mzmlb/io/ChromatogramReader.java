@@ -137,7 +137,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 					}
 				}
 				IScanMarker scanMarker = new ScanMarker(mzDataset, intensityDataset, length, offset);
-				IVendorScanProxy scanProxy = new VendorScanProxy(reader, scanMarker);
+				IVendorScanProxy scanProxy = new VendorScanProxy(file, scanMarker);
 				scanProxy.setScanNumber(spectrum.getIndex().intValue());
 				scanProxy.setIdentifier(spectrum.getId());
 				scanProxy.setRetentionTime(retentionTime);
