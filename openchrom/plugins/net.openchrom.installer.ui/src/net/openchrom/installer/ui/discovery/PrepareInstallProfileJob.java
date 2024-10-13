@@ -182,7 +182,7 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 				if(detailedMessage.length() > 0) {
 					detailedMessage += ", ";
 				}
-				detailedMessage += MessageFormat.format("{0} (id={1}, site={2})", descriptor.getName(), unavailableIds, descriptor.getSiteUrl());
+				detailedMessage += MessageFormat.format("{0} (id={1}, site={2})", descriptor.getName(), unavailableIds, descriptor.getURLs());
 			}
 		}
 		if(message.length() > 0) {
@@ -263,10 +263,12 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 		repositoryLocations = new HashSet<>();
 		monitor.setWorkRemaining(installableConnectors.size() * 5);
 		for(PluginDescriptor descriptor : installableConnectors) {
-			URI uri = new URL(descriptor.getSiteUrl()).toURI();
-			if(repositoryLocations.add(uri)) {
-				checkCancelled(monitor);
-				repositoryTracker.addRepository(uri, null, session);
+			for(String url : descriptor.getURLs()) {
+				URI siteURI = new URL(url).toURI();
+				if(repositoryLocations.add(siteURI)) {
+					checkCancelled(monitor);
+					repositoryTracker.addRepository(siteURI, null, session);
+				}
 			}
 			monitor.worked(1);
 		}
@@ -288,8 +290,10 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 		// determine all installable units for this repository
 		for(PluginDescriptor descriptor : installableConnectors) {
 			try {
-				if(repository.getLocation().equals(new URL(descriptor.getSiteUrl()).toURI())) {
-					installableUnitIdsThisRepository.addAll(getFeatureIds(descriptor));
+				for(String url : descriptor.getURLs()) {
+					if(repository.getLocation().equals(new URL(url).toURI())) {
+						installableUnitIdsThisRepository.addAll(getFeatureIds(descriptor));
+					}
 				}
 			} catch(MalformedURLException e) {
 				// will never happen, ignore

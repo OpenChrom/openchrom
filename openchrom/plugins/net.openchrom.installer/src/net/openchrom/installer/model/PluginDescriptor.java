@@ -26,7 +26,7 @@ public class PluginDescriptor {
 	protected String provider;
 	protected String license;
 	protected String description;
-	protected String url;
+	protected List<String> urls = new ArrayList<>();
 	protected List<String> installableUnits = new ArrayList<>();
 	protected String categoryId;
 	protected String platformFilter;
@@ -103,14 +103,22 @@ public class PluginDescriptor {
 	/**
 	 * The URL of the update site containing the plugin.
 	 */
-	public String getSiteUrl() {
+	public String getUpdateSiteUrl() {
 
-		return url;
+		return "https://update.openchrom.net/";
 	}
 
-	public void setURL(String url) {
+	/**
+	 * The URLs of the update site containing the plugin.
+	 */
+	public List<String> getURLs() {
 
-		this.url = url;
+		return urls;
+	}
+
+	public void setURL(List<String> url) {
+
+		this.urls = url;
 	}
 
 	/**
@@ -209,8 +217,8 @@ public class PluginDescriptor {
 		if(license == null || license.length() == 0) {
 			throw new IllegalArgumentException("license is empty");
 		}
-		if(url == null || url.length() == 0) {
-			throw new IllegalArgumentException("folder is empty");
+		if(urls == null || urls.isEmpty()) {
+			throw new IllegalArgumentException("urls is empty");
 		}
 		if(installableUnits == null || installableUnits.isEmpty()) {
 			throw new IllegalArgumentException("installableUnits is empty");
