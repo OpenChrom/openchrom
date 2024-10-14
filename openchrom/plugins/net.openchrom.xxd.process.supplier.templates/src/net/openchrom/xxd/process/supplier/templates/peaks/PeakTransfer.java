@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Lablicate GmbH.
+ * Copyright (c) 2020, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -296,6 +296,7 @@ public class PeakTransfer<P extends IPeak, C extends IChromatogram<P>, R> extend
 			} else {
 				/*
 				 * Gaussian Peak
+				 * https://commons.apache.org/proper/commons-math/javadocs/api-3.6.1/org/apache/commons/math3/fitting/GaussianCurveFitter.html
 				 */
 				int deltaRetentionTimeLeft = peakTransferSettings.getDeltaRetentionTimeLeft();
 				int deltaRetentionTimeRight = peakTransferSettings.getDeltaRetentionTimeRight();
@@ -305,10 +306,19 @@ public class PeakTransfer<P extends IPeak, C extends IChromatogram<P>, R> extend
 				Point maxPosition = getMaxPosition(chromatogramCSD, peakModel.getRetentionTimeAtPeakMaximum(), offsetRetentionTime);
 				//
 				if(maxPosition.getX() > 0 && maxPosition.getY() > 0) {
-					double sigma = calculateSigma(peakSource);
+					/*
+					 * Parameter
+					 */
+					double sigma = calculateSigma(chromatogramCSD, peakSource);
 					int centerRetentionTime = (int)maxPosition.getX();
 					float intensity = (float)(maxPosition.getY() * percentageIntensity);
-					IPeak peakSink = createDefaultGaussPeak(chromatogramCSD, startRetentionTime, centerRetentionTime, stopRetentionTime, sigma, intensity);
+					int centerScan = chromatogramCSD.getScanNumber(centerRetentionTime);
+					double[] parameterStandard = new double[3];
+					parameterStandard[0] = intensity; // Norm
+					parameterStandard[1] = centerScan; // Mean
+					parameterStandard[2] = sigma; // Sigma
+					IPeak peakSink = createDefaultGaussPeakNormal(chromatogramCSD, startRetentionTime, centerRetentionTime, stopRetentionTime, parameterStandard);
+					//
 					if(peakSink != null) {
 						transferTargets(peakSource, peakSink, peakTransferSettings);
 						addPeak(chromatogramSink, peakSink);
@@ -323,22 +333,10 @@ public class PeakTransfer<P extends IPeak, C extends IChromatogram<P>, R> extend
 		}
 	}
 
-	private double calculateSigma(IPeak peak) {
+	private double calculateSigma(IChromatogramCSD chromatogramCSD, IPeak peak) {
 
-		double sigma = 30.0d;
-		double sigmaCorrection = 20.0d;
-		//
-		IPeakModel peakModel = peak.getPeakModel();
-		double width0 = peakModel.getWidthByInflectionPoints(0.0f);
-		if(width0 > 0) {
-			double width50 = peakModel.getWidthByInflectionPoints(0.5f);
-			double calculatedSigma = width50 / width0 * 100.0d - sigmaCorrection;
-			if(calculatedSigma >= 10 && calculatedSigma <= 90) {
-				sigma = calculatedSigma;
-			}
-		}
-		//
-		return sigma;
+		int scanInterval = chromatogramCSD.getScanInterval();
+		return 1000.0d / scanInterval;
 	}
 
 	private Set<Integer> getTraces(IPeak peakSource, int numberTraces) {
@@ -438,19 +436,19 @@ public class PeakTransfer<P extends IPeak, C extends IChromatogram<P>, R> extend
 		return new Point(retentionTime, maxIntensity);
 	}
 
-	public IChromatogramPeakCSD createDefaultGaussPeak(IChromatogramCSD chromatogram, int startRetentionTime, int centerRetentionTime, int stopRetentionTime, double sigma, float intensity) {
+	public IChromatogramPeakCSD createDefaultGaussPeakNormal(IChromatogramCSD chromatogram, int startRetentionTime, int centerRetentionTime, int stopRetentionTime, double[] parameter) {
 
 		int startScan = chromatogram.getScanNumber(startRetentionTime);
-		int centerScan = chromatogram.getScanNumber(centerRetentionTime);
 		int stopScan = chromatogram.getScanNumber(stopRetentionTime);
-		IScanCSD peakMaximum = new ScanCSD(intensity);
 		/*
 		 * Intensity profile
 		 */
-		IPeakIntensityValues peakIntensityValues = new PeakIntensityValues(intensity);
+		IScanCSD peakMaximum = new ScanCSD((float)parameter[0]);
+		IPeakIntensityValues peakIntensityValues = new PeakIntensityValues((float)parameter[0]);
 		//
-		double norm = intensity;
-		double mean = centerScan;
+		double norm = parameter[0];
+		double mean = parameter[1];
+		double sigma = parameter[2];
 		Gaussian gaussian = new Gaussian(norm, mean, sigma);
 		//
 		for(int i = startScan; i <= stopScan; i++) {
