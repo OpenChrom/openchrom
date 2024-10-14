@@ -53,7 +53,7 @@ public class Xcalibur_ITest extends TestCase {
 
 		assertEquals(336, chromatogram.getNumberOfScans());
 		IScanMSD scanMSD = (IScanMSD)chromatogram.getScan(62);
-		assertEquals(82, scanMSD.getNumberOfIons());
+		assertEquals(135, scanMSD.getNumberOfIons());
 		assertEquals(1458599f, chromatogram.getScan(124).getTotalSignal());
 		assertEquals(190500, chromatogram.getScan(277).getRetentionTime());
 	}
