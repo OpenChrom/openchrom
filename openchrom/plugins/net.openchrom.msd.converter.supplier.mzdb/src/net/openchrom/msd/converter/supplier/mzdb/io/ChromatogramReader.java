@@ -209,7 +209,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 							} else if(dataEncoding.getIntensityPrecision() == Precision.FLOAT) {
 								intensity = buffer.getFloat();
 							}
-							vendorScan.addIon(new VendorIon(mz, intensity));
+							vendorScan.addIon(new VendorIon(mz, intensity), false);
 						}
 					}
 				}
