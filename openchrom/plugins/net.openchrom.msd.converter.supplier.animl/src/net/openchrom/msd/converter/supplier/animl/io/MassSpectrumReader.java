@@ -123,7 +123,7 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 				double intensity = intensities[i];
 				double mz = AbstractIon.getIon(mzs[i]);
 				IVendorIon ion = new VendorIon(mz, (float)intensity);
-				massSpectrum.addIon(ion);
+				massSpectrum.addIon(ion, false);
 			}
 		} catch(SAXException e) {
 			logger.warn(e);
