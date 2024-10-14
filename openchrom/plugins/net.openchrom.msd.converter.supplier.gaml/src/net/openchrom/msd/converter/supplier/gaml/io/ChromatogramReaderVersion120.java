@@ -148,10 +148,8 @@ public class ChromatogramReaderVersion120 extends AbstractChromatogramReader imp
 					massSpectrum.setRetentionTime(retentionTime);
 					for(int s = 0; s < scans; s++) {
 						float intensity = (float)abundances[s];
-						if(intensity >= VendorIon.MIN_ABUNDANCE && intensity <= VendorIon.MAX_ABUNDANCE) {
-							IVendorIon ion = new VendorIon(mzs[s], intensity);
-							massSpectrum.addIon(ion);
-						}
+						IVendorIon ion = new VendorIon(mzs[s], intensity);
+						massSpectrum.addIon(ion);
 					}
 					chromatogram.addScan(massSpectrum);
 				}

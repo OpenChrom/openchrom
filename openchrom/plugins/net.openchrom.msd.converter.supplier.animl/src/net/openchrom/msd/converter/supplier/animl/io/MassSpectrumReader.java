@@ -121,11 +121,9 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 			}
 			for(int i = 0; i < length; i++) {
 				double intensity = intensities[i];
-				if(intensity >= VendorIon.MIN_ABUNDANCE && intensity <= VendorIon.MAX_ABUNDANCE) {
-					double mz = AbstractIon.getIon(mzs[i]);
-					IVendorIon ion = new VendorIon(mz, (float)intensity);
-					massSpectrum.addIon(ion);
-				}
+				double mz = AbstractIon.getIon(mzs[i]);
+				IVendorIon ion = new VendorIon(mz, (float)intensity);
+				massSpectrum.addIon(ion);
 			}
 		} catch(SAXException e) {
 			logger.warn(e);

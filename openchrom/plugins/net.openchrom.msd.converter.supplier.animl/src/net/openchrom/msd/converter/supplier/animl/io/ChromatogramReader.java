@@ -34,8 +34,8 @@ import org.eclipse.chemclipse.msd.model.core.AbstractIon;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IIon;
-import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.core.IRegularMassSpectrum;
+import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.core.support.PeakBuilderMSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.xml.sax.SAXException;
@@ -327,11 +327,9 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader {
 				int length = Math.min(mzs.length, intensities.length);
 				for(int i = 0; i < length; i++) {
 					float intensity = intensities[i];
-					if(intensity >= VendorIon.MIN_ABUNDANCE && intensity <= VendorIon.MAX_ABUNDANCE) {
-						double mz = AbstractIon.getIon(mzs[i]);
-						IVendorIon ion = new VendorIon(mz, intensity);
-						scan.addIon(ion, false);
-					}
+					double mz = AbstractIon.getIon(mzs[i]);
+					IVendorIon ion = new VendorIon(mz, intensity);
+					scan.addIon(ion, false);
 				}
 			}
 		}
