@@ -149,7 +149,7 @@ public class ChromatogramReaderVersion110 extends AbstractChromatogramReader imp
 					for(int s = 0; s < scans; s++) {
 						float intensity = (float)abundances[s];
 						IVendorIon ion = new VendorIon(mzs[s], intensity);
-						massSpectrum.addIon(ion);
+						massSpectrum.addIon(ion, false);
 					}
 					chromatogram.addScan(massSpectrum);
 				}
