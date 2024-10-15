@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2023 Lablicate GmbH.
+ * Copyright (c) 2018, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -204,10 +204,11 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 
 		PeakIdentifierListUI peakIdentifierListUI = new PeakIdentifierListUI(parent, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 		Table table = peakIdentifierListUI.getTable();
-		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
-		gridData.heightHint = 450;
+		GridData gridData = new GridData(GridData.FILL_BOTH);
+		gridData.widthHint = 600;
+		gridData.heightHint = 400;
+		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
-		gridData.verticalAlignment = SWT.TOP;
 		table.setLayoutData(gridData);
 		//
 		table.addSelectionListener(new SelectionAdapter() {
