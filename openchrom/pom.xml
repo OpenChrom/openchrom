@@ -221,6 +221,13 @@
 									<linux>tar.gz</linux>
 									<macosx>tar.gz</macosx>
 								</formats>
+								<products>
+									<product>
+										<rootFolders>
+											<macosx>OpenChrom.app</macosx>
+										</rootFolders>
+									</product>
+								</products>
 							</configuration>
 						</execution>
 					</executions>
