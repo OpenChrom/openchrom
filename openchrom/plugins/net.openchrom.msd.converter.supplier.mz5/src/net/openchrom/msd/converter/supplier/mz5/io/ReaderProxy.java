@@ -15,6 +15,8 @@ package net.openchrom.msd.converter.supplier.mz5.io;
 import java.io.IOException;
 
 import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.msd.model.core.IIonTransition;
+import org.eclipse.chemclipse.msd.model.implementation.IonTransition;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.mz5.io.support.IScanMarker;
@@ -36,7 +38,13 @@ public class ReaderProxy implements IReaderProxy {
 			for(int o = start; o < offset; o++) {
 				float intensity = spectrumIntensity[o];
 				mz += mzs[o]; // first m/z value and then deltas
-				IVendorIon ion = new VendorIon(mz, intensity);
+				IVendorIon ion = null;
+				if(massSpectrum.getPrecursorIon() != 0) {
+					IIonTransition ionTransition = new IonTransition(massSpectrum.getPrecursorIon(), mz, 0, 1, 1, 0);
+					ion = new VendorIon(mz, intensity, ionTransition);
+				} else {
+					ion = new VendorIon(mz, intensity);
+				}
 				massSpectrum.addIon(ion);
 			}
 		} catch(OutOfMemoryError e) {
