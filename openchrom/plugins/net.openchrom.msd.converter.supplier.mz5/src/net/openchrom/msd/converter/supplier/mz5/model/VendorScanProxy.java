@@ -70,7 +70,7 @@ public class VendorScanProxy extends AbstractRegularMassSpectrumProxy implements
 		 * Make a deep copy of all ions.
 		 */
 		for(IIon ion : getIons()) {
-			IVendorIon vendorIon = new VendorIon(ion.getIon(), ion.getAbundance());
+			IVendorIon vendorIon = new VendorIon(ion.getIon(), ion.getAbundance(), ion.getIonTransition());
 			massSpectrum.addIon(vendorIon);
 		}
 		return massSpectrum;

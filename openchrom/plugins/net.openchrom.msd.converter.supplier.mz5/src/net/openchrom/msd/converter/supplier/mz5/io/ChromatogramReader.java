@@ -123,6 +123,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 		int[] retentionTimes = new int[spectrumIndex.length];
 		String[] spectrumTitles = new String[spectrumIndex.length];
 		short[] msLevels = new short[spectrumIndex.length];
+		double[] selectedIon = new double[spectrumIndex.length];
 		int p = 0;
 		for(CVParam cvParam : cvParams) {
 			if(cvParam.cvRefID == getScanStartTimeReference(cvReferences)) {
@@ -135,6 +136,9 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 			}
 			if(cvParam.cvRefID == getMassSpectrumLevelReference(cvReferences)) {
 				msLevels[p] = Short.parseShort(cvParam.value);
+			}
+			if(cvParam.cvRefID == getSelectedIonReference(cvReferences)) {
+				selectedIon[p] = Double.parseDouble(cvParam.value);
 			}
 		}
 		try {
@@ -152,6 +156,9 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 				scanProxy.setMassSpectrometer(msLevels[i]);
 				if(scanProxy.getMassSpectrometer() < 2) {
 					cycleNumber++;
+				} else {
+					scanProxy.setPrecursorIon(selectedIon[i]);
+				}
 				if(cycleNumber >= 1) {
 					scanProxy.setCycleNumber(cycleNumber);
 				}
@@ -246,5 +253,16 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 			}
 		}
 		return false;
+	}
+
+	private int getSelectedIonReference(CVReference[] cvReferences) {
+
+		int selectedIonRef = 0;
+		for(int c = 0; c < cvReferences.length; c++) {
+			if(cvReferences[c].accession == 1000744 && cvReferences[c].name.equals("selected ion m/z")) {
+				selectedIonRef = c;
+			}
+		}
+		return selectedIonRef;
 	}
 }
