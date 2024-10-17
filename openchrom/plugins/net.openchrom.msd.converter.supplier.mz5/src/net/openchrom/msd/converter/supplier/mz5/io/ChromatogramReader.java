@@ -141,6 +141,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 			double[] mzs = reader.readDoubleArray(Mz5.SPECTRUM_MZ);
 			float[] spectrumIntensity = reader.readFloatArray(Mz5.SPECTRUM_INTENSITY);
 			int start = 0;
+			int cycleNumber = isMultiStageMassSpectrum(cvParams, cvReferences) ? 1 : 0;
 			for(int i = 0; i < spectrumIndex.length; i++) {
 				int offset = spectrumIndex[i];
 				IScanMarker scanMarker = new ScanMarker(start, offset);
@@ -149,6 +150,11 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 				scanProxy.setIdentifier(spectrumTitles[i]);
 				scanProxy.setRetentionTime(retentionTimes[i]);
 				scanProxy.setMassSpectrometer(msLevels[i]);
+				if(scanProxy.getMassSpectrometer() < 2) {
+					cycleNumber++;
+				if(cycleNumber >= 1) {
+					scanProxy.setCycleNumber(cycleNumber);
+				}
 				float totalSignal = 0;
 				for(int o = start; o < offset; o++) {
 					totalSignal = totalSignal + spectrumIntensity[o];
@@ -228,5 +234,17 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 			multiplicator = (int)IChromatogramOverview.MINUTE_CORRELATION_FACTOR;
 		}
 		return multiplicator;
+	}
+
+	private boolean isMultiStageMassSpectrum(CVParam[] cvParams, CVReference[] cvReferences) {
+
+		for(CVParam cvParam : cvParams) {
+			if(cvParam.cvRefID == getMassSpectrumLevelReference(cvReferences)) {
+				if(Short.parseShort(cvParam.value) > 1) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }
