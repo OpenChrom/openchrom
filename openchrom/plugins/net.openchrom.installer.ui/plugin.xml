@@ -236,6 +236,23 @@
 
       <pluginDescriptor
             categoryId="com.lablicate.openchrom.converters.proprietary"
+            description="Reads *.dx files."
+            groupId="net.openchrom.wsd.converter"
+            id="net.openchrom.wsd.converter.supplier.openlab.feature"
+            kind="converter"
+            license="Converter License Terms"
+            name="Agilent OpenLab HPLC-UV/Vis"
+            provider="Lablicate"
+            urls="https://converter.openchrom.net/">
+         <icon image32="icons/32x32/Agilent.png">
+         </icon>
+         <overview
+               summary="Free for commercial use. Must not be used with other software.">
+         </overview>
+      </pluginDescriptor>
+
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.converters.proprietary"
             description="Reads *.CHR files."
             groupId="net.openchrom.csd.converter"
             id="net.openchrom.csd.converter.supplier.peaksimple.feature"
