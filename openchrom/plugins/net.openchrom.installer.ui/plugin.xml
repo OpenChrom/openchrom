@@ -1465,24 +1465,6 @@
 
       <pluginDescriptor
             categoryId="com.lablicate.openchrom.extensions.commercial"
-            description="Volatiles according to VDA 278."
-            groupId="com.lablicate.xxd.processor"
-            id="com.lablicate.xxd.processor.supplier.tvoc.feature"
-            kind="extension"
-            license="Commercial License Terms"
-            name="TVOC"
-            provider="Lablicate"
-            urls="https://plugins.openchrom.net/tvoc,https://plugins.openchrom.net/quantitation,https://plugins.openchrom.net/powertools,https://update.openchrom.net/">
-         <icon image32="icons/32x32/OpenChrom.png">
-         </icon>
-         <overview
-               summary="Commercial product. Requires valid license."
-               url="https://lablicate.com/marketplace/extensions/tvoc">
-         </overview>
-      </pluginDescriptor>
-
-      <pluginDescriptor
-            categoryId="com.lablicate.openchrom.extensions.commercial"
             description="Classic mass spectra search."
             groupId="net.openchrom.chromatogram.msd.identifier.peak"
             id="com.lablicate.identifier.pbm.feature"
