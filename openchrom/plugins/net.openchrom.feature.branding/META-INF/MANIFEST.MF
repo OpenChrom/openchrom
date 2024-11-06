@@ -1,8 +1,13 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: OpenChrom
-Bundle-SymbolicName: net.openchrom.feature.branding
+Bundle-Name: Branding
+Bundle-SymbolicName: net.openchrom.feature.branding;singleton:=true
 Bundle-Version: 1.5.0.qualifier
+Require-Bundle: org.eclipse.swt,
+ org.eclipse.e4.core.di.annotations,
+ org.eclipse.osgi
 Automatic-Module-Name: net.openchrom.feature.branding
+Bundle-ActivationPolicy: lazy
+Bundle-Activator: net.openchrom.feature.branding.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-17
-Bundle-Vendor: OpenChrom®
+Bundle-Vendor: OpenChrom

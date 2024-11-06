@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ASCII"?>
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_QRMGEKATEeqL1crrxNJdbw">
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_S6Kb8KDuEeqL1crrxNJdbw" featurename="commands" parentElementId="org.eclipse.chemclipse.rcp.ide.application">
+    <elements xsi:type="commands:Command" xmi:id="_Zd-HMKDuEeqL1crrxNJdbw" elementId="net.openchrom.feature.branding.command.contact" commandName="Contact"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_U4yEwKDuEeqL1crrxNJdbw" featurename="handlers" parentElementId="org.eclipse.chemclipse.rcp.ide.application">
+    <elements xsi:type="commands:Handler" xmi:id="_ezy8YKDuEeqL1crrxNJdbw" elementId="net.openchrom.feature.branding.handler.contact" contributionURI="bundleclass://net.openchrom.feature.branding/net.openchrom.feature.branding.ContactHandler" command="_Zd-HMKDuEeqL1crrxNJdbw"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_XMKcoKDuEeqL1crrxNJdbw" featurename="children" parentElementId="org.eclipse.chemclipse.rcp.app.ui.menu.help">
+    <elements xsi:type="menu:HandledMenuItem" xmi:id="_jqFV4KDuEeqL1crrxNJdbw" elementId="net.openchrom.feature.branding.handledmenuitem.contact" label="%Contact" iconURI="platform:/plugin/net.openchrom.feature.branding/icons/mail.gif" tooltip="Message the developers." command="_Zd-HMKDuEeqL1crrxNJdbw"/>
+  </fragments>
+</fragment:ModelFragments>
