@@ -59,7 +59,6 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_DETECTOR_SETTINGS_SORT, "Sort Detector Settings", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_SETTINGS_SORT, "Sort Review Settings", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_REPORT_SETTINGS_SORT, "Sort Report Settings", getFieldEditorParent()));
-		addField(new BooleanFieldEditor(PreferenceSupplier.P_OPEN_REPORT_AFTER_PROCESSING, "Open report after processing", getFieldEditorParent()));
 	}
 
 	/*

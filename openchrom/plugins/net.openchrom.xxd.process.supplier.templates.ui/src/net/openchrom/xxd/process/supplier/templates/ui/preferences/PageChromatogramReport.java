@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Lablicate GmbH.
+ * Copyright (c) 2020, 2024 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -35,10 +35,12 @@ public class PageChromatogramReport extends FieldEditorPreferencePage implements
 	 * GUI blocks needed to manipulate various types of preferences. Each field
 	 * editor knows how to save and restore itself.
 	 */
+	@Override
 	public void createFieldEditors() {
 
 		addField(new ReportFieldEditor(PreferenceSupplier.P_CHROMATOGRAM_REPORT_LIST, "", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_REPORT_REFERENCED_CHROMATOGRAMS, "Report Referenced Chromatograms", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_OPEN_REPORT_AFTER_PROCESSING, "Open report after processing", getFieldEditorParent()));
 	}
 
 	/*
@@ -46,6 +48,7 @@ public class PageChromatogramReport extends FieldEditorPreferencePage implements
 	 * @see
 	 * org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
 	 */
+	@Override
 	public void init(IWorkbench workbench) {
 
 	}
