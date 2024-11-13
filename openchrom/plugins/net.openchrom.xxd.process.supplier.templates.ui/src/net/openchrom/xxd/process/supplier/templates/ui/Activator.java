@@ -88,9 +88,7 @@ public class Activator extends AbstractActivatorUI {
 					if(object instanceof File file) {
 						if(file.exists()) {
 							if(IChemClipseEvents.TOPIC_PROCESSING_FILE_CREATED.equals(topic)) {
-								if(PreferenceSupplier.isOpenReportAfterProcessing()) {
-									SystemEditor.open(file);
-								}
+								SystemEditor.open(file);
 							}
 						}
 					}

@@ -50,7 +50,9 @@ public class ChromatogramReport extends AbstractChromatogramReportGenerator {
 					ReportWriter reportWriter = new ReportWriter();
 					reportWriter.generate(file, append, chromatograms, reportSettings, monitor);
 					processingInfo.setProcessingResult(file);
-					UpdateNotifier.update(IChemClipseEvents.TOPIC_PROCESSING_FILE_CREATED, file);
+					if(PreferenceSupplier.isOpenReportAfterProcessing()) {
+						UpdateNotifier.update(IChemClipseEvents.TOPIC_PROCESSING_FILE_CREATED, file);
+					}
 				} catch(IOException e) {
 					logger.warn(e);
 					processingInfo.addErrorMessage(DESCRIPTION, "The report couldn't be created. An error occured.");
@@ -59,7 +61,6 @@ public class ChromatogramReport extends AbstractChromatogramReportGenerator {
 				logger.warn("The settings are not of type: " + ChromatogramReportSettings.class);
 			}
 		}
-		//
 		return processingInfo;
 	}
 
