@@ -1498,5 +1498,23 @@
          </overview>
       </pluginDescriptor>
 
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.extensions.commercial"
+            description="GCxGC-TOF workflow"
+            groupId="com.lablicate.xxd.powertools"
+            id="com.lablicate.xxd.processor.supplier.chrom2quant.feature"
+            kind="extension"
+            license="Commercial License Terms"
+            name="Chrom2Quant"
+            provider="Lablicate"
+            urls="https://plugins.openchrom.net/chrom2quant,https://plugins.openchrom.net/powertools,https://update.openchrom.net/">
+         <icon image32="icons/32x32/OpenChrom.png">
+         </icon>
+         <overview
+               summary="Commercial product. Requires valid license."
+               url="https://lablicate.com/marketplace/extensions/chrom2quant">
+         </overview>
+      </pluginDescriptor>
+
    </extension> 
 </plugin>
