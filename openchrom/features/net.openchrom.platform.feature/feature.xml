@@ -232,14 +232,6 @@
          version="0.0.0"/>
 
    <plugin
-         id="com.fasterxml.woodstox.woodstox-core"
-         version="0.0.0"/>
-
-   <plugin
-         id="stax2-api"
-         version="0.0.0"/>
-
-   <plugin
          id="wrapped.dk.brics.automaton"
          version="0.0.0"/>
 
