@@ -300,10 +300,6 @@
          version="0.0.0"/>
 
    <plugin
-         id="com.google.gson"
-         version="0.0.0"/>
-
-   <plugin
          id="org.osgi.service.component.annotations"
          version="0.0.0"/>
 
