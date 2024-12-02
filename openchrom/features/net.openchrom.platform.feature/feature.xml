@@ -248,10 +248,6 @@
          version="0.0.0"/>
 
    <plugin
-         id="wrapped.com.beust.jcommander"
-         version="0.0.0"/>
-
-   <plugin
          id="wrapped.edu.ucar.udunits"
          version="0.0.0"/>
 
