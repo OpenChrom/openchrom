@@ -62,38 +62,6 @@
 			</dependency>
 		</dependencies>
 	</location>
-	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
-		<dependencies>
-			<dependency>
-				<groupId>org.apache.commons</groupId>
-				<artifactId>commons-imaging</artifactId>
-				<version>1.0-alpha2</version>
-				<type>jar</type>
-			</dependency>
-		</dependencies>
-	</location>
-	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" label="org.apache.httpcomponents" missingManifest="generate" type="Maven">
-		<dependencies>
-			<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpclient-cache</artifactId>
-				<version>4.5.14</version>
-				<type>jar</type>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpclient</artifactId>
-				<version>4.5.14</version>
-				<type>jar</type>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpcore</artifactId>
-				<version>4.4.16</version>
-				<type>jar</type>
-			</dependency>
-		</dependencies>
-	</location>
 	<location includeDependencyDepth="none" includeDependencyScopes="compile,runtime" includeSource="true" missingManifest="generate" type="Maven">
 		<dependencies>
 			<dependency>
