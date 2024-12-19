@@ -13,8 +13,7 @@ package net.openchrom.xxd.base.ui.services;
 
 import java.util.List;
 
-import org.eclipse.chemclipse.model.core.IChromatogram;
-import org.eclipse.chemclipse.model.core.IScan;
+import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.model.support.IAnalysisSegment;
 import org.eclipse.chemclipse.model.types.DataType;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
@@ -31,7 +30,7 @@ public interface IAnalysisSegmentService {
 
 	DataType getDataType();
 
-	IProcessingInfo<List<IAnalysisSegment>> calculate(IChromatogram<?> chromatogram, List<? extends IScan> scans, IProgressMonitor monitor);
+	IProcessingInfo<List<IAnalysisSegment>> calculate(IChromatogramSelection<?, ?> chromatogram, IProgressMonitor monitor);
 
 	Class<? extends IWorkbenchPreferencePage> getPreferencePage();
 }
