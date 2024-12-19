@@ -170,13 +170,15 @@ public class ExcelTemplateReportWriter {
 				 */
 				Sheet sheet = workbook.getSheetAt(0);
 				Row row = findTemplateRow(sheet);
-				if(row == null) {
-					return;
+				if(row != null) {
+					if(printChromatograms(workbook, chromatograms, sheet, append, row)) {
+						deleteRow(row, sheet);
+						recalculate(workbook);
+					}
 				}
-				//
-				printChromatograms(workbook, chromatograms, sheet, append, row);
-				deleteRow(row, sheet);
-				recalculate(workbook);
+				/*
+				 * Export (even empty with no peaks - otherwise customer is confused)
+				 */
 				try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
 					workbook.write(fileOutputStream);
 				}
@@ -371,67 +373,81 @@ public class ExcelTemplateReportWriter {
 		return null;
 	}
 
-	private void printChromatograms(Workbook workbook, List<IChromatogram<? extends IPeak>> chromatograms, Sheet sheet, boolean append, Row row) {
+	private boolean printChromatograms(Workbook workbook, List<IChromatogram<? extends IPeak>> chromatograms, Sheet sheet, boolean append, Row row) {
 
+		boolean success = false;
 		boolean first = true;
 		List<PlaceholderProcessor> placeholderProcessors = createPlaceholderProcessors();
 		//
 		for(IChromatogram<? extends IPeak> chromatogram : chromatograms) {
 			if(append || first) {
-				printPeaks(sheet, row, chromatogram, placeholderProcessors);
+				if(printPeaks(sheet, row, chromatogram, placeholderProcessors)) {
+					success = true;
+				}
 			} else {
 				Sheet newSheet = workbook.createSheet();
-				printPeaks(newSheet, row, chromatogram, placeholderProcessors);
+				if(printPeaks(newSheet, row, chromatogram, placeholderProcessors)) {
+					success = true;
+				}
 			}
 			first = false;
 		}
+		//
+		return success;
 	}
 
-	private void printPeaks(Sheet sheet, Row row, IChromatogram<? extends IPeak> chromatogram, List<PlaceholderProcessor> placeholderProcessors) {
+	private boolean printPeaks(Sheet sheet, Row row, IChromatogram<? extends IPeak> chromatogram, List<PlaceholderProcessor> placeholderProcessors) {
 
-		if(row == null) {
-			return;
-		}
-		/*
-		 * Iterate the peaks
-		 */
-		CellData cellData = new CellData("", chromatogram, -1);
-		for(int i = 0; i < chromatogram.getNumberOfPeaks(); i++) {
-			cellData.setPeakNumber(i);
-			int rowIndex = row.getRowNum() + i + 1;
-			Row currentRow = sheet.createRow(rowIndex);
-			for(int j = 0; j < row.getLastCellNum(); j++) {
-				Cell templateCell = row.getCell(j);
-				Cell cell = currentRow.createCell(j);
-				if(templateCell != null) {
-					/*
-					 * Update
-					 */
-					cell.setCellStyle(templateCell.getCellStyle());
-					switch(templateCell.getCellType()) {
-						case STRING:
-							cellData.setCellValue(templateCell.getStringCellValue());
-							cell.setCellValue(populatePlaceholders(placeholderProcessors, cellData));
-							break;
-						case NUMERIC:
-							cell.setCellValue(templateCell.getNumericCellValue());
-							break;
-						case BOOLEAN:
-							cell.setCellValue(templateCell.getBooleanCellValue());
-							break;
-						case FORMULA:
-							cellData.setCellValue(templateCell.getCellFormula());
-							cell.setCellFormula(populatePlaceholders(placeholderProcessors, cellData));
-							break;
-						case BLANK:
-							cell.setBlank();
-							break;
-						default:
-							break;
+		boolean success = false;
+		if(row != null) {
+			int numberPeaks = chromatogram.getNumberOfPeaks();
+			if(numberPeaks > 0) {
+				/*
+				 * Iterate the peaks
+				 */
+				CellData cellData = new CellData("", chromatogram, -1);
+				for(int i = 0; i < numberPeaks; i++) {
+					cellData.setPeakNumber(i);
+					int rowIndex = row.getRowNum() + i + 1;
+					Row currentRow = sheet.createRow(rowIndex);
+					for(int j = 0; j < row.getLastCellNum(); j++) {
+						Cell templateCell = row.getCell(j);
+						Cell cell = currentRow.createCell(j);
+						if(templateCell != null) {
+							/*
+							 * Update
+							 */
+							cell.setCellStyle(templateCell.getCellStyle());
+							switch(templateCell.getCellType()) {
+								case STRING:
+									cellData.setCellValue(templateCell.getStringCellValue());
+									cell.setCellValue(populatePlaceholders(placeholderProcessors, cellData));
+									break;
+								case NUMERIC:
+									cell.setCellValue(templateCell.getNumericCellValue());
+									break;
+								case BOOLEAN:
+									cell.setCellValue(templateCell.getBooleanCellValue());
+									break;
+								case FORMULA:
+									cellData.setCellValue(templateCell.getCellFormula());
+									cell.setCellFormula(populatePlaceholders(placeholderProcessors, cellData));
+									break;
+								case BLANK:
+									cell.setBlank();
+									break;
+								default:
+									break;
+							}
+						}
 					}
 				}
+				//
+				success = true;
 			}
 		}
+		//
+		return success;
 	}
 
 	private String populatePlaceholders(List<PlaceholderProcessor> placeholderProcessors, CellData cellData) {
