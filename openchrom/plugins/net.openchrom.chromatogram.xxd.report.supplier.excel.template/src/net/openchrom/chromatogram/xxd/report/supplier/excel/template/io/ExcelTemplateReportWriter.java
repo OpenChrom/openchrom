@@ -145,13 +145,14 @@ public class ExcelTemplateReportWriter {
 				 * Write the template
 				 */
 				XSSFSheet sheet = workbook.createSheet("Template");
-				XSSFRow row = sheet.createRow(0);
+				XSSFRow row1 = sheet.createRow(0);
+				XSSFRow row2 = sheet.createRow(1);
+				//
 				List<PlaceholderProcessor> placeholderProcessors = createPlaceholderProcessors();
 				for(int i = 0; i < placeholderProcessors.size(); i++) {
 					PlaceholderProcessor placeholderProcessor = placeholderProcessors.get(i);
-					XSSFCell cell = row.createCell(i);
-					cell.setCellType(CellType.STRING);
-					cell.setCellValue(placeholderProcessor.getPlaceholder());
+					createCell(row1, i, placeholderProcessor.getKey()); // Header
+					createCell(row2, i, placeholderProcessor.getPlaceholder()); // Placeholder
 				}
 				/*
 				 * Save
@@ -487,5 +488,12 @@ public class ExcelTemplateReportWriter {
 		//
 		FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
 		evaluator.evaluateAll();
+	}
+
+	private void createCell(XSSFRow row, int column, String value) {
+
+		XSSFCell cell = row.createCell(column);
+		cell.setCellType(CellType.STRING);
+		cell.setCellValue(value);
 	}
 }

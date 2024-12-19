@@ -18,13 +18,20 @@ public class PlaceholderProcessor {
 	public static final String PLACEHOLDER_START = "{";
 	public static final String PLACEHOLDER_STOP = "}";
 	//
+	private String key = "";
 	private String placeholder = "";
 	private Function<CellData, String> function = null;
 
-	public PlaceholderProcessor(String placeholder, Function<CellData, String> function) {
+	public PlaceholderProcessor(String key, Function<CellData, String> function) {
 
-		this.placeholder = PLACEHOLDER_START + placeholder + PLACEHOLDER_STOP;
+		this.key = key;
+		this.placeholder = PLACEHOLDER_START + key + PLACEHOLDER_STOP;
 		this.function = function;
+	}
+
+	public String getKey() {
+
+		return key;
 	}
 
 	public String getPlaceholder() {
