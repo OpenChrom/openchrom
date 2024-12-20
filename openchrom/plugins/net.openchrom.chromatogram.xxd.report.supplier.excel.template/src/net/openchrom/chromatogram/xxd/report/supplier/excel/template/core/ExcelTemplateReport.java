@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.eclipse.chemclipse.chromatogram.xxd.report.chromatogram.AbstractChromatogramReportGenerator;
 import org.eclipse.chemclipse.chromatogram.xxd.report.settings.IChromatogramReportSettings;
 import org.eclipse.chemclipse.logging.core.Logger;
@@ -41,7 +42,7 @@ public class ExcelTemplateReport extends AbstractChromatogramReportGenerator {
 					ExcelTemplateReportWriter chromatogramReport = new ExcelTemplateReportWriter();
 					chromatogramReport.generate(file, append, chromatograms, reportSettings);
 					processingInfo.setProcessingResult(file);
-				} catch(IOException e) {
+				} catch(IOException | InvalidFormatException e) {
 					logger.warn(e);
 					processingInfo.addErrorMessage("Excel Template Report", "The report couldn't be created.", e);
 				}

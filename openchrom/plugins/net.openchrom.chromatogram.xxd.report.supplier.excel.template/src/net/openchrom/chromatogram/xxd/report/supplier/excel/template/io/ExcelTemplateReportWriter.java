@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
@@ -162,26 +163,65 @@ public class ExcelTemplateReportWriter {
 		}
 	}
 
-	public void generate(File file, boolean append, List<IChromatogram<? extends IPeak>> chromatograms, ChromatogramReportSettings reportSettings) throws IOException {
+	public void generate(File file, boolean append, List<IChromatogram<? extends IPeak>> chromatograms, ChromatogramReportSettings reportSettings) throws IOException, InvalidFormatException {
 
-		try (FileInputStream fileInputStream = new FileInputStream(reportSettings.getTemplate())) {
-			try (Workbook workbook = new XSSFWorkbook(fileInputStream)) {
+		try (FileInputStream fileInputStreamTemplate = new FileInputStream(reportSettings.getTemplate())) {
+			try (XSSFWorkbook workbookTemplate = new XSSFWorkbook(fileInputStreamTemplate)) {
 				/*
-				 * Validate the Template
+				 * Use the template sheet. It will be copied on each reported chromatogram.
+				 * Check if append is used.
 				 */
-				Sheet sheet = workbook.getSheetAt(0);
-				Row row = findTemplateRow(sheet);
-				if(row != null) {
-					if(printChromatograms(workbook, chromatograms, sheet, append, row)) {
-						deleteRow(row, sheet);
-						recalculate(workbook);
+				XSSFSheet sheetTemplate = workbookTemplate.getSheetAt(0);
+				boolean appendData = false;
+				if(append) {
+					if(file.exists() && file.length() > 0) {
+						appendData = true;
 					}
 				}
 				/*
-				 * Export (even empty with no peaks - otherwise customer is confused)
+				 * Prepare a new Excel file.
 				 */
-				try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
-					workbook.write(fileOutputStream);
+				if(!appendData) {
+					try (XSSFWorkbook workbookNew = new XSSFWorkbook()) {
+						try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
+							workbookNew.write(fileOutputStream);
+						}
+					}
+				}
+				/*
+				 * Load the Excel template, but don't close the workbook.
+				 * Otherwise "Unexpected end of ZLIB input stream" appears when
+				 * trying to save the changes.
+				 */
+				XSSFWorkbook workbookTarget = null;
+				try (FileInputStream fileInputStreamTarget = new FileInputStream(file)) {
+					workbookTarget = new XSSFWorkbook(fileInputStreamTarget);
+				}
+				/*
+				 * Populate the Excel file.
+				 */
+				if(workbookTarget != null) {
+					/*
+					 * Copy the template sheet
+					 */
+					XSSFSheet sheetTarget = workbookTarget.createSheet();
+					SheetCopySupport.copy(sheetTemplate, sheetTarget);
+					/*
+					 * Populate the rows
+					 */
+					Row row = getPlaceholderRow(sheetTarget);
+					if(row != null) {
+						if(printChromatograms(chromatograms, workbookTarget, sheetTarget, row, sheetTemplate)) {
+							recalculate(workbookTarget);
+						}
+					}
+					/*
+					 * Save changes
+					 */
+					try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
+						workbookTarget.write(fileOutputStream);
+					}
+					workbookTarget.close();
 				}
 			}
 		}
@@ -359,7 +399,7 @@ public class ExcelTemplateReportWriter {
 		};
 	}
 
-	private Row findTemplateRow(Sheet sheet) {
+	private Row getPlaceholderRow(Sheet sheet) {
 
 		for(Row row : sheet) {
 			for(Cell cell : row) {
@@ -374,30 +414,39 @@ public class ExcelTemplateReportWriter {
 		return null;
 	}
 
-	private boolean printChromatograms(Workbook workbook, List<IChromatogram<? extends IPeak>> chromatograms, Sheet sheet, boolean append, Row row) {
+	private boolean printChromatograms(List<IChromatogram<? extends IPeak>> chromatograms, XSSFWorkbook workbook, XSSFSheet sheet, Row row, XSSFSheet sheetTemplate) {
 
 		boolean success = false;
 		boolean first = true;
 		List<PlaceholderProcessor> placeholderProcessors = createPlaceholderProcessors();
 		//
 		for(IChromatogram<? extends IPeak> chromatogram : chromatograms) {
-			if(append || first) {
-				if(printPeaks(sheet, row, chromatogram, placeholderProcessors)) {
-					success = true;
-				}
+			if(first) {
+				success = populatePeaks(chromatogram, placeholderProcessors, sheet, row);
+				first = false;
 			} else {
-				Sheet newSheet = workbook.createSheet();
-				if(printPeaks(newSheet, row, chromatogram, placeholderProcessors)) {
-					success = true;
-				}
+				XSSFSheet sheetNew = workbook.createSheet();
+				SheetCopySupport.copy(sheetTemplate, sheetNew);
+				success = populatePeaks(chromatogram, placeholderProcessors, sheetNew, row);
 			}
-			first = false;
 		}
 		//
 		return success;
 	}
 
-	private boolean printPeaks(Sheet sheet, Row row, IChromatogram<? extends IPeak> chromatogram, List<PlaceholderProcessor> placeholderProcessors) {
+	private boolean populatePeaks(IChromatogram<? extends IPeak> chromatogram, List<PlaceholderProcessor> placeholderProcessors, Sheet sheet, Row row) {
+
+		boolean success = false;
+		//
+		if(printPeaks(chromatogram, placeholderProcessors, sheet, row)) {
+			deletePlaceholderRow(row, sheet);
+			success = true;
+		}
+		//
+		return success;
+	}
+
+	private boolean printPeaks(IChromatogram<? extends IPeak> chromatogram, List<PlaceholderProcessor> placeholderProcessors, Sheet sheet, Row row) {
 
 		boolean success = false;
 		if(row != null) {
@@ -460,9 +509,12 @@ public class ExcelTemplateReportWriter {
 		return cellData.getCellValue();
 	}
 
-	private void deleteRow(Row row, Sheet sheet) {
+	private void deletePlaceholderRow(Row row, Sheet sheet) {
 
-		sheet.shiftRows(row.getRowNum() + 1, sheet.getLastRowNum(), -1);
+		Row rowDelete = getPlaceholderRow(sheet);
+		if(rowDelete != null) {
+			sheet.shiftRows(rowDelete.getRowNum() + 1, sheet.getLastRowNum(), -1);
+		}
 	}
 
 	private void recalculate(Workbook workbook) {
