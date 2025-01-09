@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2024 Lablicate GmbH.
+ * Copyright (c) 2020, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -93,7 +93,7 @@ public class ReportWriter {
 			/*
 			 * Master
 			 */
-			chromatogramNameMaster = HeaderUtil.getChromatogramName(chromatogram, headerField, chromatogram.getName());
+			chromatogramNameMaster = HeaderUtil.getHeaderData(chromatogram, headerField, chromatogram.getName());
 			Map<ReportSetting, List<IPeak>> mappedResults = printChromatogram(chromatogram, chromatogramReportSettings, columnsToPrint, fileExists, chromatogramNameMaster, traces, printWriter);
 			merge(mappedResults, sumResults);
 			reports++;
@@ -105,7 +105,7 @@ public class ReportWriter {
 				int reference = 1;
 				for(IChromatogram<? extends IPeak> referenceChromatogram : chromatogram.getReferencedChromatograms()) {
 					String defaultName = chromatogramNameMaster + "_" + reference;
-					String chromatogramNameReference = HeaderUtil.getChromatogramName(referenceChromatogram, headerField, defaultName);
+					String chromatogramNameReference = HeaderUtil.getHeaderData(referenceChromatogram, headerField, defaultName);
 					Map<ReportSetting, List<IPeak>> mappedResultsReference = printChromatogram(referenceChromatogram, chromatogramReportSettings, columnsToPrint, fileExists, chromatogramNameReference, traces, printWriter);
 					merge(mappedResultsReference, sumResults);
 					reports++;
