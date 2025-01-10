@@ -168,7 +168,7 @@ public class ProcessDetectorUI extends Composite implements IExtendedPartUI {
 
 	private void updateTargetButton(Button button) {
 
-		setButtonImage(button, IMAGE_TARGET_INPUT, PREFIX_SHOW, PREFIX_HIDE, TOOLTIP_TARGET_INPUT, PreferenceSupplier.isDetectorShowTargetNameDialog());
+		setButtonImage(button, IMAGE_TARGET_INPUT, PREFIX_ENABLE, PREFIX_DISABLE, TOOLTIP_TARGET_INPUT, PreferenceSupplier.isDetectorShowTargetNameDialog());
 	}
 
 	private void createComboViewerVisibility(Composite parent) {
