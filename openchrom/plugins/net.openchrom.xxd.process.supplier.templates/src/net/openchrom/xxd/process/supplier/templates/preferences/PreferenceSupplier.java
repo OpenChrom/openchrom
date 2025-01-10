@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2024 Lablicate GmbH.
+ * Copyright (c) 2018, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -222,6 +222,8 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static final boolean DEF_DETECTOR_SHOW_BASELINE = false;
 	public static final String P_DETECTOR_SHOW_ONLY_RELEVANT_PEAKS = "detectorShowOnlyRelevantPeaks";
 	public static final boolean DEF_DETECTOR_SHOW_ONLY_RELEVANT_PEAKS = false;
+	public static final String P_DETECTOR_SHOW_TARGET_NAME_DIALOG = "detectorShowTargetNameDialog";
+	public static final boolean DEF_DETECTOR_SHOW_TARGET_NAME_DIALOG = false;
 	/*
 	 * Peak Review
 	 */
@@ -365,6 +367,7 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 		putDefault(P_DETECTOR_FOCUS_XIC, Boolean.toString(DEF_DETECTOR_FOCUS_XIC));
 		putDefault(P_DETECTOR_SHOW_BASELINE, Boolean.toString(DEF_DETECTOR_SHOW_BASELINE));
 		putDefault(P_DETECTOR_SHOW_ONLY_RELEVANT_PEAKS, Boolean.toString(DEF_DETECTOR_SHOW_ONLY_RELEVANT_PEAKS));
+		putDefault(P_DETECTOR_SHOW_TARGET_NAME_DIALOG, DEF_DETECTOR_SHOW_TARGET_NAME_DIALOG);
 		/*
 		 * Review
 		 */
@@ -671,10 +674,9 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 		return INSTANCE().getBoolean(P_DETECTOR_REPLACE_NEAREST_PEAK, DEF_DETECTOR_REPLACE_NEAREST_PEAK);
 	}
 
-	public static void toggleDetectorReplaceNearestPeak() {
+	public static void setDetectorReplaceNearestPeak(boolean replace) {
 
-		boolean replacePeak = isDetectorReplaceNearestPeak();
-		INSTANCE().putBoolean(P_DETECTOR_REPLACE_NEAREST_PEAK, !replacePeak);
+		INSTANCE().setBoolean(P_DETECTOR_REPLACE_NEAREST_PEAK, replace);
 	}
 
 	public static int getDetectorReplacePeakDeltaMilliseconds() {
@@ -720,6 +722,16 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static boolean isDetectorShowOnlyRelevantPeaks() {
 
 		return INSTANCE().getBoolean(P_DETECTOR_SHOW_ONLY_RELEVANT_PEAKS, DEF_DETECTOR_SHOW_ONLY_RELEVANT_PEAKS);
+	}
+
+	public static boolean isDetectorShowTargetNameDialog() {
+
+		return INSTANCE().getBoolean(P_DETECTOR_SHOW_TARGET_NAME_DIALOG, DEF_DETECTOR_SHOW_TARGET_NAME_DIALOG);
+	}
+
+	public static void setDetectorShowTargetNameDialog(boolean show) {
+
+		INSTANCE().setBoolean(P_DETECTOR_SHOW_TARGET_NAME_DIALOG, show);
 	}
 
 	public static int getReviewDeltaLeftMilliseconds() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Lablicate GmbH.
+ * Copyright (c) 2020, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -11,7 +11,9 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.swt.peaks;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.model.core.IChromatogram;
@@ -23,14 +25,10 @@ import org.eclipse.chemclipse.support.ui.swt.EnhancedComboViewer;
 import org.eclipse.chemclipse.support.updates.IUpdateListener;
 import org.eclipse.chemclipse.swt.ui.components.ISearchListener;
 import org.eclipse.chemclipse.swt.ui.components.SearchSupportUI;
-import org.eclipse.chemclipse.ux.extension.ui.support.PartSupport;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.preference.PreferenceDialog;
-import org.eclipse.jface.preference.PreferenceManager;
-import org.eclipse.jface.preference.PreferenceNode;
+import org.eclipse.chemclipse.ux.extension.xxd.ui.swt.IExtendedPartUI;
+import org.eclipse.chemclipse.ux.extension.xxd.ui.swt.ISettingsHandler;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -39,6 +37,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
@@ -49,14 +48,17 @@ import net.openchrom.xxd.process.supplier.templates.ui.preferences.PreferencePag
 import net.openchrom.xxd.process.supplier.templates.ui.swt.PeakDetectorListUI;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessDetectorSettings;
 
-public class ProcessDetectorUI extends Composite {
+public class ProcessDetectorUI extends Composite implements IExtendedPartUI {
 
+	private static final String IMAGE_TARGET_INPUT = IApplicationImage.IMAGE_TARGET;
+	private static final String TOOLTIP_TARGET_INPUT = "the target name input dialog";
+	//
+	private AtomicReference<Button> buttonToolbarSearch = new AtomicReference<>();
+	private AtomicReference<SearchSupportUI> toolbarSearch = new AtomicReference<>();
+	private AtomicReference<ComboViewer> comboViewerVisibility = new AtomicReference<>();
+	private AtomicReference<PeakDetectorListUI> peakDetectorList = new AtomicReference<>();
+	//
 	private DetectorController controller;
-	//
-	private ComboViewer comboViewerVisibility;
-	private Composite toolbarSearch;
-	private PeakDetectorListUI peakDetectorListUI;
-	//
 	private ProcessDetectorSettings processSettings;
 
 	public ProcessDetectorUI(Composite parent, int style) {
@@ -79,12 +81,12 @@ public class ProcessDetectorUI extends Composite {
 
 	public int getSelection() {
 
-		return peakDetectorListUI.getTable().getSelectionIndex();
+		return peakDetectorList.get().getTable().getSelectionIndex();
 	}
 
 	public void setSelection(int index) {
 
-		Table table = peakDetectorListUI.getTable();
+		Table table = peakDetectorList.get().getTable();
 		if(index >= 0 && index < table.getItemCount()) {
 			table.setSelection(index);
 			updateSelection();
@@ -97,10 +99,15 @@ public class ProcessDetectorUI extends Composite {
 		setLayout(gridLayout);
 		//
 		createToolbarMain(this);
-		toolbarSearch = createToolbarSearch(this);
-		peakDetectorListUI = createTable(this);
+		createToolbarSearch(this);
+		createTable(this);
 		//
-		PartSupport.setCompositeVisibility(toolbarSearch, false);
+		initialize();
+	}
+
+	private void initialize() {
+
+		enableToolbar(toolbarSearch, buttonToolbarSearch.get(), IMAGE_SEARCH, TOOLTIP_SEARCH, false);
 	}
 
 	private void createToolbarMain(Composite parent) {
@@ -109,15 +116,22 @@ public class ProcessDetectorUI extends Composite {
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalAlignment = SWT.END;
 		composite.setLayoutData(gridData);
-		composite.setLayout(new GridLayout(4, false));
+		composite.setLayout(new GridLayout(5, false));
 		//
-		createToggleToolbarSearch(composite);
-		comboViewerVisibility = createComboViewerVisibility(composite);
+		createButtonToggleToolbarSearch(composite);
+		createButtonToggleTargetInput(composite);
+		createComboViewerVisibility(composite);
 		createButtonReplacePeak(composite);
 		createSettingsButton(composite);
 	}
 
-	private SearchSupportUI createToolbarSearch(Composite parent) {
+	private void createButtonToggleToolbarSearch(Composite parent) {
+
+		Button button = createButtonToggleToolbar(parent, toolbarSearch, IMAGE_SEARCH, TOOLTIP_SEARCH);
+		buttonToolbarSearch.set(button);
+	}
+
+	private void createToolbarSearch(Composite parent) {
 
 		SearchSupportUI searchSupportUI = new SearchSupportUI(parent, SWT.NONE);
 		searchSupportUI.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -126,37 +140,38 @@ public class ProcessDetectorUI extends Composite {
 			@Override
 			public void performSearch(String searchText, boolean caseSensitive) {
 
-				peakDetectorListUI.setSearchText(searchText, caseSensitive);
+				peakDetectorList.get().setSearchText(searchText, caseSensitive);
 			}
 		});
 		//
-		return searchSupportUI;
+		toolbarSearch.set(searchSupportUI);
 	}
 
-	private Button createToggleToolbarSearch(Composite parent) {
+	private Button createButtonToggleTargetInput(Composite parent) {
 
-		Button button = new Button(parent, SWT.PUSH);
-		button.setToolTipText("Toggle search toolbar.");
+		Button button = new Button(parent, SWT.TOGGLE);
 		button.setText("");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImageProvider.SIZE_16x16));
+		updateTargetButton(button);
+		//
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				boolean visible = PartSupport.toggleCompositeVisibility(toolbarSearch);
-				if(visible) {
-					button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImageProvider.SIZE_16x16));
-				} else {
-					button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImageProvider.SIZE_16x16));
-				}
+				PreferenceSupplier.setDetectorShowTargetNameDialog(!PreferenceSupplier.isDetectorShowTargetNameDialog());
+				updateTargetButton(button);
 			}
 		});
 		//
 		return button;
 	}
 
-	private ComboViewer createComboViewerVisibility(Composite parent) {
+	private void updateTargetButton(Button button) {
+
+		setButtonImage(button, IMAGE_TARGET_INPUT, PREFIX_SHOW, PREFIX_HIDE, TOOLTIP_TARGET_INPUT, PreferenceSupplier.isDetectorShowTargetNameDialog());
+	}
+
+	private void createComboViewerVisibility(Composite parent) {
 
 		ComboViewer comboViewer = new EnhancedComboViewer(parent, SWT.READ_ONLY);
 		Combo combo = comboViewer.getCombo();
@@ -167,7 +182,7 @@ public class ProcessDetectorUI extends Composite {
 			public String getText(Object element) {
 
 				if(element instanceof Visibility visibility) {
-					return visibility.name();
+					return visibility.label();
 				}
 				return null;
 			}
@@ -190,22 +205,22 @@ public class ProcessDetectorUI extends Composite {
 			}
 		});
 		//
-		return comboViewer;
+		comboViewerVisibility.set(comboViewer);
 	}
 
 	private Button createButtonReplacePeak(Composite parent) {
 
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
-		adjustDetectorButton(button);
+		updateReplacePeakButton(button);
 		//
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				PreferenceSupplier.toggleDetectorReplaceNearestPeak();
-				adjustDetectorButton(button);
+				PreferenceSupplier.setDetectorReplaceNearestPeak(!PreferenceSupplier.isDetectorReplaceNearestPeak());
+				updateReplacePeakButton(button);
 				updateSelection();
 			}
 		});
@@ -213,7 +228,7 @@ public class ProcessDetectorUI extends Composite {
 		return button;
 	}
 
-	private void adjustDetectorButton(Button button) {
+	private void updateReplacePeakButton(Button button) {
 
 		if(PreferenceSupplier.isDetectorReplaceNearestPeak()) {
 			button.setToolTipText("Replace the nearest peak.");
@@ -226,34 +241,17 @@ public class ProcessDetectorUI extends Composite {
 
 	private void createSettingsButton(Composite parent) {
 
-		Button button = new Button(parent, SWT.PUSH);
-		button.setText("");
-		button.setToolTipText("Open the Settings");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CONFIGURE, IApplicationImageProvider.SIZE_16x16));
-		button.addSelectionListener(new SelectionAdapter() {
+		createSettingsButton(parent, Arrays.asList(PagePeakDetector.class, PreferencePage.class), new ISettingsHandler() {
 
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void apply(Display display) {
 
-				PreferenceManager preferenceManager = new PreferenceManager();
-				preferenceManager.addToRoot(new PreferenceNode("1", new PagePeakDetector()));
-				preferenceManager.addToRoot(new PreferenceNode("2", new PreferencePage()));
-				//
-				PreferenceDialog preferenceDialog = new PreferenceDialog(e.display.getActiveShell(), preferenceManager);
-				preferenceDialog.create();
-				preferenceDialog.setMessage("Settings");
-				if(preferenceDialog.open() == Window.OK) {
-					try {
-						applySettings();
-					} catch(Exception e1) {
-						MessageDialog.openError(e.display.getActiveShell(), "Settings", "Something has gone wrong to apply the settings.");
-					}
-				}
+				applySettings();
 			}
 		});
 	}
 
-	private PeakDetectorListUI createTable(Composite parent) {
+	private void createTable(Composite parent) {
 
 		PeakDetectorListUI peakDetectorListUI = new PeakDetectorListUI(parent, SWT.BORDER, false);
 		Table table = peakDetectorListUI.getTable();
@@ -277,7 +275,7 @@ public class ProcessDetectorUI extends Composite {
 			}
 		});
 		//
-		return peakDetectorListUI;
+		peakDetectorList.set(peakDetectorListUI);
 	}
 
 	private void applySettings() {
@@ -287,7 +285,7 @@ public class ProcessDetectorUI extends Composite {
 
 	private DetectorSetting getDetectorSetting() {
 
-		Object object = peakDetectorListUI.getStructuredSelection().getFirstElement();
+		Object object = peakDetectorList.get().getStructuredSelection().getFirstElement();
 		if(object instanceof DetectorSetting detectorSetting) {
 			return detectorSetting;
 		}
@@ -298,12 +296,12 @@ public class ProcessDetectorUI extends Composite {
 
 		if(processSettings != null) {
 			List<DetectorSetting> detectorSettings = processSettings.getDetectorSettings();
-			peakDetectorListUI.setInput(detectorSettings);
+			peakDetectorList.get().setInput(detectorSettings);
 			if(!detectorSettings.isEmpty()) {
-				peakDetectorListUI.getTable().select(0);
+				peakDetectorList.get().getTable().select(0);
 			}
 		} else {
-			peakDetectorListUI.setInput(null);
+			peakDetectorList.get().setInput(null);
 		}
 	}
 
@@ -315,29 +313,29 @@ public class ProcessDetectorUI extends Composite {
 				/*
 				 * CSD
 				 */
-				Combo combo = comboViewerVisibility.getCombo();
-				comboViewerVisibility.setInput(new Visibility[]{Visibility.TIC});
+				Combo combo = comboViewerVisibility.get().getCombo();
+				comboViewerVisibility.get().setInput(new Visibility[]{Visibility.TIC});
 				combo.select(0);
 			} else {
 				/*
 				 * MSD, WSD
 				 */
 				Visibility[] items = Visibility.values();
-				comboViewerVisibility.setInput(items);
+				comboViewerVisibility.get().setInput(items);
 				Visibility visibility = PreferenceSupplier.getDetectorVisibility();
 				//
 				exitloop:
 				for(int i = 0; i < items.length; i++) {
 					Visibility item = items[i];
 					if(item.equals(visibility)) {
-						Combo combo = comboViewerVisibility.getCombo();
+						Combo combo = comboViewerVisibility.get().getCombo();
 						combo.select(i);
 						break exitloop;
 					}
 				}
 			}
 		} else {
-			comboViewerVisibility.setInput(null);
+			comboViewerVisibility.get().setInput(null);
 		}
 	}
 

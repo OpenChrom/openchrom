@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Lablicate GmbH.
+ * Copyright (c) 2020, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -23,9 +23,14 @@ import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.targets.TargetValidator;
 import org.eclipse.chemclipse.model.updates.IPeakUpdateListener;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
+import org.eclipse.chemclipse.support.util.ValueParserSupport;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.custom.PeakChartSettings;
+import org.eclipse.jface.dialogs.IInputValidator;
+import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swtchart.Range;
 import org.eclipse.swtchart.extensions.core.BaseChart;
@@ -193,9 +198,36 @@ public class DetectorController {
 						String name = detectorSetting.getName();
 						if(!name.isEmpty()) {
 							String casNumber = "";
-							IIdentificationTarget identificationTarget = IIdentificationTarget.createDefaultTarget(name, casNumber, TargetValidator.IDENTIFIER);
-							if(identificationTarget != null) {
-								peak.getTargets().add(identificationTarget);
+							addPeakTarget(peak, name, casNumber);
+						} else {
+							if(peak.getTargets().isEmpty()) {
+								if(PreferenceSupplier.isDetectorShowTargetNameDialog()) {
+									InputDialog inputDialog = new InputDialog(Display.getDefault().getActiveShell(), "Target", "Add a new target manually.", "Styrene | 100-42-5", new IInputValidator() {
+
+										@Override
+										public String isValid(String content) {
+
+											if(content == null || content.isBlank()) {
+												return "The name must not be null or empty.";
+											}
+											//
+											return null;
+										}
+									});
+									/*
+									 * Create Target
+									 */
+									if(inputDialog.open() == Window.OK) {
+										String content = inputDialog.getValue().trim();
+										String[] values = content.split("\\|");
+										ValueParserSupport valueParserSupport = new ValueParserSupport();
+										name = valueParserSupport.parseString(values, 0, "");
+										if(!name.isEmpty()) {
+											String casNumber = valueParserSupport.parseString(values, 1, "");
+											addPeakTarget(peak, name, casNumber);
+										}
+									}
+								}
 							}
 						}
 					}
@@ -267,6 +299,14 @@ public class DetectorController {
 				updatePeakListSelection(baseChart);
 			}
 		});
+	}
+
+	private void addPeakTarget(IPeak peak, String name, String casNumber) {
+
+		IIdentificationTarget identificationTarget = IIdentificationTarget.createDefaultTarget(name, casNumber, TargetValidator.IDENTIFIER);
+		if(identificationTarget != null) {
+			peak.getTargets().add(identificationTarget);
+		}
 	}
 
 	@SuppressWarnings("unchecked")

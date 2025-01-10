@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Lablicate GmbH.
+ * Copyright (c) 2019, 2025 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * Dr. Philip Wenig - initial API and implementation
+ * Philip Wenig - initial API and implementation
  * Christoph Läubrich - add support for comments
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.charts;
@@ -444,15 +444,14 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 				}
 			}
 		}
+		//
 		if(peakDelete != null) {
 			/*
 			 * Keep identification results.
-			 */
-			peakSource.getTargets().addAll(peakDelete.getTargets());
-			/*
 			 * Delete the peak if a specific peak was found and
 			 * the peak top is inside the delta range of the existing peak.
 			 */
+			peakSource.getTargets().addAll(peakDelete.getTargets());
 			int retentionTimeTarget = peakDelete.getPeakModel().getRetentionTimeAtPeakMaximum();
 			if(Math.abs(retentionTimeSource - retentionTimeTarget) <= replacePeakDelta) {
 				chromatogram.removePeak(peakDelete);
