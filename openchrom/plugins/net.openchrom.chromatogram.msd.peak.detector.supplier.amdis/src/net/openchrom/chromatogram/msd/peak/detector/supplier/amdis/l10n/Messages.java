@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Lablicate GmbH.
+ * Copyright (c) 2024, 2025 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -15,7 +15,7 @@ import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
 
-	private static final String BUNDLE_NAME = "org.eclipse.chemclipse.chromatogram.msd.peak.detector.supplier.amdis.l10n.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.l10n.messages"; //$NON-NLS-1$
 	//
 	public static String amdisExternal;
 	//
