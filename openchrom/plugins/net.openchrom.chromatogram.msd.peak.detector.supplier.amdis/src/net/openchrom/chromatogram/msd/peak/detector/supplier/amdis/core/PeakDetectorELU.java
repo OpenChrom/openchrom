@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2024 Lablicate GmbH.
+ * Copyright (c) 2020, 2025 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -16,8 +16,6 @@ import java.io.File;
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.core.AbstractPeakDetectorMSD;
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetectorSettingsMSD;
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.model.core.IChromatogram;
-import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -26,17 +24,17 @@ import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.preferences.P
 import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.settings.SettingsELU;
 import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.support.PeakProcessorSupport;
 
-public class PeakDetectorELU<P extends IPeak, C extends IChromatogram<P>, R> extends AbstractPeakDetectorMSD<P, C, R> {
+public class PeakDetectorELU extends AbstractPeakDetectorMSD {
 
 	private static final Logger logger = Logger.getLogger(PeakDetectorELU.class);
 
 	@Override
-	public IProcessingInfo<R> detect(IChromatogramSelectionMSD chromatogramSelection, IPeakDetectorSettingsMSD peakDetectorSettings, IProgressMonitor monitor) {
+	public IProcessingInfo<?> detect(IChromatogramSelectionMSD chromatogramSelection, IPeakDetectorSettingsMSD peakDetectorSettings, IProgressMonitor monitor) {
 
 		/*
 		 * Validate
 		 */
-		IProcessingInfo<R> processingInfo = validate(chromatogramSelection, peakDetectorSettings, monitor);
+		IProcessingInfo<?> processingInfo = validate(chromatogramSelection, peakDetectorSettings, monitor);
 		if(!processingInfo.hasErrorMessages()) {
 			if(peakDetectorSettings instanceof SettingsELU settingsELU) {
 				PeakProcessorSupport peakProcessorSupport = new PeakProcessorSupport();
@@ -55,7 +53,7 @@ public class PeakDetectorELU<P extends IPeak, C extends IChromatogram<P>, R> ext
 	}
 
 	@Override
-	public IProcessingInfo<R> detect(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) {
+	public IProcessingInfo<?> detect(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) {
 
 		SettingsELU settingsELU = PreferenceSupplier.getSettingsELU();
 		return detect(chromatogramSelection, settingsELU, monitor);

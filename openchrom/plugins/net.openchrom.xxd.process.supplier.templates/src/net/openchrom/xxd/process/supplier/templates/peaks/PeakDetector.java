@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2023 Lablicate GmbH.
+ * Copyright (c) 2018, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,7 +8,6 @@
  *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
- * Alexander Kerner - Generics
  * Christoph Läubrich - Support different detector types
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.peaks;
@@ -45,45 +44,45 @@ import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSetting
 import net.openchrom.xxd.process.supplier.templates.support.PeakSupport;
 import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorListUtil;
 
-public class PeakDetector<P extends IPeak, C extends IChromatogram<P>, R> extends AbstractPeakDetector<P, C, R> implements IPeakDetectorMSD<P, C, R>, IPeakDetectorCSD<P, C, R>, IPeakDetectorWSD<P, C, R> {
+public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorMSD, IPeakDetectorCSD, IPeakDetectorWSD {
 
 	private PeakDetectorListUtil listUtil = new PeakDetectorListUtil();
 	private PeakSupport peakSupport = new PeakSupport();
 
 	@Override
-	public IProcessingInfo<R> detect(IChromatogramSelectionMSD chromatogramSelection, IPeakDetectorSettingsMSD settings, IProgressMonitor monitor) {
+	public IProcessingInfo<?> detect(IChromatogramSelectionMSD chromatogramSelection, IPeakDetectorSettingsMSD settings, IProgressMonitor monitor) {
 
 		return applyDetector(chromatogramSelection, settings, monitor);
 	}
 
 	@Override
-	public IProcessingInfo<R> detect(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) {
+	public IProcessingInfo<?> detect(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) {
 
 		PeakDetectorSettings settings = getSettings(PreferenceSupplier.P_PEAK_DETECTOR_LIST_MSD);
 		return detect(chromatogramSelection, settings, monitor);
 	}
 
 	@Override
-	public IProcessingInfo<R> detect(IChromatogramSelectionCSD chromatogramSelection, IPeakDetectorSettingsCSD settings, IProgressMonitor monitor) {
+	public IProcessingInfo<?> detect(IChromatogramSelectionCSD chromatogramSelection, IPeakDetectorSettingsCSD settings, IProgressMonitor monitor) {
 
 		return applyDetector(chromatogramSelection, settings, monitor);
 	}
 
 	@Override
-	public IProcessingInfo<R> detect(IChromatogramSelectionCSD chromatogramSelection, IProgressMonitor monitor) {
+	public IProcessingInfo<?> detect(IChromatogramSelectionCSD chromatogramSelection, IProgressMonitor monitor) {
 
 		PeakDetectorSettings settings = getSettings(PreferenceSupplier.P_PEAK_DETECTOR_LIST_CSD);
 		return detect(chromatogramSelection, settings, monitor);
 	}
 
 	@Override
-	public IProcessingInfo<R> detect(IChromatogramSelectionWSD chromatogramSelection, IPeakDetectorSettingsWSD settings, IProgressMonitor monitor) {
+	public IProcessingInfo<?> detect(IChromatogramSelectionWSD chromatogramSelection, IPeakDetectorSettingsWSD settings, IProgressMonitor monitor) {
 
 		return applyDetector(chromatogramSelection, settings, monitor);
 	}
 
 	@Override
-	public IProcessingInfo<R> detect(IChromatogramSelectionWSD chromatogramSelection, IProgressMonitor monitor) {
+	public IProcessingInfo<?> detect(IChromatogramSelectionWSD chromatogramSelection, IProgressMonitor monitor) {
 
 		PeakDetectorSettings settings = getSettings(PreferenceSupplier.P_PEAK_DETECTOR_LIST_WSD);
 		return detect(chromatogramSelection, settings, monitor);
@@ -96,9 +95,9 @@ public class PeakDetector<P extends IPeak, C extends IChromatogram<P>, R> extend
 		return settings;
 	}
 
-	private IProcessingInfo<R> applyDetector(IChromatogramSelection<? extends IPeak, ?> chromatogramSelection, IPeakDetectorSettings settings, IProgressMonitor monitor) {
+	private IProcessingInfo<?> applyDetector(IChromatogramSelection<? extends IPeak, ?> chromatogramSelection, IPeakDetectorSettings settings, IProgressMonitor monitor) {
 
-		IProcessingInfo<R> processingInfo = super.validate(chromatogramSelection, settings, new NullProgressMonitor());
+		IProcessingInfo<?> processingInfo = super.validate(chromatogramSelection, settings, new NullProgressMonitor());
 		if(!processingInfo.hasErrorMessages()) {
 			if(settings instanceof PeakDetectorSettings peakDetectorSettings) {
 				IChromatogram<?> chromatogram = chromatogramSelection.getChromatogram();

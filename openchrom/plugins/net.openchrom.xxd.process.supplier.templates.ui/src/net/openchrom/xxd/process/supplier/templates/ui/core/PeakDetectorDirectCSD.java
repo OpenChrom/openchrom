@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Lablicate GmbH.
+ * Copyright (c) 2020, 2025 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -35,12 +35,12 @@ import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSetting
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.PeakDetectorSupport;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessDetectorSettings;
 
-public class PeakDetectorDirectCSD<P extends IPeak, C extends IChromatogram<P>, R> extends AbstractPeakDetectorCSD<P, C, R> implements IPeakDetectorDirect {
+public class PeakDetectorDirectCSD extends AbstractPeakDetectorCSD implements IPeakDetectorDirect {
 
 	@Override
-	public IProcessingInfo<R> detect(IChromatogramSelectionCSD chromatogramSelection, IPeakDetectorSettingsCSD peakDetectorSettings, IProgressMonitor monitor) {
+	public IProcessingInfo<?> detect(IChromatogramSelectionCSD chromatogramSelection, IPeakDetectorSettingsCSD peakDetectorSettings, IProgressMonitor monitor) {
 
-		IProcessingInfo<R> processingInfo = new ProcessingInfo<R>();
+		IProcessingInfo<?> processingInfo = new ProcessingInfo<>();
 		if(peakDetectorSettings instanceof PeakDetectorDirectSettings settingsDirect) {
 			/*
 			 * Create the template from the current selection.
@@ -131,7 +131,7 @@ public class PeakDetectorDirectCSD<P extends IPeak, C extends IChromatogram<P>, 
 	}
 
 	@Override
-	public IProcessingInfo<R> detect(IChromatogramSelectionCSD chromatogramSelection, IProgressMonitor monitor) {
+	public IProcessingInfo<?> detect(IChromatogramSelectionCSD chromatogramSelection, IProgressMonitor monitor) {
 
 		PeakDetectorSettings settings = PreferenceSupplier.getPeakDetectorSettingsCSD();
 		return detect(chromatogramSelection, settings, monitor);

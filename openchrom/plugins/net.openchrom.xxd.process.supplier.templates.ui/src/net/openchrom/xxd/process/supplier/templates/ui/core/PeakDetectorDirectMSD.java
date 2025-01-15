@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Lablicate GmbH.
+ * Copyright (c) 2020, 2025 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -37,14 +37,14 @@ import net.openchrom.xxd.process.supplier.templates.ui.wizards.PeakDetectorSuppo
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessDetectorSettings;
 import net.openchrom.xxd.process.supplier.templates.util.ChromatogramValidator;
 
-public class PeakDetectorDirectMSD<P extends IPeak, C extends IChromatogram<P>, R> extends AbstractPeakDetectorMSD<P, C, R> implements IPeakDetectorDirect, ITemplateExport {
+public class PeakDetectorDirectMSD extends AbstractPeakDetectorMSD implements IPeakDetectorDirect, ITemplateExport {
 
 	private static final String DESCRIPTION = "PeakDetectorDirectMSD";
 
 	@Override
-	public IProcessingInfo<R> detect(IChromatogramSelectionMSD chromatogramSelection, IPeakDetectorSettingsMSD peakDetectorSettings, IProgressMonitor monitor) {
+	public IProcessingInfo<?> detect(IChromatogramSelectionMSD chromatogramSelection, IPeakDetectorSettingsMSD peakDetectorSettings, IProgressMonitor monitor) {
 
-		IProcessingInfo<R> processingInfo = new ProcessingInfo<R>();
+		IProcessingInfo<?> processingInfo = new ProcessingInfo<>();
 		if(peakDetectorSettings instanceof PeakDetectorDirectSettings settingsDirect) {
 			/*
 			 * Create the template from the current selection.
@@ -143,7 +143,7 @@ public class PeakDetectorDirectMSD<P extends IPeak, C extends IChromatogram<P>, 
 	}
 
 	@Override
-	public IProcessingInfo<R> detect(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) {
+	public IProcessingInfo<?> detect(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) {
 
 		PeakDetectorDirectSettings settings = PreferenceSupplier.getPeakDetectorSettingsDirectMSD();
 		return detect(chromatogramSelection, settings, monitor);
