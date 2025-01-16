@@ -7,7 +7,7 @@
             description="Reads Generalized Analytical Markup Language Scans."
             exportConverter="net.openchrom.vsd.converter.supplier.gaml.converter.ScanExportConverter"
             fileExtension=".gaml"
-            filterName="IR Spectroscopy (*.gaml)"
+            filterName="Vibrational Spectroscopy (*.gaml)"
             id="net.openchrom.vsd.converter.supplier.gaml"
             importConverter="net.openchrom.vsd.converter.supplier.gaml.converter.ScanImportConverter"
             importMagicNumberMatcher="net.openchrom.xxd.converter.supplier.gaml.converter.MagicNumberMatcher"

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Lablicate GmbH.
+ * Copyright (c) 2021, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -22,6 +22,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.vsd.model.implementation.SignalInfrared;
+import org.eclipse.chemclipse.vsd.model.implementation.SignalRaman;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -35,6 +36,7 @@ import net.openchrom.xxd.converter.supplier.gaml.v120.model.Experiment;
 import net.openchrom.xxd.converter.supplier.gaml.v120.model.GAML;
 import net.openchrom.xxd.converter.supplier.gaml.v120.model.ObjectFactory;
 import net.openchrom.xxd.converter.supplier.gaml.v120.model.Parameter;
+import net.openchrom.xxd.converter.supplier.gaml.v120.model.Technique;
 import net.openchrom.xxd.converter.supplier.gaml.v120.model.Trace;
 import net.openchrom.xxd.converter.supplier.gaml.v120.model.Xdata;
 import net.openchrom.xxd.converter.supplier.gaml.v120.model.Ydata;
@@ -71,17 +73,21 @@ public class ScanReaderVersion120 {
 					}
 				}
 				for(Trace trace : experiment.getTrace()) {
-					double[] waveNumbers = null;
-					double[] absorbance = null;
+					double[] x = null;
+					double[] y = null;
 					for(Xdata xdata : trace.getXdata()) {
-						waveNumbers = Reader120.parseValues(xdata.getValues());
+						x = Reader120.parseValues(xdata.getValues());
 						for(Ydata ydata : xdata.getYdata()) {
-							absorbance = Reader120.parseValues(ydata.getValues());
+							y = Reader120.parseValues(ydata.getValues());
 						}
 					}
-					int scans = Math.min(waveNumbers.length, absorbance.length);
+					int scans = Math.min(x.length, y.length);
 					for(int i = 0; i < scans; i++) {
-						vendorScan.getScanVSD().getProcessedSignals().add(new SignalInfrared(waveNumbers[i], absorbance[i], 0));
+						if(trace.getTechnique() == Technique.IR || trace.getTechnique() == Technique.NIR) {
+							vendorScan.getScanVSD().getProcessedSignals().add(new SignalInfrared(x[i], y[i], 0));
+						} else if(trace.getTechnique() == Technique.RAMAN) {
+							vendorScan.getScanVSD().getProcessedSignals().add(new SignalRaman(x[i], y[i]));
+						}
 					}
 				}
 			}
