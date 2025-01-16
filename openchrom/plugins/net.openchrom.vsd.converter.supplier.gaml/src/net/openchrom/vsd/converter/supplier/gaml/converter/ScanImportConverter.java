@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Lablicate GmbH.
+ * Copyright (c) 2021, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -16,12 +16,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+import org.eclipse.chemclipse.converter.exceptions.UnknownVersionException;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.chemclipse.vsd.converter.core.AbstractScanImportConverter;
 import org.eclipse.chemclipse.vsd.converter.core.IScanImportConverter;
-import org.eclipse.chemclipse.converter.exceptions.UnknownVersionException;
+import org.eclipse.chemclipse.vsd.model.core.ISpectrumVSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.vsd.converter.supplier.gaml.io.ScanReaderVersion100;
@@ -32,15 +33,14 @@ import net.openchrom.xxd.converter.supplier.gaml.io.Reader100;
 import net.openchrom.xxd.converter.supplier.gaml.io.Reader110;
 import net.openchrom.xxd.converter.supplier.gaml.io.Reader120;
 
-@SuppressWarnings("rawtypes")
 public class ScanImportConverter extends AbstractScanImportConverter implements IScanImportConverter {
 
 	private static final Logger logger = Logger.getLogger(ScanImportConverter.class);
 
 	@Override
-	public IProcessingInfo<IVendorSpectrumVSD> convert(File file, IProgressMonitor monitor) {
+	public IProcessingInfo<ISpectrumVSD> convert(File file, IProgressMonitor monitor) {
 
-		IProcessingInfo<IVendorSpectrumVSD> processingInfo = new ProcessingInfo<>();
+		IProcessingInfo<ISpectrumVSD> processingInfo = new ProcessingInfo<>();
 		try {
 			final FileReader fileReader = new FileReader(file);
 			final char[] charBuffer = new char[100];
