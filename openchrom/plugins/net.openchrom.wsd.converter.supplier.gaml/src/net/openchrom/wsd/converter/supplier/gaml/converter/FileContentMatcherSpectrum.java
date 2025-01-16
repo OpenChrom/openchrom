@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Lablicate GmbH.
+ * Copyright (c) 2021, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -31,7 +31,7 @@ import net.openchrom.xxd.converter.supplier.gaml.v120.model.Trace;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.Unmarshaller;
 
-public class FileContentMatcher extends AbstractFileContentMatcher implements IFileContentMatcher {
+public class FileContentMatcherSpectrum extends AbstractFileContentMatcher implements IFileContentMatcher {
 
 	@Override
 	public boolean checkFileFormat(File file) {
@@ -47,7 +47,8 @@ public class FileContentMatcher extends AbstractFileContentMatcher implements IF
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 			GAML gaml = (GAML)unmarshaller.unmarshal(nodeList.item(0));
 			List<Trace> traces = gaml.getExperiment().get(0).getTrace();
-			if(traces.size() >= 2 && traces.stream().anyMatch(t -> t.getTechnique() == Technique.PDA)) {
+			Technique technique = traces.get(0).getTechnique();
+			if(technique == Technique.UVVIS) {
 				isValidFormat = true;
 			}
 		} catch(Exception e) {
