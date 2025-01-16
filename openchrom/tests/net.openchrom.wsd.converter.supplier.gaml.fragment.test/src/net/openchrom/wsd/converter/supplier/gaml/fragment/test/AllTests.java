@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Lablicate GmbH.
+ * Copyright (c) 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,13 +8,12 @@
  *
  * Contributors:
  * Matthias Mailänder - initial API and implementation
- * Philip Wenig - refactoring vibrational spectroscopy
  *******************************************************************************/
-package net.openchrom.csd.converter.supplier.gaml.fragment.test;
+package net.openchrom.wsd.converter.supplier.gaml.fragment.test;
 
 import org.eclipse.chemclipse.rcp.app.test.TestAssembler;
 
-import net.openchrom.vsd.converter.supplier.gaml.Activator;
+import net.openchrom.wsd.converter.supplier.gaml.Activator;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -25,7 +24,7 @@ public class AllTests {
 
 		TestAssembler testAssembler = new TestAssembler(Activator.getContext().getBundle().getBundleContext().getBundles());
 		TestSuite suite = new TestSuite("Run all tests.");
-		String bundleAndPackageName = "net.openchrom.vsd.converter.supplier.gaml";
+		String bundleAndPackageName = "net.openchrom.wsd.converter.supplier.gaml";
 		testAssembler.assembleTests(suite, bundleAndPackageName, bundleAndPackageName, "*_Test"); // Unit
 		testAssembler.assembleTests(suite, bundleAndPackageName, bundleAndPackageName, "*_ITest"); // Integration
 		return suite;

@@ -10,7 +10,7 @@
  * Matthias Mailänder - initial API and implementation
  * Philip Wenig - refactoring vibrational spectroscopy
  *******************************************************************************/
-package net.openchrom.csd.converter.supplier.gaml.fragment.test;
+package net.openchrom.vsd.converter.supplier.gaml.fragment.test;
 
 import java.io.File;
 
