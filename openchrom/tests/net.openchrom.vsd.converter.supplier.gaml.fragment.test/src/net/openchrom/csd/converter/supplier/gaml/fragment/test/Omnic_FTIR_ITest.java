@@ -22,7 +22,7 @@ import junit.framework.TestCase;
 import net.openchrom.vsd.converter.supplier.gaml.PathResolver;
 import net.openchrom.vsd.converter.supplier.gaml.converter.ScanImportConverter;
 
-public class Omnic_ITest extends TestCase {
+public class Omnic_FTIR_ITest extends TestCase {
 
 	private ISpectrumVSD spectrumVSD;
 

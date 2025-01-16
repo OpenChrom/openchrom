@@ -20,4 +20,5 @@ public class TestPathHelper extends PathResolver {
 	public static final String TS_AB2_3D = "testData/files/import/TS_AB2_3D.gaml";
 	public static final String TS_AB2_FLSCAN = "testData/files/import/TS_AB2_FLSCAN.gaml";
 	public static final String TS_HELIOS = "testData/files/import/TS_Helios.gaml";
+	public static final String TN_OMNIC_RAMAN = "testData/files/import/TN_OMNIC_Raman.gaml";
 }

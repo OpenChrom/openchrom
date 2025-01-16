@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Lablicate GmbH.
+ * Copyright (c) 2021, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -50,6 +50,8 @@ public class FileContentMatcher extends AbstractFileContentMatcher implements IF
 			List<Trace> traces = gaml.getExperiment().get(0).getTrace();
 			Technique technique = traces.get(0).getTechnique();
 			if(technique == Technique.IR || technique == Technique.NIR) {
+				isValidFormat = true;
+			} else if(technique == Technique.RAMAN) {
 				isValidFormat = true;
 			}
 		} catch(Exception e) {
