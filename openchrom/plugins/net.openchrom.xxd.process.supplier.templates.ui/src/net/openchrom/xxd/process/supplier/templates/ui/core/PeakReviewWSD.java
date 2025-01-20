@@ -32,7 +32,7 @@ import net.openchrom.xxd.process.supplier.templates.settings.PeakReviewSettings;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.PeakReviewSupport;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessReviewSettings;
 
-public class PeakReviewWSD<T> extends AbstractPeakIdentifier implements IPeakIdentifierWSD {
+public class PeakReviewWSD extends AbstractPeakIdentifier implements IPeakIdentifierWSD {
 
 	private static final String DESCRIPTION = "PeakReviewWSD";
 
