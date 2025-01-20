@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Lablicate GmbH.
+ * Copyright (c) 2020, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -22,9 +22,9 @@ import org.eclipse.chemclipse.model.core.IChromatogramPeak;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.core.PeakType;
-import org.eclipse.chemclipse.model.identifier.IIdentificationResults;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
+import org.eclipse.chemclipse.model.identifier.IPeakIdentificationResults;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
@@ -40,14 +40,14 @@ import net.openchrom.xxd.process.supplier.templates.ui.wizards.PeakReviewSupport
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessReviewSettings;
 import net.openchrom.xxd.process.supplier.templates.util.ChromatogramValidator;
 
-public class PeakReviewDirectMSD<T> extends AbstractPeakIdentifier implements IPeakIdentifierMSD<IIdentificationResults>, ITemplateExport {
+public class PeakReviewDirectMSD extends AbstractPeakIdentifier implements IPeakIdentifierMSD, ITemplateExport {
 
 	private static final String DESCRIPTION = "PeakReviewMSD";
 
 	@Override
-	public IProcessingInfo<IIdentificationResults> identify(List<? extends IPeakMSD> peaks, IPeakIdentifierSettingsMSD peakIdentifierSettings, IProgressMonitor monitor) {
+	public IProcessingInfo<IPeakIdentificationResults> identify(List<? extends IPeakMSD> peaks, IPeakIdentifierSettingsMSD peakIdentifierSettings, IProgressMonitor monitor) {
 
-		IProcessingInfo<IIdentificationResults> processingInfo = new ProcessingInfo<>();
+		IProcessingInfo<IPeakIdentificationResults> processingInfo = new ProcessingInfo<>();
 		if(peaks == null || peaks.isEmpty()) {
 			processingInfo.addErrorMessage(DESCRIPTION, "No peaks have been found in the current selection.");
 		} else {
@@ -56,7 +56,7 @@ public class PeakReviewDirectMSD<T> extends AbstractPeakIdentifier implements IP
 		return processingInfo;
 	}
 
-	private void runProcess(List<? extends IPeakMSD> peaks, IProcessingInfo<IIdentificationResults> processingInfo) {
+	private void runProcess(List<? extends IPeakMSD> peaks, IProcessingInfo<IPeakIdentificationResults> processingInfo) {
 
 		/*
 		 * No settings: peakIdentifierSettings == null

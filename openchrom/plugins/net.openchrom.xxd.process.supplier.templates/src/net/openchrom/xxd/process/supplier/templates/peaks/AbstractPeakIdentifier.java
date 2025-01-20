@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2024 Lablicate GmbH.
+ * Copyright (c) 2018, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -26,6 +26,7 @@ import org.eclipse.chemclipse.model.identifier.IComparisonResult;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.IIdentifierSettings;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
+import org.eclipse.chemclipse.model.identifier.IPeakIdentificationResults;
 import org.eclipse.chemclipse.model.identifier.LibraryInformation;
 import org.eclipse.chemclipse.model.implementation.IdentificationTarget;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
@@ -70,9 +71,9 @@ public abstract class AbstractPeakIdentifier {
 		return settings;
 	}
 
-	protected <T> IProcessingInfo<T> applyIdentifier(List<? extends IPeak> peaks, IIdentifierSettings settings, RetentionIndexMap retentionIndexMap, IProgressMonitor monitor) {
+	protected IProcessingInfo<IPeakIdentificationResults> applyIdentifier(List<? extends IPeak> peaks, IIdentifierSettings settings, RetentionIndexMap retentionIndexMap, IProgressMonitor monitor) {
 
-		IProcessingInfo<T> processingInfo = validate(peaks, settings);
+		IProcessingInfo<IPeakIdentificationResults> processingInfo = validate(peaks, settings);
 		if(!processingInfo.hasErrorMessages()) {
 			if(settings instanceof PeakIdentifierSettings peakIdentifierSettings) {
 				for(IdentifierSetting identifierSetting : peakIdentifierSettings.getIdentifierSettingsList()) {
@@ -137,9 +138,9 @@ public abstract class AbstractPeakIdentifier {
 		}
 	}
 
-	private <T> IProcessingInfo<T> validate(List<? extends IPeak> peaks, IIdentifierSettings settings) {
+	private IProcessingInfo<IPeakIdentificationResults> validate(List<? extends IPeak> peaks, IIdentifierSettings settings) {
 
-		IProcessingInfo<T> processingInfo = new ProcessingInfo<>();
+		IProcessingInfo<IPeakIdentificationResults> processingInfo = new ProcessingInfo<>();
 		if(peaks == null) {
 			processingInfo.addErrorMessage(PeakIdentifierSettings.IDENTIFIER_DESCRIPTION, "The peaks selection must not be null.");
 		}

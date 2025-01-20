@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2024 Lablicate GmbH.
+ * Copyright (c) 2020, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -18,7 +18,7 @@ import org.eclipse.chemclipse.chromatogram.wsd.identifier.peak.IPeakIdentifierWS
 import org.eclipse.chemclipse.chromatogram.wsd.identifier.settings.IPeakIdentifierSettingsWSD;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogramPeak;
-import org.eclipse.chemclipse.model.identifier.IIdentificationResults;
+import org.eclipse.chemclipse.model.identifier.IPeakIdentificationResults;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.chemclipse.support.literature.LiteratureReference;
@@ -32,14 +32,14 @@ import net.openchrom.xxd.process.supplier.templates.settings.PeakReviewSettings;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.PeakReviewSupport;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessReviewSettings;
 
-public class PeakReviewWSD<T> extends AbstractPeakIdentifier implements IPeakIdentifierWSD<IIdentificationResults> {
+public class PeakReviewWSD<T> extends AbstractPeakIdentifier implements IPeakIdentifierWSD {
 
 	private static final String DESCRIPTION = "PeakReviewWSD";
 
 	@Override
-	public IProcessingInfo<IIdentificationResults> identify(List<? extends IPeakWSD> peaks, IPeakIdentifierSettingsWSD peakIdentifierSettings, IProgressMonitor monitor) {
+	public IProcessingInfo<IPeakIdentificationResults> identify(List<? extends IPeakWSD> peaks, IPeakIdentifierSettingsWSD peakIdentifierSettings, IProgressMonitor monitor) {
 
-		IProcessingInfo<IIdentificationResults> processingInfo = new ProcessingInfo<>();
+		IProcessingInfo<IPeakIdentificationResults> processingInfo = new ProcessingInfo<>();
 		if(peaks == null || peaks.isEmpty()) {
 			processingInfo.addErrorMessage(DESCRIPTION, "No peaks have been found in the current selection.");
 		} else {
@@ -48,7 +48,7 @@ public class PeakReviewWSD<T> extends AbstractPeakIdentifier implements IPeakIde
 		return processingInfo;
 	}
 
-	private void runProcess(List<? extends IPeakWSD> peaks, IPeakIdentifierSettingsWSD peakIdentifierSettings, IProcessingInfo<IIdentificationResults> processingInfo, IProgressMonitor monitor) {
+	private void runProcess(List<? extends IPeakWSD> peaks, IPeakIdentifierSettingsWSD peakIdentifierSettings, IProcessingInfo<IPeakIdentificationResults> processingInfo, IProgressMonitor monitor) {
 
 		if(peakIdentifierSettings instanceof PeakReviewSettings settings) {
 			/*
