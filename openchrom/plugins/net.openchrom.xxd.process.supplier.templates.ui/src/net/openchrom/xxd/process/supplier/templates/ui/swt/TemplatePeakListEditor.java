@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2024 Lablicate GmbH.
+ * Copyright (c) 2018, 2025 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -43,6 +43,7 @@ import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
 import org.eclipse.chemclipse.support.ui.swt.ITableSettings;
 import org.eclipse.chemclipse.support.updates.IUpdateListener;
 import org.eclipse.chemclipse.swt.ui.components.ISearchListener;
+import org.eclipse.chemclipse.swt.ui.components.InformationUI;
 import org.eclipse.chemclipse.swt.ui.components.SearchSupportUI;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.methods.SettingsUIProvider;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.swt.IExtendedPartUI;
@@ -84,6 +85,7 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 	private Button buttonToolbarAdjust;
 	private AtomicReference<PositionAdjusterUI> toolbarAdjuster = new AtomicReference<>();
 	private AtomicReference<PeakDetectorListUI> listControl = new AtomicReference<>();
+	private AtomicReference<InformationUI> toolbarInfo = new AtomicReference<>();
 	//
 	private static final String CATEGORY = "Peak Detector";
 	private static final String DELETE = "Delete";
@@ -117,6 +119,7 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 		createSearchSection(composite);
 		createAdjustSection(composite);
 		createTableSection(composite);
+		createToolbarInfo(composite);
 		//
 		initialize();
 		setControl(composite);
@@ -248,6 +251,14 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 		peakDetectorListUI.applySettings(tableSettings);
 		//
 		listControl.set(peakDetectorListUI);
+	}
+
+	private void createToolbarInfo(Composite parent) {
+
+		InformationUI informationUI = new InformationUI(parent, SWT.NONE);
+		informationUI.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		//
+		toolbarInfo.set(informationUI);
 	}
 
 	private Button createButtonAdd(Composite parent) {
@@ -413,6 +424,7 @@ public class TemplatePeakListEditor implements SettingsUIProvider.SettingsUICont
 
 		toolbarAdjuster.get().setInput(settings);
 		listControl.get().setInput(settings);
+		toolbarInfo.get().setText("Entries: " + settings.size());
 		//
 		if(listener != null) {
 			listener.handleEvent(new Event());
