@@ -107,19 +107,17 @@ public class TemplateIntegrator extends AbstractPeakIntegrator {
 		return integrate(peaks, getSettings(), monitor);
 	}
 
-	@SuppressWarnings({"rawtypes", "unchecked"})
 	@Override
-	public IProcessingInfo<IPeakIntegrationResults> integrate(IChromatogramSelection chromatogramSelection, IPeakIntegrationSettings peakIntegrationSettings, IProgressMonitor monitor) {
+	public IProcessingInfo<IPeakIntegrationResults> integrate(IChromatogramSelection<?, ?> chromatogramSelection, IPeakIntegrationSettings peakIntegrationSettings, IProgressMonitor monitor) {
 
-		List<IPeak> peaks = chromatogramSelection.getChromatogram().getPeaks(chromatogramSelection);
+		List<? extends IPeak> peaks = chromatogramSelection.getChromatogram().getPeaks(chromatogramSelection);
 		return integrate(peaks, peakIntegrationSettings, monitor);
 	}
 
-	@SuppressWarnings({"rawtypes", "unchecked"})
 	@Override
-	public IProcessingInfo<IPeakIntegrationResults> integrate(IChromatogramSelection chromatogramSelection, IProgressMonitor monitor) {
+	public IProcessingInfo<IPeakIntegrationResults> integrate(IChromatogramSelection<?, ?> chromatogramSelection, IProgressMonitor monitor) {
 
-		List<IPeak> peaks = chromatogramSelection.getChromatogram().getPeaks(chromatogramSelection);
+		List<? extends IPeak> peaks = chromatogramSelection.getChromatogram().getPeaks(chromatogramSelection);
 		return integrate(peaks, getSettings(), monitor);
 	}
 
