@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -18,6 +18,7 @@ import java.util.Set;
 import org.eclipse.chemclipse.chromatogram.xxd.integrator.core.peaks.AbstractPeakIntegrator;
 import org.eclipse.chemclipse.chromatogram.xxd.integrator.core.peaks.PeakIntegrator;
 import org.eclipse.chemclipse.chromatogram.xxd.integrator.core.settings.peaks.IPeakIntegrationSettings;
+import org.eclipse.chemclipse.chromatogram.xxd.integrator.result.IPeakIntegrationResults;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
@@ -32,12 +33,12 @@ import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSuppli
 import net.openchrom.xxd.process.supplier.templates.settings.PeakIntegrationSettings;
 import net.openchrom.xxd.process.supplier.templates.support.RetentionIndexSupport;
 
-public class TemplateIntegrator<T> extends AbstractPeakIntegrator<T> {
+public class TemplateIntegrator extends AbstractPeakIntegrator {
 
 	@Override
-	public IProcessingInfo<T> integrate(List<? extends IPeak> peaks, IPeakIntegrationSettings settings, IProgressMonitor monitor) {
+	public IProcessingInfo<IPeakIntegrationResults> integrate(List<? extends IPeak> peaks, IPeakIntegrationSettings settings, IProgressMonitor monitor) {
 
-		IProcessingInfo<T> processingInfo = super.validate(peaks, settings);
+		IProcessingInfo<IPeakIntegrationResults> processingInfo = super.validate(peaks, settings);
 		if(!processingInfo.hasErrorMessages()) {
 			if(settings instanceof PeakIntegrationSettings peakIntegrationSettings) {
 				RetentionIndexMap retentionIndexMap = RetentionIndexSupport.getRetentionIndexMap(peaks);
@@ -85,7 +86,7 @@ public class TemplateIntegrator<T> extends AbstractPeakIntegrator<T> {
 	}
 
 	@Override
-	public IProcessingInfo<T> integrate(IPeak peak, IPeakIntegrationSettings peakIntegrationSettings, IProgressMonitor monitor) {
+	public IProcessingInfo<IPeakIntegrationResults> integrate(IPeak peak, IPeakIntegrationSettings peakIntegrationSettings, IProgressMonitor monitor) {
 
 		List<IPeak> peaks = new ArrayList<>();
 		peaks.add(peak);
@@ -93,7 +94,7 @@ public class TemplateIntegrator<T> extends AbstractPeakIntegrator<T> {
 	}
 
 	@Override
-	public IProcessingInfo<T> integrate(IPeak peak, IProgressMonitor monitor) {
+	public IProcessingInfo<IPeakIntegrationResults> integrate(IPeak peak, IProgressMonitor monitor) {
 
 		List<IPeak> peaks = new ArrayList<>();
 		peaks.add(peak);
@@ -101,14 +102,14 @@ public class TemplateIntegrator<T> extends AbstractPeakIntegrator<T> {
 	}
 
 	@Override
-	public IProcessingInfo<T> integrate(List<? extends IPeak> peaks, IProgressMonitor monitor) {
+	public IProcessingInfo<IPeakIntegrationResults> integrate(List<? extends IPeak> peaks, IProgressMonitor monitor) {
 
 		return integrate(peaks, getSettings(), monitor);
 	}
 
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	@Override
-	public IProcessingInfo<T> integrate(IChromatogramSelection chromatogramSelection, IPeakIntegrationSettings peakIntegrationSettings, IProgressMonitor monitor) {
+	public IProcessingInfo<IPeakIntegrationResults> integrate(IChromatogramSelection chromatogramSelection, IPeakIntegrationSettings peakIntegrationSettings, IProgressMonitor monitor) {
 
 		List<IPeak> peaks = chromatogramSelection.getChromatogram().getPeaks(chromatogramSelection);
 		return integrate(peaks, peakIntegrationSettings, monitor);
@@ -116,7 +117,7 @@ public class TemplateIntegrator<T> extends AbstractPeakIntegrator<T> {
 
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	@Override
-	public IProcessingInfo<T> integrate(IChromatogramSelection chromatogramSelection, IProgressMonitor monitor) {
+	public IProcessingInfo<IPeakIntegrationResults> integrate(IChromatogramSelection chromatogramSelection, IProgressMonitor monitor) {
 
 		List<IPeak> peaks = chromatogramSelection.getChromatogram().getPeaks(chromatogramSelection);
 		return integrate(peaks, getSettings(), monitor);
