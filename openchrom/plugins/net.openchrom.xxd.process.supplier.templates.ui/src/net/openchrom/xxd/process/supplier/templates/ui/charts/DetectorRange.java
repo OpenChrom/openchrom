@@ -80,7 +80,7 @@ public class DetectorRange {
 
 	public boolean isIncludeBackground() {
 
-		return (PeakType.VV.equals(detectorType)) ? true : false;
+		return (PeakType.VV.equals(detectorType));
 	}
 
 	public boolean isOptimizeRange() {
