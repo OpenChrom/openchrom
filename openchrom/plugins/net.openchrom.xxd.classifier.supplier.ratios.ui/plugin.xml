@@ -77,21 +77,21 @@
             adaptableType="net.openchrom.xxd.classifier.supplier.ratios.settings.TraceRatioSettings"
             class="net.openchrom.xxd.classifier.supplier.ratios.ui.adapter.TraceRatioSettingsAdapterFactory">
          <adapter
-               type="org.eclipse.chemclipse.ux.extension.xxd.ui.methods.SettingsUIProvider">
+               type="org.eclipse.chemclipse.ux.extension.ui.methods.SettingsUIProvider">
          </adapter>
       </factory>
       <factory
             adaptableType="net.openchrom.xxd.classifier.supplier.ratios.settings.TimeRatioSettings"
             class="net.openchrom.xxd.classifier.supplier.ratios.ui.adapter.TimeRatioSettingsAdapterFactory">
          <adapter
-               type="org.eclipse.chemclipse.ux.extension.xxd.ui.methods.SettingsUIProvider">
+               type="org.eclipse.chemclipse.ux.extension.ui.methods.SettingsUIProvider">
          </adapter>
       </factory>
       <factory
             adaptableType="net.openchrom.xxd.classifier.supplier.ratios.settings.QuantRatioSettings"
             class="net.openchrom.xxd.classifier.supplier.ratios.ui.adapter.QuantRatioSettingsAdapterFactory">
          <adapter
-               type="org.eclipse.chemclipse.ux.extension.xxd.ui.methods.SettingsUIProvider">
+               type="org.eclipse.chemclipse.ux.extension.ui.methods.SettingsUIProvider">
          </adapter>
       </factory>               
    </extension>

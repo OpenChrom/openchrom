@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Lablicate GmbH.
+ * Copyright (c) 2019, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -14,8 +14,10 @@ package net.openchrom.nmr.processing.supplier.base.ui;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.chemclipse.model.types.DataType;
+import org.eclipse.chemclipse.ux.extension.ui.model.DataExplorerTreeSettings;
 import org.eclipse.chemclipse.ux.extension.ui.preferences.PreferencePage;
 import org.eclipse.chemclipse.ux.extension.ui.provider.ISupplierFileEditorSupport;
 import org.eclipse.chemclipse.ux.extension.ui.swt.MultiDataExplorerTreeUI;
@@ -28,6 +30,7 @@ import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.jface.preference.PreferenceNode;
 import org.eclipse.jface.window.Window;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
@@ -37,14 +40,16 @@ import jakarta.inject.Named;
 public class NMRDataExplorerView {
 
 	private static final List<ISupplierFileEditorSupport> NMR_SUPPLIER = Collections.singletonList(new EditorSupportFactory(DataType.NMR, () -> Activator.getDefault().getEclipseContext()).getInstanceEditorSupport());
-	private MultiDataExplorerTreeUI dataExplorerUI;
+	private AtomicReference<MultiDataExplorerTreeUI> dataExplorerControl = new AtomicReference<>();
 
 	@PostConstruct
 	public void postConstruct(Composite parent) {
 
-		dataExplorerUI = new MultiDataExplorerTreeUI(parent, Activator.getDefault().getPreferenceStore());
+		MultiDataExplorerTreeUI dataExplorerUI = new MultiDataExplorerTreeUI(parent, SWT.NONE, new DataExplorerTreeSettings(Activator.getDefault().getPreferenceStore()));
 		dataExplorerUI.setSupplierFileIdentifier(NMR_SUPPLIER);
 		dataExplorerUI.expandLastDirectoryPath();
+		//
+		dataExplorerControl.set(dataExplorerUI);
 	}
 
 	public static final class NMRDataExplorerSettingsHandler {
@@ -61,7 +66,7 @@ public class NMRDataExplorerView {
 			preferenceDialog.setMessage("Settings");
 			if(preferenceDialog.open() == Window.OK) {
 				try {
-					explorer.dataExplorerUI.setSupplierFileIdentifier(NMR_SUPPLIER);
+					explorer.dataExplorerControl.get().setSupplierFileIdentifier(NMR_SUPPLIER);
 				} catch(Exception e1) {
 					MessageDialog.openError(shell, "Settings", "Something has gone wrong to apply the chart settings.");
 				}
@@ -75,7 +80,7 @@ public class NMRDataExplorerView {
 		public void execute(MPart part) {
 
 			NMRDataExplorerView explorer = (NMRDataExplorerView)part.getObject();
-			explorer.dataExplorerUI.expandLastDirectoryPath();
+			explorer.dataExplorerControl.get().expandLastDirectoryPath();
 		}
 	}
 }
