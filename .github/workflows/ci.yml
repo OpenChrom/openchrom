@@ -1,5 +1,5 @@
 ###############################################################################
-# Copyright (c) 2021, 2024 Lablicate GmbH and others
+# Copyright (c) 2021, 2025 Lablicate GmbH
 #
 # This program and the accompanying materials are made available under the
 # terms of the Eclipse Public License 2.0 which is available at
@@ -8,7 +8,6 @@
 # SPDX-License-Identifier: EPL-2.0
 #
 # Contributors:
-#     Alexander Fedorov - initial API and implementation
 #     Matthias Mailänder - initial API and implementation
 ###############################################################################
 name: Continuous Integration
@@ -29,5 +28,9 @@ jobs:
       uses: actions/checkout@v4
       with:
         path: openchrom
+
     - name: Build with Maven
-      run: cd openchrom && mvn -f openchrom/releng/net.openchrom.aggregator/pom.xml -T 1C verify -Pci --batch-mode --no-transfer-progress
+      run: |
+        cd openchrom
+        mvn -f openchrom/releng/net.openchrom.aggregator/pom.xml -T 1C verify -Pci \
+           --batch-mode --no-transfer-progress -Dstyle.color=always
