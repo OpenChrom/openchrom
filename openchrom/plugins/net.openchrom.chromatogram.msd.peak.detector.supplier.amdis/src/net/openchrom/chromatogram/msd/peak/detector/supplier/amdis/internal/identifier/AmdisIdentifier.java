@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2024 Lablicate GmbH.
+ * Copyright (c) 2014, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -17,10 +17,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.MessageFormat;
 
-import org.eclipse.chemclipse.model.core.IPeaks;
 import org.eclipse.chemclipse.msd.converter.chromatogram.ChromatogramConverterMSD;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
-import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
+import org.eclipse.chemclipse.msd.model.core.IPeaksMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.DefaultProcessingResult;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
@@ -80,13 +79,13 @@ public class AmdisIdentifier {
 		 */
 		try {
 			AMDISParser parser = new AMDISParser(fileChromatogram);
-			IProcessingResult<IPeaks<IPeakMSD>> amdisPeaks = executeAMDIS(fileChromatogram, settingsAMDIS, parser, subMonitor.split(80));
+			IProcessingResult<IPeaksMSD> amdisPeaks = executeAMDIS(fileChromatogram, settingsAMDIS, parser, subMonitor.split(80));
 			result.addMessages(amdisPeaks);
 			if(result.hasErrorMessages()) {
 				return result;
 			}
 			//
-			IPeaks<IPeakMSD> peaks = amdisPeaks.getProcessingResult();
+			IPeaksMSD peaks = amdisPeaks.getProcessingResult();
 			if(peaks == null) {
 				result.addErrorMessage(PreferenceSupplier.IDENTIFIER, "Parsing peaks does not return a result");
 				return result;
@@ -102,7 +101,7 @@ public class AmdisIdentifier {
 		return result;
 	}
 
-	private IProcessingResult<IPeaks<IPeakMSD>> executeAMDIS(File fileChromatogram, SettingsAMDIS settingsAMDIS, AMDISParser parser, IProgressMonitor monitor) throws InterruptedException {
+	private IProcessingResult<IPeaksMSD> executeAMDIS(File fileChromatogram, SettingsAMDIS settingsAMDIS, AMDISParser parser, IProgressMonitor monitor) throws InterruptedException {
 
 		IExtendedRuntimeSupport runtimeSupport;
 		String amdisApplication = settingsAMDIS.getAmdisFolder().getAbsolutePath() + File.separator + PreferenceSupplier.AMDIS_EXECUTABLE;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2024 Lablicate GmbH.
+ * Copyright (c) 2014, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -17,13 +17,13 @@ import java.util.List;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IPeakModel;
-import org.eclipse.chemclipse.model.core.IPeaks;
 import org.eclipse.chemclipse.msd.converter.io.IPeakReader;
 import org.eclipse.chemclipse.msd.converter.peak.PeakConverterMSD;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IPeakModelMSD;
+import org.eclipse.chemclipse.msd.model.core.IPeaksMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.msd.model.implementation.ChromatogramPeakMSD;
 import org.eclipse.chemclipse.processing.core.DefaultProcessingResult;
@@ -44,8 +44,8 @@ public class PeakProcessorSupport {
 
 	public void extractEluFileAndSetPeaks(IChromatogramSelectionMSD chromatogramSelection, File file, IProcessSettings processSettings, IProgressMonitor monitor) {
 
-		IProcessingInfo<IPeaks<IPeakMSD>> processingInfo = PeakConverterMSD.convert(file, PEAK_CONVERTER_ID, monitor);
-		IPeaks<IPeakMSD> peaks = processingInfo.getProcessingResult();
+		IProcessingInfo<IPeaksMSD> processingInfo = PeakConverterMSD.convert(file, PEAK_CONVERTER_ID, monitor);
+		IPeaksMSD peaks = processingInfo.getProcessingResult();
 		insertPeaks(chromatogramSelection, peaks.getPeaks(), processSettings, monitor);
 	}
 
