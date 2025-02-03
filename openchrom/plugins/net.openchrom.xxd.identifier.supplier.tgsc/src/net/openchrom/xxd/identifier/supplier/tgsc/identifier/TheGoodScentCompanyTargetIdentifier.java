@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Lablicate GmbH.
+ * Copyright (c) 2023, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -12,6 +12,8 @@
 package net.openchrom.xxd.identifier.supplier.tgsc.identifier;
 
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.List;
@@ -59,9 +61,9 @@ public class TheGoodScentCompanyTargetIdentifier implements ITargetIdentifierSup
 		try {
 			String cas = libraryInformation.getCasNumber();
 			if(cas != null && !cas.isEmpty() && !CasSupport.CAS_DEFAULT.equals(cas)) {
-				url = new URL(MessageFormat.format(URL, cas));
+				url = new URI(MessageFormat.format(URL, cas)).toURL();
 			}
-		} catch(MalformedURLException e) {
+		} catch(MalformedURLException | URISyntaxException e) {
 			logger.warn(e);
 		}
 		return url;

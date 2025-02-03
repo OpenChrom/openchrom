@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Lablicate GmbH.
+ * Copyright (c) 2023, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -12,6 +12,8 @@
 package net.openchrom.msd.identifier.supplier.massbank.identifier;
 
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.List;
@@ -61,9 +63,11 @@ public class TargetIdentifier implements ITargetIdentifierSupplier {
 			String inchiKey = libraryInformation.getInChIKey();
 			if(inchiKey != null && !inchiKey.isEmpty()) {
 				String combined = PreferenceSupplier.getDomain() + SEARCH_URL;
-				url = new URL(MessageFormat.format(combined, inchiKey));
+				url = new URI(MessageFormat.format(combined, inchiKey)).toURL();
 			}
 		} catch(MalformedURLException e) {
+			logger.warn(e);
+		} catch(URISyntaxException e) {
 			logger.warn(e);
 		}
 		return url;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2024 Tasktop Technologies, Polarion Software and others.
+ * Copyright (c) 2009, 2025 Tasktop Technologies, Polarion Software and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,10 +11,8 @@
 package net.openchrom.installer.ui.discovery;
 
 import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -139,8 +137,7 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 			removeOldVersions(installableUnits);
 			checkForUnavailable(installableUnits);
 			return installableUnits.toArray(new IInstallableUnit[installableUnits.size()]);
-		} catch(URISyntaxException | MalformedURLException
-				| ProvisionException e) {
+		} catch(URISyntaxException | ProvisionException e) {
 			InstallErrorDialog.notifyError(DisplayUtils.getShell(), "Failed to install plugins.", e);
 		} finally {
 			monitor.done();
@@ -255,7 +252,7 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 		return installableUnits;
 	}
 
-	private List<IMetadataRepository> addRepositories(SubMonitor monitor) throws MalformedURLException, URISyntaxException, ProvisionException {
+	private List<IMetadataRepository> addRepositories(SubMonitor monitor) throws URISyntaxException, ProvisionException {
 
 		// tell p2 that it's okay to use these repositories
 		ProvisioningSession session = ProvisioningUI.getDefaultUI().getSession();
@@ -264,7 +261,7 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 		monitor.setWorkRemaining(installableConnectors.size() * 5);
 		for(PluginDescriptor descriptor : installableConnectors) {
 			for(String url : descriptor.getURLs()) {
-				URI siteURI = new URL(url).toURI();
+				URI siteURI = new URI(url);
 				if(repositoryLocations.add(siteURI)) {
 					checkCancelled(monitor);
 					repositoryTracker.addRepository(siteURI, null, session);
@@ -289,14 +286,10 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 		final Set<String> installableUnitIdsThisRepository = new HashSet<>();
 		// determine all installable units for this repository
 		for(PluginDescriptor descriptor : installableConnectors) {
-			try {
-				for(String url : descriptor.getURLs()) {
-					if(repository.getLocation().equals(new URL(url).toURI())) {
-						installableUnitIdsThisRepository.addAll(getFeatureIds(descriptor));
-					}
+			for(String url : descriptor.getURLs()) {
+				if(repository.getLocation().equals(new URI(url))) {
+					installableUnitIdsThisRepository.addAll(getFeatureIds(descriptor));
 				}
-			} catch(MalformedURLException e) {
-				// will never happen, ignore
 			}
 		}
 		return installableUnitIdsThisRepository;

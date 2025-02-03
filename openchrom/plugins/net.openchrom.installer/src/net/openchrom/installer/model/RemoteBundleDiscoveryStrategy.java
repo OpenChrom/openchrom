@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2024 Tasktop Technologies, Polarion Software and others.
+ * Copyright (c) 2009, 2025 Tasktop Technologies, Polarion Software and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,8 @@ package net.openchrom.installer.model;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.nio.file.Files;
 
@@ -133,7 +134,7 @@ public class RemoteBundleDiscoveryStrategy extends BundleDiscoveryStrategy {
 					if(monitor.isCanceled()) {
 						break;
 					}
-					WebUtil.downloadResource(target, new URL(bundleUrl), new NullProgressMonitor() {
+					WebUtil.downloadResource(target, new URI(bundleUrl).toURL(), new NullProgressMonitor() {
 
 						@Override
 						public boolean isCanceled() {
@@ -142,7 +143,7 @@ public class RemoteBundleDiscoveryStrategy extends BundleDiscoveryStrategy {
 						}
 					}/* don't use sub progress monitor here */);
 					file = target;
-				} catch(IOException e) {
+				} catch(IOException | URISyntaxException e) {
 					logger.warn("Cannot download bundle at " + bundleUrl);
 					logger.error(e);
 					if(isUnknownHostException(e)) {
