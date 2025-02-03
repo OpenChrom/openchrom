@@ -16,7 +16,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.commons.lang3;bundle-version="3.1.0",
  wrapped.org.ejml.ejml-simple;bundle-version="0.43.0",
  wrapped.org.ejml.ejml-core;bundle-version="0.43.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
 Import-Package: org.osgi.service.component.annotations;version="1.2.0"
 Export-Package: net.openchrom.nmr.processing.apodization,

@@ -22,7 +22,7 @@ Require-Bundle: org.eclipse.core.runtime,
  com.google.protobuf;bundle-version="3.21.5",
  wrapped.com.google.re2j.re2j;bundle-version="1.7.0",
  wrapped.org.jdom.jdom2;bundle-version="2.0.6"
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.csd.converter.supplier.cdf.model,
  net.openchrom.csd.converter.supplier.cdf.preferences
