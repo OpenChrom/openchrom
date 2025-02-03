@@ -1,6 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2022 Lablicate GmbH.
- * Copyright (c) 2012, 2023 Lablicate GmbH.
+ * Copyright (c) 2012, 2025 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -15,7 +14,7 @@ package net.openchrom.chromatogram.xxd.report.supplier.csv.ui;
 
 import org.eclipse.chemclipse.support.events.IChemClipseEvents;
 import org.eclipse.chemclipse.support.ui.activator.AbstractActivatorUI;
-import org.eclipse.chemclipse.ux.extension.xxd.ui.part.support.DataUpdateSupport;
+import org.eclipse.chemclipse.ux.extension.ui.support.DataUpdateSupport;
 import org.osgi.framework.BundleContext;
 
 import net.openchrom.chromatogram.xxd.report.supplier.csv.preferences.PreferenceSupplier;

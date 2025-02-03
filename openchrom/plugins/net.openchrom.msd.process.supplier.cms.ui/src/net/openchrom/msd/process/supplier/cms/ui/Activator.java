@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2018 Walter Whitlock, Philip Wenig.
+ * Copyright (c) 2016, 2025 Walter Whitlock, Philip Wenig.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -12,7 +12,9 @@
  *******************************************************************************/
 package net.openchrom.msd.process.supplier.cms.ui;
 
+import org.eclipse.chemclipse.support.events.IChemClipseEvents;
 import org.eclipse.chemclipse.support.ui.activator.AbstractActivatorUI;
+import org.eclipse.chemclipse.ux.extension.ui.support.DataUpdateSupport;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleManager;
@@ -26,6 +28,7 @@ import net.openchrom.msd.process.supplier.cms.preferences.PreferenceSupplier;
  */
 public class Activator extends AbstractActivatorUI {
 
+	private DataUpdateSupport dataUpdateSupport;
 	/*
 	 * Instance
 	 */
@@ -44,6 +47,20 @@ public class Activator extends AbstractActivatorUI {
 		initializePreferenceStore(PreferenceSupplier.INSTANCE());
 	}
 
+	public DataUpdateSupport getDataUpdateSupport() {
+
+		if(dataUpdateSupport == null) {
+			dataUpdateSupport = new DataUpdateSupport(getEventBroker());
+			initialize(dataUpdateSupport);
+		}
+		return dataUpdateSupport;
+	}
+
+	private void initialize(DataUpdateSupport dataUpdateSupport) {
+
+		dataUpdateSupport.subscribe(IChemClipseEvents.TOPIC_SCAN_XXD_UPDATE_SELECTION, IChemClipseEvents.EVENT_BROKER_DATA);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
@@ -60,7 +77,7 @@ public class Activator extends AbstractActivatorUI {
 	 *
 	 * @return the shared instance
 	 */
-	public static AbstractActivatorUI getDefault() {
+	public static Activator getDefault() {
 
 		return plugin;
 	}
