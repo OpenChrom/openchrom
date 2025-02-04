@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2024 Lablicate GmbH.
+ * Copyright (c) 2017, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -112,10 +112,6 @@ public class CmsLibraryEditor implements IChemClipseEditor {
 			part.setVisible(false);
 			partStack.getChildren().remove(part);
 		}
-		/*
-		 * Run the garbage collector.
-		 */
-		System.gc();
 	}
 
 	@Persist

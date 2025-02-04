@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2019 Matthias Mailänder.
+ * Copyright (c) 2016, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -19,8 +19,9 @@ import org.eclipse.chemclipse.wsd.converter.chromatogram.ChromatogramConverterWS
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
-import junit.framework.TestCase;
 import net.openchrom.wsd.converter.supplier.abif.ABIF;
+
+import junit.framework.TestCase;
 
 public class InvalidData_ITest extends TestCase {
 
@@ -50,9 +51,7 @@ public class InvalidData_ITest extends TestCase {
 		pathImport = null;
 		fileImport = null;
 		chromatogram = null;
-		//
-		System.gc();
-		//
+
 		super.tearDown();
 	}
 
