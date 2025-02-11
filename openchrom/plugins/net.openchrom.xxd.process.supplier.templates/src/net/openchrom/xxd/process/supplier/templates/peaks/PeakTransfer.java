@@ -22,7 +22,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 
+import org.apache.commons.math3.analysis.UnivariateFunction;
 import org.apache.commons.math3.analysis.function.Gaussian;
+import org.apache.commons.math3.analysis.interpolation.LinearInterpolator;
+import org.apache.commons.math3.analysis.solvers.BrentSolver;
+import org.apache.commons.math3.exception.NoBracketingException;
+import org.apache.commons.math3.exception.TooManyEvaluationsException;
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.core.IPeakDetectorCSD;
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.settings.IPeakDetectorSettingsCSD;
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.core.IPeakDetectorMSD;
@@ -100,7 +105,7 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 	private PeakTransferSettings getSettings() {
 
 		PeakTransferSettings settings = new PeakTransferSettings();
-		//
+
 		settings.setUseIdentifiedPeaksOnly(PreferenceSupplier.isTransferUseIdentifiedPeaksOnly());
 		settings.setUseBestTargetOnly(PreferenceSupplier.isTransferUseBestTargetOnly());
 		settings.setMatchQuality(PreferenceSupplier.getMatchQualityTransfer());
@@ -113,7 +118,7 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 		settings.setOptimizeRange(PreferenceSupplier.isTransferOptimizeRange());
 		settings.setCheckPurity(PreferenceSupplier.isTransferCheckPurity());
 		settings.setNumberTraces(PreferenceSupplier.getTransferNumberTraces());
-		//
+
 		return settings;
 	}
 
@@ -146,19 +151,22 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 		List<Integer> groups = new ArrayList<>();
 		groups.addAll(peakGroups.keySet());
 		Collections.sort(groups);
+
 		monitor.beginTask("Transfer Peaks", peaks.size());
 		CountDownLatch latch = new CountDownLatch(peaks.size());
 		for(int group : groups) {
-			List<IPeak> peakz = peakGroups.get(group);
-			if(peakz.size() == 1) {
+			List<IPeak> groupedPeaks = peakGroups.get(group);
+			if(groupedPeaks.size() == 1) {
 				/*
 				 * Single Peak
 				 */
-				IPeak peak = peakz.get(0);
+				IPeak peak = groupedPeaks.get(0);
 				double percentageIntensity = getPercentageIntensity(peak);
 				Thread.ofVirtual().start(() -> {
 					try {
 						transfer(peak, percentageIntensity, chromatogramSink, peakTransferSettings);
+					} catch(Exception e) {
+						logger.warn(e);
 					} finally {
 						monitor.worked(1);
 						latch.countDown();
@@ -168,15 +176,31 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 				/*
 				 * Peak Group
 				 */
-				for(IPeak peak : peakz) {
+				if(chromatogramSink instanceof IChromatogramCSD chromatogramCSD && peakTransferSettings.isCreateModelPeak()) {
+					for(IPeak peak : groupedPeaks) {
+						Thread.ofVirtual().start(() -> {
+							try {
+								transferModelPeak(peak, chromatogramCSD, peakTransferSettings);
+							} catch(Exception e) {
+								logger.warn(e);
+							} finally {
+								monitor.worked(1);
+								latch.countDown();
+							}
+						});
+					}
+				} else {
 					Thread.ofVirtual().start(() -> {
 						try {
-							transfer(peak, chromatogramSink, peakTransferSettings);
+							transferPeakGroup(groupedPeaks, chromatogramSink, peakTransferSettings);
 						} catch(Exception e) {
 							logger.warn(e);
 						} finally {
-							monitor.worked(1);
-							latch.countDown();
+							int worked = groupedPeaks.size();
+							monitor.worked(worked);
+							for(int i = 0; i < worked; i++) {
+								latch.countDown();
+							}
 						}
 					});
 				}
@@ -223,21 +247,20 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 		Collections.sort(peaksSource, (p1, p2) -> Integer.compare(p1.getPeakModel().getRetentionTimeAtPeakMaximum(), p2.getPeakModel().getRetentionTimeAtPeakMaximum()));
 		ListIterator<IPeak> listIterator = peaksSource.listIterator();
 		Map<Integer, List<IPeak>> peakGroups = new HashMap<>();
-		//
+
 		double peakOverlapCoverage = peakTransferSettings.getPeakOverlapCoverage();
 		int group = 1;
 		while(listIterator.hasNext()) {
 			IPeak peakCurrent = listIterator.next();
 			IPeakModel peakModelCurrent = peakCurrent.getPeakModel();
 			int stopRetentionTimeCurrent = peakModelCurrent.getStopRetentionTime();
-			//
-			List<IPeak> peakz = peakGroups.get(group);
-			if(peakz == null) {
-				peakz = new ArrayList<>();
-				peakGroups.put(group, peakz);
+
+			List<IPeak> groupedPeaks = peakGroups.get(group);
+			if(groupedPeaks == null) {
+				groupedPeaks = new ArrayList<>();
+				peakGroups.put(group, groupedPeaks);
 			}
-			peakz.add(peakCurrent);
-			//
+			groupedPeaks.add(peakCurrent);
 			if(listIterator.hasNext()) {
 				/*
 				 * Test if the next peak covers the current peak.
@@ -256,33 +279,90 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 						group++;
 					}
 				}
-				//
+
 				listIterator.previous();
 			}
 		}
-		//
+
 		return peakGroups;
+	}
+
+	private void transferPeakGroup(List<IPeak> groupedPeaks, IChromatogram<?> chromatogramSink, PeakTransferSettings peakTransferSettings) {
+
+		for(int i = 0; i < groupedPeaks.size() - 1; i++) {
+			IPeak currentPeak = groupedPeaks.get(i);
+			double percentageIntensity = getPercentageIntensity(currentPeak);
+			IPeak nextPeak = groupedPeaks.get(i + 1);
+
+			try {
+				Double crossingPoint = calculateIntersectionX(currentPeak, nextPeak);
+				if(crossingPoint != null) {
+					int startRetentionTime = currentPeak.getPeakModel().getStartRetentionTime();
+					int scanNumber = chromatogramSink.getScanNumber(crossingPoint.intValue() + 1);
+					int stopRetentionTime = chromatogramSink.getScan(scanNumber).getRetentionTime();
+					transfer(currentPeak, startRetentionTime, stopRetentionTime, percentageIntensity, chromatogramSink, peakTransferSettings);
+
+					// Next peak is last peak.
+					if(i == groupedPeaks.size() - 2) {
+						startRetentionTime = stopRetentionTime;
+						stopRetentionTime = nextPeak.getPeakModel().getStopRetentionTime();
+						transfer(nextPeak, startRetentionTime, stopRetentionTime, percentageIntensity, chromatogramSink, peakTransferSettings);
+					}
+				}
+			} catch(TooManyEvaluationsException | NoBracketingException e) {
+				logger.warn(e);
+			}
+		}
+	}
+
+	private Double calculateIntersectionX(IPeak currentPeak, IPeak nextPeak) {
+
+		double[] x1 = new double[currentPeak.getPeakModel().getRetentionTimes().size()];
+		double[] y1 = new double[currentPeak.getPeakModel().getRetentionTimes().size()];
+		int i = 0;
+		for(int rt : currentPeak.getPeakModel().getRetentionTimes()) {
+			x1[i] = rt;
+			y1[i] = currentPeak.getPeakModel().getPeakAbundance(rt);
+			i++;
+		}
+		UnivariateFunction f1 = new LinearInterpolator().interpolate(x1, y1);
+
+		double[] x2 = new double[nextPeak.getPeakModel().getRetentionTimes().size()];
+		double[] y2 = new double[nextPeak.getPeakModel().getRetentionTimes().size()];
+		i = 0;
+		for(int rt : nextPeak.getPeakModel().getRetentionTimes()) {
+			x2[i] = rt;
+			y2[i] = nextPeak.getPeakModel().getPeakAbundance(rt);
+			i++;
+		}
+		UnivariateFunction f2 = new LinearInterpolator().interpolate(x2, y2);
+
+		UnivariateFunction h = x -> f1.value(x) - f2.value(x);
+		BrentSolver solver = new BrentSolver(1e-10, 1e-14);
+		double min = Math.max(x1[0], x2[0]); // Start of the interval
+		double max = Math.min(x1[x1.length - 1], x2[x2.length - 1]); // End of the interval
+		return solver.solve(1000, h, min, max);
 	}
 
 	private void transfer(IPeak peakSource, double percentageIntensity, IChromatogram<?> chromatogramSink, PeakTransferSettings peakTransferSettings) {
 
 		int deltaRetentionTimeLeft = peakTransferSettings.getDeltaRetentionTimeLeft();
 		int deltaRetentionTimeRight = peakTransferSettings.getDeltaRetentionTimeRight();
-		//
+
 		IPeakModel peakModelSource = peakSource.getPeakModel();
 		int startRetentionTime = peakModelSource.getStartRetentionTime() - deltaRetentionTimeLeft;
 		int stopRetentionTime = peakModelSource.getStopRetentionTime() + deltaRetentionTimeRight;
-		//
+
 		transfer(peakSource, startRetentionTime, stopRetentionTime, percentageIntensity, chromatogramSink, peakTransferSettings);
 	}
 
 	private void transfer(IPeak peakSource, int startRetentionTime, int stopRetentionTime, double percentageIntensity, IChromatogram<? extends IPeak> chromatogramSink, PeakTransferSettings peakTransferSettings) {
 
 		PeakSupport peakSupport = new PeakSupport();
-		//
+
 		boolean includeBackground = peakSource.getPeakType().equals(PeakType.VV);
 		boolean optimizeRange = peakTransferSettings.isOptimizeRange();
-		//
+
 		Set<Integer> traces;
 		if(chromatogramSink instanceof IChromatogramMSD && peakTransferSettings.isCheckPurity()) {
 			int numberTraces = peakTransferSettings.getNumberTraces();
@@ -290,7 +370,7 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 		} else {
 			traces = new HashSet<>();
 		}
-		//
+
 		IPeak peakSink = peakSupport.extractPeakByRetentionTime(chromatogramSink, startRetentionTime, stopRetentionTime, includeBackground, optimizeRange, traces);
 		if(peakSink != null) {
 			adjustPeakIntensity(peakSink, percentageIntensity, peakTransferSettings);
@@ -299,46 +379,38 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 		}
 	}
 
-	private void transfer(IPeak peakSource, IChromatogram<? extends IPeak> chromatogramSink, PeakTransferSettings peakTransferSettings) {
+	private void transferModelPeak(IPeak peakSource, IChromatogramCSD chromatogramCSD, PeakTransferSettings peakTransferSettings) {
 
-		IPeakModel peakModel = peakSource.getPeakModel();
 		double percentageIntensity = getPercentageIntensity(peakSource);
-		//
-		if(chromatogramSink instanceof IChromatogramCSD chromatogramCSD && peakTransferSettings.isCreateModelPeak()) {
+		/*
+		 * Model peak
+		 */
+		IPeakModel peakModel = peakSource.getPeakModel();
+		if(peakModel.getLeading() >= 4.0f || peakModel.getTailing() >= 4.0) {
 			/*
-			 * Model peak
+			 * Probably try to add a Gamma distribution modeled peak.
+			 * https://commons.apache.org/proper/commons-math/userguide/distribution.html
 			 */
-			if(peakModel.getLeading() >= 4.0f || peakModel.getTailing() >= 4.0) {
-				/*
-				 * Probably try to add a Gamma distribution modeled peak.
-				 * https://commons.apache.org/proper/commons-math/userguide/distribution.html
-				 */
-				transfer(peakSource, percentageIntensity, chromatogramSink, peakTransferSettings);
-			} else {
-				/*
-				 * Gaussian Peak
-				 * https://commons.apache.org/proper/commons-math/javadocs/api-3.6.1/org/apache/commons/math3/fitting/GaussianCurveFitter.html
-				 */
-				int deltaRetentionTimeLeft = peakTransferSettings.getDeltaRetentionTimeLeft();
-				int deltaRetentionTimeRight = peakTransferSettings.getDeltaRetentionTimeRight();
-				int startRetentionTime = peakModel.getStartRetentionTime() - deltaRetentionTimeLeft;
-				int stopRetentionTime = peakModel.getStopRetentionTime() + deltaRetentionTimeRight;
-				int offsetRetentionTime = peakTransferSettings.getOffsetRetentionTimePeakMaximum();
-				Point maxPosition = getMaxPosition(chromatogramCSD, peakModel.getRetentionTimeAtPeakMaximum(), offsetRetentionTime);
-				//
-				if(maxPosition.getX() > 0 && maxPosition.getY() > 0) {
-					IPeak peakSink = fitPeak(chromatogramCSD, maxPosition, percentageIntensity, startRetentionTime, stopRetentionTime);
-					if(peakSink != null) {
-						transferTargets(peakSource, peakSink, peakTransferSettings);
-						addPeak(chromatogramSink, peakSink);
-					}
-				}
-			}
+			transfer(peakSource, percentageIntensity, chromatogramCSD, peakTransferSettings);
 		} else {
 			/*
-			 * Standard
+			 * Gaussian Peak
+			 * https://commons.apache.org/proper/commons-math/javadocs/api-3.6.1/org/apache/commons/math3/fitting/GaussianCurveFitter.html
 			 */
-			transfer(peakSource, percentageIntensity, chromatogramSink, peakTransferSettings);
+			int deltaRetentionTimeLeft = peakTransferSettings.getDeltaRetentionTimeLeft();
+			int deltaRetentionTimeRight = peakTransferSettings.getDeltaRetentionTimeRight();
+			int startRetentionTime = peakModel.getStartRetentionTime() - deltaRetentionTimeLeft;
+			int stopRetentionTime = peakModel.getStopRetentionTime() + deltaRetentionTimeRight;
+			int offsetRetentionTime = peakTransferSettings.getOffsetRetentionTimePeakMaximum();
+			Point maxPosition = getMaxPosition(chromatogramCSD, peakModel.getRetentionTimeAtPeakMaximum(), offsetRetentionTime);
+
+			if(maxPosition.getX() > 0 && maxPosition.getY() > 0) {
+				IPeak peakSink = fitPeak(chromatogramCSD, maxPosition, percentageIntensity, startRetentionTime, stopRetentionTime);
+				if(peakSink != null) {
+					transferTargets(peakSource, peakSink, peakTransferSettings);
+					addPeak(chromatogramCSD, peakSink);
+				}
+			}
 		}
 	}
 
@@ -428,7 +500,7 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 					float chromatogramTotalSignal = scan.getTotalSignal();
 					IPeakModel peakModel = peak.getPeakModel();
 					float peakTotalSignal = peakModel.getBackgroundAbundance() + peakModel.getPeakAbundance();
-					//
+
 					if(chromatogramTotalSignal > 0) {
 						percentageIntensity = 1.0d / chromatogramTotalSignal * peakTotalSignal;
 					}
@@ -459,7 +531,7 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 		IComparisonResult comparisonResult = new ComparisonResult(matchFactor, matchFactor, matchFactor, matchFactor);
 		IIdentificationTarget identificationTargetSink = new IdentificationTarget(libraryInformation, comparisonResult);
 		identificationTargetSink.setIdentifier(PeakTransferSettings.IDENTIFIER_DESCRIPTION);
-		//
+
 		return identificationTargetSink;
 	}
 
@@ -467,7 +539,7 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 
 		int retentionTime = 0;
 		float maxIntensity = Float.MIN_VALUE;
-		//
+
 		int startScan = chromatogram.getScanNumber(centerRetentionTime - offsetRetentionTime);
 		int stopScan = chromatogram.getScanNumber(centerRetentionTime + offsetRetentionTime);
 		if(startScan > 0 && stopScan <= chromatogram.getNumberOfScans()) {
@@ -479,7 +551,7 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 				}
 			}
 		}
-		//
+
 		return new Point(retentionTime, maxIntensity);
 	}
 
@@ -492,7 +564,7 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 		 */
 		IScanCSD peakMaximum = new ScanCSD(norm);
 		IPeakIntensityValues peakIntensityValues = new PeakIntensityValues(norm);
-		//
+
 		for(int i = startScan; i <= stopScan; i++) {
 			IScan scan = chromatogram.getScan(i);
 			int retentionTime = scan.getRetentionTime();
@@ -500,7 +572,7 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 			peakIntensityValues.addIntensityValue(retentionTime, peakIntensity);
 		}
 		peakIntensityValues.normalize();
-		//
+
 		IPeakModelCSD peakModel = new PeakModelCSD(peakMaximum, peakIntensityValues, 0, 0);
 		ChromatogramPeakCSD peak = new ChromatogramPeakCSD(peakModel, chromatogram);
 		peak.setDetectorDescription(PeakTransferSettings.DETECTOR_DESCRIPTION);
