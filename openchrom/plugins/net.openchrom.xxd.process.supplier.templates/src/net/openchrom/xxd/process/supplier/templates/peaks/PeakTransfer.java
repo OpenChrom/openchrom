@@ -355,6 +355,9 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 		}
 		while(!isWithinBounds(peakSink, chromatogramCSD)) {
 			sigma = sigma - 0.1;
+			if(sigma < 0.1) {
+				return null;
+			}
 			gaussian = new Gaussian(intensity, centerScan, sigma);
 			peakSink = createDefaultGaussPeakNormal(chromatogramCSD, startRetentionTime, stopRetentionTime, gaussian, intensity);
 			if(peakSink == null) {
