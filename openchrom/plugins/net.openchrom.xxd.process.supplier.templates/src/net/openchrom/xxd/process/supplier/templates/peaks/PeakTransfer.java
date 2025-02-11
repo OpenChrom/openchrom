@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
 
 import org.apache.commons.math3.analysis.function.Gaussian;
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.core.IPeakDetectorCSD;
@@ -146,6 +147,7 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 		groups.addAll(peakGroups.keySet());
 		Collections.sort(groups);
 		monitor.beginTask("Transfer Peaks", peaks.size());
+		CountDownLatch latch = new CountDownLatch(peaks.size());
 		for(int group : groups) {
 			List<IPeak> peakz = peakGroups.get(group);
 			if(peakz.size() == 1) {
@@ -154,21 +156,37 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 				 */
 				IPeak peak = peakz.get(0);
 				double percentageIntensity = getPercentageIntensity(peak);
-				transfer(peak, percentageIntensity, chromatogramSink, peakTransferSettings);
-				monitor.worked(1);
+				Thread.ofVirtual().start(() -> {
+					try {
+						transfer(peak, percentageIntensity, chromatogramSink, peakTransferSettings);
+					} finally {
+						monitor.worked(1);
+						latch.countDown();
+					}
+				});
 			} else {
 				/*
 				 * Peak Group
 				 */
 				for(IPeak peak : peakz) {
-					try {
-						transfer(peak, chromatogramSink, peakTransferSettings);
-					} catch(Exception e) {
-						logger.warn(e);
-					}
-					monitor.worked(1);
+					Thread.ofVirtual().start(() -> {
+						try {
+							transfer(peak, chromatogramSink, peakTransferSettings);
+						} catch(Exception e) {
+							logger.warn(e);
+						} finally {
+							monitor.worked(1);
+							latch.countDown();
+						}
+					});
 				}
 			}
+		}
+		try {
+			latch.await();
+		} catch(InterruptedException e) {
+			logger.error(e);
+			Thread.currentThread().interrupt();
 		}
 	}
 
