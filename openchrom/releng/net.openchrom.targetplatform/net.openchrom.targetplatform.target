@@ -129,8 +129,8 @@
 		</dependencies>
 		<repositories>
 			<repository>
-				<id>Unidata All</id>
-				<url>https://artifacts.unidata.ucar.edu/repository/unidata-all/</url>
+				<id>SciJava Public</id>
+				<url>https://maven.scijava.org/content/repositories/public/</url>
 			</repository>
 		</repositories>
 	</location>
