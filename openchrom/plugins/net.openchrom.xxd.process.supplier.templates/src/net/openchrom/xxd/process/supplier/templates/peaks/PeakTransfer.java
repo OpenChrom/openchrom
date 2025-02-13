@@ -53,8 +53,6 @@ import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.model.identifier.ComparisonResult;
 import org.eclipse.chemclipse.model.identifier.IComparisonResult;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
-import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
-import org.eclipse.chemclipse.model.identifier.LibraryInformation;
 import org.eclipse.chemclipse.model.implementation.IdentificationTarget;
 import org.eclipse.chemclipse.model.implementation.PeakIntensityValues;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
@@ -512,26 +510,25 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 
 	private void transferTargets(IPeak peakSource, IPeak peakSink, PeakTransferSettings peakTransferSettings) {
 
-		float matchFactor = peakTransferSettings.getMatchQuality();
 		if(peakTransferSettings.isUseBestTargetOnly()) {
 			IIdentificationTarget identificationTarget = IIdentificationTarget.getIdentificationTarget(peakSource);
 			if(identificationTarget != null) {
-				peakSink.getTargets().add(createIdentificationTarget(identificationTarget, matchFactor));
+				peakSink.getTargets().add(createIdentificationTarget(identificationTarget, peakTransferSettings));
 			}
 		} else {
 			for(IIdentificationTarget identificationTarget : peakSource.getTargets()) {
-				peakSink.getTargets().add(createIdentificationTarget(identificationTarget, matchFactor));
+				peakSink.getTargets().add(createIdentificationTarget(identificationTarget, peakTransferSettings));
 			}
 		}
 	}
 
-	private IIdentificationTarget createIdentificationTarget(IIdentificationTarget identificationTarget, float matchFactor) {
+	private IIdentificationTarget createIdentificationTarget(IIdentificationTarget identificationTarget, PeakTransferSettings peakTransferSettings) {
 
-		ILibraryInformation libraryInformation = new LibraryInformation(identificationTarget.getLibraryInformation());
-		IComparisonResult comparisonResult = new ComparisonResult(matchFactor, matchFactor, matchFactor, matchFactor);
-		IIdentificationTarget identificationTargetSink = new IdentificationTarget(libraryInformation, comparisonResult);
+		float matchFactor = peakTransferSettings.getMatchQuality();
+		IComparisonResult comparisonResult = matchFactor > 0 ? new ComparisonResult(matchFactor) : identificationTarget.getComparisonResult();
+		IdentificationTarget identificationTargetSink = new IdentificationTarget(identificationTarget.getLibraryInformation(), comparisonResult);
 		identificationTargetSink.setIdentifier(PeakTransferSettings.IDENTIFIER_DESCRIPTION);
-
+		identificationTargetSink.setVerified(identificationTarget.isVerified());
 		return identificationTargetSink;
 	}
 

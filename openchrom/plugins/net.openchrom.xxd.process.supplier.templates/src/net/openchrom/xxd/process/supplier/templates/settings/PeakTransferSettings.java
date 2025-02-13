@@ -35,10 +35,10 @@ public class PeakTransferSettings extends AbstractPeakDetectorSettingsMSD implem
 	@JsonPropertyDescription(value = "If this value is true, only the best target will be transfered.")
 	private boolean useBestTargetOnly = false;
 
-	@JsonProperty(value = "Match Quality", defaultValue = "80.0")
-	@JsonPropertyDescription(value = "The match quality is set as the Match Factor.")
+	@JsonProperty(value = "Match Quality", defaultValue = "")
+	@JsonPropertyDescription(value = "Overrides the match quality with a fixed value.")
 	@FloatSettingsProperty(minValue = PreferenceSupplier.MIN_FACTOR, maxValue = PreferenceSupplier.MAX_FACTOR)
-	private float matchQuality = 80.0f;
+	private float matchQuality = 0f;
 
 	@JsonProperty(value = "Delta Retention Time Left [ms]", defaultValue = "0")
 	@JsonPropertyDescription(value = "This is the left delta retention time in milliseconds.")
