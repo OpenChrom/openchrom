@@ -338,4 +338,18 @@
             id="org.eclipse.chemclipse.chromatogram.xxd.report.supplier.openchrom.templateChromatogramReport">
       </icon>
    </extension>
+   <extension
+         point="org.eclipse.chemclipse.xxd.process.ui.menu.icon">
+      <icon
+            class="net.openchrom.xxd.process.supplier.templates.ui.icon.TransferMenuIcon"
+            id="net.openchrom.xxd.process.supplier.templates.peaks.transfer.msd">
+      </icon>
+   </extension>
+   <extension
+         point="org.eclipse.chemclipse.xxd.process.ui.menu.icon">
+      <icon
+            class="net.openchrom.xxd.process.supplier.templates.ui.icon.TransferMenuIcon"
+            id="net.openchrom.xxd.process.supplier.templates.peaks.transfer.csd">
+      </icon>
+   </extension>
 </plugin>
