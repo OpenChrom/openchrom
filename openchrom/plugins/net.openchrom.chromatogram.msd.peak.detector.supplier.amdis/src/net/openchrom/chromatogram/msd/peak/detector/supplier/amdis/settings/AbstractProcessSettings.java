@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2024 Lablicate GmbH.
+ * Copyright (c) 2008, 2025 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -11,22 +11,35 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.settings;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.AbstractPeakDetectorSettingsMSD;
+import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.support.literature.LiteratureReference;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class AbstractProcessSettings extends AbstractPeakDetectorSettingsMSD implements IProcessSettings {
 
+	private static final Logger logger = Logger.getLogger(AbstractProcessSettings.class);
+
 	@JsonProperty(value = "Min S/N Ratio", defaultValue = "0.0")
 	private float minSignalToNoiseRatio = 0.0f;
+
 	@JsonProperty(value = "Min Leading", defaultValue = "0.1")
 	private float minLeading = 0.1f;
+
 	@JsonProperty(value = "Max Leading", defaultValue = "2.0")
 	private float maxLeading = 2.0f;
+
 	@JsonProperty(value = "Min Tailing", defaultValue = "0.1")
 	private float minTailing = 0.1f;
+
 	@JsonProperty(value = "Max Tailing", defaultValue = "2.0")
 	private float maxTailing = 2.0f;
+
 	@JsonProperty(value = "Filter Model Peaks", defaultValue = "MP1")
 	private ModelPeakOption modelPeakOption = ModelPeakOption.MP1;
 
@@ -100,5 +113,25 @@ public class AbstractProcessSettings extends AbstractPeakDetectorSettingsMSD imp
 	public void setModelPeakOption(ModelPeakOption modelPeakOption) {
 
 		this.modelPeakOption = modelPeakOption;
+	}
+
+	@Override
+	public List<LiteratureReference> getLiteratureReferences() {
+
+		List<LiteratureReference> literatureReferences = new ArrayList<>();
+		literatureReferences.add(createLiteratureReference("10.1016S1044-0305(99)00047-1.ris", "10.1016/S1044-0305(99)00047-1"));
+		return literatureReferences;
+	}
+
+	private static LiteratureReference createLiteratureReference(String file, String doi) {
+
+		String content;
+		try {
+			content = new String(AbstractProcessSettings.class.getResourceAsStream(file).readAllBytes());
+		} catch(IOException | NullPointerException e) {
+			content = doi;
+			logger.warn(e);
+		}
+		return new LiteratureReference(content);
 	}
 }
