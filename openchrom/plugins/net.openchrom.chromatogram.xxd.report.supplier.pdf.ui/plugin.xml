@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.chemclipse.chromatogram.xxd.report.chromatogramReportSupplier">
+      <ChromatogramReportSupplier
+            description="Reports Chromatograms as PDF"
+            fileExtension=".pdf"
+            fileName="Results"
+            id="net.openchrom.chromatogram.xxd.report.supplier.openchrom.pdf.ui"
+            reportGenerator="net.openchrom.chromatogram.xxd.report.supplier.pdf.ui.core.ChromatogramReportGenerator"
+            reportName="Chromatogram Results (*.pdf)"
+            reportSettings="net.openchrom.chromatogram.xxd.report.supplier.pdf.ui.settings.ChromatogramReportSettings">
+      </ChromatogramReportSupplier>
+   </extension>
+   <extension
+         point="org.eclipse.chemclipse.xxd.process.ui.menu.icon">
+         <icon
+            class="net.openchrom.chromatogram.xxd.report.supplier.pdf.ui.icon.PortableDocumentFormatMenuIcon"
+            id="net.openchrom.chromatogram.xxd.report.supplier.openchrom.pdf.ui">
+      </icon>
+   </extension>
+</plugin>
