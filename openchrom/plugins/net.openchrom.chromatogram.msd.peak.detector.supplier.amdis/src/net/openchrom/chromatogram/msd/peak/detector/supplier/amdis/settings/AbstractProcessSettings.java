@@ -11,19 +11,16 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.settings;
 
-import java.io.IOException;
-import java.util.ArrayList;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.AbstractPeakDetectorSettingsMSD;
-import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.support.literature.LiteratureReference;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class AbstractProcessSettings extends AbstractPeakDetectorSettingsMSD implements IProcessSettings {
-
-	private static final Logger logger = Logger.getLogger(AbstractProcessSettings.class);
 
 	@JsonProperty(value = "Min S/N Ratio", defaultValue = "0.0")
 	private float minSignalToNoiseRatio = 0.0f;
@@ -118,20 +115,18 @@ public class AbstractProcessSettings extends AbstractPeakDetectorSettingsMSD imp
 	@Override
 	public List<LiteratureReference> getLiteratureReferences() {
 
-		List<LiteratureReference> literatureReferences = new ArrayList<>();
-		literatureReferences.add(createLiteratureReference("10.1016S1044-0305(99)00047-1.ris", "10.1016/S1044-0305(99)00047-1"));
-		return literatureReferences;
+		return Arrays.asList(createLiteratureReference());
 	}
 
-	private static LiteratureReference createLiteratureReference(String file, String doi) {
+	private static LiteratureReference createLiteratureReference() {
 
 		String content;
 		try {
-			content = new String(AbstractProcessSettings.class.getResourceAsStream(file).readAllBytes());
-		} catch(IOException | NullPointerException e) {
-			content = doi;
-			logger.warn(e);
+			content = new String(AbstractProcessSettings.class.getResourceAsStream("10.1016S1044-03059900047-1.ris").readAllBytes(), StandardCharsets.US_ASCII);
+		} catch(Exception e) {
+			content = "https://doi.org/10.1016/S1044-0305(99)00047-1";
 		}
+		//
 		return new LiteratureReference(content);
 	}
 }
