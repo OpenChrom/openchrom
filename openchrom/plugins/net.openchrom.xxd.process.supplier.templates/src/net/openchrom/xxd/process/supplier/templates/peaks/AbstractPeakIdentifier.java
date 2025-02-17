@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IChromatogramPeak;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.exceptions.PeakException;
@@ -47,18 +48,18 @@ public abstract class AbstractPeakIdentifier {
 
 	private static final Logger logger = Logger.getLogger(AbstractPeakIdentifier.class);
 
-	protected <T> List<T> extractPeaks(T peak) {
+	protected List<? extends IChromatogramPeak> extractPeaks(IChromatogramPeak peak) {
 
-		List<T> peaks = new ArrayList<>();
+		List<IChromatogramPeak> peaks = new ArrayList<>();
 		peaks.add(peak);
 		return peaks;
 	}
 
-	protected <T extends IPeak> List<T> extractPeaks(IChromatogramSelection<T, ?> chromatogramSelection) {
+	protected List<IChromatogramPeak> extractPeaks(IChromatogramSelection chromatogramSelection) {
 
-		IChromatogram<T> chromatogram = chromatogramSelection.getChromatogram();
-		List<T> peaks = new ArrayList<>();
-		for(T peak : chromatogram.getPeaks(chromatogramSelection)) {
+		IChromatogram chromatogram = chromatogramSelection.getChromatogram();
+		List<IChromatogramPeak> peaks = new ArrayList<>();
+		for(IChromatogramPeak peak : chromatogram.getPeaks(chromatogramSelection)) {
 			peaks.add(peak);
 		}
 		return peaks;

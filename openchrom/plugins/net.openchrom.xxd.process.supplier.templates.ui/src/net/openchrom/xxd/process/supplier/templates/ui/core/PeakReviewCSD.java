@@ -54,7 +54,7 @@ public class PeakReviewCSD extends AbstractPeakIdentifier implements IPeakIdenti
 			/*
 			 * RI will be adjusted to retention time (minutes).
 			 */
-			IChromatogram<?> chromatogram = getChromatogram(peaks);
+			IChromatogram chromatogram = getChromatogram(peaks);
 			ProcessReviewSettings processSettings = new ProcessReviewSettings(processingInfo, chromatogram, settings);
 			//
 			try {
@@ -76,7 +76,7 @@ public class PeakReviewCSD extends AbstractPeakIdentifier implements IPeakIdenti
 		}
 	}
 
-	private IChromatogram<?> getChromatogram(List<? extends IPeakCSD> peaks) {
+	private IChromatogram getChromatogram(List<? extends IPeakCSD> peaks) {
 
 		for(IPeakCSD peak : peaks) {
 			if(peak instanceof IChromatogramPeak chromatogramPeak) {

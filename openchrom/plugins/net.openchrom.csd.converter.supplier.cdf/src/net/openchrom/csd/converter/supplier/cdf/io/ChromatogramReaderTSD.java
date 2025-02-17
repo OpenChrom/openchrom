@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Lablicate GmbH.
+ * Copyright (c) 2021, 2025 Lablicate GmbH.
  *
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -66,7 +66,7 @@ public class ChromatogramReaderTSD implements IImportConverterTSD {
 	}
 
 	@Override
-	public IChromatogram<?> extract(IChromatogramTSD chromatogramTSD, TraceRangeMatcher traceRangeMatcher, IProgressMonitor monitor) throws IOException {
+	public IChromatogram extract(IChromatogramTSD chromatogramTSD, TraceRangeMatcher traceRangeMatcher, IProgressMonitor monitor) throws IOException {
 
 		return null;
 	}

@@ -65,7 +65,7 @@ public class ReportWriter {
 	private static final DecimalFormat SIGNAL_TO_NOISE_FORMAT = ValueFormat.getDecimalFormatEnglish("0.00");
 	private static final DecimalFormat AREA_FORMAT = ValueFormat.getDecimalFormatEnglish("0.0000");
 
-	public void generate(File file, boolean append, List<IChromatogram<? extends IPeak>> chromatograms, ChromatogramReportSettings chromatogramReportSettings, IProgressMonitor monitor) throws IOException {
+	public void generate(File file, boolean append, List<IChromatogram> chromatograms, ChromatogramReportSettings chromatogramReportSettings, IProgressMonitor monitor) throws IOException {
 
 		boolean fileExists = file.exists() && file.length() > 0;
 		TracesValidator tracesValidator = new TracesValidator();
@@ -81,7 +81,7 @@ public class ReportWriter {
 		}
 	}
 
-	private void printResults(List<IChromatogram<? extends IPeak>> chromatograms, ChromatogramReportSettings chromatogramReportSettings, PrintWriter printWriter, boolean fileExists, List<Integer> traces) {
+	private void printResults(List<IChromatogram> chromatograms, ChromatogramReportSettings chromatogramReportSettings, PrintWriter printWriter, boolean fileExists, List<Integer> traces) {
 
 		Map<ReportSetting, List<IPeak>> sumResults = new HashMap<>();
 		int reports = 0;
@@ -89,7 +89,7 @@ public class ReportWriter {
 		HeaderField headerField = chromatogramReportSettings.getHeaderField();
 		String chromatogramNameMaster = "";
 		//
-		for(IChromatogram<? extends IPeak> chromatogram : chromatograms) {
+		for(IChromatogram chromatogram : chromatograms) {
 			/*
 			 * Master
 			 */
@@ -103,7 +103,7 @@ public class ReportWriter {
 			 */
 			if(chromatogramReportSettings.isReportReferencedChromatograms()) {
 				int reference = 1;
-				for(IChromatogram<? extends IPeak> referenceChromatogram : chromatogram.getReferencedChromatograms()) {
+				for(IChromatogram referenceChromatogram : chromatogram.getReferencedChromatograms()) {
 					String defaultName = chromatogramNameMaster + "_" + reference;
 					String chromatogramNameReference = HeaderUtil.getHeaderData(referenceChromatogram, headerField, defaultName);
 					Map<ReportSetting, List<IPeak>> mappedResultsReference = printChromatogram(referenceChromatogram, chromatogramReportSettings, columnsToPrint, fileExists, chromatogramNameReference, traces, printWriter);
@@ -192,7 +192,7 @@ public class ReportWriter {
 		return false;
 	}
 
-	private Map<ReportSetting, List<IPeak>> printChromatogram(IChromatogram<? extends IPeak> chromatogram, ChromatogramReportSettings chromatogramReportSettings, List<String> columnsToPrint, boolean fileExists, String chromatogramName, List<Integer> traces, PrintWriter printWriter) {
+	private Map<ReportSetting, List<IPeak>> printChromatogram(IChromatogram chromatogram, ChromatogramReportSettings chromatogramReportSettings, List<String> columnsToPrint, boolean fileExists, String chromatogramName, List<Integer> traces, PrintWriter printWriter) {
 
 		Map<ReportSetting, List<IPeak>> mappedResults = mapChromatogram(chromatogram, chromatogramReportSettings);
 		//
@@ -204,7 +204,7 @@ public class ReportWriter {
 		return mappedResults;
 	}
 
-	private void printChromatogramHeader(IChromatogram<? extends IPeak> chromatogram, ChromatogramReportSettings chromatogramReportSettings, PrintWriter printWriter) {
+	private void printChromatogramHeader(IChromatogram chromatogram, ChromatogramReportSettings chromatogramReportSettings, PrintWriter printWriter) {
 
 		if(chromatogramReportSettings.isPrintHeader()) {
 			/*
@@ -370,7 +370,7 @@ public class ReportWriter {
 		printWriter.println("");
 	}
 
-	private Map<ReportSetting, List<IPeak>> mapChromatogram(IChromatogram<? extends IPeak> chromatogram, ChromatogramReportSettings chromatogramReportSettings) {
+	private Map<ReportSetting, List<IPeak>> mapChromatogram(IChromatogram chromatogram, ChromatogramReportSettings chromatogramReportSettings) {
 
 		Map<ReportSetting, List<IPeak>> mappedResults = new HashMap<>();
 		RetentionIndexMap retentionIndexMap = new RetentionIndexMap(chromatogram);
@@ -389,7 +389,7 @@ public class ReportWriter {
 		return mappedResults;
 	}
 
-	private List<IPeak> extractPeaks(IChromatogram<? extends IPeak> chromatogram, ReportSetting reportSetting, RetentionIndexMap retentionIndexMap) {
+	private List<IPeak> extractPeaks(IChromatogram chromatogram, ReportSetting reportSetting, RetentionIndexMap retentionIndexMap) {
 
 		int startRetentionTime = reportSetting.getRetentionTimeStart(retentionIndexMap);
 		int stopRetentionTime = reportSetting.getRetentionTimeStop(retentionIndexMap);

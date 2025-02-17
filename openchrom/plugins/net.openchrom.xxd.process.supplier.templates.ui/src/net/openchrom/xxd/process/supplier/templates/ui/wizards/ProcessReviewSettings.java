@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2022 Lablicate GmbH.
+ * Copyright (c) 2020, 2025 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -27,10 +27,10 @@ import net.openchrom.xxd.process.supplier.templates.support.RetentionIndexSuppor
 public class ProcessReviewSettings {
 
 	private IProcessingInfo<?> processingInfo;
-	private IChromatogram<?> chromatogram;
+	private IChromatogram chromatogram;
 	private List<ReviewSetting> reviewSettings = new ArrayList<>();
 
-	public ProcessReviewSettings(IProcessingInfo<?> processingInfo, IChromatogram<?> chromatogram, PeakReviewSettings peakReviewSettings) {
+	public ProcessReviewSettings(IProcessingInfo<?> processingInfo, IChromatogram chromatogram, PeakReviewSettings peakReviewSettings) {
 
 		this.processingInfo = processingInfo;
 		this.chromatogram = chromatogram;
@@ -46,7 +46,7 @@ public class ProcessReviewSettings {
 		return processingInfo;
 	}
 
-	public IChromatogram<?> getChromatogram() {
+	public IChromatogram getChromatogram() {
 
 		return chromatogram;
 	}

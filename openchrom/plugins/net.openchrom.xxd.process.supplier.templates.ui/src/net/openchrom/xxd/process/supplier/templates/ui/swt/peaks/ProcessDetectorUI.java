@@ -308,7 +308,7 @@ public class ProcessDetectorUI extends Composite implements IExtendedPartUI {
 	private void updateComboViewerVisibility() {
 
 		if(processSettings != null) {
-			IChromatogram<?> chromatogram = processSettings.getChromatogram();
+			IChromatogram chromatogram = processSettings.getChromatogram();
 			if(chromatogram instanceof IChromatogramCSD) {
 				/*
 				 * CSD

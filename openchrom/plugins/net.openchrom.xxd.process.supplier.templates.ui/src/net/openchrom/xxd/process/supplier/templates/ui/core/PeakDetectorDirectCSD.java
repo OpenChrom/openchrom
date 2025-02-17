@@ -47,7 +47,7 @@ public class PeakDetectorDirectCSD extends AbstractPeakDetectorCSD implements IP
 			 * Work with an offset, if the start or stop of the chromatogram is selected.
 			 */
 			int offset = 100;
-			IChromatogram<? extends IPeak> chromatogram = chromatogramSelection.getChromatogram();
+			IChromatogram chromatogram = chromatogramSelection.getChromatogram();
 			List<DetectorSetting> detectorSettings = new ArrayList<>();
 			/*
 			 * Peaks

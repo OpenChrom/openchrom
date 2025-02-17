@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Lablicate GmbH.
+ * Copyright (c) 2019, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -37,7 +37,7 @@ public class QuantRatioClassifier extends AbstractRatioClassifier {
 	public static final String CLASSIFIER_ID = "net.openchrom.xxd.classifier.supplier.ratios.quant";
 
 	@Override
-	public IProcessingInfo<IChromatogramClassifierResult> applyClassifier(IChromatogramSelection<?, ?> chromatogramSelection, IChromatogramClassifierSettings chromatogramClassifierSettings, IProgressMonitor monitor) {
+	public IProcessingInfo<IChromatogramClassifierResult> applyClassifier(IChromatogramSelection chromatogramSelection, IChromatogramClassifierSettings chromatogramClassifierSettings, IProgressMonitor monitor) {
 
 		QuantRatioSettings settings;
 		if(chromatogramClassifierSettings instanceof QuantRatioSettings quantRatioSettings) {
@@ -59,7 +59,7 @@ public class QuantRatioClassifier extends AbstractRatioClassifier {
 		return processingInfo;
 	}
 
-	private QuantRatios calculateRatios(IChromatogram<?> chromatogram, QuantRatioSettings classifierSettings) {
+	private QuantRatios calculateRatios(IChromatogram chromatogram, QuantRatioSettings classifierSettings) {
 
 		QuantRatios ratios = classifierSettings.getRatioSettingsList();
 		//

@@ -61,7 +61,7 @@ public class PeakReviewDirectWSD extends AbstractPeakIdentifier implements IPeak
 		/*
 		 * No settings: peakIdentifierSettings == null
 		 */
-		IChromatogram<?> chromatogram = getChromatogram(peaks);
+		IChromatogram chromatogram = getChromatogram(peaks);
 		List<ReviewSetting> reviewSettings = new ArrayList<>();
 		for(IPeak peak : peaks) {
 			if(!peak.getTargets().isEmpty()) {
@@ -106,7 +106,7 @@ public class PeakReviewDirectWSD extends AbstractPeakIdentifier implements IPeak
 		}
 	}
 
-	private IChromatogram<?> getChromatogram(List<? extends IPeakWSD> peaks) {
+	private IChromatogram getChromatogram(List<? extends IPeakWSD> peaks) {
 
 		for(IPeakWSD peak : peaks) {
 			if(peak instanceof IChromatogramPeak chromatogramPeak) {

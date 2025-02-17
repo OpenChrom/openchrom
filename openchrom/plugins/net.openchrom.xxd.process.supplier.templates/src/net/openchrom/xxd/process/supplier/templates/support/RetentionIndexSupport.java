@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Lablicate GmbH.
+ * Copyright (c) 2022, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -29,7 +29,7 @@ public class RetentionIndexSupport {
 	public static RetentionIndexMap getRetentionIndexMap(List<? extends IPeak> peaks) {
 
 		RetentionIndexMap retentionIndexMap = new RetentionIndexMap();
-		IChromatogram<?> chromatogram = getChromatogram(peaks);
+		IChromatogram chromatogram = getChromatogram(peaks);
 		if(chromatogram != null) {
 			retentionIndexMap.update(chromatogram);
 		}
@@ -37,7 +37,7 @@ public class RetentionIndexSupport {
 		return retentionIndexMap;
 	}
 
-	public static List<DetectorSetting> adjustDetectorSettings(IChromatogram<?> chromatogram, List<DetectorSetting> settings) {
+	public static List<DetectorSetting> adjustDetectorSettings(IChromatogram chromatogram, List<DetectorSetting> settings) {
 
 		List<DetectorSetting> settingsAdjusted = new ArrayList<>();
 		//
@@ -63,7 +63,7 @@ public class RetentionIndexSupport {
 		return settingsAdjusted;
 	}
 
-	public static List<ReviewSetting> adjustReviewSettings(IChromatogram<?> chromatogram, List<ReviewSetting> settings) {
+	public static List<ReviewSetting> adjustReviewSettings(IChromatogram chromatogram, List<ReviewSetting> settings) {
 
 		List<ReviewSetting> settingsAdjusted = new ArrayList<>();
 		//
@@ -89,7 +89,7 @@ public class RetentionIndexSupport {
 		return settingsAdjusted;
 	}
 
-	private static IChromatogram<?> getChromatogram(List<? extends IPeak> peaks) {
+	private static IChromatogram getChromatogram(List<? extends IPeak> peaks) {
 
 		for(IPeak peak : peaks) {
 			if(peak instanceof IChromatogramPeak chromatogramPeak) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Lablicate GmbH.
+ * Copyright (c) 2021, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -36,7 +36,7 @@ public class ChromatogramValidator {
 		// only static access
 	}
 
-	public static List<DetectorSetting> filterValidDetectorSettings(IChromatogram<?> chromatogram, PeakDetectorSettings settings) {
+	public static List<DetectorSetting> filterValidDetectorSettings(IChromatogram chromatogram, PeakDetectorSettings settings) {
 
 		List<DetectorSetting> detectorSettings = new ArrayList<>();
 		for(DetectorSetting detectorSetting : settings.getDetectorSettingsList()) {
@@ -48,7 +48,7 @@ public class ChromatogramValidator {
 		return RetentionIndexSupport.adjustDetectorSettings(chromatogram, detectorSettings);
 	}
 
-	public static List<ReviewSetting> filterValidReviewSettings(IChromatogram<?> chromatogram, PeakReviewSettings settings) {
+	public static List<ReviewSetting> filterValidReviewSettings(IChromatogram chromatogram, PeakReviewSettings settings) {
 
 		List<ReviewSetting> reviewSettings = new ArrayList<>();
 		for(ReviewSetting reviewSetting : settings.getReviewSettingsList()) {
@@ -60,7 +60,7 @@ public class ChromatogramValidator {
 		return reviewSettings;
 	}
 
-	public static boolean chromatogramContainsTraces(IChromatogram<?> chromatogram, String tracesSetting) {
+	public static boolean chromatogramContainsTraces(IChromatogram chromatogram, String tracesSetting) {
 
 		boolean tracesAvailable = false;
 		//

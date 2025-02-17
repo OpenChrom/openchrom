@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Lablicate GmbH.
+ * Copyright (c) 2021, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -33,7 +33,7 @@ import net.openchrom.xxd.identifier.supplier.cdk.settings.CleanerSettings;
 public class ChromatogramCleaner extends AbstractChromatogramIdentifier {
 
 	@Override
-	public IProcessingInfo<?> identify(IChromatogramSelection<?, ?> chromatogramSelection, IChromatogramIdentifierSettings chromatogramIdentifierSettings, IProgressMonitor monitor) {
+	public IProcessingInfo<?> identify(IChromatogramSelection chromatogramSelection, IChromatogramIdentifierSettings chromatogramIdentifierSettings, IProgressMonitor monitor) {
 
 		IProcessingInfo<?> processingInfo = validate(chromatogramSelection, chromatogramIdentifierSettings);
 		if(!processingInfo.hasErrorMessages()) {
@@ -41,7 +41,7 @@ public class ChromatogramCleaner extends AbstractChromatogramIdentifier {
 				/*
 				 * Settings
 				 */
-				IChromatogram<?> chromatogram = chromatogramSelection.getChromatogram();
+				IChromatogram chromatogram = chromatogramSelection.getChromatogram();
 				int startScan = chromatogram.getScanNumber(chromatogramSelection.getStartRetentionTime());
 				int stopScan = chromatogram.getScanNumber(chromatogramSelection.getStopRetentionTime());
 				/*
@@ -71,7 +71,7 @@ public class ChromatogramCleaner extends AbstractChromatogramIdentifier {
 	}
 
 	@Override
-	public IProcessingInfo<?> identify(IChromatogramSelection<?, ?> chromatogramSelection, IProgressMonitor monitor) {
+	public IProcessingInfo<?> identify(IChromatogramSelection chromatogramSelection, IProgressMonitor monitor) {
 
 		CleanerSettings settings = PreferenceSupplier.getCleanerSettings();
 		return identify(chromatogramSelection, settings, monitor);

@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IChromatogramPeak;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.model.selection.ChromatogramSelection;
@@ -61,7 +62,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 	//
 	private PeakSupport peakSupport = new PeakSupport();
 	private DetectorRange detectorRange;
-	private IChromatogramSelection<?, ?> chromatogramSelection = null;
+	private IChromatogramSelection chromatogramSelection = null;
 	//
 	private IPeakUpdateListener peakUpdateListener = null;
 	private ISectionUpdateListener sectionUpdateListener = null;
@@ -277,12 +278,11 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		getBaseChart().redraw();
 	}
 
-	@SuppressWarnings({"rawtypes", "unchecked"})
 	private void updateDetectorRange(PeakChartSettings peakChartSettings) {
 
 		deleteSeries();
 		if(detectorRange != null) {
-			IChromatogram<? extends IPeak> chromatogram = detectorRange.getChromatogram();
+			IChromatogram chromatogram = detectorRange.getChromatogram();
 			if(chromatogram != null) {
 				/*
 				 * TIC/XIC
@@ -321,7 +321,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		}
 	}
 
-	private int getStartRetentionTime(IChromatogram<?> chromatogram, DetectorRange detectorRange) {
+	private int getStartRetentionTime(IChromatogram chromatogram, DetectorRange detectorRange) {
 
 		int retentionTime = detectorRange.getRetentionTimeStart();
 		if(retentionTime < chromatogram.getStartRetentionTime()) {
@@ -330,7 +330,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		return retentionTime;
 	}
 
-	private int getStopRetentionTime(IChromatogram<?> chromatogram, DetectorRange detectorRange) {
+	private int getStopRetentionTime(IChromatogram chromatogram, DetectorRange detectorRange) {
 
 		int retentionTime = detectorRange.getRetentionTimeStop();
 		if(retentionTime > chromatogram.getStopRetentionTime()) {
@@ -339,12 +339,12 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		return retentionTime;
 	}
 
-	private boolean showTracesMSD(IChromatogram<? extends IPeak> chromatogram, Set<Integer> traces) {
+	private boolean showTracesMSD(IChromatogram chromatogram, Set<Integer> traces) {
 
 		return chromatogram instanceof IChromatogramMSD && !traces.isEmpty();
 	}
 
-	private boolean showTracesWSD(IChromatogram<? extends IPeak> chromatogram, Set<Integer> traces) {
+	private boolean showTracesWSD(IChromatogram chromatogram, Set<Integer> traces) {
 
 		return chromatogram instanceof IChromatogramWSD && !traces.isEmpty();
 	}
@@ -360,9 +360,9 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		}
 	}
 
-	private double getMinY(IChromatogramSelection<?, ?> chromatogramSelection, int startRetentionTime, int stopRetentionTime) {
+	private double getMinY(IChromatogramSelection chromatogramSelection, int startRetentionTime, int stopRetentionTime) {
 
-		IChromatogram<?> chromatogram = chromatogramSelection.getChromatogram();
+		IChromatogram chromatogram = chromatogramSelection.getChromatogram();
 		//
 		double minY = Double.MAX_VALUE;
 		int startScan = PeakSupport.getStartScan(chromatogram, startRetentionTime);
@@ -377,9 +377,9 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		return minY;
 	}
 
-	private double getMaxY(IChromatogramSelection<?, ?> chromatogramSelection, int startRetentionTime, int stopRetentionTime) {
+	private double getMaxY(IChromatogramSelection chromatogramSelection, int startRetentionTime, int stopRetentionTime) {
 
-		IChromatogram<?> chromatogram = chromatogramSelection.getChromatogram();
+		IChromatogram chromatogram = chromatogramSelection.getChromatogram();
 		//
 		double maxY = Double.MIN_VALUE;
 		int startScan = PeakSupport.getStartScan(chromatogram, startRetentionTime);
@@ -395,7 +395,6 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		return maxY;
 	}
 
-	@SuppressWarnings({"rawtypes", "unchecked"})
 	private IPeak extractPeak() {
 
 		IPeak peak = null;
@@ -412,7 +411,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 						int stopRetentionTime = detectorRange.getRetentionTimeStop();
 						removeClosestPeak(peak, chromatogram, startRetentionTime, stopRetentionTime, replacePeakDelta);
 					}
-					chromatogram.addPeak(peak);
+					PeakSupport.addPeak(chromatogram, peak);
 					fireUpdate(peak);
 				}
 			}
@@ -420,10 +419,10 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		return peak;
 	}
 
-	private void removeClosestPeak(IPeak peakSource, IChromatogram<IPeak> chromatogram, int startRetentionTime, int stopRetentionTime, int replacePeakDelta) {
+	private void removeClosestPeak(IPeak peakSource, IChromatogram chromatogram, int startRetentionTime, int stopRetentionTime, int replacePeakDelta) {
 
 		int retentionTimeSource = peakSource.getPeakModel().getRetentionTimeAtPeakMaximum();
-		List<IPeak> peaks = chromatogram.getPeaks(startRetentionTime, stopRetentionTime);
+		List<? extends IChromatogramPeak> peaks = chromatogram.getPeaks(startRetentionTime, stopRetentionTime);
 		IPeak peakDelete = null;
 		//
 		for(IPeak peak : peaks) {
@@ -454,7 +453,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 			peakSource.getTargets().addAll(peakDelete.getTargets());
 			int retentionTimeTarget = peakDelete.getPeakModel().getRetentionTimeAtPeakMaximum();
 			if(Math.abs(retentionTimeSource - retentionTimeTarget) <= replacePeakDelta) {
-				chromatogram.removePeak(peakDelete);
+				chromatogram.getPeaks().remove(peakDelete);
 			}
 		}
 	}
@@ -491,7 +490,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 				int startRetentionTime = (int)(millisecondsRange.lower + millisecondsWidth * percentageStartWidth);
 				int stopRetentionTime = (int)(millisecondsRange.lower + millisecondsWidth * percentageStopWidth);
 				//
-				IChromatogram<? extends IPeak> chromatogram = detectorRange.getChromatogram();
+				IChromatogram chromatogram = detectorRange.getChromatogram();
 				if(chromatogram != null) {
 					/*
 					 * General Settings

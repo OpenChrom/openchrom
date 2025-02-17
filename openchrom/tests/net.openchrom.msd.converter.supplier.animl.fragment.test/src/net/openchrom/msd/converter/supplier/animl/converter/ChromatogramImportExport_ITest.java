@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2024 Lablicate GmbH.
+ * Copyright (c) 2011, 2025 Lablicate GmbH.
  *
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -97,6 +97,6 @@ public class ChromatogramImportExport_ITest extends TestCase {
 
 		assertNotNull(chromatogram);
 		assertEquals(5726, chromatogram.getNumberOfScans());
-		assertEquals(72, chromatogram.getNumberOfPeaks());
+		assertEquals(72, chromatogram.getPeaks().size());
 	}
 }

@@ -114,7 +114,7 @@ public class PeakProcessorSupport {
 					 * Add the peak
 					 */
 					if(chromatogramPeakMSD != null) {
-						chromatogram.addPeak(chromatogramPeakMSD);
+						chromatogram.getPeaks().add(chromatogramPeakMSD);
 						logger.info("Add Peak (ELU): " + header);
 					} else {
 						String message = "Skip Peak (ELU): " + header;

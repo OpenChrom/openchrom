@@ -17,6 +17,7 @@ import java.util.Set;
 
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IChromatogramPeak;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
@@ -99,7 +100,7 @@ public class DetectorController {
 
 		if(peakDetectorChart != null && processDetectorUI != null) {
 			if(processSettings != null && detectorSetting != null) {
-				IChromatogram<?> chromatogram = processSettings.getChromatogram();
+				IChromatogram chromatogram = processSettings.getChromatogram();
 				if(chromatogram != null) {
 					/*
 					 * Settings
@@ -150,13 +151,12 @@ public class DetectorController {
 		}
 	}
 
-	@SuppressWarnings({"unchecked"})
-	public void deletePeaks(List<IPeak> peaks) {
+	public void deletePeaks(List<IChromatogramPeak> peaks) {
 
 		if(detectorSetting != null) {
-			IChromatogram<IPeak> chromatogram = (IChromatogram<IPeak>)processSettings.getChromatogram();
+			IChromatogram chromatogram = processSettings.getChromatogram();
 			if(chromatogram != null) {
-				chromatogram.removePeaks(peaks);
+				chromatogram.getPeaks().removeAll(peaks);
 				updateDetectorChart();
 				updatePeakStatusUI(null);
 			}
@@ -314,14 +314,14 @@ public class DetectorController {
 
 		Range rangeX = baseChart.getAxisSet().getXAxis(BaseChart.ID_PRIMARY_X_AXIS).getRange();
 		if(processSettings != null) {
-			IChromatogram<IPeak> chromatogram = (IChromatogram<IPeak>)processSettings.getChromatogram();
+			IChromatogram chromatogram = processSettings.getChromatogram();
 			if(chromatogram != null) {
 				/*
 				 * Settings
 				 */
 				int startRetentionTime = (int)rangeX.lower;
 				int stopRetentionTime = (int)rangeX.upper;
-				List<IPeak> peaks = chromatogram.getPeaks(startRetentionTime, stopRetentionTime);
+				List<IChromatogramPeak> peaks = (List<IChromatogramPeak>)chromatogram.getPeaks(startRetentionTime, stopRetentionTime);
 				if(extendedPeaksUI != null) {
 					extendedPeaksUI.setInput(detectorSetting, peaks, null);
 				}
@@ -335,28 +335,27 @@ public class DetectorController {
 		peakDetectorChart.updatePeaks(peaks, hideExistingPeaks);
 	}
 
-	@SuppressWarnings("unchecked")
 	private void updatePeakStatusUI(IPeak peak) {
 
-		List<IPeak> peaks = new ArrayList<>();
+		List<IChromatogramPeak> peaks = new ArrayList<>();
 		//
 		if(processDetectorUI != null) {
 			if(detectorSetting != null) {
 				if(processSettings != null) {
-					IChromatogram<IPeak> chromatogram = (IChromatogram<IPeak>)processSettings.getChromatogram();
+					IChromatogram chromatogram = processSettings.getChromatogram();
 					if(chromatogram != null) {
 						/*
 						 * Settings
 						 */
 						int startRetentionTime = getStartRetentionTime();
 						int stopRetentionTime = getStopRetentionTime();
-						List<IPeak> chromatogramPeaks = chromatogram.getPeaks(startRetentionTime, stopRetentionTime);
+						List<? extends IChromatogramPeak> chromatogramPeaks = chromatogram.getPeaks(startRetentionTime, stopRetentionTime);
 						//
 						if(PreferenceSupplier.isDetectorShowOnlyRelevantPeaks() && isChromatogramMSD(chromatogram)) {
 							Set<Integer> traces = peakDetectorListUtil.extractTraces(detectorSetting.getTraces());
-							for(IPeak chromatogramPeak : chromatogramPeaks) {
+							for(IChromatogramPeak chromatogramPeak : chromatogramPeaks) {
 								if(PeakSupport.isPeakRelevant(chromatogramPeak, traces)) {
-									peaks.add(chromatogramPeak);
+									PeakSupport.addPeak(chromatogram, chromatogramPeak);
 								}
 							}
 						} else {
@@ -372,7 +371,6 @@ public class DetectorController {
 		}
 	}
 
-	@SuppressWarnings("rawtypes")
 	private boolean isChromatogramMSD(IChromatogram chromatogram) {
 
 		return chromatogram instanceof IChromatogramMSD;
@@ -410,7 +408,7 @@ public class DetectorController {
 		return !detectorRange.getTraces().isEmpty() && chartSettings.isShowChromatogramTraces() && PreferenceSupplier.isDetectorFocusXIC();
 	}
 
-	private void setVisibilityOptions(PeakChartSettings chartSettings, IChromatogram<?> chromatogram) {
+	private void setVisibilityOptions(PeakChartSettings chartSettings, IChromatogram chromatogram) {
 
 		if(chromatogram instanceof IChromatogramCSD) {
 			chartSettings.setShowChromatogramTIC(true);

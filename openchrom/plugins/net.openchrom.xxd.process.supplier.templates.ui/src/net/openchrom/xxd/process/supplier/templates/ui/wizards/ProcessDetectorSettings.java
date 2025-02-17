@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Lablicate GmbH.
+ * Copyright (c) 2019, 2025 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -27,10 +27,10 @@ import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSetting
 public class ProcessDetectorSettings {
 
 	private IProcessingInfo<?> processingInfo;
-	private IChromatogram<?> chromatogram;
+	private IChromatogram chromatogram;
 	private List<DetectorSetting> detectorSettings = new ArrayList<>();
 
-	public ProcessDetectorSettings(IProcessingInfo<?> processingInfo, IChromatogram<?> chromatogram, PeakDetectorSettings peakDetectorSettings) {
+	public ProcessDetectorSettings(IProcessingInfo<?> processingInfo, IChromatogram chromatogram, PeakDetectorSettings peakDetectorSettings) {
 
 		this.processingInfo = processingInfo;
 		this.chromatogram = chromatogram;
@@ -46,7 +46,7 @@ public class ProcessDetectorSettings {
 		return processingInfo;
 	}
 
-	public IChromatogram<?> getChromatogram() {
+	public IChromatogram getChromatogram() {
 
 		return chromatogram;
 	}

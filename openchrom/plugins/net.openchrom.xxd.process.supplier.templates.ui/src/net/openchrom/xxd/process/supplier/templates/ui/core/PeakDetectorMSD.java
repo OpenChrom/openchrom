@@ -18,7 +18,6 @@ import java.util.concurrent.ExecutionException;
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.core.AbstractPeakDetectorMSD;
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetectorSettingsMSD;
 import org.eclipse.chemclipse.model.core.IChromatogram;
-import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
@@ -45,7 +44,7 @@ public class PeakDetectorMSD extends AbstractPeakDetectorMSD {
 			/*
 			 * RI will be adjusted to retention time (minutes).
 			 */
-			IChromatogram<? extends IPeak> chromatogram = chromatogramSelection.getChromatogram();
+			IChromatogram chromatogram = chromatogramSelection.getChromatogram();
 			List<DetectorSetting> detectorSettings = ChromatogramValidator.filterValidDetectorSettings(chromatogram, settings);
 			//
 			if(detectorSettings.isEmpty()) {

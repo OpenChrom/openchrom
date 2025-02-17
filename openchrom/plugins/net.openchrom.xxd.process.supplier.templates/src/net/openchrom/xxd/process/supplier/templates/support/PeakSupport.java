@@ -16,10 +16,12 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
+import org.eclipse.chemclipse.csd.model.core.IChromatogramPeakCSD;
 import org.eclipse.chemclipse.csd.model.core.IPeakCSD;
 import org.eclipse.chemclipse.csd.model.core.support.PeakBuilderCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IChromatogramPeak;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.core.IScan;
@@ -32,10 +34,12 @@ import org.eclipse.chemclipse.model.support.RetentionIndexMap;
 import org.eclipse.chemclipse.model.support.RetentionIndexMath;
 import org.eclipse.chemclipse.model.support.ScanRange;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
+import org.eclipse.chemclipse.msd.model.core.IChromatogramPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.core.support.PeakBuilderMSD;
 import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
+import org.eclipse.chemclipse.wsd.model.core.IChromatogramPeakWSD;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.chemclipse.wsd.model.core.IPeakWSD;
 import org.eclipse.chemclipse.wsd.model.core.IScanWSD;
@@ -101,7 +105,7 @@ public class PeakSupport {
 		return isPeakRelevant;
 	}
 
-	public static int getStartScan(IChromatogram<?> chromatogram, int retentionTime) {
+	public static int getStartScan(IChromatogram chromatogram, int retentionTime) {
 
 		int startScan = chromatogram.getScanNumber(retentionTime);
 		if(startScan <= 0) {
@@ -110,7 +114,7 @@ public class PeakSupport {
 		return startScan;
 	}
 
-	public static int getStopScan(IChromatogram<?> chromatogram, int retentionTime) {
+	public static int getStopScan(IChromatogram chromatogram, int retentionTime) {
 
 		int stopScan = chromatogram.getScanNumber(retentionTime);
 		if(stopScan > chromatogram.getNumberOfScans()) {
@@ -191,23 +195,23 @@ public class PeakSupport {
 		return new RetentionTimeRange(startRetentionTime, stopRetentionTime);
 	}
 
-	public IPeak extractPeakByRetentionTime(IChromatogram<? extends IPeak> chromatogram, int startRetentionTime, int stopRetentionTime, boolean includeBackground, boolean optimizeRange, Set<Integer> traces) {
+	public IChromatogramPeak extractPeakByRetentionTime(IChromatogram chromatogram, int startRetentionTime, int stopRetentionTime, boolean includeBackground, boolean optimizeRange, Set<Integer> traces) {
 
 		int startScan = getStartScan(chromatogram, startRetentionTime);
 		int stopScan = getStopScan(chromatogram, stopRetentionTime);
 		return extractPeakByScanRange(chromatogram, startScan, stopScan, includeBackground, optimizeRange, traces);
 	}
 
-	public IPeak extractPeakByRetentionTime(IChromatogram<? extends IPeak> chromatogram, int startRetentionTime, int stopRetentionTime, float startIntensity, float stopIntensity, Set<Integer> traces) {
+	public IPeak extractPeakByRetentionTime(IChromatogram chromatogram, int startRetentionTime, int stopRetentionTime, float startIntensity, float stopIntensity, Set<Integer> traces) {
 
 		int startScan = getStartScan(chromatogram, startRetentionTime);
 		int stopScan = getStopScan(chromatogram, stopRetentionTime);
 		return extractPeakByScanRange(chromatogram, startScan, stopScan, startIntensity, stopIntensity, traces);
 	}
 
-	public IPeak extractPeakByScanRange(IChromatogram<? extends IPeak> chromatogram, int startScan, int stopScan, boolean includeBackground, boolean optimizeRange, Set<Integer> traces) {
+	public IChromatogramPeak extractPeakByScanRange(IChromatogram chromatogram, int startScan, int stopScan, boolean includeBackground, boolean optimizeRange, Set<Integer> traces) {
 
-		IPeak peak = null;
+		IChromatogramPeak peak = null;
 		try {
 			if(startScan > 0 && startScan < stopScan) {
 				/*
@@ -253,7 +257,7 @@ public class PeakSupport {
 		return peak;
 	}
 
-	public IPeak extractPeakByScanRange(IChromatogram<? extends IPeak> chromatogram, int startScan, int stopScan, float startIntensity, float stopIntensity, Set<Integer> traces) {
+	public IPeak extractPeakByScanRange(IChromatogram chromatogram, int startScan, int stopScan, float startIntensity, float stopIntensity, Set<Integer> traces) {
 
 		IPeak peak = null;
 		//
@@ -299,7 +303,18 @@ public class PeakSupport {
 		return peak;
 	}
 
-	private IScanRange optimizeRange(IChromatogram<? extends IPeak> chromatogram, int startScan, int stopScan, Set<Integer> traces) {
+	public static void addPeak(IChromatogram chromatogram, IPeak peak) {
+
+		if(chromatogram instanceof IChromatogramMSD chromatogramMSD && peak instanceof IChromatogramPeakMSD peakMSD) {
+			chromatogramMSD.getPeaks().add(peakMSD);
+		} else if(chromatogram instanceof IChromatogramCSD chromatogramCSD && peak instanceof IChromatogramPeakCSD peakCSD) {
+			chromatogramCSD.getPeaks().add(peakCSD);
+		} else if(chromatogram instanceof IChromatogramWSD chromatogramWSD && peak instanceof IChromatogramPeakWSD peakWSD) {
+			chromatogramWSD.getPeaks().add(peakWSD);
+		}
+	}
+
+	private IScanRange optimizeRange(IChromatogram chromatogram, int startScan, int stopScan, Set<Integer> traces) {
 
 		int scanWidth = stopScan - startScan + 1;
 		int partLength = scanWidth / 4;
@@ -343,7 +358,7 @@ public class PeakSupport {
 		return new ScanRange(startScanOptimized, stopScanOptimized);
 	}
 
-	private float getScanSignal(IChromatogram<? extends IPeak> chromatogram, int scanNumber, Set<Integer> traces) {
+	private float getScanSignal(IChromatogram chromatogram, int scanNumber, Set<Integer> traces) {
 
 		float scanSignal = 0.0f;
 		IScan scan = chromatogram.getScan(scanNumber);

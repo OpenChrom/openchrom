@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Lablicate GmbH.
+ * Copyright (c) 2021, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -122,11 +122,11 @@ public class Common {
 		return software;
 	}
 
-	public static ResultType createPeaks(IChromatogram<?> chromatogram) {
+	public static ResultType createPeaks(IChromatogram chromatogram) {
 
 		SeriesSetType seriesSet = new SeriesSetType();
 		seriesSet.setName("Peak Table");
-		seriesSet.setLength(chromatogram.getNumberOfPeaks());
+		seriesSet.setLength(chromatogram.getPeaks().size());
 		//
 		SeriesType numberSeries = new SeriesType();
 		numberSeries.setName("Number");

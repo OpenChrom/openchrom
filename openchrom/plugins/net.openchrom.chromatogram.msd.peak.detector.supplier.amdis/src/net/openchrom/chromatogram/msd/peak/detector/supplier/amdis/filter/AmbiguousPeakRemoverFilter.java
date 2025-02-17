@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Lablicate GmbH.
+ * Copyright (c) 2019, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -64,7 +64,7 @@ public class AmbiguousPeakRemoverFilter extends AbstractPeakFilter<AmbiguousPeak
 	}
 
 	@Override
-	public void filterPeaks(IChromatogramSelection<?, ?> chromatogramSelection, AmbiguousPeakRemoverFilterSettings configuration, ProcessExecutionContext context) throws IllegalArgumentException {
+	public void filterPeaks(IChromatogramSelection chromatogramSelection, AmbiguousPeakRemoverFilterSettings configuration, ProcessExecutionContext context) throws IllegalArgumentException {
 
 		List<IPeak> peaks = new ArrayList<>(getReadOnlyPeaks(chromatogramSelection));
 		if(configuration == null) {
@@ -104,7 +104,7 @@ public class AmbiguousPeakRemoverFilter extends AbstractPeakFilter<AmbiguousPeak
 		return super.createConfiguration(items);
 	}
 
-	private void filterDuplicatePeaks(IChromatogramSelection<?, ?> chromatogramSelection, List<IPeak> peaks, AmbiguousPeakRemoverFilterSettings settings, Comparator<IPeak> compareFunction, IProgressMonitor monitor) {
+	private void filterDuplicatePeaks(IChromatogramSelection chromatogramSelection, List<IPeak> peaks, AmbiguousPeakRemoverFilterSettings settings, Comparator<IPeak> compareFunction, IProgressMonitor monitor) {
 
 		SubMonitor subMonitor = SubMonitor.convert(monitor, NAME, peaks.size());
 		// We first order all peaks by retention time
@@ -205,7 +205,7 @@ public class AmbiguousPeakRemoverFilter extends AbstractPeakFilter<AmbiguousPeak
 		return peakGroups;
 	}
 
-	private void deletePeaks(List<PeakGroup<IPeak>> list, IChromatogramSelection<?, ?> chromatogramSelection, Comparator<IPeak> compareFunction) {
+	private void deletePeaks(List<PeakGroup<IPeak>> list, IChromatogramSelection chromatogramSelection, Comparator<IPeak> compareFunction) {
 
 		List<IPeak> peaksToDelete = new ArrayList<>();
 		for(PeakGroup<IPeak> peakGroup : list) {

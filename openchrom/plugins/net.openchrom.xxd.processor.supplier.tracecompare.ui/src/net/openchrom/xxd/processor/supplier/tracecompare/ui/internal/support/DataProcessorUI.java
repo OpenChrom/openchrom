@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2021 Lablicate GmbH.
+ * Copyright (c) 2017, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -20,7 +20,6 @@ import java.util.Map;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogram;
-import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
@@ -112,7 +111,7 @@ public class DataProcessorUI extends DataProcessor {
 		String wavelength;
 		//
 		List<IChromatogramWSD> measurements = runnable.getMeasurements();
-		for(IChromatogram<? extends IPeak> measurement : measurements) {
+		for(IChromatogram measurement : measurements) {
 			/*
 			 * Track 1
 			 */
@@ -123,7 +122,7 @@ public class DataProcessorUI extends DataProcessor {
 			/*
 			 * Track 2 ... n
 			 */
-			for(IChromatogram<? extends IPeak> additionalMeasurement : measurement.getReferencedChromatograms()) {
+			for(IChromatogram additionalMeasurement : measurement.getReferencedChromatograms()) {
 				seriesData = extractMeasurement(additionalMeasurement, type);
 				wavelength = Integer.toString(getWavelength(additionalMeasurement));
 				addMeasurementData(measurementsData, wavelength, seriesData, index++);
@@ -143,7 +142,7 @@ public class DataProcessorUI extends DataProcessor {
 		wavelengthData.put(wavelength, seriesData);
 	}
 
-	public ISeriesData extractMeasurement(IChromatogram<?> measurement, String type) {
+	public ISeriesData extractMeasurement(IChromatogram measurement, String type) {
 
 		boolean isMirrorReferenceData = PreferenceSupplier.isMirrorReferenceData();
 		//

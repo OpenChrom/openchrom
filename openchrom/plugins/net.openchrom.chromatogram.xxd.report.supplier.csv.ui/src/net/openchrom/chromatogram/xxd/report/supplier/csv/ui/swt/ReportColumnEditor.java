@@ -71,7 +71,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 		List<Object> overviews = dataUpdateSupport.getUpdates(event);
 		if(!overviews.isEmpty()) {
 			Object first = overviews.get(0);
-			if(first instanceof IChromatogramSelection<?, ?> overview) {
+			if(first instanceof IChromatogramSelection overview) {
 				headerColumns = overview.getChromatogram().getHeaderDataMap().keySet();
 			}
 		}
