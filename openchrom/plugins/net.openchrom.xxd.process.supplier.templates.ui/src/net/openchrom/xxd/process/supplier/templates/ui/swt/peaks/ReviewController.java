@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Lablicate GmbH.
+ * Copyright (c) 2020, 2025 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -17,6 +17,7 @@ import java.util.Set;
 
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IChromatogramPeak;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
@@ -143,7 +144,7 @@ public class ReviewController {
 	public void updateDetectorChart() {
 
 		if(peakDetectorChart != null && processReviewUI != null && processSettings != null && reviewSetting != null) {
-			IChromatogram<?> chromatogram = processSettings.getChromatogram();
+			IChromatogram chromatogram = processSettings.getChromatogram();
 			if(chromatogram != null) {
 				/*
 				 * Settings
@@ -193,11 +194,10 @@ public class ReviewController {
 		}
 	}
 
-	@SuppressWarnings({"unchecked"})
 	public void deletePeaks(Shell shell, List<IPeak> peaks) {
 
 		if(processSettings != null) {
-			IChromatogram<IPeak> chromatogram = (IChromatogram<IPeak>)processSettings.getChromatogram();
+			IChromatogram chromatogram = processSettings.getChromatogram();
 			if(chromatogram != null) {
 				/*
 				 * If at least one peak has been reviewed already, let
@@ -216,7 +216,7 @@ public class ReviewController {
 				 * Delete the peaks
 				 */
 				if(deletePeaks) {
-					chromatogram.removePeaks(peaks);
+					chromatogram.getPeaks().removeAll(peaks);
 					updateDetectorChart();
 					updatePeakStatusUI(null);
 				}
@@ -336,20 +336,19 @@ public class ReviewController {
 		peakDetectorChart.updatePeaks(peaks, hideExistingPeaks);
 	}
 
-	@SuppressWarnings("unchecked")
 	private void updatePeakStatusUI(IPeak peak) {
 
 		List<IPeak> peaks = new ArrayList<>();
 		//
 		if(processReviewUI != null && reviewSetting != null && processSettings != null) {
-			IChromatogram<IPeak> chromatogram = (IChromatogram<IPeak>)processSettings.getChromatogram();
+			IChromatogram chromatogram = processSettings.getChromatogram();
 			if(chromatogram != null) {
 				/*
 				 * Settings
 				 */
 				int startRetentionTime = getStartRetentionTime();
 				int stopRetentionTime = getStopRetentionTime();
-				List<IPeak> chromatogramPeaks = chromatogram.getPeaks(startRetentionTime, stopRetentionTime);
+				List<? extends IChromatogramPeak> chromatogramPeaks = chromatogram.getPeaks(startRetentionTime, stopRetentionTime);
 				//
 				if(PreferenceSupplier.isReviewShowOnlyRelevantPeaks() && isChromatogramMSD(chromatogram)) {
 					Set<Integer> traces = peakDetectorListUtil.extractTraces(reviewSetting.getTraces());
@@ -369,7 +368,7 @@ public class ReviewController {
 		}
 	}
 
-	private boolean isChromatogramMSD(IChromatogram<?> chromatogram) {
+	private boolean isChromatogramMSD(IChromatogram chromatogram) {
 
 		return chromatogram instanceof IChromatogramMSD;
 	}
@@ -421,7 +420,7 @@ public class ReviewController {
 		return false;
 	}
 
-	private void setVisibilityOptions(PeakChartSettings chartSettings, IChromatogram<?> chromatogram) {
+	private void setVisibilityOptions(PeakChartSettings chartSettings, IChromatogram chromatogram) {
 
 		if(chromatogram instanceof IChromatogramCSD) {
 			chartSettings.setShowChromatogramTIC(true);

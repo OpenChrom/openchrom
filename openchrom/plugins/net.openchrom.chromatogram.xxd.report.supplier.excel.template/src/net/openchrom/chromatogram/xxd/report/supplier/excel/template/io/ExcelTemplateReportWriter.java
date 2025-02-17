@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Lablicate GmbH.
+ * Copyright (c) 2024, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -59,7 +59,7 @@ public class ExcelTemplateReportWriter {
 		 */
 		placeholderProcessors.add(new PlaceholderProcessor("chromatogram_name", getFunctionChromatogram(c -> c.getName())));
 		placeholderProcessors.add(new PlaceholderProcessor("chromatogram_area", getFunctionChromatogram(c -> Double.toString(c.getPeakIntegratedArea()))));
-		placeholderProcessors.add(new PlaceholderProcessor("number_peaks", getFunctionChromatogram(c -> Integer.toString(c.getNumberOfPeaks()))));
+		placeholderProcessors.add(new PlaceholderProcessor("number_peaks", getFunctionChromatogram(c -> Integer.toString(c.getPeaks().size()))));
 		/*
 		 * Peak
 		 */
@@ -163,7 +163,7 @@ public class ExcelTemplateReportWriter {
 		}
 	}
 
-	public void generate(File file, boolean append, List<IChromatogram<? extends IPeak>> chromatograms, ChromatogramReportSettings reportSettings) throws IOException, InvalidFormatException {
+	public void generate(File file, boolean append, List<IChromatogram> chromatograms, ChromatogramReportSettings reportSettings) throws IOException, InvalidFormatException {
 
 		try (FileInputStream fileInputStreamTemplate = new FileInputStream(reportSettings.getTemplate())) {
 			try (XSSFWorkbook workbookTemplate = new XSSFWorkbook(fileInputStreamTemplate)) {
@@ -227,14 +227,14 @@ public class ExcelTemplateReportWriter {
 		}
 	}
 
-	private Function<CellData, String> getFunctionChromatogram(Function<IChromatogram<? extends IPeak>, String> function) {
+	private Function<CellData, String> getFunctionChromatogram(Function<IChromatogram, String> function) {
 
 		return new Function<CellData, String>() {
 
 			@Override
 			public String apply(CellData cellData) {
 
-				IChromatogram<? extends IPeak> chromatogram = cellData.getChromatogram();
+				IChromatogram chromatogram = cellData.getChromatogram();
 				if(chromatogram != null) {
 					return function.apply(chromatogram);
 				}
@@ -353,7 +353,7 @@ public class ExcelTemplateReportWriter {
 			@Override
 			public String apply(CellData cellData) {
 
-				IChromatogram<? extends IPeak> chromatogram = cellData.getChromatogram();
+				IChromatogram chromatogram = cellData.getChromatogram();
 				chromatogram.getSignalToNoiseRatio(100); // Trigger the NoiseCalculator
 				INoiseCalculator noiseCalculator = chromatogram.getNoiseCalculator();
 				if(noiseCalculator != null) {
@@ -414,13 +414,13 @@ public class ExcelTemplateReportWriter {
 		return null;
 	}
 
-	private boolean printChromatograms(List<IChromatogram<? extends IPeak>> chromatograms, XSSFWorkbook workbook, XSSFSheet sheet, Row row, XSSFSheet sheetTemplate) {
+	private boolean printChromatograms(List<IChromatogram> chromatograms, XSSFWorkbook workbook, XSSFSheet sheet, Row row, XSSFSheet sheetTemplate) {
 
 		boolean success = false;
 		boolean first = true;
 		List<PlaceholderProcessor> placeholderProcessors = createPlaceholderProcessors();
 		//
-		for(IChromatogram<? extends IPeak> chromatogram : chromatograms) {
+		for(IChromatogram chromatogram : chromatograms) {
 			if(first) {
 				success = populatePeaks(chromatogram, placeholderProcessors, sheet, row);
 				first = false;
@@ -434,7 +434,7 @@ public class ExcelTemplateReportWriter {
 		return success;
 	}
 
-	private boolean populatePeaks(IChromatogram<? extends IPeak> chromatogram, List<PlaceholderProcessor> placeholderProcessors, Sheet sheet, Row row) {
+	private boolean populatePeaks(IChromatogram chromatogram, List<PlaceholderProcessor> placeholderProcessors, Sheet sheet, Row row) {
 
 		boolean success = false;
 		//
@@ -446,11 +446,11 @@ public class ExcelTemplateReportWriter {
 		return success;
 	}
 
-	private boolean printPeaks(IChromatogram<? extends IPeak> chromatogram, List<PlaceholderProcessor> placeholderProcessors, Sheet sheet, Row row) {
+	private boolean printPeaks(IChromatogram chromatogram, List<PlaceholderProcessor> placeholderProcessors, Sheet sheet, Row row) {
 
 		boolean success = false;
 		if(row != null) {
-			int numberPeaks = chromatogram.getNumberOfPeaks();
+			int numberPeaks = chromatogram.getPeaks().size();
 			if(numberPeaks > 0) {
 				/*
 				 * Iterate the peaks

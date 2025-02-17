@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Lablicate GmbH.
+ * Copyright (c) 2022, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -42,7 +42,7 @@ import net.openchrom.chromatogram.xxd.report.supplier.csv.settings.ChromatogramR
 
 public class ConfigurableReportWriter {
 
-	public void generate(File file, boolean append, List<IChromatogram<? extends IPeak>> chromatograms, ChromatogramReportSettings reportSettings) throws IOException {
+	public void generate(File file, boolean append, List<IChromatogram> chromatograms, ChromatogramReportSettings reportSettings) throws IOException {
 
 		boolean fileExists = file.exists() && file.length() > 0;
 		try (CSVPrinter csvPrinter = new CSVPrinter(new FileWriter(file, append), reportSettings.getFormat())) {
@@ -56,10 +56,10 @@ public class ConfigurableReportWriter {
 			/*
 			 * Data
 			 */
-			for(IChromatogram<? extends IPeak> chromatogram : chromatograms) {
+			for(IChromatogram chromatogram : chromatograms) {
 				printChromatogramData(csvPrinter, reportColumns, chromatogram, printSectionSeparator);
 				if(reportSettings.reportReferencedChromatograms()) {
-					for(IChromatogram<?> referencedChromatograms : chromatogram.getReferencedChromatograms()) {
+					for(IChromatogram referencedChromatograms : chromatogram.getReferencedChromatograms()) {
 						printChromatogramData(csvPrinter, reportColumns, referencedChromatograms, printSectionSeparator);
 					}
 				}
@@ -94,7 +94,7 @@ public class ConfigurableReportWriter {
 		csvPrinter.println();
 	}
 
-	private void printChromatogramData(CSVPrinter csvPrinter, ReportColumns reportColumns, IChromatogram<? extends IPeak> chromatogram, boolean printSectionSeparator) throws IOException {
+	private void printChromatogramData(CSVPrinter csvPrinter, ReportColumns reportColumns, IChromatogram chromatogram, boolean printSectionSeparator) throws IOException {
 
 		int peakNumber = 1;
 		List<Object> records = new ArrayList<>();
@@ -112,7 +112,7 @@ public class ConfigurableReportWriter {
 					}
 				}
 				if(reportColumn.equals(ReportColumns.NUMBER_PEAKS)) {
-					records.add(chromatogram.getNumberOfPeaks());
+					records.add(chromatogram.getPeaks().size());
 				}
 				if(reportColumn.equals(ReportColumns.PEAK_NUMBER)) {
 					records.add(peakNumber);
@@ -212,7 +212,7 @@ public class ConfigurableReportWriter {
 					int peakIndex = chromatogram.getPeaks().indexOf(peak);
 					if(peakIndex != -1) {
 						PeakResolution resolution = null;
-						if(peakIndex < chromatogram.getNumberOfPeaks() - 1) {
+						if(peakIndex < chromatogram.getPeaks().size() - 1) {
 							IPeak nextPeak = chromatogram.getPeaks().get(peakIndex + 1);
 							resolution = new PeakResolution(peak, nextPeak);
 						} else if(peakIndex > 0) {

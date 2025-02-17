@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2023 Lablicate GmbH.
+ * Copyright (c) 2016, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -36,7 +36,7 @@ import uk.ac.cam.ch.wwmm.opsin.NameToStructureConfig;
 public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 
 	@Override
-	public IProcessingInfo<?> identify(IChromatogramSelection<?, ?> chromatogramSelection, IChromatogramIdentifierSettings chromatogramIdentifierSettings, IProgressMonitor monitor) {
+	public IProcessingInfo<?> identify(IChromatogramSelection chromatogramSelection, IChromatogramIdentifierSettings chromatogramIdentifierSettings, IProgressMonitor monitor) {
 
 		IProcessingInfo<?> processingInfo = validate(chromatogramSelection, chromatogramIdentifierSettings);
 		if(!processingInfo.hasErrorMessages()) {
@@ -54,7 +54,7 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 				/*
 				 * Scans
 				 */
-				IChromatogram<?> chromatogram = chromatogramSelection.getChromatogram();
+				IChromatogram chromatogram = chromatogramSelection.getChromatogram();
 				int startScan = chromatogram.getScanNumber(chromatogramSelection.getStartRetentionTime());
 				int stopScan = chromatogram.getScanNumber(chromatogramSelection.getStopRetentionTime());
 				/*
@@ -83,7 +83,7 @@ public class ChromatogramIdentifier extends AbstractChromatogramIdentifier {
 	}
 
 	@Override
-	public IProcessingInfo<?> identify(IChromatogramSelection<?, ?> chromatogramSelection, IProgressMonitor monitor) {
+	public IProcessingInfo<?> identify(IChromatogramSelection chromatogramSelection, IProgressMonitor monitor) {
 
 		IdentifierSettings identifierSettings = PreferenceSupplier.getIdentifierSettings();
 		return identify(chromatogramSelection, identifierSettings, monitor);

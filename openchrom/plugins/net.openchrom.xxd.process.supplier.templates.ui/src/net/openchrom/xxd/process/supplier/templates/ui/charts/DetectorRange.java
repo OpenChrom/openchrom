@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Lablicate GmbH.
+ * Copyright (c) 2019, 2025 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -16,24 +16,23 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.chemclipse.model.core.IChromatogram;
-import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.PeakType;
 
 public class DetectorRange {
 
-	private IChromatogram<? extends IPeak> chromatogram = null;
+	private IChromatogram chromatogram = null;
 	private int retentionTimeStart = 0;
 	private int retentionTimeStop = 0;
 	private Set<Integer> traces = new HashSet<>();
 	private PeakType detectorType = PeakType.VV;
 	private boolean optimizeRange = true;
 
-	public IChromatogram<? extends IPeak> getChromatogram() {
+	public IChromatogram getChromatogram() {
 
 		return chromatogram;
 	}
 
-	public void setChromatogram(IChromatogram<? extends IPeak> chromatogram) {
+	public void setChromatogram(IChromatogram chromatogram) {
 
 		this.chromatogram = chromatogram;
 	}

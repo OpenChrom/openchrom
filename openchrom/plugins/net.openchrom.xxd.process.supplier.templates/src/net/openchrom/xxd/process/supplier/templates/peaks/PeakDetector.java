@@ -26,7 +26,7 @@ import org.eclipse.chemclipse.chromatogram.wsd.peak.detector.core.IPeakDetectorW
 import org.eclipse.chemclipse.chromatogram.wsd.peak.detector.settings.IPeakDetectorSettingsWSD;
 import org.eclipse.chemclipse.csd.model.core.selection.IChromatogramSelectionCSD;
 import org.eclipse.chemclipse.model.core.IChromatogram;
-import org.eclipse.chemclipse.model.core.IPeak;
+import org.eclipse.chemclipse.model.core.IChromatogramPeak;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.model.support.RetentionIndexMap;
@@ -95,12 +95,12 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 		return settings;
 	}
 
-	private IProcessingInfo<?> applyDetector(IChromatogramSelection<? extends IPeak, ?> chromatogramSelection, IPeakDetectorSettings settings, IProgressMonitor monitor) {
+	private IProcessingInfo<?> applyDetector(IChromatogramSelection chromatogramSelection, IPeakDetectorSettings settings, IProgressMonitor monitor) {
 
 		IProcessingInfo<?> processingInfo = super.validate(chromatogramSelection, settings, new NullProgressMonitor());
 		if(!processingInfo.hasErrorMessages()) {
 			if(settings instanceof PeakDetectorSettings peakDetectorSettings) {
-				IChromatogram<?> chromatogram = chromatogramSelection.getChromatogram();
+				IChromatogram chromatogram = chromatogramSelection.getChromatogram();
 				RetentionIndexMap retentionIndexMap = new RetentionIndexMap(chromatogram);
 				List<DetectorSetting> detectorSettings = peakDetectorSettings.getDetectorSettingsList();
 				SubMonitor subMonitor = SubMonitor.convert(monitor, detectorSettings.size());
@@ -112,7 +112,7 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 		return processingInfo;
 	}
 
-	private void applySettingsCombined(IChromatogram<?> chromatogram, List<DetectorSetting> detectorSettings, RetentionIndexMap retentionIndexMap, SubMonitor subMonitor) {
+	private void applySettingsCombined(IChromatogram chromatogram, List<DetectorSetting> detectorSettings, RetentionIndexMap retentionIndexMap, SubMonitor subMonitor) {
 
 		/*
 		 * Sort by reference identifier. First, detect peaks without reference identifier.
@@ -134,7 +134,7 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 		applySettingsSeparated(chromatogram, detectorSettingsWithReferenceIdentifier, retentionIndexMap, subMonitor);
 	}
 
-	private void applySettingsSeparated(IChromatogram<?> chromatogram, List<DetectorSetting> detectorSettings, RetentionIndexMap retentionIndexMap, SubMonitor subMonitor) {
+	private void applySettingsSeparated(IChromatogram chromatogram, List<DetectorSetting> detectorSettings, RetentionIndexMap retentionIndexMap, SubMonitor subMonitor) {
 
 		for(DetectorSetting detectorSetting : detectorSettings) {
 			setPeakBySettings(chromatogram, detectorSetting, retentionIndexMap);
@@ -142,18 +142,18 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 		}
 	}
 
-	private void setPeakBySettings(IChromatogram<? extends IPeak> chromatogram, DetectorSetting detectorSetting, RetentionIndexMap retentionIndexMap) {
+	private void setPeakBySettings(IChromatogram chromatogram, DetectorSetting detectorSetting, RetentionIndexMap retentionIndexMap) {
 
 		RetentionTimeRange retentionTimeRange = peakSupport.getRetentionTimeRange(chromatogram.getPeaks(), detectorSetting, detectorSetting.getReferenceIdentifier(), retentionIndexMap);
 		setPeakByRetentionTimeRange(chromatogram, retentionTimeRange, detectorSetting);
 	}
 
-	private void setPeakByRetentionTimeRange(IChromatogram<? extends IPeak> chromatogram, RetentionTimeRange retentionTimeRange, DetectorSetting detectorSetting) {
+	private void setPeakByRetentionTimeRange(IChromatogram chromatogram, RetentionTimeRange retentionTimeRange, DetectorSetting detectorSetting) {
 
 		int startScan = PeakSupport.getStartScan(chromatogram, retentionTimeRange.getStartRetentionTime());
 		int stopScan = PeakSupport.getStopScan(chromatogram, retentionTimeRange.getStopRetentionTime());
 		Set<Integer> traces = listUtil.extractTraces(detectorSetting.getTraces());
-		IPeak peak = peakSupport.extractPeakByScanRange(chromatogram, startScan, stopScan, detectorSetting.isIncludeBackground(), detectorSetting.isOptimizeRange(), traces);
+		IChromatogramPeak peak = peakSupport.extractPeakByScanRange(chromatogram, startScan, stopScan, detectorSetting.isIncludeBackground(), detectorSetting.isOptimizeRange(), traces);
 		if(peak != null) {
 			/*
 			 * Add an identification on demand.
@@ -168,13 +168,7 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 			/*
 			 * Add the peak.
 			 */
-			addPeak(chromatogram, peak);
+			PeakSupport.addPeak(chromatogram, peak);
 		}
-	}
-
-	@SuppressWarnings({"rawtypes", "unchecked"})
-	private void addPeak(IChromatogram chromatogram, IPeak peak) {
-
-		chromatogram.addPeak(peak);
 	}
 }

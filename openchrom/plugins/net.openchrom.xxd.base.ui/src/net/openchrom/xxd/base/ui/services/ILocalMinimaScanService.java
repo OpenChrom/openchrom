@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Lablicate GmbH.
+ * Copyright (c) 2024, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -30,7 +30,7 @@ public interface ILocalMinimaScanService {
 
 	DataType getDataType();
 
-	IProcessingInfo<List<? extends IScan>> calculate(IChromatogramSelection<?, ?> chromatogram, IProgressMonitor monitor);
+	IProcessingInfo<List<? extends IScan>> calculate(IChromatogramSelection chromatogram, IProgressMonitor monitor);
 
 	Class<? extends IWorkbenchPreferencePage> getPreferencePage();
 }

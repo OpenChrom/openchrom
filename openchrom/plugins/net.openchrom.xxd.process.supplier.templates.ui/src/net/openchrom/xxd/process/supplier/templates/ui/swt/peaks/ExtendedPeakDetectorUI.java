@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2023 Lablicate GmbH.
+ * Copyright (c) 2020, 2025 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.chemclipse.model.core.IChromatogramPeak;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
@@ -45,7 +46,7 @@ public class ExtendedPeakDetectorUI extends Composite {
 	private DetectorController controller;
 	private PeakListUI peakListUI;
 	//
-	private List<IPeak> peaks;
+	private List<IChromatogramPeak> peaks;
 	//
 	private DetectorSetting detectorSetting;
 
@@ -55,7 +56,7 @@ public class ExtendedPeakDetectorUI extends Composite {
 		createControl();
 	}
 
-	public void setInput(DetectorSetting detectorSetting, List<IPeak> peaks, IPeak peak) {
+	public void setInput(DetectorSetting detectorSetting, List<IChromatogramPeak> peaks, IPeak peak) {
 
 		this.detectorSetting = detectorSetting;
 		this.peaks = peaks;
@@ -200,11 +201,11 @@ public class ExtendedPeakDetectorUI extends Composite {
 				/*
 				 * Delete Peaks
 				 */
-				List<IPeak> peaksToDelete = new ArrayList<>();
+				List<IChromatogramPeak> peaksToDelete = new ArrayList<>();
 				Iterator iterator = peakListUI.getStructuredSelection().iterator();
 				while(iterator.hasNext()) {
 					Object object = iterator.next();
-					if(object instanceof IPeak peak) {
+					if(object instanceof IChromatogramPeak peak) {
 						peaksToDelete.add(peak);
 					}
 				}

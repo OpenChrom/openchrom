@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Lablicate GmbH.
+ * Copyright (c) 2021, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -51,13 +51,13 @@ import net.openchrom.xxd.converter.supplier.gaml.v100.model.GAML;
 import net.openchrom.xxd.converter.supplier.gaml.v100.model.ObjectFactory;
 import net.openchrom.xxd.converter.supplier.gaml.v100.model.Parameter;
 import net.openchrom.xxd.converter.supplier.gaml.v100.model.Peaktable;
+import net.openchrom.xxd.converter.supplier.gaml.v100.model.Peaktable.Peak;
+import net.openchrom.xxd.converter.supplier.gaml.v100.model.Peaktable.Peak.Baseline;
 import net.openchrom.xxd.converter.supplier.gaml.v100.model.Technique;
 import net.openchrom.xxd.converter.supplier.gaml.v100.model.Trace;
 import net.openchrom.xxd.converter.supplier.gaml.v100.model.Units;
 import net.openchrom.xxd.converter.supplier.gaml.v100.model.Xdata;
 import net.openchrom.xxd.converter.supplier.gaml.v100.model.Ydata;
-import net.openchrom.xxd.converter.supplier.gaml.v100.model.Peaktable.Peak;
-import net.openchrom.xxd.converter.supplier.gaml.v100.model.Peaktable.Peak.Baseline;
 
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
@@ -139,7 +139,7 @@ public class ChromatogramReaderVersion100 extends AbstractChromatogramReader imp
 											try {
 												IChromatogramPeakCSD chromatogramPeak = PeakBuilderCSD.createPeak(chromatogram, scanRange, true);
 												chromatogramPeak.getTargets().add(identificationTarget);
-												chromatogram.addPeak(chromatogramPeak);
+												chromatogram.getPeaks().add(chromatogramPeak);
 											} catch(Exception e) {
 												logger.warn("Peak " + peak.getNumber() + " could not be added.");
 											}

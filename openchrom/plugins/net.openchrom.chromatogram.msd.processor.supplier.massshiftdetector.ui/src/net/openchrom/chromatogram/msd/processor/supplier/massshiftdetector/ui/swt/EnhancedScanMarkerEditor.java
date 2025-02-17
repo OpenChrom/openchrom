@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2023 Lablicate GmbH.
+ * Copyright (c) 2017, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -336,7 +336,7 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 						Collection<MPart> parts = partService.getParts();
 						for(MPart part : parts) {
 							if(part.getObject() instanceof ChromatogramEditorMSD chromatogramEditorMSD) {
-								IChromatogramSelection<?, ?> chromatogramSelection = chromatogramEditorMSD.getChromatogramSelection();
+								IChromatogramSelection chromatogramSelection = chromatogramEditorMSD.getChromatogramSelection();
 								if(chromatogramSelection instanceof IChromatogramSelectionMSD chromatogramSelectionMSD) {
 									if(chromatogramSelectionMSD.getChromatogram().getName().equals(referenceChromatogram.getName())) {
 										chromatogramSelectionMSD.setSelectedScan(referenceMassSpectrum);

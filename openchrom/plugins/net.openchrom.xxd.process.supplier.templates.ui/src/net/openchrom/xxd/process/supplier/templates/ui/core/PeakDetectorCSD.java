@@ -18,7 +18,6 @@ import org.eclipse.chemclipse.chromatogram.csd.peak.detector.core.AbstractPeakDe
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.settings.IPeakDetectorSettingsCSD;
 import org.eclipse.chemclipse.csd.model.core.selection.IChromatogramSelectionCSD;
 import org.eclipse.chemclipse.model.core.IChromatogram;
-import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.chemclipse.support.ui.workbench.DisplayUtils;
@@ -44,7 +43,7 @@ public class PeakDetectorCSD extends AbstractPeakDetectorCSD {
 			/*
 			 * RI will be adjusted to retention time (minutes).
 			 */
-			IChromatogram<? extends IPeak> chromatogram = chromatogramSelection.getChromatogram();
+			IChromatogram chromatogram = chromatogramSelection.getChromatogram();
 			List<DetectorSetting> detectorSettings = ChromatogramValidator.filterValidDetectorSettings(chromatogram, settings);
 			//
 			if(detectorSettings.isEmpty()) {

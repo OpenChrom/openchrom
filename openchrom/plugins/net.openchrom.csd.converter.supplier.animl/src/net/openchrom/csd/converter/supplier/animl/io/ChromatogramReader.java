@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Lablicate GmbH.
+ * Copyright (c) 2021, 2025 Lablicate GmbH.
  * 
  * All rights reserved.
  * This program and the accompanying materials are made available under the
@@ -156,7 +156,7 @@ public class ChromatogramReader extends AbstractChromatogramCSDReader {
 									IComparisonResult comparisonResult = ComparisonResult.COMPARISON_RESULT_BEST_MATCH;
 									IIdentificationTarget identificationTarget = new IdentificationTarget(libraryInformation, comparisonResult);
 									chromatogramPeak.getTargets().add(identificationTarget);
-									chromatogram.addPeak(chromatogramPeak);
+									chromatogram.getPeaks().add(chromatogramPeak);
 								} catch(Exception e) {
 									logger.warn("Peak " + p + " could not be added.");
 								}

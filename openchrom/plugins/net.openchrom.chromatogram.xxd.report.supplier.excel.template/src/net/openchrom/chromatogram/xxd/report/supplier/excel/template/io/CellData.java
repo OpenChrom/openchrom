@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Lablicate GmbH.
+ * Copyright (c) 2024, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -25,7 +25,7 @@ import org.eclipse.chemclipse.model.quantitation.IQuantitationEntry;
 public class CellData {
 
 	private String cellValue = "";
-	private IChromatogram<? extends IPeak> chromatogram = null;
+	private IChromatogram chromatogram = null;
 	private int peakNumber = 0;
 	//
 	private IPeak peak = null;
@@ -36,7 +36,7 @@ public class CellData {
 	private IQuantitationEntry quantitationEntry = null;
 	private String quantitationReference = "";
 
-	public CellData(String cellValue, IChromatogram<? extends IPeak> chromatogram, int peakNumber) {
+	public CellData(String cellValue, IChromatogram chromatogram, int peakNumber) {
 
 		this.cellValue = cellValue;
 		this.chromatogram = chromatogram;
@@ -54,12 +54,12 @@ public class CellData {
 		this.cellValue = cellValue;
 	}
 
-	public IChromatogram<? extends IPeak> getChromatogram() {
+	public IChromatogram getChromatogram() {
 
 		return chromatogram;
 	}
 
-	public void setChromatogram(IChromatogram<? extends IPeak> chromatogram) {
+	public void setChromatogram(IChromatogram chromatogram) {
 
 		this.chromatogram = chromatogram;
 		updatePeak();

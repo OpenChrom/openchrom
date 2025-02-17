@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2024 Lablicate GmbH.
+ * Copyright (c) 2016, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -35,7 +35,7 @@ import jakarta.inject.Named;
 public class NCBIqueuedBLASThandler implements EventHandler {
 
 	private static final Logger logger = Logger.getLogger(NCBIqueuedBLASThandler.class);
-	private static IChromatogramSelection<?, ?> chromatogramSelection;
+	private static IChromatogramSelection chromatogramSelection;
 
 	@Execute
 	public void execute(@Named(IServiceConstants.ACTIVE_PART) MPart part) {
@@ -60,7 +60,7 @@ public class NCBIqueuedBLASThandler implements EventHandler {
 	public void handleEvent(Event event) {
 
 		if(event.getTopic().equals(IChemClipseEvents.TOPIC_CHROMATOGRAM_XXD_UPDATE_SELECTION)) {
-			chromatogramSelection = (IChromatogramSelection<?, ?>)event.getProperty(IChemClipseEvents.EVENT_BROKER_DATA);
+			chromatogramSelection = (IChromatogramSelection)event.getProperty(IChemClipseEvents.EVENT_BROKER_DATA);
 		} else {
 			chromatogramSelection = null;
 		}

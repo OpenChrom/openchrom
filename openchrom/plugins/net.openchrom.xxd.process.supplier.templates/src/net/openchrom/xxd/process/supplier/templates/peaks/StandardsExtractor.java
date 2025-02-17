@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Lablicate GmbH.
+ * Copyright (c) 2019, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -117,7 +117,7 @@ public class StandardsExtractor extends AbstractPeakQuantifier implements IPeakQ
 	private void assignPeaks(List<? extends IPeak> peaks, StandardsExtractorSettings extractorSettings) {
 
 		try {
-			IChromatogram<?> chromatogram = getChromatogram(peaks);
+			IChromatogram chromatogram = getChromatogram(peaks);
 			if(chromatogram != null) {
 				Standard standard = extractReferenceId(chromatogram.getMiscInfo());
 				if(isValidStandard(standard)) {
@@ -165,7 +165,7 @@ public class StandardsExtractor extends AbstractPeakQuantifier implements IPeakQ
 		return null;
 	}
 
-	private IChromatogram<?> getChromatogram(List<? extends IPeak> peaks) {
+	private IChromatogram getChromatogram(List<? extends IPeak> peaks) {
 
 		for(IPeak peak : peaks) {
 			if(peak instanceof IChromatogramPeakCSD chromatogramPeakCSD) {

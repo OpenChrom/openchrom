@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2024 Walter Whitlock, Philip Wenig.
+ * Copyright (c) 2016, 2025 Walter Whitlock, Philip Wenig.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -19,7 +19,6 @@ import java.util.Random;
 import java.util.Set;
 
 import org.eclipse.chemclipse.model.core.IChromatogram;
-import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.msd.model.core.AbstractScanMSD;
 import org.eclipse.chemclipse.msd.model.core.IIon;
@@ -228,7 +227,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 		if(0 < this.getNumberOfIons()) {
 			IIonMeasurement set1[] = new IIonMeasurement[this.getNumberOfIons()];
 			IIonMeasurement set2[] = new IIonMeasurement[this.getNumberOfIons()];
-			set1 = ((ICalibratedVendorMassSpectrum)this).getIonMeasurements().toArray(set1);
+			set1 = this.getIonMeasurements().toArray(set1);
 			set2 = spectrum.getIonMeasurements().toArray(set2);
 			for(int i = 0; i < this.getNumberOfIons(); i++) {
 				result = (int)java.lang.StrictMath.signum(set1[i].getMZ() - set2[i].getMZ());
@@ -694,13 +693,13 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	}
 
 	@Override
-	public IChromatogram<? extends IPeak> getParentChromatogram() {
+	public IChromatogram getParentChromatogram() {
 
 		return null;
 	}
 
 	@Override
-	public void setParentChromatogram(IChromatogram<?> parentChromatogram) {
+	public void setParentChromatogram(IChromatogram parentChromatogram) {
 
 	}
 

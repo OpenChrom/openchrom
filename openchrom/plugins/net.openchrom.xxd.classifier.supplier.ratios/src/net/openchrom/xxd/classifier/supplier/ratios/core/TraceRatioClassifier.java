@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Lablicate GmbH.
+ * Copyright (c) 2019, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -42,7 +42,7 @@ public class TraceRatioClassifier extends AbstractRatioClassifier {
 	private static final Logger logger = Logger.getLogger(TraceRatioClassifier.class);
 
 	@Override
-	public IProcessingInfo<IChromatogramClassifierResult> applyClassifier(IChromatogramSelection<?, ?> chromatogramSelection, IChromatogramClassifierSettings chromatogramClassifierSettings, IProgressMonitor monitor) {
+	public IProcessingInfo<IChromatogramClassifierResult> applyClassifier(IChromatogramSelection chromatogramSelection, IChromatogramClassifierSettings chromatogramClassifierSettings, IProgressMonitor monitor) {
 
 		TraceRatioSettings settings;
 		if(chromatogramClassifierSettings instanceof TraceRatioSettings traceRatioSettings) {
@@ -66,7 +66,7 @@ public class TraceRatioClassifier extends AbstractRatioClassifier {
 		return processingInfo;
 	}
 
-	private TraceRatios calculateRatios(IChromatogram<?> chromatogram, TraceRatioSettings classifierSettings) {
+	private TraceRatios calculateRatios(IChromatogram chromatogram, TraceRatioSettings classifierSettings) {
 
 		TraceRatios ratios = classifierSettings.getRatioSettingsList();
 		//
