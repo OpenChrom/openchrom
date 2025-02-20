@@ -402,7 +402,7 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 			Point maxPosition = getMaxPosition(chromatogramCSD, peakModel.getRetentionTimeAtPeakMaximum(), offsetRetentionTime);
 
 			if(maxPosition.getX() > 0 && maxPosition.getY() > 0) {
-				IChromatogramPeak peakSink = fitPeak(chromatogramCSD, maxPosition, percentageIntensity, startRetentionTime, stopRetentionTime, sigma);
+				IChromatogramPeak peakSink = modelPeak(chromatogramCSD, maxPosition, percentageIntensity, startRetentionTime, stopRetentionTime, peakTransferSettings);
 				if(peakSink != null) {
 					transferTargets(peakSource, peakSink, peakTransferSettings);
 					PeakSupport.addPeak(chromatogramCSD, peakSink);
@@ -411,47 +411,22 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 		}
 	}
 
-	private IChromatogramPeak fitPeak(IChromatogramCSD chromatogramCSD, Point maxPosition, double percentageIntensity, int startRetentionTime, int stopRetentionTime, double sigma) {
+	private IChromatogramPeak modelPeak(IChromatogramCSD chromatogramCSD, Point maxPosition, double percentageIntensity, int startRetentionTime, int stopRetentionTime, PeakTransferSettings peakTransferSettings) {
 
 		int centerRetentionTime = (int)maxPosition.getX();
 		float intensity = (float)(maxPosition.getY() * percentageIntensity);
 		int centerScan = chromatogramCSD.getScanNumber(centerRetentionTime);
-		double sigma = calculateSigma(chromatogramCSD);
-		Gaussian gaussian = new Gaussian(intensity, centerScan, sigma);
+		Gaussian gaussian = new Gaussian(intensity, centerScan, peakTransferSettings.getSigma());
 		IChromatogramPeak peakSink = createDefaultGaussPeakNormal(chromatogramCSD, startRetentionTime, stopRetentionTime, gaussian, intensity);
 		if(peakSink == null) {
 			return null;
 		}
-		while(!isWithinBounds(peakSink, chromatogramCSD)) {
-			sigma = sigma - 0.1;
-			if(sigma < 0.1) {
-				return null;
-			}
-			gaussian = new Gaussian(intensity, centerScan, sigma);
-			peakSink = createDefaultGaussPeakNormal(chromatogramCSD, startRetentionTime, stopRetentionTime, gaussian, intensity);
-			if(peakSink == null) {
-				return null;
-			}
+		gaussian = new Gaussian(intensity, centerScan, peakTransferSettings.getSigma());
+		peakSink = createDefaultGaussPeakNormal(chromatogramCSD, startRetentionTime, stopRetentionTime, gaussian, intensity);
+		if(peakSink == null) {
+			return null;
 		}
 		return peakSink;
-	}
-
-	private boolean isWithinBounds(IPeak peakSink, IChromatogramCSD chromatogramCSD) {
-
-		IPeakModel peakModel = peakSink.getPeakModel();
-		for(int retentionTime : peakModel.getRetentionTimes()) {
-			int scanNumber = chromatogramCSD.getScanNumber(retentionTime);
-			if(peakModel.getPeakAbundance(retentionTime) > chromatogramCSD.getScan(scanNumber).getTotalSignal()) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	private double calculateSigma(IChromatogramCSD chromatogramCSD) {
-
-		int scanInterval = chromatogramCSD.getScanInterval();
-		return 1000.0d / scanInterval;
 	}
 
 	private Set<Integer> getTraces(IChromatogramPeak peakSource, int numberTraces) {

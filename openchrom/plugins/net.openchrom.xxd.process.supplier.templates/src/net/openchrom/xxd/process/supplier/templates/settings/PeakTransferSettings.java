@@ -60,6 +60,11 @@ public class PeakTransferSettings extends AbstractPeakDetectorSettingsMSD implem
 	@JsonPropertyDescription(value = "Create a model peak if the peak is part of a peak group and the sink is a CSD chromatogram.")
 	private boolean createModelPeak = true;
 
+	@JsonProperty(value = "Model Peak Spread", defaultValue = "20")
+	@JsonPropertyDescription(value = "Defines the dispersion of the gaussian model peak function.")
+	@DoubleSettingsProperty(minValue = 0.1, maxValue = 100)
+	private double sigma = 20;
+
 	@JsonProperty(value = "Peak Overlap Coverage [%]", defaultValue = "12.5")
 	@JsonPropertyDescription(value = "If a peak overlaps with at least the given coverage, it is grouped.")
 	@DoubleSettingsProperty(minValue = 1, maxValue = 100)
@@ -155,6 +160,16 @@ public class PeakTransferSettings extends AbstractPeakDetectorSettingsMSD implem
 	public void setCreateModelPeak(boolean createModelPeak) {
 
 		this.createModelPeak = createModelPeak;
+	}
+
+	public double getSigma() {
+
+		return sigma;
+	}
+
+	public void setSigma(double sigma) {
+
+		this.sigma = sigma;
 	}
 
 	public double getPeakOverlapCoverage() {
