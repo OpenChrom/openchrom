@@ -22,7 +22,7 @@
 		<unit id="org.eclipse.chemclipse.assets.feature.feature.group"/>
 	</location>
 	<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-		<repository location="https://update.openchrom.net/repositories/community/latest/3rdparty"/>
+		<repository location="https://bundles.openchrom.net/3rdparty"/>
 		<unit id="net.openchrom.thirdparty.jhdf5.feature.feature.group"/>
 		<unit id="net.openchrom.thirdparty.cdk.feature.feature.group"/>
 	</location>
