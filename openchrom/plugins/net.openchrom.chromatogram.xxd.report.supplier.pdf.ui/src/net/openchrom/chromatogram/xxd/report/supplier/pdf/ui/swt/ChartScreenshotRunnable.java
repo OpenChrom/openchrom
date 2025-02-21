@@ -22,6 +22,7 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.comparator.PeakRetentionTimeComparator;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
+import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.support.comparator.SortOrder;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
@@ -44,6 +45,8 @@ import org.eclipse.swtchart.extensions.core.IExtendedChart;
 import org.eclipse.swtchart.extensions.core.RangeRestriction;
 import org.eclipse.swtchart.extensions.linecharts.ILineSeriesData;
 import org.eclipse.swtchart.extensions.linecharts.ILineSeriesSettings;
+import org.eclipse.swtchart.extensions.model.ICustomSeries;
+import org.eclipse.swtchart.extensions.model.TextElement;
 
 import net.openchrom.swtchart.extension.export.vectorgraphics.core.PDFExportHandler;
 import net.openchrom.swtchart.extension.export.vectorgraphics.model.PageSizeOption;
@@ -115,6 +118,24 @@ public class ChartScreenshotRunnable implements Runnable {
 			peaks = addPeaks(baseChart, lineSeriesDataList);
 			scans = addScans(baseChart, lineSeriesDataList);
 			chromatogramChart.addSeriesData(lineSeriesDataList);
+			/*
+			 * Show Peak Labels
+			 */
+			ICustomSeries customSeries = baseChart.createCustomSeries("Peaks", "Peaks sequentially marked with numbers.");
+			List<IPeak> peaks = new ArrayList<>(chromatogram.getPeaks());
+			Collections.sort(peaks, (p1, p2) -> Integer.compare(p1.getPeakModel().getRetentionTimeAtPeakMaximum(), p2.getPeakModel().getRetentionTimeAtPeakMaximum()));
+			for(int i = 0; i < peaks.size(); i++) {
+				IPeak peak = peaks.get(i);
+				IPeakModel peakModel = peak.getPeakModel();
+				IScan peakMaximum = peakModel.getPeakMaximum();
+				TextElement textElement = new TextElement();
+				textElement.setLabel("P" + (i + 1));
+				textElement.setColor(Colors.DARK_GRAY);
+				textElement.setX(peakMaximum.getRetentionTime());
+				textElement.setY(peakMaximum.getTotalSignal());
+				textElement.setRotation(-90);
+				customSeries.getTextElements().add(textElement);
+			}
 
 			while(!imageShell.isDisposed()) {
 				if(!imageShell.getDisplay().readAndDispatch()) {
