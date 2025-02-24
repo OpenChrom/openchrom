@@ -80,10 +80,6 @@
          version="0.0.0"/>
 
    <includes
-         id="net.openchrom.nmr.processing.supplier.base.feature"
-         version="0.0.0"/>
-
-   <includes
          id="net.openchrom.xxd.classifier.supplier.ratios.feature"
          version="0.0.0"/>
 
