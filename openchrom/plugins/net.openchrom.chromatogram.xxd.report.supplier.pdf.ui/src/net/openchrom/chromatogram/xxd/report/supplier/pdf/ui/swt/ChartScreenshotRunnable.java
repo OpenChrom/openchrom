@@ -22,6 +22,7 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.comparator.PeakRetentionTimeComparator;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
+import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.support.comparator.SortOrder;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
@@ -36,7 +37,6 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtchart.ILineSeries.PlotSymbolType;
-import org.eclipse.swtchart.IPlotArea;
 import org.eclipse.swtchart.LineStyle;
 import org.eclipse.swtchart.extensions.core.BaseChart;
 import org.eclipse.swtchart.extensions.core.IChartSettings;
@@ -44,6 +44,8 @@ import org.eclipse.swtchart.extensions.core.IExtendedChart;
 import org.eclipse.swtchart.extensions.core.RangeRestriction;
 import org.eclipse.swtchart.extensions.linecharts.ILineSeriesData;
 import org.eclipse.swtchart.extensions.linecharts.ILineSeriesSettings;
+import org.eclipse.swtchart.extensions.model.ICustomSeries;
+import org.eclipse.swtchart.extensions.model.TextElement;
 
 import net.openchrom.swtchart.extension.export.vectorgraphics.core.PDFExportHandler;
 import net.openchrom.swtchart.extension.export.vectorgraphics.model.PageSizeOption;
@@ -108,13 +110,55 @@ public class ChartScreenshotRunnable implements Runnable {
 			rangeRestriction.setForceZeroMinY(false);
 			rangeRestriction.setZeroY(false);
 			chromatogramChart.applySettings(chartSettings);
-
+			/*
+			 * Series Data
+			 */
 			List<ILineSeriesData> lineSeriesDataList = new ArrayList<>();
 			lineSeriesDataList.add(chromatogramChartSupport.getLineSeriesDataChromatogram(chromatogram, chromatogram.getName(), Colors.RED));
 			BaseChart baseChart = chromatogramChart.getBaseChart();
 			peaks = addPeaks(baseChart, lineSeriesDataList);
 			scans = addScans(baseChart, lineSeriesDataList);
 			chromatogramChart.addSeriesData(lineSeriesDataList);
+			/*
+			 * Show Peak Labels
+			 */
+			ICustomSeries customSeriesPeak = baseChart.createCustomSeries("Peaks", "Peaks sequentially marked with numbers.");
+			for(int i = 0; i < peaks.size(); i++) {
+				IPeak peak = peaks.get(i);
+				IPeakModel peakModel = peak.getPeakModel();
+				IScan peakMaximum = peakModel.getPeakMaximum();
+				int retentionTime = peakMaximum.getRetentionTime();
+				int scanNumber = chromatogram.getScanNumber(retentionTime);
+				IScan scan = chromatogram.getScan(scanNumber);
+				double x = retentionTime;
+				double y = scan.getTotalSignal(); // Show on top of TIC
+				//
+				TextElement textElement = new TextElement();
+				textElement.setLabel("P" + (i + 1));
+				textElement.setColor(Colors.DARK_GRAY);
+				textElement.setX(x);
+				textElement.setY(y);
+				textElement.setRotation(-90);
+				customSeriesPeak.getTextElements().add(textElement);
+			}
+
+			/*
+			 * Show Scan Labels
+			 */
+			ICustomSeries customSeriesScan = baseChart.createCustomSeries("Scans", "Identified scans sequentially marked with numbers.");
+			for(int i = 0; i < scans.size(); i++) {
+				IScan scan = scans.get(i);
+				double x = scan.getRetentionTime();
+				double y = scan.getTotalSignal();
+				//
+				TextElement textElement = new TextElement();
+				textElement.setLabel("S" + (i + 1));
+				textElement.setColor(Colors.DARK_GRAY);
+				textElement.setX(x);
+				textElement.setY(y);
+				textElement.setRotation(-90);
+				customSeriesScan.getTextElements().add(textElement);
+			}
 
 			while(!imageShell.isDisposed()) {
 				if(!imageShell.getDisplay().readAndDispatch()) {
@@ -172,11 +216,6 @@ public class ChartScreenshotRunnable implements Runnable {
 			lineSeriesSettings.setSymbolSize(5);
 			lineSeriesSettings.setSymbolColor(Colors.DARK_GRAY);
 			lineSeriesDataList.add(lineSeriesData);
-
-			IPlotArea plotArea = baseChart.getPlotArea();
-			int indexSeries = lineSeriesDataList.size() - 1;
-			PeakLabelMarker peakLabelMarker = new PeakLabelMarker(baseChart, indexSeries, peaks);
-			plotArea.addCustomPaintListener(peakLabelMarker);
 		}
 
 		return peaks;
@@ -193,11 +232,6 @@ public class ChartScreenshotRunnable implements Runnable {
 			lineSeriesSettings.setSymbolSize(5);
 			lineSeriesSettings.setSymbolColor(Colors.DARK_GRAY);
 			lineSeriesDataList.add(lineSeriesData);
-
-			IPlotArea plotArea = baseChart.getPlotArea();
-			int indexSeries = lineSeriesDataList.size() - 1;
-			ScanLabelMarker scanLabelMarker = new ScanLabelMarker(baseChart, indexSeries, scans);
-			plotArea.addCustomPaintListener(scanLabelMarker);
 		}
 
 		return scans;
