@@ -144,7 +144,7 @@
          version="0.0.0"/>
 
    <includes
-         id="net.openchrom.chromatogram.xxd.report.supplier.pdf.feature"
+         id="net.openchrom.chromatogram.xxd.report.supplier.pdf.ui.feature"
          version="0.0.0"/>
 
    <plugin
