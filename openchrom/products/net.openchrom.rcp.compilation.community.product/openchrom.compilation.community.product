@@ -27,6 +27,8 @@
       </vmArgs>
       <vmArgsMac>-XstartOnFirstThread
       </vmArgsMac>
+      <vmArgsWin>-Djavax.net.ssl.trustStoreType=WINDOWS-ROOT
+      </vmArgsWin>
    </launcherArgs>
 
    <windowImages i16="/net.openchrom.rcp.compilation.community.ui/icons/logo_16x16.png" i32="/net.openchrom.rcp.compilation.community.ui/icons/logo_32x32.png" i48="/net.openchrom.rcp.compilation.community.ui/icons/logo_48x48.png" i64="/net.openchrom.rcp.compilation.community.ui/icons/logo_64x64.png" i128="/net.openchrom.rcp.compilation.community.ui/icons/logo_128x128.png"/>
