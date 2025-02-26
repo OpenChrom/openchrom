@@ -66,7 +66,7 @@ import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 
 import net.openchrom.chromatogram.xxd.report.supplier.pdf.ui.Activator;
 import net.openchrom.chromatogram.xxd.report.supplier.pdf.ui.settings.ChromatogramReportSettings;
-import net.openchrom.chromatogram.xxd.report.supplier.pdf.ui.swt.ChartScreenshotRunnable;
+import net.openchrom.chromatogram.xxd.report.supplier.pdf.ui.swt.ChartExportRunnable;
 
 public class ChromatogramReportWriter {
 
@@ -136,10 +136,10 @@ public class ChromatogramReportWriter {
 
 	private void print(PDDocument document, IChromatogram chromatogram, ChromatogramReportSettings reportSettings) throws IOException {
 
-		ChartScreenshotRunnable chartScreenshotRunnable = createChartScreenshotRunnable(chromatogram, reportSettings);
+		ChartExportRunnable chartExportRunnable = createChartExportRunnable(chromatogram, reportSettings);
 
-		PDTable peakDataTable = getPeakDataTable(chartScreenshotRunnable.getPeaks());
-		PDTable scanDataTable = getScanDataTable(chartScreenshotRunnable.getScans());
+		PDTable peakDataTable = getPeakDataTable(chartExportRunnable.getPeaks());
+		PDTable scanDataTable = getScanDataTable(chartExportRunnable.getScans());
 		PDTable quantitationDataTable = getQuantitationDataTable(chromatogram.getPeaks());
 		PDTable headerDataTable = getHeaderDataTable(chromatogram.getHeaderDataMap());
 
@@ -160,7 +160,7 @@ public class ChromatogramReportWriter {
 		String chromatogramName = getChromatogramName(chromatogram);
 		int page = printTablePages(document, headerDataTable, "Header Table:", chromatogramName, 1, pages, false);
 
-		page = printCharts(chartScreenshotRunnable, document, page);
+		page = printCharts(chartExportRunnable, document, page);
 
 		if(peakDataTable.getNumberDataRows() > 0) {
 			page = printTablePages(document, peakDataTable, "Peak Table:", chromatogramName, page, pages, false);
@@ -173,9 +173,9 @@ public class ChromatogramReportWriter {
 		}
 	}
 
-	private int printCharts(ChartScreenshotRunnable chartScreenshotRunnable, PDDocument document, int page) throws IOException {
+	private int printCharts(ChartExportRunnable chartExportRunnable, PDDocument document, int page) throws IOException {
 
-		for(File chromatogramFile : chartScreenshotRunnable.getChromatogramFiles()) {
+		for(File chromatogramFile : chartExportRunnable.getChromatogramFiles()) {
 			PDDocument documentChart = PDDocument.load(chromatogramFile);
 			for(PDPage pageChart : documentChart.getPages()) {
 				document.addPage(pageChart);
@@ -185,13 +185,13 @@ public class ChromatogramReportWriter {
 		return page;
 	}
 
-	private ChartScreenshotRunnable createChartScreenshotRunnable(IChromatogram chromatogram, ChromatogramReportSettings reportSettings) {
+	private ChartExportRunnable createChartExportRunnable(IChromatogram chromatogram, ChromatogramReportSettings reportSettings) {
 
 		int width = 1080;
 		int height = (int)(width * (CHART_HEIGHT / CHART_WIDTH));
-		ChartScreenshotRunnable screenshotRunnable = new ChartScreenshotRunnable(chromatogram, width, height, reportSettings.getNumberOfImagesPerPage());
-		DisplayUtils.getDisplay().syncExec(screenshotRunnable);
-		return screenshotRunnable;
+		ChartExportRunnable chartExportRunnable = new ChartExportRunnable(chromatogram, width, height, reportSettings.getNumberOfImagesPerPage());
+		DisplayUtils.getDisplay().syncExec(chartExportRunnable);
+		return chartExportRunnable;
 	}
 
 	private String getChromatogramName(IChromatogram chromatogram) {

@@ -50,9 +50,9 @@ import org.eclipse.swtchart.extensions.model.TextElement;
 import net.openchrom.swtchart.extension.export.vectorgraphics.core.PDFExportHandler;
 import net.openchrom.swtchart.extension.export.vectorgraphics.model.PageSizeOption;
 
-public class ChartScreenshotRunnable implements Runnable {
+public class ChartExportRunnable implements Runnable {
 
-	private static final Logger logger = Logger.getLogger(ChartScreenshotRunnable.class);
+	private static final Logger logger = Logger.getLogger(ChartExportRunnable.class);
 
 	private ChromatogramChartSupport chromatogramChartSupport = new ChromatogramChartSupport();
 	private PeakChartSupport peakChartSupport = new PeakChartSupport();
@@ -69,7 +69,7 @@ public class ChartScreenshotRunnable implements Runnable {
 
 	private List<File> chromatogramFiles = new ArrayList<>();
 
-	public ChartScreenshotRunnable(IChromatogram chromatogram, int width, int height, int numberOfPages) {
+	public ChartExportRunnable(IChromatogram chromatogram, int width, int height, int numberOfPages) {
 
 		this.chromatogram = chromatogram;
 		this.width = width;
@@ -163,7 +163,7 @@ public class ChartScreenshotRunnable implements Runnable {
 			while(!imageShell.isDisposed()) {
 				if(!imageShell.getDisplay().readAndDispatch()) {
 					imageShell.getDisplay().sleep();
-					takeScreenshots(imageShell, chromatogramChart);
+					exportCharts(imageShell, chromatogramChart);
 					imageShell.close();
 				}
 			}
@@ -172,7 +172,7 @@ public class ChartScreenshotRunnable implements Runnable {
 		}
 	}
 
-	private void takeScreenshots(Shell imageShell, ChromatogramChart chromatogramChart) throws IOException {
+	private void exportCharts(Shell imageShell, ChromatogramChart chromatogramChart) throws IOException {
 
 		int startRetentionTime = chromatogram.getStartRetentionTime();
 		int stopRetentionTime = chromatogram.getStopRetentionTime();
@@ -185,11 +185,11 @@ public class ChartScreenshotRunnable implements Runnable {
 			int stop = start + delta + extra;
 			chromatogramChart.setRange(IExtendedChart.X_AXIS, start, stop);
 			chromatogramChart.update();
-			takeScreenshot(imageShell, chromatogramChart);
+			exportChart(imageShell, chromatogramChart);
 		}
 	}
 
-	private void takeScreenshot(Shell imageShell, ChromatogramChart chromatogramChart) throws IOException {
+	private void exportChart(Shell imageShell, ChromatogramChart chromatogramChart) throws IOException {
 
 		File file = Files.createTempFile("", ".pdf").toFile();
 		PDFExportHandler exportHandler = new PDFExportHandler();
