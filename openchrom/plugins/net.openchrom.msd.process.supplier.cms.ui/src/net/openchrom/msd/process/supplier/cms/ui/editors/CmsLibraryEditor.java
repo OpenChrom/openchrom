@@ -28,7 +28,7 @@ import org.eclipse.chemclipse.processing.core.exceptions.TypeCastException;
 import org.eclipse.chemclipse.support.events.IChemClipseEvents;
 import org.eclipse.chemclipse.support.events.IPerspectiveAndViewIds;
 import org.eclipse.chemclipse.support.updates.IUpdateListener;
-import org.eclipse.chemclipse.ux.extension.msd.ui.internal.support.DatabaseImportRunnable;
+import org.eclipse.chemclipse.ux.extension.msd.ui.support.DatabaseImportRunnable;
 import org.eclipse.chemclipse.ux.extension.ui.editors.IChemClipseEditor;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.e4.ui.di.Focus;
