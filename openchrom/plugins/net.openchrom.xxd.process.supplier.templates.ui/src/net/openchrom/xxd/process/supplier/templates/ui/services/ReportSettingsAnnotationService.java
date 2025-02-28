@@ -11,7 +11,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.services;
 
-import org.eclipse.chemclipse.ux.extension.xxd.ui.methods.IAnnotationWidgetService;
+import org.eclipse.chemclipse.ux.extension.ui.methods.IAnnotationWidgetService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;

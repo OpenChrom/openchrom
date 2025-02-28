@@ -17,7 +17,7 @@ import java.util.List;
 
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
-import org.eclipse.chemclipse.ux.extension.xxd.ui.methods.IChangeListener;
+import org.eclipse.chemclipse.ux.extension.ui.methods.IChangeListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
