@@ -1507,7 +1507,7 @@
             license="Commercial License Terms"
             name="Chrom2Quant"
             provider="Lablicate"
-            urls="https://plugins.openchrom.net/chrom2quant/1.5.0/,https://plugins.openchrom.net/powertools/1.5.0/,https://plugins.openchrom.net/quantitation/1.5.0/,https://plugins.openchrom.net/combine,https://update.openchrom.net/1.5.0/">
+            urls="https://plugins.openchrom.net/chrom2quant/1.5.0/,https://plugins.openchrom.net/powertools/1.5.0/,https://plugins.openchrom.net/quantitation/1.5.0/,https://plugins.openchrom.net/combine/1.5.0/,https://update.openchrom.net/1.5.0/">
          <icon image32="icons/32x32/OpenChrom.png">
          </icon>
          <overview
