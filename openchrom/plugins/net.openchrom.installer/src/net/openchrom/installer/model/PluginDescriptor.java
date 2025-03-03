@@ -105,7 +105,7 @@ public class PluginDescriptor {
 	 */
 	public String getUpdateSiteUrl() {
 
-		return "https://update.openchrom.net/1.5.0/";
+		return "https://update.openchrom.net/1.5.1/";
 	}
 
 	/**

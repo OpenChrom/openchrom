@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.chromatogram.msd.peak.detector.supplier.amd
 Bundle-ManifestVersion: 2
 Bundle-Name: AMDIS
 Bundle-SymbolicName: net.openchrom.chromatogram.msd.peak.detector.supplier.amdis;singleton:=true
-Bundle-Version: 1.5.0.qualifier
+Bundle-Version: 1.5.1.qualifier
 Bundle-Activator: net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.Activator
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.24.100",
  org.eclipse.chemclipse.msd.model;bundle-version="0.8.0",
@@ -17,7 +17,7 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.24.100",
  org.eclipse.chemclipse.chromatogram.peak.detector;bundle-version="0.8.0",
  com.fasterxml.jackson.core.jackson-annotations;bundle-version="2.7.1",
  org.eclipse.chemclipse.chromatogram.msd.comparison;bundle-version="0.9.0",
- net.openchrom.msd.converter.supplier.cdf;bundle-version="1.5.0"
+ net.openchrom.msd.converter.supplier.cdf;bundle-version="1.5.1"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-Vendor: OpenChrom

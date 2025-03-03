@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.chromatogram.xxd.report.supplier.pdf
 Bundle-ManifestVersion: 2
 Bundle-Name: PDF Report
 Bundle-SymbolicName: net.openchrom.chromatogram.xxd.report.supplier.pdf.ui;singleton:=true
-Bundle-Version: 1.5.0.qualifier
+Bundle-Version: 1.5.1.qualifier
 Bundle-Activator: net.openchrom.chromatogram.xxd.report.supplier.pdf.ui.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
@@ -28,7 +28,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.swtchart;bundle-version="1.1.0",
  org.eclipse.swtchart.extensions;bundle-version="1.1.0",
  org.eclipse.swtchart.export;bundle-version="1.1.0",
- net.openchrom.swtchart.extension.export.vectorgraphics;bundle-version="1.5.0",
+ net.openchrom.swtchart.extension.export.vectorgraphics;bundle-version="1.5.1",
  org.eclipse.chemclipse.rcp.ui.icons;bundle-version="0.9.0",
  org.eclipse.chemclipse.xxd.process.ui;bundle-version="0.9.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-21

@@ -3,8 +3,8 @@ Automatic-Module-Name: net.openchrom.csd.converter.supplier.cdf.fragment.test
 Bundle-ManifestVersion: 2
 Bundle-Name: CDF (CSD) Tests
 Bundle-SymbolicName: net.openchrom.csd.converter.supplier.cdf.fragment.test
-Bundle-Version: 1.5.0.qualifier
-Fragment-Host: net.openchrom.csd.converter.supplier.cdf;bundle-version="1.5.0"
+Bundle-Version: 1.5.1.qualifier
+Fragment-Host: net.openchrom.csd.converter.supplier.cdf;bundle-version="1.5.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Require-Bundle: org.junit;bundle-version="4.13.2",
  org.eclipse.chemclipse.rcp.app.test;bundle-version="0.8.0"
