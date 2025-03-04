@@ -20,9 +20,10 @@ import org.eclipse.chemclipse.progress.core.StatusLineLogger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+
+import net.openchrom.feature.branding.SupportErrorDialog;
 
 public class InstallErrorDialog {
 
@@ -37,10 +38,8 @@ public class InstallErrorDialog {
 			public void run() {
 
 				MultiStatus status = createMultiStatus(e);
-				String errorMessage = message + System.lineSeparator() + System.lineSeparator();
-				errorMessage = errorMessage + "Visit faq.openchrom.net for solutions to common problems." + System.lineSeparator();
-				errorMessage = errorMessage + "Contact support@lablicate.com if the problem persists.";
-				ErrorDialog.openError(parentShell, "Plug-in Installation", errorMessage, status);
+				SupportErrorDialog dialog = new SupportErrorDialog(parentShell, "Plug-in Installation", message, status);
+				dialog.open();
 			}
 		});
 		logger.error(e);

@@ -3,9 +3,12 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Branding
 Bundle-SymbolicName: net.openchrom.feature.branding;singleton:=true
 Bundle-Version: 1.5.1.qualifier
-Require-Bundle: org.eclipse.swt,
- org.eclipse.e4.core.di.annotations,
- org.eclipse.osgi
+Export-Package: net.openchrom.feature.branding
+Require-Bundle: org.eclipse.swt;bundle-version="3.128.0",
+ org.eclipse.e4.core.di.annotations;bundle-version="1.8.400",
+ org.eclipse.osgi;bundle-version="3.22.0",
+ org.eclipse.jface;bundle-version="3.35.100",
+ org.eclipse.core.runtime;bundle-version="3.32.0"
 Automatic-Module-Name: net.openchrom.feature.branding
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: net.openchrom.feature.branding.Activator
