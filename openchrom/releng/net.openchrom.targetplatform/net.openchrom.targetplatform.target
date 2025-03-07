@@ -25,6 +25,7 @@
 		<repository location="https://bundles.openchrom.net/3rdparty"/>
 		<unit id="net.openchrom.thirdparty.jhdf5.feature.feature.group"/>
 		<unit id="net.openchrom.thirdparty.cdk.feature.feature.group"/>
+		<unit id="net.openchrom.thirdparty.inchi.feature.feature.group"/>
 	</location>
 	<location includeDependencyDepth="none" includeDependencyScopes="compile" missingManifest="generate" type="Maven">
 		<dependencies>
