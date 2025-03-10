@@ -157,9 +157,17 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		super.handleMouseUpEvent(event);
 		if(isControlKeyPressed(event)) {
 			stopBaselineSelection(event.x, event.y);
-			IPeak peak = extractPeak();
+			int x1 = xStart;
+			int y1 = yStart;
+			int x2 = xStop;
+			int y2 = yStop;
 			setCursorDefault();
 			resetSelectedRange();
+			/*
+			 * If uncaught exceptions are thrown, the cursor
+			 * reset shall be not affected.
+			 */
+			IPeak peak = extractPeak(x1, y1, x2, y2);
 			updateChart(peak);
 		}
 	}
@@ -395,7 +403,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		return maxY;
 	}
 
-	private IPeak extractPeak() {
+	private IPeak extractPeak(int xStart, int yStart, int xStop, int yStop) {
 
 		IPeak peak = null;
 		if(detectorRange != null) {
