@@ -152,6 +152,9 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 		monitor.beginTask("Transfer Peaks", peaks.size());
 		CountDownLatch latch = new CountDownLatch(peaks.size());
 		for(int group : groups) {
+			if(monitor.isCanceled()) {
+				return;
+			}
 			List<IChromatogramPeak> groupedPeaks = peakGroups.get(group);
 			if(groupedPeaks.size() == 1) {
 				/*
