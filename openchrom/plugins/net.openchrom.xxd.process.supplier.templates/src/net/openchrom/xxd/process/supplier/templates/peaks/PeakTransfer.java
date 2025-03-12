@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.CountDownLatch;
 
 import org.apache.commons.math3.analysis.UnivariateFunction;
 import org.apache.commons.math3.analysis.function.Gaussian;
@@ -148,9 +147,7 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 		List<Integer> groups = new ArrayList<>();
 		groups.addAll(peakGroups.keySet());
 		Collections.sort(groups);
-
 		monitor.beginTask("Transfer Peaks", peaks.size());
-		CountDownLatch latch = new CountDownLatch(peaks.size());
 		for(int group : groups) {
 			if(monitor.isCanceled()) {
 				return;
@@ -162,55 +159,22 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 				 */
 				IChromatogramPeak peak = groupedPeaks.get(0);
 				double percentageIntensity = getPercentageIntensity(peak);
-				Thread.ofVirtual().start(() -> {
-					try {
-						transfer(peak, percentageIntensity, chromatogramSink, peakTransferSettings);
-					} catch(Exception e) {
-						logger.warn(e);
-					} finally {
-						monitor.worked(1);
-						latch.countDown();
-					}
-				});
+				transfer(peak, percentageIntensity, chromatogramSink, peakTransferSettings);
 			} else {
 				/*
 				 * Peak Group
 				 */
 				if(chromatogramSink instanceof IChromatogramCSD chromatogramCSD && peakTransferSettings.isCreateModelPeak()) {
 					for(IChromatogramPeak peak : groupedPeaks) {
-						Thread.ofVirtual().start(() -> {
-							try {
-								transferModelPeak(peak, chromatogramCSD, peakTransferSettings);
-							} catch(Exception e) {
-								logger.warn(e);
-							} finally {
-								monitor.worked(1);
-								latch.countDown();
-							}
-						});
+						transferModelPeak(peak, chromatogramCSD, peakTransferSettings);
+						monitor.worked(1);
 					}
 				} else {
-					Thread.ofVirtual().start(() -> {
-						try {
-							transferPeakGroup(groupedPeaks, chromatogramSink, peakTransferSettings);
-						} catch(Exception e) {
-							logger.warn(e);
-						} finally {
-							int worked = groupedPeaks.size();
-							monitor.worked(worked);
-							for(int i = 0; i < worked; i++) {
-								latch.countDown();
-							}
-						}
-					});
+					transferPeakGroup(groupedPeaks, chromatogramSink, peakTransferSettings);
+					int worked = groupedPeaks.size();
+					monitor.worked(worked);
 				}
 			}
-		}
-		try {
-			latch.await();
-		} catch(InterruptedException e) {
-			logger.error(e);
-			Thread.currentThread().interrupt();
 		}
 	}
 
