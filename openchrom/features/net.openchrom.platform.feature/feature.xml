@@ -332,10 +332,6 @@
          version="0.0.0"/>
 
    <plugin
-         id="org.apache.commons.jxpath"
-         version="0.0.0"/>
-
-   <plugin
          id="org.apache.felix.scr"
          version="0.0.0"/>
 
