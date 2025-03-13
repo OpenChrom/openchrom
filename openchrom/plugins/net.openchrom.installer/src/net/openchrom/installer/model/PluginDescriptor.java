@@ -200,13 +200,13 @@ public class PluginDescriptor {
 		if(kind == null || kind.isEmpty()) {
 			throw new IllegalArgumentException("kind is empty");
 		}
-		if(name == null || name.length() == 0) {
+		if(name == null || name.isEmpty()) {
 			throw new IllegalArgumentException("name is empty");
 		}
-		if(provider == null || provider.length() == 0) {
+		if(provider == null || provider.isEmpty()) {
 			throw new IllegalArgumentException("provider is empty");
 		}
-		if(license == null || license.length() == 0) {
+		if(license == null || license.isEmpty()) {
 			throw new IllegalArgumentException("license is empty");
 		}
 		if(urls == null || urls.isEmpty()) {
@@ -215,7 +215,7 @@ public class PluginDescriptor {
 		if(installableUnits == null || installableUnits.isEmpty()) {
 			throw new IllegalArgumentException("installableUnits is empty");
 		}
-		if(categoryId == null || categoryId.length() == 0) {
+		if(categoryId == null || categoryId.isEmpty()) {
 			throw new IllegalArgumentException("category is empty");
 		}
 		for(FeatureFilter featureFilterItem : featureFilter) {
