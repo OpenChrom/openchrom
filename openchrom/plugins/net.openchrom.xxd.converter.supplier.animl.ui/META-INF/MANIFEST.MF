@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Automatic-Module-Name: net.openchrom.xxd.converter.supplier.animl.ui
 Bundle-ManifestVersion: 2
-Bundle-Name: AnimML Settings
+Bundle-Name: AniML Settings
 Bundle-SymbolicName: net.openchrom.xxd.converter.supplier.animl.ui;singleton:=true
 Bundle-Version: 1.5.1.qualifier
 Bundle-Activator: net.openchrom.xxd.converter.supplier.animl.ui.Activator
