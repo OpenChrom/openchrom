@@ -16,9 +16,7 @@
    <launcherArgs>
       <programArgs>-clearPersistedState
       </programArgs>
-      <vmArgs>-Xms1024M
--Xmx4096M
--Dapplication.name=OpenChrom
+      <vmArgs>-Dapplication.name=OpenChrom
 -Dapplication.version=1.5.x
 -Dosgi.instance.area=@user.home/OpenChrom/1.5.x
 -Dosgi.user.area=@user.home/.openchrom/1.5.x
