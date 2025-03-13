@@ -101,14 +101,6 @@ public class PluginDescriptor {
 	}
 
 	/**
-	 * The URL of the update site containing the plugin.
-	 */
-	public String getUpdateSiteUrl() {
-
-		return "https://update.openchrom.net/1.5.1/";
-	}
-
-	/**
 	 * The URLs of the update site containing the plugin.
 	 */
 	public List<String> getURLs() {
