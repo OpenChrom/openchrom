@@ -172,17 +172,17 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 				}
 			}
 			if(unavailableIds != null) {
-				if(message.length() > 0) {
+				if(!message.isEmpty()) {
 					message += ", ";
 				}
 				message += descriptor.getName();
-				if(detailedMessage.length() > 0) {
+				if(!detailedMessage.isEmpty()) {
 					detailedMessage += ", ";
 				}
 				detailedMessage += MessageFormat.format("{0} (id={1}, site={2})", descriptor.getName(), unavailableIds, descriptor.getURLs());
 			}
 		}
-		if(message.length() > 0) {
+		if(!message.isEmpty()) {
 			// instead of aborting here we ask the user if they wish to proceed anyways
 			final boolean[] okayToProceed = new boolean[1];
 			final String finalMessage = message;
