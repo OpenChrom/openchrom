@@ -658,7 +658,7 @@
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
       </pluginDescriptor>
-      
+
       <pluginDescriptor
             categoryId="com.lablicate.openchrom.converters.proprietary"
             description="Reads *.SMP files."
@@ -1291,7 +1291,7 @@
             license="End User License"
             name="Allotrope Data Format"
             provider="Lablicate"
-            urls="https://plugins/.openchrom.net/.*/1.5.2/,https://update.openchrom.net/1.5.2/">
+            urls="https://plugins.openchrom.net/allotrope/1.5.2/,https://update.openchrom.net/1.5.2/">
          <icon image32="icons/32x32/ADF.png">
          </icon>
          <overview
@@ -1309,7 +1309,7 @@
             license="End User License"
             name="Allotrope Simple Model"
             provider="Lablicate"
-            urls="https://plugins/.openchrom.net/.*/1.5.2/,https://update.openchrom.net/1.5.2/">
+            urls="https://plugins.openchrom.net/allotrope/1.5.2/,https://update.openchrom.net/1.5.2/">
          <icon image32="icons/32x32/ASM.png">
          </icon>
          <overview
@@ -1327,7 +1327,7 @@
             license="Commercial License Terms"
             name="MCR-AR"
             provider="Lablicate"
-            urls="https://plugins/.openchrom.net/.*/1.5.2/,https://update.openchrom.net/1.5.2/">
+            urls="https://plugins.openchrom.net/mcrar/1.5.2/,https://update.openchrom.net/1.5.2/">
          <icon image32="icons/32x32/OpenChrom.png">
          </icon>
          <overview
@@ -1345,7 +1345,7 @@
             license="Commercial License Terms"
             name="ChromIdent"
             provider="Lablicate"
-            urls="https://plugins/.openchrom.net/.*/1.5.2/,https://update.openchrom.net/1.5.2/">
+            urls="https://plugins.openchrom.net/xident/1.5.2/,https://update.openchrom.net/1.5.2/">
          <icon image32="icons/32x32/OpenChrom.png">
          </icon>
          <overview
@@ -1363,7 +1363,7 @@
             license="Commercial License Terms"
             name="Quantitation"
             provider="Lablicate"
-            urls="https://plugins/.openchrom.net/.*/1.5.2/,https://update.openchrom.net/1.5.2/">
+            urls="https://plugins.openchrom.net/quantitation/1.5.2/,https://update.openchrom.net/1.5.2/">
          <icon image32="icons/32x32/OpenChrom.png">
          </icon>
          <overview
@@ -1381,7 +1381,7 @@
             license="Commercial License Terms"
             name="NIST Database Connector"
             provider="Lablicate"
-            urls="https://plugins/.openchrom.net/.*/1.5.2/,https://update.openchrom.net/1.5.2/">
+            urls="https://plugins.openchrom.net/nist/1.5.2/,https://update.openchrom.net/1.5.2/">
          <icon image32="icons/32x32/OpenChrom.png">
          </icon>
          <overview
@@ -1399,7 +1399,7 @@
             license="Commercial License Terms"
             name="PowerTools"
             provider="Lablicate"
-            urls="https://plugins/.openchrom.net/.*/1.5.2/,https://update.openchrom.net/1.5.2/">
+            urls="https://plugins.openchrom.net/powertools/1.5.2/,https://update.openchrom.net/1.5.2/">
          <icon image32="icons/32x32/OpenChrom.png">
          </icon>
          <overview
@@ -1417,7 +1417,7 @@
             license="Commercial License Terms"
             name="RRF"
             provider="Lablicate"
-            urls="https://plugins/.openchrom.net/.*/1.5.2/,https://update.openchrom.net/1.5.2/">
+            urls="https://plugins.openchrom.net/rrf/1.5.2/,https://update.openchrom.net/1.5.2/">
          <icon image32="icons/32x32/OpenChrom.png">
          </icon>
          <overview
@@ -1435,7 +1435,7 @@
             license="Commercial License Terms"
             name="Ambient Air Processor"
             provider="Lablicate"
-            urls="https://plugins/.openchrom.net/.*/1.5.2/,https://update.openchrom.net/1.5.2/">
+            urls="https://plugins.openchrom.net/ambientair/1.5.2/,https://plugins.openchrom.net/quantitation/1.5.2/,https://plugins.openchrom.net/powertools/1.5.2/,https://update.openchrom.net/1.5.2/">
          <icon image32="icons/32x32/OpenChrom.png">
          </icon>
          <overview
@@ -1453,7 +1453,7 @@
             license="Commercial License Terms"
             name="Findings Database"
             provider="Lablicate"
-            urls="https://plugins/.openchrom.net/.*/1.5.2/,https://update.openchrom.net/1.5.2/">
+            urls="https://plugins.openchrom.net/findingsdb/1.5.2/,https://update.openchrom.net/1.5.2/">
          <icon image32="icons/32x32/OpenChrom.png">
          </icon>
          <overview
@@ -1471,7 +1471,7 @@
             license="Commercial License Terms"
             name="ChromInspector"
             provider="Lablicate"
-            urls="https://plugins/.openchrom.net/.*/1.5.2/,https://update.openchrom.net/1.5.2/">
+            urls="https://plugins.openchrom.net/chrominspector/1.5.2/,https://plugins.openchrom.net/findingsdb/1.5.2/,https://update.openchrom.net/1.5.2/">
          <icon image32="icons/32x32/OpenChrom.png">
          </icon>
          <overview
@@ -1489,7 +1489,7 @@
             license="Commercial License Terms"
             name="PBM"
             provider="Lablicate"
-            urls="https://plugins/.openchrom.net/.*/1.5.2/,https://update.openchrom.net/1.5.2/">
+            urls="https://plugins.openchrom.net/pbm/1.5.2/,https://converter.openchrom.net/1.5.2/,https://update.openchrom.net/1.5.2/">
          <icon image32="icons/32x32/OpenChrom.png">
          </icon>
          <overview
@@ -1507,7 +1507,7 @@
             license="Commercial License Terms"
             name="Chrom2Quant"
             provider="Lablicate"
-            urls="https://plugins/.openchrom.net/.*/1.5.2/,https://update.openchrom.net/1.5.2/">
+            urls="https://plugins.openchrom.net/chrom2quant/1.5.2/,https://plugins.openchrom.net/powertools/1.5.2/,https://plugins.openchrom.net/quantitation/1.5.2/,https://plugins.openchrom.net/combine/1.5.2/,https://update.openchrom.net/1.5.2/">
          <icon image32="icons/32x32/OpenChrom.png">
          </icon>
          <overview
@@ -1516,5 +1516,5 @@
          </overview>
       </pluginDescriptor>
 
-   </extension> 
+   </extension>
 </plugin>
