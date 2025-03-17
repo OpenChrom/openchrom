@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.chromatogram.xxd.report.supplier.pdf
 Bundle-ManifestVersion: 2
 Bundle-Name: PDF Report
 Bundle-SymbolicName: net.openchrom.chromatogram.xxd.report.supplier.pdf.ui;singleton:=true
-Bundle-Version: 1.5.2.qualifier
+Bundle-Version: 1.5.3.qualifier
 Bundle-Activator: net.openchrom.chromatogram.xxd.report.supplier.pdf.ui.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
