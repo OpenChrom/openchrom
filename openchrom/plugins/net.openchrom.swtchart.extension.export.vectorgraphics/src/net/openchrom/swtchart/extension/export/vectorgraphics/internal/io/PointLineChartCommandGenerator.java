@@ -659,15 +659,30 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 				x = (int)(point.getX());
 				y = (int)(point.getY());
 				break;
+
 			case CROSS:
 			case PLUS:
-				label = PlotSymbolType.CROSS.equals(symbolType) ? "x" : "+";
+			case CIRCLE:
+				switch(symbolType) {
+					case CROSS:
+						label = "x";
+						break;
+					case PLUS:
+						label = "+";
+						break;
+					case CIRCLE:
+						label = "•";
+						break;
+					default:
+						label = "";
+				}
 				FontMetrics fontMetrics = graphics2D.getFontMetrics();
 				int widthText = fontMetrics.stringWidth(label);
 				int heightText = fontMetrics.getHeight();
 				x = (int)(point.getX() - (widthText / 2.0d));
 				y = (int)(point.getY() - (heightText / 2.0d));
 				break;
+
 			default:
 				x = (int)(point.getX() - radius);
 				y = (int)(point.getY() - radius);
@@ -678,7 +693,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		 */
 		switch(symbolType) {
 			case CIRCLE:
-				graphics2D.fillOval(x, y, width, height);
+				graphics2D.drawString(label, x, y);
 				break;
 			case TRIANGLE:
 				drawTriangle(graphics2D, x, y, width, height);
