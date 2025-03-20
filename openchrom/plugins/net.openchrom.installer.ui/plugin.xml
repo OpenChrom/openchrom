@@ -1131,6 +1131,23 @@
 
       <pluginDescriptor
             categoryId="com.lablicate.openchrom.converters.proprietary"
+            description="Reads *.dat files."
+            groupId="net.openchrom.fsd.converter"
+            id="net.openchrom.fsd.converter.supplier.waters.empower.feature"
+            kind="converter"
+            license="Converter License Terms"
+            name="Water Empower HPLC-FLD"
+            provider="Lablicate"
+            urls="https://converter.openchrom.net/1.5.3/">
+         <icon image32="icons/32x32/Waters.png">
+         </icon>
+         <overview
+               summary="Free for commercial use. Must not be used with other software.">
+         </overview>
+      </pluginDescriptor>
+
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.converters.proprietary"
             description="Reads *.sif files."
             groupId="net.openchrom.vsd.converter"
             id="net.openchrom.vsd.converter.supplier.andor.feature"
