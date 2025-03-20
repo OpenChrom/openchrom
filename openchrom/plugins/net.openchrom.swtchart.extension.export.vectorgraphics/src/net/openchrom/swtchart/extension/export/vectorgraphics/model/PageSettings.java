@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Lablicate GmbH.
+ * Copyright (c) 2023, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -25,13 +25,13 @@ import net.openchrom.swtchart.extension.export.vectorgraphics.support.AWTUtils;
 public class PageSettings {
 
 	public static final int STYLE_FONT_STANDARD = Font.PLAIN;
-	//
+
 	private static final int SIZE_FONT_STANDARD = 14;
 	private static final String TYPE_FONT_STANDARD = "Arial";
-	//
+
 	private float factorGraphics = 1.0f;
 	private float factorFont = 1.0f;
-	//
+
 	private double width = 0;
 	private double height = 0;
 	private double borderLeftX = 0;
@@ -40,13 +40,13 @@ public class PageSettings {
 	private double borderBottomY = 0;
 	private double intentX = 0;
 	private double intentY = 0;
-	//
+
 	private Color colorBlack = AWTUtils.convertColor(Display.getDefault().getSystemColor(SWT.COLOR_BLACK));
 	private Color colorDarkGray = AWTUtils.convertColor(Display.getDefault().getSystemColor(SWT.COLOR_DARK_GRAY));
 	private Color colorGray = AWTUtils.convertColor(Display.getDefault().getSystemColor(SWT.COLOR_GRAY));
-	//
+
 	private Font font;
-	//
+
 	private BasicStroke strokeSolid;
 	private BasicStroke strokeDash;
 	private BasicStroke strokeDot;
@@ -56,13 +56,13 @@ public class PageSettings {
 	public PageSettings(PageSizeOption pageSizeOption) {
 
 		PageSize pageSize = pageSizeOption.pageSize();
-		//
+
 		this.factorGraphics = pageSizeOption.factorGraphics();
 		this.factorFont = pageSizeOption.factorFont();
-		//
+
 		this.width = pageSize.getWidth();
 		this.height = pageSize.getHeight();
-		//
+
 		this.borderLeftX = 150 * factorGraphics;
 		this.borderRightX = 50 * factorGraphics;
 		this.borderTopY = 50 * factorGraphics;
@@ -91,7 +91,7 @@ public class PageSettings {
 
 		BasicStroke stroke = null;
 		float width = lineWidth * factorGraphics;
-		//
+
 		switch(lineStyle) {
 			case DASH:
 				stroke = getStrokeDash(width);
@@ -110,7 +110,7 @@ public class PageSettings {
 				stroke = getStrokeSolid(width);
 				break;
 		}
-		//
+
 		return stroke;
 	}
 
