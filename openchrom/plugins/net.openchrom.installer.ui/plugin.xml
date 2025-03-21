@@ -1119,7 +1119,7 @@
             id="net.openchrom.wsd.converter.supplier.waters.empower.feature"
             kind="converter"
             license="Converter License Terms"
-            name="Water Empower HPLC-DAD"
+            name="Waters Empower HPLC-DAD"
             provider="Lablicate"
             urls="https://converter.openchrom.net/1.5.3/">
          <icon image32="icons/32x32/Waters.png">
@@ -1136,7 +1136,7 @@
             id="net.openchrom.fsd.converter.supplier.waters.empower.feature"
             kind="converter"
             license="Converter License Terms"
-            name="Water Empower HPLC-FLD"
+            name="Waters Empower HPLC-FLD"
             provider="Lablicate"
             urls="https://converter.openchrom.net/1.5.3/">
          <icon image32="icons/32x32/Waters.png">
