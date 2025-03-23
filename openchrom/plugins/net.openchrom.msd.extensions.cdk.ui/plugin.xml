@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            name="Chemistry Development Kit (CDK) MS Tools"
+            category="org.eclipse.chemclipse.rcp.app.ui.preferences.settingsPreferencePage"
+            class="net.openchrom.msd.extensions.cdk.ui.preferences.PreferencePage"
+            id="net.openchrom.msd.extensions.cdk.ui.preferences.preferencePage">
+      </page>
+   </extension>
+</plugin>

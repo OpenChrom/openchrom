@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ASCII"?>
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/descriptor/basic" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmi:id="_3IeOkDG_Ee6Tv4Js7LTvsw">
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_1wpoEDzYEe6hp9DJU-acIA" featurename="descriptors" parentElementId="xpath:/">
+    <elements xsi:type="basic:PartDescriptor" xmi:id="_4LerwDzYEe6hp9DJU-acIA" elementId="net.openchrom.msd.extensions.cdk.ui.partdescriptor.isotopeDistributionCalculatorPart" label="Isotope Distribution Calculator" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/info.png" tooltip="Calculate isotopic patterns from molecular formulas." closeable="true" contributionURI="bundleclass://net.openchrom.msd.extensions.cdk.ui/net.openchrom.msd.extensions.cdk.ui.parts.IsotopeDistributionCalculatorPart"/>
+  </fragments>
+</fragment:ModelFragments>

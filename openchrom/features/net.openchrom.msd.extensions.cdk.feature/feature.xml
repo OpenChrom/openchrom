@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="net.openchrom.msd.extensions.cdk.feature"
+      label="CDK Mass Spectrometry"
+      version="1.5.3.qualifier"
+      provider-name="OpenChrom"
+      license-feature="org.eclipse.license"
+      license-feature-version="1.0.0.qualifier">
+
+   <description url="https://www.openchrom.net">
+      CDK Mass Spectrometry Extension
+   </description>
+
+   <copyright url="https://www.lablicate.net">
+      Copyright (c) 2025 Lablicate GmbH.
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <plugin
+         id="net.openchrom.msd.extensions.cdk.ui"
+         version="0.0.0"/>
+
+   <plugin
+         id="net.openchrom.msd.extensions.cdk"
+         version="0.0.0"/>
+
+</feature>
