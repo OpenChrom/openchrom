@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.xxd.identifier.supplier.cdk.feature"
       label="CDK Support"
-      version="1.5.3.qualifier"
+      version="1.5.4.qualifier"
       provider-name="OpenChrom"
       plugin="net.openchrom.feature.branding">
 

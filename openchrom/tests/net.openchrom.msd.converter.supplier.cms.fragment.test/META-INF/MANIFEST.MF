@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.msd.converter.supplier.cms.fragment.test
 Bundle-ManifestVersion: 2
 Bundle-Name: CMS Converter Test
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.cms.fragment.test
-Bundle-Version: 1.5.3.qualifier
+Bundle-Version: 1.5.4.qualifier
 Bundle-Vendor: OpenChrom
 Fragment-Host: net.openchrom.msd.converter.supplier.cms;bundle-version="1.5.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-21

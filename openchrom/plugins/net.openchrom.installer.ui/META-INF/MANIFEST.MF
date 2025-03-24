@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Installer UI
 Bundle-SymbolicName: net.openchrom.installer.ui;singleton:=true
-Bundle-Version: 1.5.3.qualifier
+Bundle-Version: 1.5.4.qualifier
 Bundle-Activator: net.openchrom.installer.ui.Activator
 Bundle-Vendor: Lablicate GmbH
 Export-Package: net.openchrom.installer.ui.swt,

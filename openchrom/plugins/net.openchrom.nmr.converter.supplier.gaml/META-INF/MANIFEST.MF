@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.msd.converter.supplier.gaml
 Bundle-ManifestVersion: 2
 Bundle-Name: GAML NMR
 Bundle-SymbolicName: net.openchrom.nmr.converter.supplier.gaml;singleton:=true
-Bundle-Version: 1.5.3.qualifier
+Bundle-Version: 1.5.4.qualifier
 Bundle-Activator: net.openchrom.nmr.converter.supplier.gaml.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
