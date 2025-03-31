@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.msd.converter.supplier.gaml
 Bundle-ManifestVersion: 2
 Bundle-Name: AnIML
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.animl;singleton:=true
-Bundle-Version: 1.5.4.qualifier
+Bundle-Version: 1.5.5.qualifier
 Bundle-Activator: net.openchrom.msd.converter.supplier.animl.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,

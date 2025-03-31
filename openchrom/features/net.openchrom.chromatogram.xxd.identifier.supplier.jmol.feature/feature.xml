@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.chromatogram.xxd.identifier.supplier.jmol.feature"
       label="JMol Support"
-      version="1.5.4.qualifier"
+      version="1.5.5.qualifier"
       provider-name="OpenChrom"
       plugin="net.openchrom.feature.branding">
 

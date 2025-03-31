@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.xxd.processor.supplier.tracecompare.feature"
       label="TraceCompare CAMAG (*.DFM)"
-      version="1.5.4.qualifier"
+      version="1.5.5.qualifier"
       provider-name="OpenChrom" plugin="net.openchrom.feature.branding"
       license-feature="org.eclipse.license" license-feature-version="1.0.0.qualifier">
 
