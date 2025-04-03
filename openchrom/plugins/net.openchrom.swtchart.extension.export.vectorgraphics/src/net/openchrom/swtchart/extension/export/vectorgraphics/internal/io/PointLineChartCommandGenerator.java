@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Lablicate GmbH.
+ * Copyright (c) 2023, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -66,7 +66,6 @@ import net.openchrom.swtchart.extension.export.vectorgraphics.support.AWTUtils;
 public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 
 	private static final PageSizeOption FULL_LANDSCAPE = PageSizeOption.FULL_LANDSCAPE;
-	private static final int NUMBER_TICS = 20;
 
 	@Override
 	public CommandSequence getCommandSequence(Shell shell, PageSizeOption pageSizeOption, ScrollableChart scrollableChart) {
@@ -89,15 +88,16 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 	public CommandSequence getCommandSequence(PageSizeOption pageSizeOption, int indexAxisX, int indexAxisY, ScrollableChart scrollableChart) {
 
 		/*
-		 * Use the full landscape and the scale the image.
+		 * Use the full landscape and then scale the image.
 		 */
 		VectorGraphics2D graphics2D = new VectorGraphics2D();
 		PageSettings pageSettings = new PageSettings(FULL_LANDSCAPE);
+		pageSettings.updateChartSettings(pageSizeOption.chartSettings());
 		graphics2D.setStroke(pageSettings.getStrokeSolid());
 		graphics2D.setFont(pageSettings.getFont());
 		PageSize pageSize = pageSizeOption.pageSize();
 		/*
-		 * Calculate/Set Scale
+		 * Scale to selected end format.
 		 */
 		Point scale;
 		if(FULL_LANDSCAPE.equals(pageSizeOption)) {
@@ -136,6 +136,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 
 	private void drawAxisX(Graphics2D graphics2D, IPoint scale, BaseChart baseChart, int indexAxisX, PageSettings pageSettings) {
 
+		int numberTics = pageSettings.getChartSettings().getNumberTics();
 		double width = pageSettings.getWidth();
 		double height = pageSettings.getHeight();
 		double xBorderLeft = pageSettings.getBorderLeftX();
@@ -167,8 +168,8 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		 * Settings
 		 */
 		Range rangeX = axisX.getRange();
-		double deltaRange = (rangeX.upper - rangeX.lower) / NUMBER_TICS;
-		double deltaWidth = (width - xBorderLeft - xBorderRight) / NUMBER_TICS;
+		double deltaRange = (rangeX.upper - rangeX.lower) / numberTics;
+		double deltaWidth = (width - xBorderLeft - xBorderRight) / numberTics;
 		/*
 		 * Scale
 		 */
@@ -185,7 +186,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		if(isGridDisplayed(baseChart.getChartSettings())) {
 			graphics2D.setStroke(pageSettings.getStrokeDash());
 			graphics2D.setColor(pageSettings.getColorGray());
-			for(int i = 1; i <= NUMBER_TICS; i++) {
+			for(int i = 1; i <= numberTics; i++) {
 				int x = (int)(xBorderLeft + i * deltaWidth);
 				int y1 = (int)(yBorderTop);
 				int y2 = (int)(height - yBorderBottom);
@@ -197,7 +198,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		 */
 		graphics2D.setStroke(pageSettings.getStrokeSolid());
 		graphics2D.setColor(pageSettings.getColorBlack());
-		for(int i = 1; i <= NUMBER_TICS; i++) {
+		for(int i = 1; i <= numberTics; i++) {
 			double xMin = rangeX.lower + i * deltaRange;
 			String label = decimalFormatX.format(axisScaleConverterX != null ? axisScaleConverterX.convertToSecondaryUnit(xMin) : xMin);
 			int widthText = fontMetrics.stringWidth(label);
@@ -223,6 +224,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 
 	private void drawAxisY(Graphics2D graphics2D, IPoint scale, BaseChart baseChart, int indexAxisY, PageSettings pageSettings) {
 
+		int numberTics = pageSettings.getChartSettings().getNumberTics();
 		double width = pageSettings.getWidth();
 		double height = pageSettings.getHeight();
 		double xBorderLeft = pageSettings.getBorderLeftX();
@@ -255,8 +257,8 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		 */
 		Range rangeY = axisY.getRange();
 		double lower = baseChart.getMinY();
-		double deltaRange = (rangeY.upper - lower) / NUMBER_TICS; // Watch Out: Force to have no offset
-		double deltaHeight = (height - yBorderTop - yBorderBottom) / NUMBER_TICS;
+		double deltaRange = (rangeY.upper - lower) / numberTics; // Watch Out: Force to have no offset
+		double deltaHeight = (height - yBorderTop - yBorderBottom) / numberTics;
 		/*
 		 * Scale
 		 */
@@ -273,7 +275,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		if(isGridDisplayed(baseChart.getChartSettings())) {
 			graphics2D.setStroke(pageSettings.getStrokeDash());
 			graphics2D.setColor(pageSettings.getColorGray());
-			for(int i = 0; i < NUMBER_TICS; i++) {
+			for(int i = 0; i < numberTics; i++) {
 				int x1 = (int)(xBorderLeft);
 				int x2 = (int)(width - xBorderRight);
 				int y = (int)(yBorderTop + i * deltaHeight);
@@ -285,8 +287,8 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		 */
 		graphics2D.setStroke(pageSettings.getStrokeSolid());
 		graphics2D.setColor(pageSettings.getColorBlack());
-		for(int i = 0; i < NUMBER_TICS; i++) {
-			double yMin = lower + (NUMBER_TICS - i) * deltaRange;
+		for(int i = 0; i < numberTics; i++) {
+			double yMin = lower + (numberTics - i) * deltaRange;
 			String label = decimalFormatY.format((axisScaleConverterY != null) ? axisScaleConverterY.convertToSecondaryUnit(yMin) : yMin);
 			int heightText = fontMetrics.getHeight();
 			int x1 = (int)(xBorderLeft / 2.5d);
@@ -633,7 +635,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 			/*
 			 * Factor 2, otherwise symbols font is too small.
 			 */
-			double size = (symbolSize * pageSettings.getFactorGraphics());
+			double size = (symbolSize * pageSettings.getChartSettings().getFactorGraphics());
 			graphics2D.setFont(pageSettings.getFont(symbolSize * 2.0f));
 			graphics2D.setColor(AWTUtils.convertColor(pointSeriesSettings.getSymbolColor()));
 			for(IPoint point : points) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Lablicate GmbH.
+ * Copyright (c) 2023, 2025 Lablicate GmbH.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -16,11 +16,14 @@ import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
 
 import net.openchrom.swtchart.extension.export.vectorgraphics.Activator;
 import net.openchrom.swtchart.extension.export.vectorgraphics.model.PageSizeOption;
+import net.openchrom.swtchart.extension.export.vectorgraphics.model.PageUnit;
 
 public class PreferenceSupplier extends AbstractPreferenceSupplier implements IPreferenceSupplier {
 
 	public static final String P_PAGE_SIZE_OPTION = "pageSizeOption";
 	public static final String DEF_PAGE_SIZE_OPTION = PageSizeOption.FULL_LANDSCAPE.name();
+	public static final String P_PAGE_UNIT = "pageUnit";
+	public static final String DEF_PAGE_UNIT = PageUnit.MM.name();
 	//
 	public static final String P_PATH_IMPORT = "pathImport";
 	public static final String DEF_PATH_IMPORT = "";
@@ -64,6 +67,20 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static void setPageSizeOption(PageSizeOption pageSizeOption) {
 
 		INSTANCE().put(P_PAGE_SIZE_OPTION, pageSizeOption.name());
+	}
+
+	public static PageUnit getPageUnit() {
+
+		try {
+			return PageUnit.valueOf(INSTANCE().get(P_PAGE_UNIT, DEF_PAGE_UNIT));
+		} catch(Exception e) {
+			return PageUnit.MM;
+		}
+	}
+
+	public static void setPageUnit(PageUnit pageUnit) {
+
+		INSTANCE().put(P_PAGE_UNIT, pageUnit.name());
 	}
 
 	public static String getPathImport() {

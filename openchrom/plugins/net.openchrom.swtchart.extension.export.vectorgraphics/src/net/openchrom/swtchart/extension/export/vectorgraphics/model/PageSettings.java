@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Lablicate GmbH.
+ * Copyright (c) 2023, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -29,8 +29,7 @@ public class PageSettings {
 	private static final int SIZE_FONT_STANDARD = 14;
 	private static final String TYPE_FONT_STANDARD = "Arial";
 	//
-	private float factorGraphics = 1.0f;
-	private float factorFont = 1.0f;
+	private ChartSettings chartSettings;
 	//
 	private double width = 0;
 	private double height = 0;
@@ -56,41 +55,16 @@ public class PageSettings {
 	public PageSettings(PageSizeOption pageSizeOption) {
 
 		PageSize pageSize = pageSizeOption.pageSize();
-		//
-		this.factorGraphics = pageSizeOption.factorGraphics();
-		this.factorFont = pageSizeOption.factorFont();
-		//
+		this.chartSettings = pageSizeOption.chartSettings();
 		this.width = pageSize.getWidth();
 		this.height = pageSize.getHeight();
-		//
-		this.borderLeftX = 150 * factorGraphics;
-		this.borderRightX = 50 * factorGraphics;
-		this.borderTopY = 50 * factorGraphics;
-		this.borderBottomY = 100 * factorGraphics;
-		this.intentX = 5 * factorGraphics;
-		this.intentY = 5 * factorGraphics;
-		//
-		// BasicStroke.CAP_SQUARE;
-		// BasicStroke.CAP_BUTT;
-		// BasicStroke.CAP_ROUND;
-		//
-		// BasicStroke.JOIN_ROUND;
-		// BasicStroke.JOIN_MITER;
-		// BasicStroke.JOIN_BEVEL;
-		//
-		this.font = getFont(factorFont);
-		//
-		this.strokeSolid = getStrokeSolid(factorGraphics);
-		this.strokeDash = getStrokeDash(factorGraphics);
-		this.strokeDot = getStrokeDot(factorGraphics);
-		this.strokeDashDot = getStrokeDashDot(factorGraphics);
-		this.strokeDashDotDot = getStrokeDashDotDot(factorGraphics);
+		updateFactors();
 	}
 
 	public BasicStroke getStroke(LineStyle lineStyle, int lineWidth) {
 
 		BasicStroke stroke = null;
-		float width = lineWidth * factorGraphics;
+		float width = lineWidth * chartSettings.getFactorGraphics();
 		//
 		switch(lineStyle) {
 			case DASH:
@@ -114,14 +88,15 @@ public class PageSettings {
 		return stroke;
 	}
 
-	public float getFactorGraphics() {
+	public ChartSettings getChartSettings() {
 
-		return factorGraphics;
+		return chartSettings;
 	}
 
-	public float getFactorFont() {
+	public void updateChartSettings(ChartSettings chartSettings) {
 
-		return factorFont;
+		this.chartSettings = chartSettings;
+		updateFactors();
 	}
 
 	public double getWidth() {
@@ -239,5 +214,34 @@ public class PageSettings {
 
 		float halfWidth = width / 2.0f;
 		return new BasicStroke(width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0.0f, new float[]{width, width, halfWidth, width, halfWidth, width}, 0.0f);
+	}
+
+	private void updateFactors() {
+
+		float factorGraphics = chartSettings.getFactorGraphics();
+		float factorFont = chartSettings.getFactorFont();
+		//
+		this.borderLeftX = 150 * factorGraphics;
+		this.borderRightX = 50 * factorGraphics;
+		this.borderTopY = 50 * factorGraphics;
+		this.borderBottomY = 100 * factorGraphics;
+		this.intentX = 5 * factorGraphics;
+		this.intentY = 5 * factorGraphics;
+		//
+		// BasicStroke.CAP_SQUARE;
+		// BasicStroke.CAP_BUTT;
+		// BasicStroke.CAP_ROUND;
+		//
+		// BasicStroke.JOIN_ROUND;
+		// BasicStroke.JOIN_MITER;
+		// BasicStroke.JOIN_BEVEL;
+		//
+		this.font = getFont(factorFont);
+		//
+		this.strokeSolid = getStrokeSolid(factorGraphics);
+		this.strokeDash = getStrokeDash(factorGraphics);
+		this.strokeDot = getStrokeDot(factorGraphics);
+		this.strokeDashDot = getStrokeDashDot(factorGraphics);
+		this.strokeDashDotDot = getStrokeDashDotDot(factorGraphics);
 	}
 }
