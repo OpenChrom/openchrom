@@ -65,8 +65,6 @@ import net.openchrom.swtchart.extension.export.vectorgraphics.support.AWTUtils;
  */
 public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 
-	private static final PageSizeOption FULL_LANDSCAPE = PageSizeOption.FULL_LANDSCAPE;
-
 	@Override
 	public CommandSequence getCommandSequence(Shell shell, PageSizeOption pageSizeOption, ScrollableChart scrollableChart) {
 
@@ -91,7 +89,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		 * Use the full landscape and then scale the image.
 		 */
 		VectorGraphics2D graphics2D = new VectorGraphics2D();
-		PageSettings pageSettings = new PageSettings(FULL_LANDSCAPE);
+		PageSettings pageSettings = new PageSettings(PageSettings.FULL_LANDSCAPE);
 		pageSettings.updateChartSettings(pageSizeOption.chartSettings());
 		graphics2D.setStroke(pageSettings.getStrokeSolid());
 		graphics2D.setFont(pageSettings.getFont());
@@ -100,10 +98,10 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		 * Scale to selected end format.
 		 */
 		Point scale;
-		if(FULL_LANDSCAPE.equals(pageSizeOption)) {
+		if(PageSettings.FULL_LANDSCAPE.equals(pageSizeOption)) {
 			scale = new Point(1.0, 1.0);
 		} else {
-			PageSize pageSizeFull = FULL_LANDSCAPE.pageSize();
+			PageSize pageSizeFull = PageSettings.FULL_LANDSCAPE.pageSize();
 			double x = pageSize.getWidth() / pageSizeFull.getWidth();
 			double y = pageSize.getHeight() / pageSizeFull.getHeight();
 			scale = new Point(x, y);
@@ -632,10 +630,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		PlotSymbolType symbolType = pointSeriesSettings.getSymbolType();
 		//
 		if(symbolSize > 0 && !PlotSymbolType.NONE.equals(symbolType)) {
-			/*
-			 * Factor 2, otherwise symbols font is too small.
-			 */
-			double size = (symbolSize * pageSettings.getChartSettings().getFactorGraphics());
+			double size = (symbolSize * pageSettings.getFactorGraphicsFullLandscape());
 			graphics2D.setFont(pageSettings.getFont(symbolSize * 2.0f));
 			graphics2D.setColor(AWTUtils.convertColor(pointSeriesSettings.getSymbolColor()));
 			for(IPoint point : points) {

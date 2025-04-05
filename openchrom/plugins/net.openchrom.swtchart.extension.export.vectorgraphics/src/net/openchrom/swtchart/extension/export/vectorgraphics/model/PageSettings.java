@@ -26,8 +26,12 @@ public class PageSettings {
 
 	public static final int STYLE_FONT_STANDARD = Font.PLAIN;
 	//
+	public static final PageSizeOption FULL_LANDSCAPE = PageSizeOption.FULL_LANDSCAPE;
+	//
 	private static final int SIZE_FONT_STANDARD = 14;
 	private static final String TYPE_FONT_STANDARD = "Arial";
+	private static final float FACTOR_GRAPHICS = 20.0f;
+	private static final float FACTOR_FONT = 20.0f;
 	//
 	private ChartSettings chartSettings;
 	//
@@ -61,10 +65,20 @@ public class PageSettings {
 		updateFactors();
 	}
 
+	public float getFactorGraphicsFullLandscape() {
+
+		return chartSettings.getFactorGraphics() * FACTOR_GRAPHICS;
+	}
+
+	public float getFactorFontFullLandscape() {
+
+		return chartSettings.getFactorFont() * FACTOR_FONT;
+	}
+
 	public BasicStroke getStroke(LineStyle lineStyle, int lineWidth) {
 
 		BasicStroke stroke = null;
-		float width = lineWidth * chartSettings.getFactorGraphics();
+		float width = lineWidth * getFactorGraphicsFullLandscape();
 		//
 		switch(lineStyle) {
 			case DASH:
@@ -218,8 +232,8 @@ public class PageSettings {
 
 	private void updateFactors() {
 
-		float factorGraphics = chartSettings.getFactorGraphics();
-		float factorFont = chartSettings.getFactorFont();
+		float factorGraphics = getFactorGraphicsFullLandscape();
+		float factorFont = getFactorFontFullLandscape();
 		//
 		this.borderLeftX = 150 * factorGraphics;
 		this.borderRightX = 50 * factorGraphics;

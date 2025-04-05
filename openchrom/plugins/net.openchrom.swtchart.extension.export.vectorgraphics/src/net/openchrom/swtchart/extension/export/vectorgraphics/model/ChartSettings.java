@@ -16,10 +16,10 @@ import java.util.Objects;
 public class ChartSettings {
 
 	/*
-	 * The defaults are maximized to full size landscape.
+	 * 1 = 100% (optimum)
 	 */
-	private float factorGraphics = 20.0f;
-	private float factorFont = 20.0f;
+	private float factorGraphics = 1.0f;
+	private float factorFont = 1.0f;
 	private int numberTics = 20;
 
 	public float getFactorGraphics() {

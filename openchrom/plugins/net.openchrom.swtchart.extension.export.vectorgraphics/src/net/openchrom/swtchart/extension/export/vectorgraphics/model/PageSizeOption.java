@@ -69,8 +69,8 @@ public enum PageSizeOption implements ILabel {
 	private static ChartSettings getChartSettings() {
 
 		ChartSettings chartSettings = new ChartSettings();
-		chartSettings.setFactorFont(20.0f);
-		chartSettings.setFactorGraphics(20.0f);
+		chartSettings.setFactorFont(1.0f);
+		chartSettings.setFactorGraphics(1.0f);
 		chartSettings.setNumberTics(20);
 
 		return chartSettings;

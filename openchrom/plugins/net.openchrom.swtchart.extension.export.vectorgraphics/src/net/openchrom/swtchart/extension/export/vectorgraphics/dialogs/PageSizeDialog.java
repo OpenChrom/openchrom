@@ -246,7 +246,7 @@ public class PageSizeDialog extends Dialog {
 
 		Text text = new Text(parent, SWT.BORDER);
 		text.setText("");
-		text.setToolTipText("Graphics Factor");
+		text.setToolTipText("Graphics Factor (1 = 100%)");
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 3;
 		text.setLayoutData(gridData);
@@ -277,7 +277,7 @@ public class PageSizeDialog extends Dialog {
 
 		Text text = new Text(parent, SWT.BORDER);
 		text.setText("");
-		text.setToolTipText("Font Factor");
+		text.setToolTipText("Font Factor (1 = 100%)");
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 3;
 		text.setLayoutData(gridData);
