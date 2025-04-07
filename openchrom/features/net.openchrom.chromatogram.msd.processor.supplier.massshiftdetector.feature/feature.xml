@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.feature"
       label="Mass Shift Detector"
-      version="1.5.5.qualifier"
+      version="1.5.6.qualifier"
       provider-name="OpenChrom" plugin="net.openchrom.feature.branding"
       license-feature="org.eclipse.license"
       license-feature-version="1.0.0.qualifier">
