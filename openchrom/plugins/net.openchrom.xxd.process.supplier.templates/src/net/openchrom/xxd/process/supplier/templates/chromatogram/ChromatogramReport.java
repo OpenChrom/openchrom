@@ -50,7 +50,7 @@ public class ChromatogramReport extends AbstractChromatogramReportGenerator {
 					ReportWriter reportWriter = new ReportWriter();
 					reportWriter.generate(file, append, chromatograms, reportSettings, monitor);
 					processingInfo.setProcessingResult(file);
-					if(PreferenceSupplier.isOpenReportAfterProcessing()) {
+					if(reportSettings.isOpenReportAfterProcessing()) {
 						UpdateNotifier.update(TOPIC_PROCESSING_FILE_CREATED, file);
 					}
 				} catch(IOException e) {

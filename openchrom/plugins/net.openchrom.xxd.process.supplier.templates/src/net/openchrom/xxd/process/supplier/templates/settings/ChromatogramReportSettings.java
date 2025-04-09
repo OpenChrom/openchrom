@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2024 Lablicate GmbH.
+ * Copyright (c) 2020, 2025 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -63,6 +63,9 @@ public class ChromatogramReportSettings extends DefaultChromatogramReportSetting
 	@JsonProperty(value = "Format Concentration (Pattern)", defaultValue = "0.000")
 	@JsonPropertyDescription(value = "Use the decimal format pattern to print concentrations. If empty, print value wihtout formatting.")
 	private String formatConcentration = "0.000";
+	@JsonProperty(value = "Open Report", defaultValue = "false")
+	@JsonPropertyDescription(value = "Opens the report with the system application if available after processing.")
+	private boolean openReportAfterProcessing = false;
 
 	public boolean isPrintHeader() {
 
@@ -172,5 +175,15 @@ public class ChromatogramReportSettings extends DefaultChromatogramReportSetting
 	public void setFormatConcentration(String formatConcentration) {
 
 		this.formatConcentration = formatConcentration;
+	}
+
+	public boolean isOpenReportAfterProcessing() {
+
+		return openReportAfterProcessing;
+	}
+
+	public void setOpenReportAfterProcessing(boolean openReportAfterProcessing) {
+
+		this.openReportAfterProcessing = openReportAfterProcessing;
 	}
 }
