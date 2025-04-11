@@ -212,10 +212,6 @@
          version="0.0.0"/>
 
    <plugin
-         id="wrapped.org.jdom.jdom2"
-         version="0.0.0"/>
-
-   <plugin
          id="javax.vecmath"
          version="0.0.0"/>
 
@@ -453,6 +449,10 @@
 
    <plugin
          id="org.apache.logging.log4j.core"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.jdom2"
          version="0.0.0"/>
 
 </feature>

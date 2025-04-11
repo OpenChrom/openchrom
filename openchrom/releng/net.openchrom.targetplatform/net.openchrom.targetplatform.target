@@ -6,6 +6,8 @@
 		<repository location="https://download.eclipse.org/releases/2025-03/"/>
 		<unit id="org.eclipse.equinox.sdk.feature.group"/>
 		<unit id="org.eclipse.sdk.feature.group"/>
+		<unit id="com.google.protobuf"/>
+		<unit id="org.jdom2"/>
 	</location>
 	<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 		<repository location="https://download.eclipse.org/cbi/updates/license/1.0.0.v20131003-1638/"/>
@@ -144,29 +146,9 @@
 	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
 		<dependencies>
 			<dependency>
-				<groupId>com.google.protobuf</groupId>
-				<artifactId>protobuf-java</artifactId>
-				<version>3.21.5</version>
-				<type>jar</type>
-			</dependency>
-		</dependencies>
-	</location>
-	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
-		<dependencies>
-			<dependency>
 				<groupId>com.google.re2j</groupId>
 				<artifactId>re2j</artifactId>
 				<version>1.7</version>
-				<type>jar</type>
-			</dependency>
-		</dependencies>
-	</location>
-	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
-		<dependencies>
-			<dependency>
-				<groupId>org.jdom</groupId>
-				<artifactId>jdom2</artifactId>
-				<version>2.0.6.1</version>
 				<type>jar</type>
 			</dependency>
 		</dependencies>
