@@ -16,7 +16,6 @@ import java.util.List;
 
 import org.eclipse.chemclipse.support.ui.provider.ListContentProvider;
 import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.widgets.Composite;
 
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time.TimeRatioEditingSupport;
@@ -53,7 +52,7 @@ public class TimeRatioListUI extends AbstractRatioListUI {
 		setLabelProvider(labelProvider);
 		setContentProvider(new ListContentProvider());
 		setComparator(tableComparator);
-		setFilters(new ViewerFilter[]{getPeakRatioFilter()});
+		setFilters(getPeakRatioFilter());
 		setEditingSupport();
 		setCellColorProvider();
 	}
