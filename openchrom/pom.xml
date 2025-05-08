@@ -18,7 +18,7 @@
 		<tycho.version>4.0.12</tycho.version>
 		<pmd.version>3.26.0</pmd.version>
 		<checkstyle.version>3.6.0</checkstyle.version>
-		<maven-install-plugin.version>3.1.3</maven-install-plugin.version>
+		<maven-install-plugin.version>3.1.4</maven-install-plugin.version>
 		<cbi-version>1.5.2</cbi-version>
 		<!-- definition of the target to use -->
 		<tycho.target.groupId>net.openchrom</tycho.target.groupId>
