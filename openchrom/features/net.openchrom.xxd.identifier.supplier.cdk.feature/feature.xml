@@ -17,7 +17,7 @@
    </copyright>
 
    <license url="%licenseURL">
-         %license
+      %license
    </license>
 
    <requires>
@@ -38,6 +38,10 @@
 
    <plugin
          id="wrapped.uk.ac.ebi.beam.beam-core"
+         version="0.0.0"/>
+
+   <plugin
+         id="net.openchrom.thirdparty.inchi"
          version="0.0.0"/>
 
 </feature>
