@@ -1,4 +1,4 @@
-# Copyright (c) 2020, 2023 Contributors to the Eclipse Foundation
+# Copyright (c) 2020, 2025 Contributors to the Eclipse Foundation
 #
 #  Contributors:
 #  Thomas Jaeckle - initial API and implementation
@@ -24,29 +24,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: masesgroup/retrieve-changed-files@v3
-        id: changed-files
-        continue-on-error: true
-      - name: Print changed files
+
+      - name: Find changed Java files
+        id: changed
+        shell: bash
         run: |
-          echo "Changed:"
-          echo "${{ steps.changed-files.outputs.added_modified }}"
+          git fetch origin ${{ github.event.pull_request.base.ref }}
+          CHANGED_FILES=$(git diff --name-only origin/${{ github.event.pull_request.base.ref }})
+          echo "java=$(echo "$CHANGED_FILES" | grep '\.java$' || true)" >> $GITHUB_OUTPUT
+
       - name: Check year in license header
         shell: bash
         run: |
-          included_file_endings=".*\.(java)"
           current_year=$(date +'%Y')
           missing_counter=0
-          for file in ${{ steps.changed-files.outputs.added_modified }}; do
-            if [[ $file =~ $included_file_endings ]]; then
-              if grep -q "Copyright (c) $current_year" $file; then
-                printf "\xE2\x9C\x94 $file\n"
-              elif grep -q "Copyright (c) [0-9]\{4\}, $current_year" $file; then
-                printf "\xE2\x9C\x94 $file\n"
-              else
-                printf "\xE2\x9D\x8C $file\n\tCopyright header with '$current_year' is missing from changed file.\n"
-                missing_counter=$(expr $missing_counter + 1)
-              fi
+          for file in ${{ steps.changed.outputs.java }}; do
+            if grep -q "Copyright (c) $current_year" $file; then
+              printf "\xE2\x9C\x94 $file\n"
+            elif grep -q "Copyright (c) [0-9]\{4\}, $current_year" $file; then
+              printf "\xE2\x9C\x94 $file\n"
+            else
+              printf "\xE2\x9D\x8C $file\n\tCopyright header with '$current_year' is missing from changed file.\n"
+              missing_counter=$(expr $missing_counter + 1)
             fi
           done
           exit $missing_counter
