@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="net.openchrom.xxd.converter.supplier.rdx3.feature"
+      label="RDX3"
+      version="1.5.10.qualifier"
+      provider-name="Lablicate GmbH"
+      license-feature="com.lablicate.converter.license"
+      license-feature-version="1.0.0.qualifier">
+
+   <description url="https://www.lablicate.com">
+      R-Project (RDX3) .RData export.
+   </description>
+
+   <copyright url="https://www.lablicate.com">
+      Copyright (c) 2025 Lablicate GmbH.
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <plugin
+         id="net.openchrom.xxd.converter.supplier.rdx3"
+         version="0.0.0"/>
+
+</feature>

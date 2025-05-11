@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.chemclipse.msd.converter.chromatogramSupplier">
+      <ChromatogramSupplier
+            description="Export RData Chromatogram."
+            exportConverter="net.openchrom.xxd.converter.supplier.rdx3.converter.ChromatogramExportConverterMSD"
+            isImportable="false"
+            isExportable="true"
+            fileExtension=".RData"
+            filterName="R Data (*.RData)"
+            id="net.openchrom.msd.converter.supplier.rdx3"
+            importMagicNumberMatcher="net.openchrom.xxd.converter.supplier.rdx3.converter.MagicNumberMatcher">
+      </ChromatogramSupplier>
+   </extension>
+</plugin>
