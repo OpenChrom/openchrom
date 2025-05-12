@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.msd.converter.supplier.gaml
 Bundle-ManifestVersion: 2
 Bundle-Name: GAML
 Bundle-SymbolicName: net.openchrom.xxd.converter.supplier.gaml;singleton:=true
-Bundle-Version: 1.5.9.qualifier
+Bundle-Version: 1.5.10.qualifier
 Bundle-Activator: net.openchrom.xxd.converter.supplier.gaml.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,

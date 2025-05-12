@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.swtchart.extension.export.vectorgraphics.feature"
       label="VectorGraphics 2D"
-      version="1.5.9.qualifier"
+      version="1.5.10.qualifier"
       provider-name="OpenChrom"
       plugin="net.openchrom.feature.branding">
 
