@@ -4,7 +4,7 @@
       label="TraceCompare CAMAG (*.DFM)"
       version="1.5.10.qualifier"
       provider-name="OpenChrom" plugin="net.openchrom.feature.branding"
-      license-feature="org.eclipse.license" license-feature-version="1.0.0.qualifier">
+      license-feature="org.eclipse.license" license-feature-version="2.0.2.qualifier">
 
    <description url="http://www.openchrom.net">
       This processor helps to compare chromatographic traces.
