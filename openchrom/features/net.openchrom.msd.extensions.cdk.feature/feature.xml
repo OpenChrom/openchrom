@@ -5,7 +5,7 @@
       version="1.5.10.qualifier"
       provider-name="OpenChrom"
       license-feature="org.eclipse.license"
-      license-feature-version="1.0.0.qualifier">
+      license-feature-version="2.0.2.qualifier">
 
    <description url="https://www.openchrom.net">
       CDK Mass Spectrometry Extension
