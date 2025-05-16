@@ -168,23 +168,6 @@
 
       <pluginDescriptor
             categoryId="com.lablicate.openchrom.converters.proprietary"
-            description="Reads *.dat files."
-            groupId="net.openchrom.csd.converter"
-            id="net.openchrom.csd.converter.supplier.labjack.feature"
-            kind="converter"
-            license="Converter License Terms"
-            name="Labjack Data Aquisition"
-            provider="Lablicate"
-            urls="https://converter.openchrom.net/1.5.10/">
-         <icon image32="icons/32x32/Labjack.png">
-         </icon>
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
-      </pluginDescriptor>
-
-      <pluginDescriptor
-            categoryId="com.lablicate.openchrom.converters.proprietary"
             description="Reads *.D/*.ch files."
             groupId="net.openchrom.msd.converter"
             id="net.openchrom.csd.converter.supplier.masshunter.feature"
