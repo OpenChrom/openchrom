@@ -126,13 +126,13 @@
 			<dependency>
 				<groupId>edu.ucar</groupId>
 				<artifactId>cdm-core</artifactId>
-				<version>5.7.0</version>
+				<version>5.8.0</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>edu.ucar</groupId>
 				<artifactId>udunits</artifactId>
-				<version>5.7.0</version>
+				<version>5.8.0</version>
 				<type>jar</type>
 			</dependency>
 		</dependencies>
