@@ -7,9 +7,9 @@ There are many ways in which you can contribute, beyond writing code. The goal o
 
 ## Asking Questions
 
-Have a question? Rather than opening an issue, please ask away on [Stack Overflow](https://stackoverflow.com/questions/tagged/openchrom) using the tag `openchrom`.
+Have a question? Rather than opening an issue, please ask away on [Stack Overflow](https://stackoverflow.com/questions/tagged/openchrom) using the tag `openchrom` or use [GitHub Discussions](https://github.com/OpenChrom/openchrom/discussions).
 
-We will be happy to aswer your questions which will serve as a resource to others searching for help.
+We will be happy to answer your questions which will serve as a resource to others searching for help.
 
 ## Writing Code
 
