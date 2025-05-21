@@ -139,7 +139,7 @@
 		<repositories>
 			<repository>
 				<id>Unidata All</id>
-				<url>https://artifacts.unidata.ucar.edu/repository/unidata-all/</url>
+				<url>https://mirror.openchrom.net/ucar/unidata-all</url>
 			</repository>
 		</repositories>
 	</location>
