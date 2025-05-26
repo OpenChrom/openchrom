@@ -21,7 +21,9 @@
 		<maven-install-plugin.version>3.1.4</maven-install-plugin.version>
 		<cbi-version>1.5.2</cbi-version>
 		<!-- definition of the target to use -->
-		<tycho.target>net.openchrom.targetplatform</tycho.target>
+		<tycho.target.groupId>net.openchrom</tycho.target.groupId>
+		<tycho.target.artifactId>net.openchrom.targetplatform</tycho.target.artifactId>
+		<tycho.target.version>${project.version}</tycho.target.version>
 		<skip.install>false</skip.install>
 		<!-- other settings -->
 		<tycho.groupid>org.eclipse.tycho</tycho.groupid>
@@ -53,7 +55,11 @@
 				<version>${tycho.version}</version>
 				<configuration>
 					<target>
-						<file>${maven.multiModuleProjectDirectory}/releng/${tycho.target}/${tycho.target}.target</file>
+						<artifact>
+							<groupId>${tycho.target.groupId}</groupId>
+							<artifactId>${tycho.target.artifactId}</artifactId>
+							<version>${tycho.target.version}</version>
+						</artifact>
 					</target>
 					<environments>
 						<environment>
