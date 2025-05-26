@@ -21,6 +21,7 @@
 -Dosgi.instance.area=@user.home/OpenChrom/1.5.x
 -Dosgi.user.area=@user.home/.openchrom/1.5.x
 -Dorg.eclipse.update.reconcile=false
+-Dorg.eclipse.help.webapp.experimental.ui=true
 -Dp2.trustedAuthorities=https://converter.openchrom.net,https://plugins.openchrom.net,https://update.openchrom.net
 -XX:+UseG1GC
 -XX:+UseStringDeduplication
