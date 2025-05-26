@@ -5,7 +5,7 @@ Bundle-Activator: net.openchrom.installer.Activator
 Bundle-ManifestVersion: 2
 Bundle-Name: Lablicate Installer
 Bundle-SymbolicName: net.openchrom.installer;singleton:=true
-Bundle-Version: 1.5.11.qualifier
+Bundle-Version: 1.5.12.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-Vendor: Lablicate GmbH
 Require-Bundle: org.eclipse.core.runtime,
