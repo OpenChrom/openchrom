@@ -8,9 +8,22 @@
             uri="fragment.e4xmi">
       </fragment>
    </extension>
+
    <extension id="net.openchrom.feature.branding.pgpkeys"
-   		point="org.eclipse.equinox.p2.engine.pgp">
-   		<trustedKeys path="trustedkeys/orbit.asc"/>
-   	</extension>
+         point="org.eclipse.equinox.p2.engine.pgp">
+         <trustedKeys path="trustedkeys/lablicate.asc"/>
+   </extension>
+   <extension id="net.openchrom.feature.branding.pgpkeys"
+         point="org.eclipse.equinox.p2.engine.pgp">
+         <trustedKeys path="trustedkeys/linuxtools.asc"/>
+   </extension>
+   <extension id="net.openchrom.feature.branding.pgpkeys"
+         point="org.eclipse.equinox.p2.engine.pgp">
+         <trustedKeys path="trustedkeys/orbit.asc"/>
+   </extension>
+   <extension id="net.openchrom.feature.branding.pgpkeys"
+         point="org.eclipse.equinox.p2.engine.pgp">
+         <trustedKeys path="trustedkeys/simrel.asc"/>
+   </extension>
 
 </plugin>
