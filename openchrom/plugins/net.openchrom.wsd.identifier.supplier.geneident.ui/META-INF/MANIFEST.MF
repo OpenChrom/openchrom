@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Automatic-Module-Name: net.openchrom.wsd.identifier.supplier.geneident.ui
 Bundle-SymbolicName: net.openchrom.wsd.identifier.supplier.geneident.ui;singleton:=true
 Bundle-Name: GeneIdent UI
-Bundle-Version: 1.5.12.qualifier
+Bundle-Version: 1.5.13.qualifier
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime;bundle-version="3.11.1",
  org.eclipse.chemclipse.support.ui;bundle-version="0.8.0",

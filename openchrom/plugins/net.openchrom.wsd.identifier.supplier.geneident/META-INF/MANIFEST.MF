@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.wsd.identifier.supplier.geneident
 Bundle-ManifestVersion: 2
 Bundle-Name: GeneIdent
 Bundle-SymbolicName: net.openchrom.wsd.identifier.supplier.geneident
-Bundle-Version: 1.5.12.qualifier
+Bundle-Version: 1.5.13.qualifier
 Bundle-Activator: net.openchrom.wsd.identifier.supplier.geneident.Activator
 Bundle-Vendor: Lablicate GmbH
 Require-Bundle: org.eclipse.core.runtime
