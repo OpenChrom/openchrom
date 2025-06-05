@@ -336,7 +336,9 @@ public class ExtendedPeakReviewUI extends Composite implements IExtendedPartUI {
 			for(int i = 0; i < peaks.size(); i++) {
 				if(peaks.get(i) == peak) {
 					if(ReviewSupport.isCompoundAvailable(peak.getTargets(), reviewSetting)) {
-						peakStatusControl.get().getTable().select(i);
+						Table table = peakStatusControl.get().getTable();
+						table.deselectAll();
+						table.select(i);
 						break exitloop;
 					}
 				}
@@ -352,7 +354,9 @@ public class ExtendedPeakReviewUI extends Composite implements IExtendedPartUI {
 				for(int i = 0; i < peaks.size(); i++) {
 					IPeak peak = peaks.get(i);
 					if(ReviewSupport.isCompoundAvailable(peak.getTargets(), reviewSetting)) {
-						peakStatusControl.get().getTable().select(i);
+						Table table = peakStatusControl.get().getTable();
+						table.deselectAll();
+						table.select(i);
 						break exitloop;
 					}
 				}
