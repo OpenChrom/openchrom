@@ -33,7 +33,7 @@ public class PeakStatusListUI extends ExtendedTableViewer {
 
 	private static final String[] TITLES = PeakStatusLabelProvider.TITLES;
 	private static final int[] BOUNDS = PeakStatusLabelProvider.BOUNDS;
-	//
+
 	private PeakStatusLabelProvider labelProvider = new PeakStatusLabelProvider();
 	private PeakStatusComparator tableComparator = new PeakStatusComparator();
 	private ReviewSetting reviewSetting;

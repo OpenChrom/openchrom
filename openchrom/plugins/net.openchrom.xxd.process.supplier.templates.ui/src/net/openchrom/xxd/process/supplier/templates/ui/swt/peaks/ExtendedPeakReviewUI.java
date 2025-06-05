@@ -54,17 +54,17 @@ import net.openchrom.xxd.process.supplier.templates.ui.swt.PeakStatusListUI;
 public class ExtendedPeakReviewUI extends Composite implements IExtendedPartUI {
 
 	private static final String MENU_CATEGORY_PEAKS = "Peaks";
-	//
+
 	private ReviewController controller;
 	private Text textTarget;
-	//
+
 	private AtomicReference<PeakStatusListUI> peakStatusControl = new AtomicReference<>();
 	private Button buttonToolbarInfo;
 	private AtomicReference<InformationUI> toolbarInfo = new AtomicReference<>();
-	//
+
 	private List<IPeak> peaks;
 	private ReviewSetting reviewSetting;
-	//
+
 	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.0000");
 
 	public ExtendedPeakReviewUI(Composite parent, int style) {
@@ -77,7 +77,7 @@ public class ExtendedPeakReviewUI extends Composite implements IExtendedPartUI {
 
 		this.reviewSetting = reviewSetting;
 		this.peaks = peaks;
-		//
+
 		update(reviewSetting);
 		peakStatusControl.get().setInput(peaks);
 		if(peak != null) {
@@ -85,7 +85,7 @@ public class ExtendedPeakReviewUI extends Composite implements IExtendedPartUI {
 		} else {
 			autoSelectBestMatch();
 		}
-		//
+
 		updateSelection(false);
 	}
 
@@ -98,11 +98,11 @@ public class ExtendedPeakReviewUI extends Composite implements IExtendedPartUI {
 
 		GridLayout gridLayout = new GridLayout(1, true);
 		setLayout(gridLayout);
-		//
+
 		createToolbarMain(this);
 		createTablePeaks(this);
 		createToolbarInfo(this);
-		//
+
 		initialize();
 	}
 
@@ -116,7 +116,7 @@ public class ExtendedPeakReviewUI extends Composite implements IExtendedPartUI {
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		composite.setLayout(new GridLayout(5, false));
-		//
+
 		textTarget = createTargetText(composite);
 		buttonToolbarInfo = createButtonToggleToolbar(composite, toolbarInfo, IMAGE_INFO, TOOLTIP_INFO);
 		createMarkPeakButton(composite);
@@ -128,7 +128,7 @@ public class ExtendedPeakReviewUI extends Composite implements IExtendedPartUI {
 
 		Text text = new Text(parent, SWT.BORDER | SWT.READ_ONLY);
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		//
+
 		return text;
 	}
 
@@ -192,7 +192,7 @@ public class ExtendedPeakReviewUI extends Composite implements IExtendedPartUI {
 		PeakStatusListUI peakStatusListUI = new PeakStatusListUI(parent, SWT.BORDER | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
 		Table table = peakStatusListUI.getTable();
 		table.setLayoutData(new GridData(GridData.FILL_BOTH));
-		//
+
 		table.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -201,7 +201,7 @@ public class ExtendedPeakReviewUI extends Composite implements IExtendedPartUI {
 				updateSelection(false);
 			}
 		});
-		//
+
 		table.addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -218,7 +218,7 @@ public class ExtendedPeakReviewUI extends Composite implements IExtendedPartUI {
 		addDeleteMenuEntry(shell, tableSettings);
 		addKeyEventProcessors(shell, tableSettings);
 		peakStatusListUI.applySettings(tableSettings);
-		//
+
 		peakStatusControl.set(peakStatusListUI);
 	}
 
@@ -226,7 +226,7 @@ public class ExtendedPeakReviewUI extends Composite implements IExtendedPartUI {
 
 		InformationUI informationUI = new InformationUI(parent, SWT.NONE);
 		informationUI.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		//
+
 		toolbarInfo.set(informationUI);
 	}
 
@@ -254,7 +254,6 @@ public class ExtendedPeakReviewUI extends Composite implements IExtendedPartUI {
 		});
 	}
 
-	@SuppressWarnings("rawtypes")
 	private void deletePeaks(Shell shell) {
 
 		if(reviewSetting != null) {
@@ -266,14 +265,14 @@ public class ExtendedPeakReviewUI extends Composite implements IExtendedPartUI {
 				 * Delete Peaks
 				 */
 				List<IPeak> peaksToDelete = new ArrayList<>();
-				Iterator iterator = peakStatusControl.get().getStructuredSelection().iterator();
+				Iterator<?> iterator = peakStatusControl.get().getStructuredSelection().iterator();
 				while(iterator.hasNext()) {
 					Object object = iterator.next();
 					if(object instanceof IPeak peak) {
 						peaksToDelete.add(peak);
 					}
 				}
-				//
+
 				controller.deletePeaks(messageBox.getParent(), peaksToDelete);
 			}
 		}
@@ -392,7 +391,7 @@ public class ExtendedPeakReviewUI extends Composite implements IExtendedPartUI {
 			 * Peak -> Quant
 			 */
 			List<IQuantitationEntry> quantitationEntries = peak.getQuantitationEntries();
-			//
+
 			builder.append("Quantitations");
 			builder.append(" ");
 			builder.append("(");
@@ -400,7 +399,7 @@ public class ExtendedPeakReviewUI extends Composite implements IExtendedPartUI {
 			builder.append(")");
 			builder.append(":");
 			builder.append(" ");
-			//
+
 			if(!quantitationEntries.isEmpty()) {
 				IQuantitationEntry quantitationEntry = peak.getQuantitationEntries().get(0);
 				builder.append(quantitationEntry.getName());
@@ -413,7 +412,7 @@ public class ExtendedPeakReviewUI extends Composite implements IExtendedPartUI {
 			}
 		}
 		toolbarInfo.get().setText(builder.toString());
-		//
+
 		if(controller != null) {
 			List<IPeak> peaks = getSelectedPeaks();
 			if(updateChart) {

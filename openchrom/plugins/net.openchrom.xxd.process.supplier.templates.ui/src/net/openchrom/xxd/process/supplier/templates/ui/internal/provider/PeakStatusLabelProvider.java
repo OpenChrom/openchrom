@@ -33,12 +33,12 @@ public class PeakStatusLabelProvider extends AbstractChemClipseLabelProvider {
 	public static final String NAME = "Name";
 	public static final String AREA = "Area";
 	public static final String CLASSIFICATION = "Classification";
-	//
+
 	public static final int INDEX_NAME = 2;
 	public static final int INDEX_CLASSIFICATION = 4;
-	//
+
 	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.0##");
-	//
+
 	public static final String[] TITLES = { //
 			START_RETENTION_TIME, //
 			STOP_RETENTION_TIME, //

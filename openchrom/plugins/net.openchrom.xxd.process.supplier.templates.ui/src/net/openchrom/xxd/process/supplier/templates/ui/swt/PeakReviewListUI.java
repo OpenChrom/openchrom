@@ -30,7 +30,7 @@ public class PeakReviewListUI extends AbstractTemplateListUI {
 
 	private static final String[] TITLES = PeakReviewLabelProvider.TITLES;
 	private static final int[] BOUNDS = PeakReviewLabelProvider.BOUNDS;
-	//
+
 	private PeakReviewLabelProvider labelProvider = new PeakReviewLabelProvider();
 	private PeakReviewComparator tableComparator = new PeakReviewComparator();
 	private PeakReviewFilter listFilter = new PeakReviewFilter();
@@ -46,6 +46,7 @@ public class PeakReviewListUI extends AbstractTemplateListUI {
 		createColumns(enableEditPositionDirective);
 	}
 
+	@Override
 	public void setSearchText(String searchText, boolean caseSensitive) {
 
 		listFilter.setSearchText(searchText, caseSensitive);

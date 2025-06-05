@@ -49,18 +49,18 @@ import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorListUtil;
 public class ReviewController {
 
 	private static final String DETECTOR_DESCRIPTION = "Manual (Review UI)";
-	//
+
 	private ProcessReviewUI processReviewUI;
 	private PeakDetectorChart peakDetectorChart;
 	private ExtendedPeakReviewUI extendedPeakReviewUI;
 	private ExtendedTargetsUI extendedTargetsUI;
 	private ExtendedComparisonUI extendedComparisonUI;
 	private ExtendedPeakTracesUI extendedPeakTracesUI;
-	//
+
 	private PeakDetectorListUtil peakDetectorListUtil = new PeakDetectorListUtil();
 	private ProcessReviewSettings processSettings;
 	private ReviewSetting reviewSetting = null;
-	//
+
 	private PeakReviewControl peakReviewControl;
 
 	public ReviewController(PeakReviewControl peakReviewControl) {
@@ -72,7 +72,7 @@ public class ReviewController {
 
 		this.processSettings = processSettings;
 		processReviewUI.setInput(processSettings);
-		//
+
 		if(processSettings != null) {
 			List<ReviewSetting> reviewSettings = processSettings.getReviewSettings();
 			if(!reviewSettings.isEmpty()) {
@@ -135,7 +135,7 @@ public class ReviewController {
 		} else {
 			extendedComparisonUI.update(null, null);
 		}
-		//
+
 		extendedPeakTracesUI.update(peak);
 	}
 
@@ -153,13 +153,13 @@ public class ReviewController {
 				 */
 				int startRetentionTime = getStartRetentionTime();
 				int stopRetentionTime = getStopRetentionTime();
-				//
+
 				if(isRetentionTimeRangeValid(startRetentionTime, stopRetentionTime)) {
 					startRetentionTime = (startRetentionTime < chromatogram.getStartRetentionTime()) ? chromatogram.getStartRetentionTime() : startRetentionTime;
 					stopRetentionTime = (stopRetentionTime > chromatogram.getStopRetentionTime()) ? chromatogram.getStopRetentionTime() : stopRetentionTime;
 					PeakType peakType = reviewSetting.getPeakType();
 					boolean optimizeRange = reviewSetting.isOptimizeRange();
-					//
+
 					if(peakType != null) {
 						/*
 						 * The detector range defines how to detect peaks.
@@ -181,7 +181,7 @@ public class ReviewController {
 						chartSettings.setDeltaRetentionTimeRight(PreferenceSupplier.getReviewDeltaRightMilliseconds());
 						chartSettings.setReplacePeak(PreferenceSupplier.isReviewReplaceNearestPeak());
 						chartSettings.setReplacePeakDelta(PreferenceSupplier.getReviewReplacePeakDeltaMilliseconds());
-						//
+
 						peakDetectorChart.update(detectorRange, chartSettings);
 						/*
 						 * Focus XIC
@@ -246,7 +246,7 @@ public class ReviewController {
 					 */
 					Range selectedRangeX = peakDetectorChart.getCurrentRangeX();
 					Range selectedRangeY = peakDetectorChart.getCurrentRangeY();
-					//
+
 					if(PreferenceSupplier.isReviewSetTargetDetectedPeak() && reviewSetting != null) {
 						peak.setDetectorDescription(DETECTOR_DESCRIPTION);
 						ReviewSupport.setReview(peak, reviewSetting, true, true);
@@ -263,7 +263,7 @@ public class ReviewController {
 				}
 			}
 		});
-		//
+
 		peakDetectorChart.setSectionUpdateListener(new ISectionUpdateListener() {
 
 			@Override
@@ -278,7 +278,7 @@ public class ReviewController {
 				processReviewUI.setSelection(index);
 			}
 		});
-		//
+
 		peakDetectorChart.setRangeUpdateListener(new IRangeUpdateListener() {
 
 			@Override
@@ -292,9 +292,9 @@ public class ReviewController {
 					int retentionTimeDelta = zoomIn ? -offset : offset;
 					int startRetentionTime = reviewSetting.getStartRetentionTime() - retentionTimeDelta;
 					int stopRetentionTime = reviewSetting.getStopRetentionTime() + retentionTimeDelta;
-					//
+
 					if(startRetentionTime < stopRetentionTime) {
-						//
+
 						reviewSetting.setStartRetentionTime(startRetentionTime);
 						reviewSetting.setStopRetentionTime(stopRetentionTime);
 						/*
@@ -340,7 +340,7 @@ public class ReviewController {
 	private void updatePeakStatusUI(IPeak peak) {
 
 		List<IPeak> peaks = new ArrayList<>();
-		//
+
 		if(processReviewUI != null && reviewSetting != null && processSettings != null) {
 			IChromatogram chromatogram = processSettings.getChromatogram();
 			if(chromatogram != null) {
@@ -350,7 +350,7 @@ public class ReviewController {
 				int startRetentionTime = getStartRetentionTime();
 				int stopRetentionTime = getStopRetentionTime();
 				List<? extends IChromatogramPeak> chromatogramPeaks = chromatogram.getPeaks(startRetentionTime, stopRetentionTime);
-				//
+
 				if(PreferenceSupplier.isReviewShowOnlyRelevantPeaks() && isChromatogramMSD(chromatogram)) {
 					Set<Integer> traces = peakDetectorListUtil.extractTraces(reviewSetting.getTraces());
 					for(IPeak chromatogramPeak : chromatogramPeaks) {
@@ -363,7 +363,7 @@ public class ReviewController {
 				}
 			}
 		}
-		//
+
 		if(extendedPeakReviewUI != null) {
 			extendedPeakReviewUI.setInput(reviewSetting, peaks, peak);
 		}
