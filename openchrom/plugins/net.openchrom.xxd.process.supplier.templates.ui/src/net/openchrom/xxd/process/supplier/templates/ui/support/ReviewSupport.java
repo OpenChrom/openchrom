@@ -125,8 +125,8 @@ public class ReviewSupport {
 			 */
 			String namePeak = libraryInformation.getName();
 			String nameReview = reviewSetting.getName();
-			if(!namePeak.isEmpty() && namePeak.equals(nameReview)) {
-				return true;
+			if(!namePeak.isEmpty()) {
+				return namePeak.equals(nameReview);
 			}
 			/*
 			 * CAS
