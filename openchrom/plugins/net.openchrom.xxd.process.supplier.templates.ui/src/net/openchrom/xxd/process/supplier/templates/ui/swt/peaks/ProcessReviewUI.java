@@ -53,11 +53,11 @@ import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessReviewSett
 public class ProcessReviewUI extends Composite {
 
 	private ReviewController controller;
-	//
+
 	private ComboViewer comboViewerVisibility;
 	private Composite toolbarSearch;
 	private PeakReviewListUI peakReviewListUI;
-	//
+
 	private ProcessReviewSettings processSettings;
 
 	public ProcessReviewUI(Composite parent, int style) {
@@ -96,11 +96,11 @@ public class ProcessReviewUI extends Composite {
 
 		GridLayout gridLayout = new GridLayout(1, true);
 		setLayout(gridLayout);
-		//
+
 		createToolbarMain(this);
 		toolbarSearch = createToolbarSearch(this);
 		peakReviewListUI = createTable(this);
-		//
+
 		PartSupport.setCompositeVisibility(toolbarSearch, false);
 	}
 
@@ -111,7 +111,7 @@ public class ProcessReviewUI extends Composite {
 		gridData.horizontalAlignment = SWT.END;
 		composite.setLayoutData(gridData);
 		composite.setLayout(new GridLayout(5, false));
-		//
+
 		createToggleToolbarSearch(composite);
 		createButtonVisibilityDetails(composite);
 		comboViewerVisibility = createComboViewerVisibility(composite);
@@ -131,7 +131,7 @@ public class ProcessReviewUI extends Composite {
 				peakReviewListUI.setSearchText(searchText, caseSensitive);
 			}
 		});
-		//
+
 		return searchSupportUI;
 	}
 
@@ -140,7 +140,7 @@ public class ProcessReviewUI extends Composite {
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		adjustButtonVisibilityDetails(button);
-		//
+
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -153,7 +153,7 @@ public class ProcessReviewUI extends Composite {
 				}
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -187,7 +187,7 @@ public class ProcessReviewUI extends Composite {
 				}
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -207,7 +207,7 @@ public class ProcessReviewUI extends Composite {
 				return null;
 			}
 		});
-		//
+
 		combo.setToolTipText("Select the visibility option.");
 		GridData gridData = new GridData();
 		gridData.widthHint = 150;
@@ -224,7 +224,7 @@ public class ProcessReviewUI extends Composite {
 				}
 			}
 		});
-		//
+
 		return comboViewer;
 	}
 
@@ -233,7 +233,7 @@ public class ProcessReviewUI extends Composite {
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		adjustDetectorButton(button);
-		//
+
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -244,7 +244,7 @@ public class ProcessReviewUI extends Composite {
 				updateSelection();
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -273,7 +273,7 @@ public class ProcessReviewUI extends Composite {
 				PreferenceManager preferenceManager = new PreferenceManager();
 				preferenceManager.addToRoot(new PreferenceNode("1", new PagePeakReview()));
 				preferenceManager.addToRoot(new PreferenceNode("2", new PreferencePage()));
-				//
+
 				PreferenceDialog preferenceDialog = new PreferenceDialog(e.display.getActiveShell(), preferenceManager);
 				preferenceDialog.create();
 				preferenceDialog.setMessage("Settings");
@@ -293,7 +293,7 @@ public class ProcessReviewUI extends Composite {
 		PeakReviewListUI peakReviewListUI = new PeakReviewListUI(parent, SWT.BORDER, false);
 		Table table = peakReviewListUI.getTable();
 		table.setLayoutData(new GridData(GridData.FILL_BOTH));
-		//
+
 		peakReviewListUI.setUpdateListener(new IUpdateListener() {
 
 			@Override
@@ -302,7 +302,7 @@ public class ProcessReviewUI extends Composite {
 				updateSelection();
 			}
 		});
-		//
+
 		table.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -311,7 +311,7 @@ public class ProcessReviewUI extends Composite {
 				updateSelection();
 			}
 		});
-		//
+
 		return peakReviewListUI;
 	}
 
@@ -363,7 +363,7 @@ public class ProcessReviewUI extends Composite {
 				Visibility[] items = Visibility.values();
 				comboViewerVisibility.setInput(items);
 				Visibility visibility = PreferenceSupplier.getReviewVisibility();
-				//
+
 				exitloop:
 				for(int i = 0; i < items.length; i++) {
 					Visibility item = items[i];

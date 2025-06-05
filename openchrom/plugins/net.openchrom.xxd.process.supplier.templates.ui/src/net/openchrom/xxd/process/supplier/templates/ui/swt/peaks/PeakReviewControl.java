@@ -24,7 +24,7 @@ import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessReviewSett
 public class PeakReviewControl extends Composite {
 
 	private ReviewController controller = new ReviewController(this);
-	//
+
 	private SashForm sashFormMain;
 	private SashForm sashFormDetails;
 	private boolean showComparisonUI = false;
@@ -70,29 +70,29 @@ public class PeakReviewControl extends Composite {
 
 		setLayout(new FillLayout());
 		SashForm sashForm = new SashForm(this, SWT.VERTICAL);
-		//
+
 		createNavigateSection(sashForm);
 		sashFormDetails = createDetailsSection(sashForm);
-		//
+
 		return sashForm;
 	}
 
 	private SashForm createNavigateSection(Composite parent) {
 
 		SashForm sashForm = new SashForm(parent, SWT.HORIZONTAL);
-		//
+
 		createReviewSection(sashForm);
 		controller.createPeakDetectorChart(sashForm);
-		//
+
 		sashForm.setWeights(350, 650);
-		//
+
 		return sashForm;
 	}
 
 	private void createReviewSection(Composite composite) {
 
 		SashForm sashForm = new SashForm(composite, SWT.VERTICAL);
-		//
+
 		controller.createProcessReviewUI(sashForm);
 		controller.createExtendedPeaksUI(sashForm);
 	}
@@ -100,11 +100,11 @@ public class PeakReviewControl extends Composite {
 	private SashForm createDetailsSection(Composite parent) {
 
 		SashForm sashForm = new SashForm(parent, SWT.HORIZONTAL);
-		//
+
 		controller.createExtendedTargetsUI(sashForm);
 		controller.createExtendedComparisonUI(sashForm);
 		controller.createExtendedPeakTracesUI(sashForm);
-		//
+
 		return sashForm;
 	}
 }
