@@ -29,6 +29,12 @@
 		<unit id="net.openchrom.thirdparty.cdk.feature.feature.group"/>
 		<unit id="net.openchrom.thirdparty.inchi.feature.feature.group"/>
 	</location>
+	<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+		<repository location="https://download.eclipse.org/oomph/simrel-orbit/2023-06"/>
+		<unit id="org.apache.poi" />
+		<unit id="org.apache.poi.ooxml" />
+		<unit id="org.apache.poi.ooxml.schemas" />
+	</location>
 	<location includeDependencyDepth="none" includeDependencyScopes="compile" missingManifest="generate" type="Maven">
 		<dependencies>
 			<dependency>

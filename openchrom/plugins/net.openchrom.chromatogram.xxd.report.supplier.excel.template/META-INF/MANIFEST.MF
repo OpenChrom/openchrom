@@ -16,9 +16,9 @@ Require-Bundle: org.eclipse.core.runtime,
  com.fasterxml.jackson.core.jackson-databind,
  com.fasterxml.jackson.core.jackson-core,
  com.fasterxml.jackson.core.jackson-annotations,
- wrapped.org.apache.poi.ooxml-schemas;bundle-version="1.4.0",
- wrapped.org.apache.poi.poi;bundle-version="4.1.1",
- wrapped.org.apache.poi.poi-ooxml;bundle-version="4.1.1"
+ org.apache.poi;bundle-version="4.1.1",
+ org.apache.poi.ooxml;bundle-version="4.1.1",
+ org.apache.poi.ooxml.schemas;bundle-version="4.1.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.chromatogram.xxd.report.supplier.excel.template.core,
