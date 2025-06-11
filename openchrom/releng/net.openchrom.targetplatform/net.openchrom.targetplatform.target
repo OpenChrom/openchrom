@@ -8,6 +8,7 @@
 		<unit id="org.eclipse.sdk.feature.group"/>
 		<unit id="com.google.protobuf"/>
 		<unit id="org.jdom2"/>
+		<unit id="org.apache.aries.spifly.dynamic.bundle"/>
 	</location>
 	<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 		<repository location="https://download.eclipse.org/cbi/updates/license/"/>
