@@ -67,7 +67,6 @@ Contributors:
 
    <features>
       <feature id="net.openchrom.platform.feature"/>
-      <feature id="org.eclipse.chemclipse.assets.feature" installMode="root"/>
    </features>
 
    <configurations>
