@@ -111,13 +111,10 @@
          id="org.eclipse.chemclipse.nmr.processing.supplier.base.feature"
          version="0.0.0"/>
 
-   <includes
-         id="org.eclipse.rcp"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.platform"
-         version="0.0.0"/>
+   <requires>
+      <import feature="org.eclipse.rcp"/>
+      <import feature="org.eclipse.platform"/>
+   </requires>
 
    <plugin
          id="net.openchrom.rcp.compilation.community.ui"
