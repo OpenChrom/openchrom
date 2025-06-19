@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: RDX3
 Bundle-SymbolicName: net.openchrom.xxd.converter.supplier.rdx3;singleton:=true
-Bundle-Version: 1.5.14.qualifier
+Bundle-Version: 1.5.15.qualifier
 Bundle-Activator: net.openchrom.xxd.converter.supplier.rdx3.Activator
 Bundle-Vendor: Lablicate GmbH
 Require-Bundle: org.eclipse.core.runtime,
