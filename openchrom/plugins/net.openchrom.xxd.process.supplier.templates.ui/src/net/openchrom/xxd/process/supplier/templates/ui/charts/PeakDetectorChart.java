@@ -182,6 +182,11 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		} else if(event.keyCode == SWT.KEYPAD_SUBTRACT) {
 			rangeUpdateListener.update(false);
 		}
+		/*
+		 * Reset the baseline marker
+		 */
+		setCursorDefault();
+		resetSelectedRange();
 	}
 
 	@Override
