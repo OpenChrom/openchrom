@@ -503,7 +503,14 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 				double millisecondsWidth = millisecondsRange.upper - millisecondsRange.lower;
 				int startRetentionTime = (int)(millisecondsRange.lower + millisecondsWidth * percentageStartWidth);
 				int stopRetentionTime = (int)(millisecondsRange.lower + millisecondsWidth * percentageStopWidth);
-				//
+				/*
+				 * Allow peak selection right to left.
+				 */
+				if(startRetentionTime > stopRetentionTime) {
+					int tmp = startRetentionTime;
+					startRetentionTime = stopRetentionTime;
+					stopRetentionTime = tmp;
+				}
 				IChromatogram chromatogram = detectorRange.getChromatogram();
 				if(chromatogram != null) {
 					/*
@@ -511,7 +518,6 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 					 */
 					Set<Integer> traces = detectorRange.getTraces();
 					PeakType detectorType = detectorRange.getDetectorType();
-					//
 					if(PeakType.MM.equals(detectorType)) {
 						/*
 						 * MM
@@ -538,6 +544,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 				}
 			}
 		}
+
 		return peak;
 	}
 
