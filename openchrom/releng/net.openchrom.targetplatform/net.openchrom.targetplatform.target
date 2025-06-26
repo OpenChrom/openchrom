@@ -36,6 +36,11 @@
 		<unit id="org.apache.poi.ooxml" />
 		<unit id="org.apache.poi.ooxml.schemas" />
 	</location>
+	<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+		<repository location="https://download.eclipse.org/nebula/updates/release/3.1.1/"/>
+		<unit id="org.eclipse.nebula.feature.feature.group"/>
+		<unit id="org.eclipse.nebula.widgets.richtext.feature.feature.group"/>
+	</location>
 	<location includeDependencyDepth="none" includeDependencyScopes="compile" missingManifest="generate" type="Maven">
 		<dependencies>
 			<dependency>
