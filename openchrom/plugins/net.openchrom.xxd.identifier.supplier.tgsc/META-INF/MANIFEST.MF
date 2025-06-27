@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.xxd.identifier.supplier.tgsc
 Bundle-ManifestVersion: 2
 Bundle-Name: The Good Scent Company Identifier
 Bundle-SymbolicName: net.openchrom.xxd.identifier.supplier.tgsc;singleton:=true
-Bundle-Version: 1.5.15.qualifier
+Bundle-Version: 1.5.16.qualifier
 Bundle-Activator: net.openchrom.xxd.identifier.supplier.tgsc.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,

@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.wsd.converter.supplier.animl
 Bundle-ManifestVersion: 2
 Bundle-Name: AnIML HPLC-UV/VIS
 Bundle-SymbolicName: net.openchrom.wsd.converter.supplier.animl;singleton:=true
-Bundle-Version: 1.5.15.qualifier
+Bundle-Version: 1.5.16.qualifier
 Bundle-Activator: net.openchrom.wsd.converter.supplier.animl.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
