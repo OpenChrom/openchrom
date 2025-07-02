@@ -107,16 +107,6 @@
 			</dependency>
 		</dependencies>
 	</location>
-	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
-		<dependencies>
-			<dependency>
-				<groupId>dk.brics</groupId>
-				<artifactId>automaton</artifactId>
-				<version>1.12-1</version>
-				<type>jar</type>
-			</dependency>
-		</dependencies>
-	</location>
 	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" label="org.apache.logging.log4j" missingManifest="generate" type="Maven">
 		<dependencies>
 			<dependency>
