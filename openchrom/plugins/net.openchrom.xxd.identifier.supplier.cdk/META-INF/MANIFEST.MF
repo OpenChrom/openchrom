@@ -4,7 +4,7 @@ Eclipse-RegisterBuddy: net.openchrom.thirdparty.cdk.feature
 Bundle-ManifestVersion: 2
 Bundle-Name: CDK Identifier
 Bundle-SymbolicName: net.openchrom.xxd.identifier.supplier.cdk;singleton:=true
-Bundle-Version: 1.5.16.qualifier
+Bundle-Version: 1.5.17.qualifier
 Bundle-Activator: net.openchrom.xxd.identifier.supplier.cdk.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,

@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.msd.converter.supplier.mzdb.fragment.test
 Bundle-ManifestVersion: 2
 Bundle-Name: mzDB Test
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.mzdb.fragment.test
-Bundle-Version: 1.5.16.qualifier
+Bundle-Version: 1.5.17.qualifier
 Bundle-Vendor: OpenChrom
 Fragment-Host: net.openchrom.msd.converter.supplier.mzdb;bundle-version="1.5.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-21

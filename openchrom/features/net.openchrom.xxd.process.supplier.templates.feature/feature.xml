@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.xxd.process.supplier.templates.feature"
       label="Templates"
-      version="1.5.16.qualifier"
+      version="1.5.17.qualifier"
       provider-name="OpenChrom" plugin="net.openchrom.feature.branding"
       license-feature="org.eclipse.license" license-feature-version="2.0.2.qualifier">
 
