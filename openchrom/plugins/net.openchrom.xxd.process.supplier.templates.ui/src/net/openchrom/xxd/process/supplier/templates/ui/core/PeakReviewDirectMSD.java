@@ -44,6 +44,7 @@ import net.openchrom.xxd.process.supplier.templates.util.ChromatogramValidator;
 public class PeakReviewDirectMSD extends AbstractPeakIdentifier implements IPeakIdentifierMSD, ITemplateExport {
 
 	private static final String DESCRIPTION = "PeakReviewMSD";
+	private boolean cancelled = false;
 
 	@Override
 	public IProcessingInfo<IPeakIdentificationResults> identify(List<? extends IPeakMSD> peaks, IPeakIdentifierSettingsMSD peakIdentifierSettings, IProgressMonitor monitor) {
@@ -55,6 +56,11 @@ public class PeakReviewDirectMSD extends AbstractPeakIdentifier implements IPeak
 			runProcess(peaks, processingInfo);
 		}
 		return processingInfo;
+	}
+
+	public boolean isCancelled() {
+
+		return cancelled;
 	}
 
 	private void runProcess(List<? extends IPeakMSD> peaks, IProcessingInfo<IPeakIdentificationResults> processingInfo) {
@@ -75,7 +81,7 @@ public class PeakReviewDirectMSD extends AbstractPeakIdentifier implements IPeak
 					reviewSetting.setStopRetentionTime(peakModel.getStopRetentionTime());
 					reviewSetting.setName(libraryInformation.getName());
 					reviewSetting.setCasNumber(libraryInformation.getCasNumber());
-					reviewSetting.setPeakType(PeakType.VV);
+					reviewSetting.setPeakType(PeakType.VV); // Settings
 					reviewSetting.setTraces(getTraces(peak));
 					reviewSetting.setOptimizeRange(true);
 					reviewSettings.add(reviewSetting);
@@ -92,16 +98,17 @@ public class PeakReviewDirectMSD extends AbstractPeakIdentifier implements IPeak
 			if(filteredReviewSettings.isEmpty()) {
 				processingInfo.addWarnMessage(DESCRIPTION, "The chromatogram doesn't contain any of the given peak traces.");
 			} else {
-				ProcessReviewSettings processSettings = new ProcessReviewSettings(processingInfo, chromatogram, settings);
 				try {
 					DisplayUtils.executeInUserInterfaceThread(new Runnable() {
 
 						@Override
 						public void run() {
 
+							ProcessReviewSettings processSettings = new ProcessReviewSettings(processingInfo, chromatogram, settings);
 							Shell shell = DisplayUtils.getShell();
 							PeakReviewSupport peakReviewSupport = new PeakReviewSupport();
 							peakReviewSupport.addSettings(shell, processSettings);
+							cancelled = peakReviewSupport.isCancelled();
 						}
 					});
 				} catch(InterruptedException e) {
@@ -120,7 +127,7 @@ public class PeakReviewDirectMSD extends AbstractPeakIdentifier implements IPeak
 				return chromatogramPeak.getChromatogram();
 			}
 		}
-		//
+
 		return null;
 	}
 }

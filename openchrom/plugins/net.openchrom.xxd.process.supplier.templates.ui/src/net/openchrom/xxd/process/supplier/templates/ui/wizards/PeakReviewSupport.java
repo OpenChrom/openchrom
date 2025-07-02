@@ -23,6 +23,12 @@ import org.eclipse.swt.widgets.Shell;
 public class PeakReviewSupport {
 
 	public static final String DESCRIPTION = "Template Review UI";
+	private boolean cancelled = false;
+
+	public boolean isCancelled() {
+
+		return cancelled;
+	}
 
 	public void addSettings(Shell shell, ProcessReviewSettings processSettings) {
 
@@ -40,7 +46,7 @@ public class PeakReviewSupport {
 			protected void createButtonsForButtonBar(Composite parent) {
 
 				super.createButtonsForButtonBar(parent);
-				getButton(CANCEL).setEnabled(false);
+				getButton(CANCEL).setEnabled(true);
 				getButton(IDialogConstants.FINISH_ID).setText(IDialogConstants.OK_LABEL);
 			}
 		};
@@ -56,7 +62,8 @@ public class PeakReviewSupport {
 			if(Window.OK == wizardDialog.open()) {
 				processingInfo.addInfoMessage(DESCRIPTION, "Successfully reviewed the peaks.");
 			} else {
-				processingInfo.addWarnMessage(DESCRIPTION, "Cancel has been pressed. No peaks reviewed.");
+				processingInfo.addWarnMessage(DESCRIPTION, "Cancel has been pressed.");
+				cancelled = true;
 			}
 		} finally {
 			wizard.dispose();

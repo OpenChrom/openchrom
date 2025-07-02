@@ -43,6 +43,7 @@ import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessReviewSett
 public class PeakReviewDirectCSD extends AbstractPeakIdentifier implements IPeakIdentifierCSD {
 
 	private static final String DESCRIPTION = "PeakReviewCSD";
+	private boolean cancelled = false;
 
 	@Override
 	public IProcessingInfo<IPeakIdentificationResults> identify(List<? extends IPeakCSD> peaks, IPeakIdentifierSettingsCSD peakIdentifierSettings, IProgressMonitor monitor) {
@@ -54,6 +55,11 @@ public class PeakReviewDirectCSD extends AbstractPeakIdentifier implements IPeak
 			runProcess(peaks, peakIdentifierSettings, processingInfo, monitor);
 		}
 		return processingInfo;
+	}
+
+	public boolean isCancelled() {
+
+		return cancelled;
 	}
 
 	private void runProcess(List<? extends IPeakCSD> peaks, IPeakIdentifierSettingsCSD peakIdentifierSettings, IProcessingInfo<IPeakIdentificationResults> processingInfo, IProgressMonitor monitor) {
@@ -73,7 +79,7 @@ public class PeakReviewDirectCSD extends AbstractPeakIdentifier implements IPeak
 					reviewSetting.setStopRetentionTime(peakModel.getStopRetentionTime());
 					reviewSetting.setName(libraryInformation.getName());
 					reviewSetting.setCasNumber(libraryInformation.getCasNumber());
-					reviewSetting.setPeakType(PeakType.VV);
+					reviewSetting.setPeakType(PeakType.VV); // Settings
 					reviewSetting.setTraces("");
 					reviewSetting.setOptimizeRange(true);
 					reviewSettings.add(reviewSetting);
@@ -84,18 +90,19 @@ public class PeakReviewDirectCSD extends AbstractPeakIdentifier implements IPeak
 		 * Check, that at least one review setting is set.
 		 */
 		if(!reviewSettings.isEmpty()) {
-			PeakReviewSettings settings = new PeakReviewSettings();
-			settings.setReviewSettings(reviewSettings);
-			ProcessReviewSettings processSettings = new ProcessReviewSettings(processingInfo, chromatogram, settings);
 			try {
 				DisplayUtils.executeInUserInterfaceThread(new Runnable() {
 
 					@Override
 					public void run() {
 
+						PeakReviewSettings settings = new PeakReviewSettings();
+						settings.setReviewSettings(reviewSettings);
+						ProcessReviewSettings processSettings = new ProcessReviewSettings(processingInfo, chromatogram, settings);
 						Shell shell = DisplayUtils.getShell();
 						PeakReviewSupport peakReviewSupport = new PeakReviewSupport();
 						peakReviewSupport.addSettings(shell, processSettings);
+						cancelled = peakReviewSupport.isCancelled();
 					}
 				});
 			} catch(InterruptedException e) {
@@ -113,6 +120,7 @@ public class PeakReviewDirectCSD extends AbstractPeakIdentifier implements IPeak
 				return chromatogramPeak.getChromatogram();
 			}
 		}
+
 		return null;
 	}
 
