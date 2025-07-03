@@ -21,8 +21,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.window.ToolTip;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
@@ -79,14 +77,7 @@ public class OverviewToolTip extends ToolTip {
 			image = computeImage(source, overview.getScreenshot());
 			if(image != null) {
 				final Image fimage = image;
-				container.addDisposeListener(new DisposeListener() {
-
-					@Override
-					public void widgetDisposed(DisposeEvent e) {
-
-						fimage.dispose();
-					}
-				});
+				container.addDisposeListener(e -> fimage.dispose());
 			}
 		}
 		final int borderWidth = 1;

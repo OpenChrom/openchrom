@@ -22,8 +22,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 
 public class GradientCanvas extends Canvas {
 
@@ -68,33 +66,18 @@ public class GradientCanvas extends Canvas {
 		super(parent, style);
 		setBackgroundMode(SWT.INHERIT_DEFAULT);
 		setSeparatorAlignment(SWT.BOTTOM);
-		addListener(SWT.Paint, new Listener() {
+		addListener(SWT.Paint, e -> onPaint(e.gc));
+		addListener(SWT.Dispose, e -> {
 
-			@Override
-			public void handleEvent(Event e) {
-
-				onPaint(e.gc);
+			if(gradientImage != null) {
+				gradientImage.dispose();
+				gradientImage = null;
 			}
 		});
-		addListener(SWT.Dispose, new Listener() {
+		addListener(SWT.Resize, e -> {
 
-			@Override
-			public void handleEvent(Event e) {
-
-				if(gradientImage != null) {
-					gradientImage.dispose();
-					gradientImage = null;
-				}
-			}
-		});
-		addListener(SWT.Resize, new Listener() {
-
-			@Override
-			public void handleEvent(Event e) {
-
-				if(gradientInfo != null || (backgroundImage != null && !isBackgroundImageTiled())) {
-					updateGradientImage();
-				}
+			if(gradientInfo != null || (backgroundImage != null && !isBackgroundImageTiled())) {
+				updateGradientImage();
 			}
 		});
 	}

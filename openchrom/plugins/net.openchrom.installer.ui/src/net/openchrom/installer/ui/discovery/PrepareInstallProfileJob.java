@@ -94,14 +94,7 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 				checkCancelled(monitor);
 				final InstallOperation installOperation = resolve(monitor.newChild(50), installableUnits, repositoryLocations.toArray(new URI[0]));
 				checkCancelled(monitor);
-				Display.getDefault().asyncExec(new Runnable() {
-
-					@Override
-					public void run() {
-
-						provisioningUI.openInstallWizard(Arrays.asList(installableUnits), installOperation, null);
-					}
-				});
+				Display.getDefault().asyncExec(() -> provisioningUI.openInstallWizard(Arrays.asList(installableUnits), installOperation, null));
 			} finally {
 				monitor.done();
 			}
@@ -188,14 +181,7 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 			// instead of aborting here we ask the user if they wish to proceed anyways
 			final boolean[] okayToProceed = new boolean[1];
 			final String finalMessage = message;
-			DisplayUtils.getDisplay().syncExec(new Runnable() {
-
-				@Override
-				public void run() {
-
-					okayToProceed[0] = MessageDialog.openQuestion(DisplayUtils.getShell(), "questionProceed", MessageFormat.format("The following connectors are not available: {0}\nProceed with the installation anyways?", finalMessage));
-				}
-			});
+			DisplayUtils.getDisplay().syncExec(() -> okayToProceed[0] = MessageDialog.openQuestion(DisplayUtils.getShell(), "questionProceed", MessageFormat.format("The following connectors are not available: {0}\nProceed with the installation anyways?", finalMessage)));
 			if(!okayToProceed[0]) {
 				logger.error("Connectors not available: " + detailedMessage);
 			}
