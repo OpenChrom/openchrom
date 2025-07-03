@@ -286,9 +286,6 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 	public void dispose() {
 
 		super.dispose();
-		for(Resource resource : disposables) {
-			resource.dispose();
-		}
 		clearDisposables();
 		if(discovery != null) {
 			discovery.dispose();
@@ -296,7 +293,9 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 	}
 
 	private void clearDisposables() {
-
+		for(Resource resource : disposables) {
+			resource.dispose();
+		}
 		disposables.clear();
 		h1Font = null;
 		h2Font = null;
