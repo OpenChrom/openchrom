@@ -622,7 +622,6 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 			checkbox.setText(" "); //$NON-NLS-1$
 			// help UI tests
 			checkbox.setData("pluginId", plugin.getInstallableUnits()); //$NON-NLS-1$
-			configureLook(checkbox, background);
 			checkbox.setSelection(installableConnectors.contains(plugin));
 			checkbox.addFocusListener(new FocusAdapter() {
 
