@@ -44,7 +44,6 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.jface.resource.ColorRegistry;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.DecorationOverlayIcon;
@@ -78,7 +77,6 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Resource;
 import org.eclipse.swt.layout.GridData;
@@ -94,7 +92,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.progress.WorkbenchJob;
 
 import net.openchrom.installer.model.BundleDiscoveryStrategy;
@@ -123,10 +120,6 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 
 	private static final String DISCOVERY_PROPERTIES_FILE = "discovery.properties";
 	private static final String URL_DISCOVERY_PROPERTY = "url";
-	private static final String COLOR_WHITE = "white"; //$NON-NLS-1$
-	private static final String COLOR_DARK_GRAY = "DarkGray"; //$NON-NLS-1$
-	private static final String COLOR_CATEGORY_GRADIENT_START = "category.gradient.start"; //$NON-NLS-1$
-	private static final String COLOR_CATEGORY_GRADIENT_END = "category.gradient.end"; //$NON-NLS-1$
 	private static final Logger logger = Logger.getLogger(PluginDiscoveryWizardMainPage.class);
 	private static Boolean useNativeSearchField;
 	private final List<PluginDescriptor> installableConnectors = new ArrayList<>();
@@ -144,8 +137,6 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 	private Set<String> installedFeatures;
 	private Image infoImage;
 	private Cursor handCursor;
-	private Color colorCategoryGradientStart;
-	private Color colorCategoryGradientEnd;
 	private Color colorDisabled;
 	private ScrolledComposite bodyScrolledComposite;
 
@@ -463,8 +454,6 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 		h2Font = null;
 		infoImage = null;
 		handCursor = null;
-		colorCategoryGradientStart = null;
-		colorCategoryGradientEnd = null;
 	}
 
 	public void createBodyContents() {
@@ -518,8 +507,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 	private void initializeCursors() {
 
 		if(handCursor == null) {
-			handCursor = new Cursor(getShell().getDisplay(), SWT.CURSOR_HAND);
-			disposables.add(handCursor);
+			handCursor = getShell().getDisplay().getSystemCursor(SWT.CURSOR_HAND);
 		}
 	}
 
@@ -531,32 +519,10 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 	private void initializeColors() {
 
 		if(colorWhite == null) {
-			ColorRegistry colorRegistry = JFaceResources.getColorRegistry();
-			if(!colorRegistry.hasValueFor(COLOR_WHITE)) {
-				colorRegistry.put(COLOR_WHITE, new RGB(255, 255, 255));
-			}
-			colorWhite = colorRegistry.get(COLOR_WHITE);
+			colorWhite = getShell().getDisplay().getSystemColor(SWT.COLOR_WHITE);
 		}
 		if(colorDisabled == null) {
-			ColorRegistry colorRegistry = JFaceResources.getColorRegistry();
-			if(!colorRegistry.hasValueFor(COLOR_DARK_GRAY)) {
-				colorRegistry.put(COLOR_DARK_GRAY, new RGB(0x69, 0x69, 0x69));
-			}
-			colorDisabled = colorRegistry.get(COLOR_DARK_GRAY);
-		}
-		if(colorCategoryGradientStart == null) {
-			ColorRegistry colorRegistry = JFaceResources.getColorRegistry();
-			if(!colorRegistry.hasValueFor(COLOR_CATEGORY_GRADIENT_START)) {
-				colorRegistry.put(COLOR_CATEGORY_GRADIENT_START, new RGB(240, 240, 240));
-			}
-			colorCategoryGradientStart = colorRegistry.get(COLOR_CATEGORY_GRADIENT_START);
-		}
-		if(colorCategoryGradientEnd == null) {
-			ColorRegistry colorRegistry = JFaceResources.getColorRegistry();
-			if(!colorRegistry.hasValueFor(COLOR_CATEGORY_GRADIENT_END)) {
-				colorRegistry.put(COLOR_CATEGORY_GRADIENT_END, new RGB(220, 220, 220));
-			}
-			colorCategoryGradientEnd = colorRegistry.get(COLOR_CATEGORY_GRADIENT_END);
+			colorDisabled = getShell().getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY);
 		}
 	}
 
@@ -805,9 +771,6 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 					final GradientCanvas categoryHeaderContainer = new GradientCanvas(container, SWT.NONE);
 					categoryHeaderContainer.setSeparatorVisible(true);
 					categoryHeaderContainer.setSeparatorAlignment(SWT.TOP);
-					categoryHeaderContainer.setBackgroundGradient(new Color[]{colorCategoryGradientStart, colorCategoryGradientEnd}, new int[]{100}, true);
-					categoryHeaderContainer.putColor(IFormColors.H_BOTTOM_KEYLINE1, colorCategoryGradientStart);
-					categoryHeaderContainer.putColor(IFormColors.H_BOTTOM_KEYLINE2, colorCategoryGradientEnd);
 					GridDataFactory.fillDefaults().span(2, 1).applyTo(categoryHeaderContainer);
 					GridLayoutFactory.fillDefaults().numColumns(3).margins(5, 5).equalWidth(false).applyTo(categoryHeaderContainer);
 					Label iconLabel = new Label(categoryHeaderContainer, SWT.NULL);
@@ -1072,10 +1035,8 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 					// retrieve discovery url from properties file and call remote discovery strategy
 					URL discoveryFileUrl = FileLocator.find(Activator.getDefault().getBundle(), new Path(PluginDiscoveryWizardMainPage.DISCOVERY_PROPERTIES_FILE), null);
 					if(discoveryFileUrl != null) {
-						InputStream in = null;
-						try {
+						try (InputStream in = discoveryFileUrl.openStream()){
 							Properties props = new Properties();
-							in = discoveryFileUrl.openStream();
 							props.load(in);
 							String discoveryUrl = props.getProperty(PluginDiscoveryWizardMainPage.URL_DISCOVERY_PROPERTY);
 							RemoteBundleDiscoveryStrategy remoteDiscoveryStrategy = new RemoteBundleDiscoveryStrategy();
@@ -1083,14 +1044,6 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 							pluginDiscovery.getDiscoveryStrategies().add(remoteDiscoveryStrategy);
 						} catch(IOException ie) {
 							logger.warn(ie);
-						} finally {
-							if(in != null) {
-								try {
-									in.close();
-								} catch(IOException e) {
-									// ignore
-								}
-							}
 						}
 					}
 					pluginDiscovery.setEnvironment(environment);
