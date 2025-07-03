@@ -44,7 +44,6 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.resource.ColorRegistry;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.JFaceResources;
@@ -60,12 +59,8 @@ import org.eclipse.swt.accessibility.AccessibleEvent;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
@@ -92,7 +87,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Listener;
@@ -169,14 +163,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 
 		createRefreshJob();
 		Composite container = new Composite(parent, SWT.NULL);
-		container.addDisposeListener(new DisposeListener() {
-
-			@Override
-			public void widgetDisposed(DisposeEvent e) {
-
-				refreshJob.cancel();
-			}
-		});
+		container.addDisposeListener(e -> refreshJob.cancel());
 		container.setLayout(new GridLayout(1, false));
 		//
 		{ // header
@@ -213,14 +200,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 					} else {
 						filterText = new Text(textFilterContainer, SWT.SINGLE);
 					}
-					filterText.addModifyListener(new ModifyListener() {
-
-						@Override
-						public void modifyText(ModifyEvent e) {
-
-							filterTextChanged();
-						}
-					});
+					filterText.addModifyListener(e -> filterTextChanged());
 					if(nativeSearch) {
 						filterText.addSelectionListener(new SelectionAdapter() {
 
@@ -401,15 +381,10 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 
 			}
 		});
-		clearButton.addDisposeListener(new DisposeListener() {
-
-			@Override
-			public void widgetDisposed(DisposeEvent e) {
-
-				inactiveImage.dispose();
-				activeImage.dispose();
-				pressedImage.dispose();
-			}
+		clearButton.addDisposeListener(e -> {
+			inactiveImage.dispose();
+			activeImage.dispose();
+			pressedImage.dispose();
 		});
 		clearButton.getAccessible().addAccessibleListener(new AccessibleAdapter() {
 
@@ -799,14 +774,10 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 				Link link = new Link(container, SWT.WRAP);
 				link.setFont(container.getFont());
 				link.setText("There are no matching plugins.  Please <a>clear the filter text</a> or try again later.");
-				link.addListener(SWT.Selection, new Listener() {
+				link.addListener(SWT.Selection, event -> {
 
-					@Override
-					public void handleEvent(Event event) {
-
-						clearFilterText();
-						filterText.setFocus();
-					}
+					clearFilterText();
+					filterText.setFocus();
 				});
 				helpTextControl = link;
 			} else {
@@ -910,17 +881,13 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 	private void hookTooltip(final Control tooltipControl, final ToolItem tipActivator, final Control exitControl, final Control titleControl, IDiscoverySource source, Overview overview) {
 
 		final OverviewToolTip toolTip = new OverviewToolTip(tooltipControl, source, overview);
-		Listener listener = new Listener() {
+		Listener listener = event -> {
 
-			@Override
-			public void handleEvent(Event event) {
-
-				switch(event.type) {
-					case SWT.Dispose:
-					case SWT.MouseWheel:
-						toolTip.hide();
-						break;
-				}
+			switch(event.type) {
+				case SWT.Dispose:
+				case SWT.MouseWheel:
+					toolTip.hide();
+					break;
 			}
 		};
 		tipActivator.addListener(SWT.Dispose, listener);
@@ -939,30 +906,26 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 				toolTip.show(new Point(relativeX, relativeY));
 			}
 		});
-		Listener exitListener = new Listener() {
+		Listener exitListener = event -> {
 
-			@Override
-			public void handleEvent(Event event) {
-
-				switch(event.type) {
-					case SWT.MouseWheel:
-						toolTip.hide();
+			switch(event.type) {
+				case SWT.MouseWheel:
+					toolTip.hide();
+					break;
+				case SWT.MouseExit:
+					/*
+					 * Check if the mouse exit happened because we move over the
+					 * tooltip
+					 */
+					Rectangle containerBounds = exitControl.getBounds();
+					Point displayLocation = exitControl.getParent().toDisplay(containerBounds.x, containerBounds.y);
+					containerBounds.x = displayLocation.x;
+					containerBounds.y = displayLocation.y;
+					if(containerBounds.contains(Display.getCurrent().getCursorLocation())) {
 						break;
-					case SWT.MouseExit:
-						/*
-						 * Check if the mouse exit happened because we move over the
-						 * tooltip
-						 */
-						Rectangle containerBounds = exitControl.getBounds();
-						Point displayLocation = exitControl.getParent().toDisplay(containerBounds.x, containerBounds.y);
-						containerBounds.x = displayLocation.x;
-						containerBounds.y = displayLocation.y;
-						if(containerBounds.contains(Display.getCurrent().getCursorLocation())) {
-							break;
-						}
-						toolTip.hide();
-						break;
-				}
+					}
+					toolTip.hide();
+					break;
 			}
 		};
 		hookRecursively(exitControl, exitListener);
@@ -1089,62 +1052,58 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 			final Dictionary<Object, Object> environment = getWizard().getEnvironment();
 			boolean wasCancelled = false;
 			try {
-				getContainer().run(true, true, new IRunnableWithProgress() {
+				getContainer().run(true, true, monitor -> {
 
-					@Override
-					public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-
-						if(PluginDiscoveryWizardMainPage.this.installedFeatures == null) {
-							Set<String> installedFeatures = new HashSet<>();
-							IBundleGroupProvider[] bundleGroupProviders = Platform.getBundleGroupProviders();
-							for(IBundleGroupProvider provider : bundleGroupProviders) {
-								if(monitor.isCanceled()) {
-									throw new InterruptedException();
-								}
-								IBundleGroup[] bundleGroups = provider.getBundleGroups();
-								for(IBundleGroup group : bundleGroups) {
-									installedFeatures.add(group.getIdentifier());
-								}
+					if(PluginDiscoveryWizardMainPage.this.installedFeatures == null) {
+						Set<String> installedFeatures = new HashSet<>();
+						IBundleGroupProvider[] bundleGroupProviders = Platform.getBundleGroupProviders();
+						for(IBundleGroupProvider provider : bundleGroupProviders) {
+							if(monitor.isCanceled()) {
+								throw new InterruptedException();
 							}
-							PluginDiscoveryWizardMainPage.this.installedFeatures = installedFeatures;
-						}
-						PluginDiscovery pluginDiscovery = new PluginDiscovery();
-						pluginDiscovery.getDiscoveryStrategies().add(new BundleDiscoveryStrategy());
-						// retrieve discovery url from properties file and call remote discovery strategy
-						URL discoveryFileUrl = FileLocator.find(Activator.getDefault().getBundle(), new Path(PluginDiscoveryWizardMainPage.DISCOVERY_PROPERTIES_FILE), null);
-						if(discoveryFileUrl != null) {
-							InputStream in = null;
-							try {
-								Properties props = new Properties();
-								in = discoveryFileUrl.openStream();
-								props.load(in);
-								String discoveryUrl = props.getProperty(PluginDiscoveryWizardMainPage.URL_DISCOVERY_PROPERTY);
-								RemoteBundleDiscoveryStrategy remoteDiscoveryStrategy = new RemoteBundleDiscoveryStrategy();
-								remoteDiscoveryStrategy.setDiscoveryUrl(discoveryUrl);
-								pluginDiscovery.getDiscoveryStrategies().add(remoteDiscoveryStrategy);
-							} catch(IOException ie) {
-								logger.warn(ie);
-							} finally {
-								if(in != null) {
-									try {
-										in.close();
-									} catch(IOException e) {
-										// ignore
-									}
-								}
+							IBundleGroup[] bundleGroups = provider.getBundleGroups();
+							for(IBundleGroup group : bundleGroups) {
+								installedFeatures.add(group.getIdentifier());
 							}
 						}
-						pluginDiscovery.setEnvironment(environment);
+						PluginDiscoveryWizardMainPage.this.installedFeatures = installedFeatures;
+					}
+					PluginDiscovery pluginDiscovery = new PluginDiscovery();
+					pluginDiscovery.getDiscoveryStrategies().add(new BundleDiscoveryStrategy());
+					// retrieve discovery url from properties file and call remote discovery strategy
+					URL discoveryFileUrl = FileLocator.find(Activator.getDefault().getBundle(), new Path(PluginDiscoveryWizardMainPage.DISCOVERY_PROPERTIES_FILE), null);
+					if(discoveryFileUrl != null) {
+						InputStream in = null;
 						try {
-							pluginDiscovery.performDiscovery(monitor);
-						} catch(CoreException e) {
-							throw new InvocationTargetException(e);
+							Properties props = new Properties();
+							in = discoveryFileUrl.openStream();
+							props.load(in);
+							String discoveryUrl = props.getProperty(PluginDiscoveryWizardMainPage.URL_DISCOVERY_PROPERTY);
+							RemoteBundleDiscoveryStrategy remoteDiscoveryStrategy = new RemoteBundleDiscoveryStrategy();
+							remoteDiscoveryStrategy.setDiscoveryUrl(discoveryUrl);
+							pluginDiscovery.getDiscoveryStrategies().add(remoteDiscoveryStrategy);
+						} catch(IOException ie) {
+							logger.warn(ie);
 						} finally {
-							PluginDiscoveryWizardMainPage.this.discovery = pluginDiscovery;
+							if(in != null) {
+								try {
+									in.close();
+								} catch(IOException e) {
+									// ignore
+								}
+							}
 						}
-						if(monitor.isCanceled()) {
-							throw new InterruptedException();
-						}
+					}
+					pluginDiscovery.setEnvironment(environment);
+					try {
+						pluginDiscovery.performDiscovery(monitor);
+					} catch(CoreException e) {
+						throw new InvocationTargetException(e);
+					} finally {
+						PluginDiscoveryWizardMainPage.this.discovery = pluginDiscovery;
+					}
+					if(monitor.isCanceled()) {
+						throw new InterruptedException();
 					}
 				});
 			} catch(InvocationTargetException e) {
@@ -1173,14 +1132,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 
 		super.setVisible(visible);
 		if(visible && discovery == null) {
-			Display.getCurrent().asyncExec(new Runnable() {
-
-				@Override
-				public void run() {
-
-					maybeUpdateDiscovery();
-				}
-			});
+			Display.getCurrent().asyncExec(() -> maybeUpdateDiscovery());
 		}
 	}
 

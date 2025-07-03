@@ -33,15 +33,11 @@ public class InstallErrorDialog {
 	public static void notifyError(Shell parentShell, String message, Exception e) {
 
 		StatusLineLogger.setInfo(InfoType.ERROR_MESSAGE, message);
-		Display.getDefault().syncExec(new Runnable() {
+		Display.getDefault().syncExec(() -> {
 
-			@Override
-			public void run() {
-
-				MultiStatus status = createMultiStatus(e);
-				SupportErrorDialog dialog = new SupportErrorDialog(parentShell, "Plug-in Installation", message, status);
-				dialog.open();
-			}
+			MultiStatus status = createMultiStatus(e);
+			SupportErrorDialog dialog = new SupportErrorDialog(parentShell, "Plug-in Installation", message, status);
+			dialog.open();
 		});
 		logger.error(e);
 	}
