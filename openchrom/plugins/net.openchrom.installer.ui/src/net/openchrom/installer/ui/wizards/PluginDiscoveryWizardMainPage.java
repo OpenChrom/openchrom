@@ -50,11 +50,6 @@ import org.eclipse.jface.viewers.DecorationOverlayIcon;
 import org.eclipse.jface.viewers.IDecoration;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.accessibility.ACC;
-import org.eclipse.swt.accessibility.AccessibleAdapter;
-import org.eclipse.swt.accessibility.AccessibleControlAdapter;
-import org.eclipse.swt.accessibility.AccessibleControlEvent;
-import org.eclipse.swt.accessibility.AccessibleEvent;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
@@ -63,8 +58,6 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.MouseMoveListener;
-import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -79,7 +72,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Resource;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -121,7 +113,6 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 	private static final String DISCOVERY_PROPERTIES_FILE = "discovery.properties";
 	private static final String URL_DISCOVERY_PROPERTY = "url";
 	private static final Logger logger = Logger.getLogger(PluginDiscoveryWizardMainPage.class);
-	private static Boolean useNativeSearchField;
 	private final List<PluginDescriptor> installableConnectors = new ArrayList<>();
 	private PluginDiscovery discovery;
 	private Composite body;
@@ -176,39 +167,12 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 				Label label = new Label(filterContainer, SWT.NULL);
 				label.setText("Filter");
 				if(getWizard().isShowConnectorDescriptorTextFilter()) {
-					Composite textFilterContainer;
-					boolean nativeSearch = useNativeSearchField(header);
-					if(nativeSearch) {
-						textFilterContainer = new Composite(filterContainer, SWT.NULL);
-					} else {
-						textFilterContainer = new Composite(filterContainer, SWT.BORDER);
-						textFilterContainer.setBackground(header.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
-					}
+					Composite textFilterContainer = new Composite(filterContainer, SWT.NULL);
 					GridDataFactory.fillDefaults().grab(true, false).applyTo(textFilterContainer);
 					GridLayoutFactory.fillDefaults().numColumns(2).applyTo(textFilterContainer);
-					if(nativeSearch) {
-						filterText = new Text(textFilterContainer, SWT.SINGLE | SWT.BORDER | SWT.SEARCH | SWT.ICON_CANCEL);
-					} else {
-						filterText = new Text(textFilterContainer, SWT.SINGLE);
-					}
+					filterText = new Text(textFilterContainer, SWT.SINGLE | SWT.BORDER | SWT.SEARCH | SWT.ICON_SEARCH |SWT.ICON_CANCEL);
 					filterText.addModifyListener(e -> filterTextChanged());
-					if(nativeSearch) {
-						filterText.addSelectionListener(new SelectionAdapter() {
-
-							@Override
-							public void widgetDefaultSelected(SelectionEvent e) {
-
-								if(e.detail == SWT.ICON_CANCEL) {
-									clearFilterText();
-								}
-							}
-						});
-						GridDataFactory.fillDefaults().grab(true, false).span(2, 1).applyTo(filterText);
-					} else {
-						GridDataFactory.fillDefaults().grab(true, false).applyTo(filterText);
-						clearFilterTextControl = createClearFilterTextControl(textFilterContainer, filterText);
-						clearFilterTextControl.setVisible(false);
-					}
+					GridDataFactory.fillDefaults().grab(true, false).span(2, 1).applyTo(filterText);
 				}
 				if(getWizard().isShowConnectorDescriptorKindFilter()) { // filter buttons
 					for(final PluginDescriptorKind kind : PluginDescriptorKind.values()) {
@@ -242,23 +206,6 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 		Dialog.applyDialogFont(container);
 		setControl(container);
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, "net.openchrom.installer.ui.pluginDiscovery"); // TODO: does not work
-	}
-
-	private static boolean useNativeSearchField(Composite composite) {
-
-		if(useNativeSearchField == null) {
-			useNativeSearchField = Boolean.FALSE;
-			Text testText = null;
-			try {
-				testText = new Text(composite, SWT.SEARCH | SWT.ICON_CANCEL);
-				useNativeSearchField = Boolean.valueOf((testText.getStyle() & SWT.ICON_CANCEL) != 0);
-			} finally {
-				if(testText != null) {
-					testText.dispose();
-				}
-			}
-		}
-		return useNativeSearchField;
 	}
 
 	private void createRefreshJob() {
@@ -295,105 +242,6 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 		String regex = filterText;
 		regex.replace("\\", "\\\\").replace("?", ".").replace("*", ".*?"); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 		return Pattern.compile(regex, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
-	}
-
-	private Label createClearFilterTextControl(Composite filterContainer, final Text filterText) {
-
-		final Image inactiveImage = ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DESELECTED_INACTIVE, IApplicationImageProvider.SIZE_16x16);
-		final Image activeImage = ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EDIT_ACTIVE, IApplicationImageProvider.SIZE_16x16);
-		final Image pressedImage = new Image(filterContainer.getDisplay(), activeImage, SWT.IMAGE_GRAY);
-		final Label clearButton = new Label(filterContainer, SWT.NONE);
-		clearButton.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
-		clearButton.setImage(inactiveImage);
-		clearButton.setToolTipText("Clear");
-		clearButton.setBackground(filterContainer.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
-		clearButton.addMouseListener(new MouseAdapter() {
-
-			private MouseMoveListener fMoveListener;
-
-			@Override
-			public void mouseDown(MouseEvent e) {
-
-				clearButton.setImage(pressedImage);
-				fMoveListener = new MouseMoveListener() {
-
-					private boolean fMouseInButton = true;
-
-					@Override
-					public void mouseMove(MouseEvent e) {
-
-						boolean mouseInButton = isMouseInButton(e);
-						if(mouseInButton != fMouseInButton) {
-							fMouseInButton = mouseInButton;
-							clearButton.setImage(mouseInButton ? pressedImage : inactiveImage);
-						}
-					}
-				};
-				clearButton.addMouseMoveListener(fMoveListener);
-			}
-
-			@Override
-			public void mouseUp(MouseEvent e) {
-
-				if(fMoveListener != null) {
-					clearButton.removeMouseMoveListener(fMoveListener);
-					fMoveListener = null;
-					boolean mouseInButton = isMouseInButton(e);
-					clearButton.setImage(mouseInButton ? activeImage : inactiveImage);
-					if(mouseInButton) {
-						clearFilterText();
-						filterText.setFocus();
-					}
-				}
-			}
-
-			private boolean isMouseInButton(MouseEvent e) {
-
-				Point buttonSize = clearButton.getSize();
-				return 0 <= e.x && e.x < buttonSize.x && 0 <= e.y && e.y < buttonSize.y;
-			}
-		});
-		clearButton.addMouseTrackListener(new MouseTrackListener() {
-
-			@Override
-			public void mouseEnter(MouseEvent e) {
-
-				clearButton.setImage(activeImage);
-			}
-
-			@Override
-			public void mouseExit(MouseEvent e) {
-
-				clearButton.setImage(inactiveImage);
-			}
-
-			@Override
-			public void mouseHover(MouseEvent e) {
-
-			}
-		});
-		clearButton.addDisposeListener(e -> {
-			inactiveImage.dispose();
-			activeImage.dispose();
-			pressedImage.dispose();
-		});
-		clearButton.getAccessible().addAccessibleListener(new AccessibleAdapter() {
-
-			@Override
-			public void getName(AccessibleEvent e) {
-
-				e.result = "NAME";
-			}
-		});
-		clearButton.getAccessible().addAccessibleControlListener(new AccessibleControlAdapter() {
-
-			@Override
-			public void getRole(AccessibleControlEvent e) {
-
-				e.detail = ACC.ROLE_PUSHBUTTON;
-			}
-		});
-		return clearButton;
 	}
 
 	@Override
