@@ -22,7 +22,6 @@ import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogramPeak;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
-import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.model.identifier.IPeakIdentificationResults;
@@ -36,6 +35,7 @@ import org.eclipse.swt.widgets.Shell;
 import net.openchrom.xxd.process.supplier.templates.io.ITemplateExport;
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 import net.openchrom.xxd.process.supplier.templates.peaks.AbstractPeakIdentifier;
+import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakReviewSettings;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.PeakReviewSupport;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessReviewSettings;
@@ -81,7 +81,7 @@ public class PeakReviewDirectMSD extends AbstractPeakIdentifier implements IPeak
 					reviewSetting.setStopRetentionTime(peakModel.getStopRetentionTime());
 					reviewSetting.setName(libraryInformation.getName());
 					reviewSetting.setCasNumber(libraryInformation.getCasNumber());
-					reviewSetting.setPeakType(PeakType.VV); // Settings
+					reviewSetting.setPeakType(PreferenceSupplier.getReviewPeakType());
 					reviewSetting.setTraces(getTraces(peak));
 					reviewSetting.setOptimizeRange(true);
 					reviewSettings.add(reviewSetting);

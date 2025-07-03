@@ -32,6 +32,12 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 			{"TRACE", Visibility.TRACE.name()}, //
 			{"BOTH", Visibility.BOTH.name()} //
 	};
+
+	public static final String[][] PEAK_TYPE_OPTIONS = new String[][]{//
+			{"VV", PeakType.VV.name()}, //
+			{"BB", PeakType.BB.name()}, //
+			{"MM", PeakType.MM.name()} //
+	};
 	//
 	public static final double MIN_DELTA_POSITION = 0;
 	public static final double MAX_DELTA_POSITION = 120000;
@@ -214,7 +220,7 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static final String P_DETECTOR_HIDE_EXISTING_PEAKS = "detectorHideExistingPeaks";
 	public static final boolean DEF_DETECTOR_HIDE_EXISTING_PEAKS = false;
 	public static final String P_DETECTOR_VISIBILITY = "detectorVisibility";
-	public static final String DEF_DETECTOR_VISIBILITY = Visibility.BOTH.name();;
+	public static final String DEF_DETECTOR_VISIBILITY = Visibility.BOTH.name();
 	public static final String P_DETECTOR_FOCUS_XIC = "detectorFocusXIC";
 	public static final boolean DEF_DETECTOR_FOCUS_XIC = true;
 	public static final String P_DETECTOR_SHOW_BASELINE = "detectorShowBaseline";
@@ -239,7 +245,7 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static final String P_REVIEW_SET_TARGET_DETECTED_PEAK = "reviewSetTargetDetectedPeak";
 	public static final boolean DEF_REVIEW_SET_TARGET_DETECTED_PEAK = true;
 	public static final String P_REVIEW_AUTO_SELECT_BEST_MATCH = "reviewAutoSelectBestMatch";
-	public static final boolean DEF_REVIEW_AUTO_SELECT_BEST_MATCH = false;
+	public static final boolean DEF_REVIEW_AUTO_SELECT_BEST_MATCH = true;
 	public static final String P_REVIEW_HIDE_EXISTING_PEAKS = "reviewHideExistingPeaks";
 	public static final boolean DEF_REVIEW_HIDE_EXISTING_PEAKS = true;
 	public static final String P_REVIEW_SET_TARGET_VERIFICATION = "reviewSetTargetVerification";
@@ -260,6 +266,8 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static final boolean DEF_REVIEW_SHOW_ONLY_RELEVANT_PEAKS = false;
 	public static final String P_REVIEW_IGNORE_NULL_CAS_NUMBER = "reviewIgnoreNullCasNumber";
 	public static final boolean DEF_REVIEW_IGNORE_NULL_CAS_NUMBER = true;
+	public static final String P_REVIEW_PEAK_TYPE = "reviewPeakType";
+	public static final String DEF_REVIEW_PEAK_TYPE = PeakType.VV.name();
 	/*
 	 * Named Traces
 	 */
@@ -386,6 +394,7 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 		putDefault(P_REVIEW_FETCH_LIBRARY_SPECTRUM, Boolean.toString(DEF_REVIEW_FETCH_LIBRARY_SPECTRUM));
 		putDefault(P_REVIEW_SHOW_ONLY_RELEVANT_PEAKS, Boolean.toString(DEF_REVIEW_SHOW_ONLY_RELEVANT_PEAKS));
 		putDefault(P_REVIEW_IGNORE_NULL_CAS_NUMBER, Boolean.toString(DEF_REVIEW_IGNORE_NULL_CAS_NUMBER));
+		putDefault(P_REVIEW_PEAK_TYPE, DEF_REVIEW_PEAK_TYPE);
 		/*
 		 * Named Traces
 		 */
@@ -852,6 +861,15 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static boolean isReviewIgnoreNullCasNumber() {
 
 		return INSTANCE().getBoolean(P_REVIEW_IGNORE_NULL_CAS_NUMBER, DEF_REVIEW_IGNORE_NULL_CAS_NUMBER);
+	}
+
+	public static PeakType getReviewPeakType() {
+
+		try {
+			return PeakType.valueOf(INSTANCE().get(P_REVIEW_PEAK_TYPE, DEF_REVIEW_PEAK_TYPE));
+		} catch(Exception e) {
+			return PeakType.VV;
+		}
 	}
 
 	public static PeakDetectorSettings getPeakDetectorSettingsCSD() {

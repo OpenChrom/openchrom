@@ -42,6 +42,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 
+import net.openchrom.xxd.process.supplier.templates.model.DetectorType;
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 import net.openchrom.xxd.process.supplier.templates.model.Visibility;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
@@ -54,6 +55,7 @@ public class ProcessReviewUI extends Composite {
 
 	private ReviewController controller;
 
+	private ComboViewer comboViewerDetectorType;
 	private ComboViewer comboViewerVisibility;
 	private Composite toolbarSearch;
 	private PeakReviewListUI peakReviewListUI;
@@ -75,6 +77,7 @@ public class ProcessReviewUI extends Composite {
 
 		this.processSettings = processSettings;
 		updatePeakReviewList();
+		updateComboViewerDetectorType();
 		updateComboViewerVisibility();
 	}
 
@@ -107,12 +110,11 @@ public class ProcessReviewUI extends Composite {
 	private void createToolbarMain(Composite parent) {
 
 		Composite composite = new Composite(parent, SWT.NONE);
-		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
-		gridData.horizontalAlignment = SWT.END;
-		composite.setLayoutData(gridData);
-		composite.setLayout(new GridLayout(5, false));
+		composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		composite.setLayout(new GridLayout(6, false));
 
 		createToggleToolbarSearch(composite);
+		comboViewerDetectorType = createComboViewerDetectorType(composite);
 		createButtonVisibilityDetails(composite);
 		comboViewerVisibility = createComboViewerVisibility(composite);
 		createButtonReplacePeak(composite);
@@ -133,6 +135,47 @@ public class ProcessReviewUI extends Composite {
 		});
 
 		return searchSupportUI;
+	}
+
+	private ComboViewer createComboViewerDetectorType(Composite parent) {
+
+		ComboViewer comboViewer = new EnhancedComboViewer(parent, SWT.READ_ONLY);
+		Combo combo = comboViewer.getCombo();
+		comboViewer.setContentProvider(ArrayContentProvider.getInstance());
+		comboViewer.setLabelProvider(new AbstractLabelProvider() {
+
+			@Override
+			public String getText(Object element) {
+
+				if(element instanceof DetectorType detectorType) {
+					return detectorType.name();
+				}
+				return null;
+			}
+		});
+
+		combo.setToolTipText("Select the detector type option.");
+		combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		combo.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				Object object = comboViewer.getStructuredSelection().getFirstElement();
+				if(object instanceof DetectorType detectorType) {
+					if(controller != null) {
+						if(MessageDialog.openQuestion(e.display.getActiveShell(), "Detector Type", "Would you like to switch the detector type to '" + detectorType.label() + "' for all listed templates?")) {
+							controller.updateDetectorType(detectorType);
+							controller.updateSettings();
+							peakReviewListUI.refresh();
+							updateSelection();
+						}
+					}
+				}
+			}
+		});
+
+		return comboViewer;
 	}
 
 	private Button createButtonVisibilityDetails(Composite parent) {
@@ -342,6 +385,15 @@ public class ProcessReviewUI extends Composite {
 			}
 		} else {
 			peakReviewListUI.setInput(null);
+		}
+	}
+
+	private void updateComboViewerDetectorType() {
+
+		if(processSettings != null) {
+			comboViewerDetectorType.setInput(DetectorType.values());
+		} else {
+			comboViewerDetectorType.setInput(null);
 		}
 	}
 

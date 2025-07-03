@@ -35,6 +35,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtchart.Range;
 
 import net.openchrom.xxd.process.supplier.templates.model.AbstractSetting;
+import net.openchrom.xxd.process.supplier.templates.model.DetectorType;
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 import net.openchrom.xxd.process.supplier.templates.model.Visibility;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
@@ -77,6 +78,27 @@ public class ReviewController {
 			List<ReviewSetting> reviewSettings = processSettings.getReviewSettings();
 			if(!reviewSettings.isEmpty()) {
 				update(reviewSettings.get(0));
+			}
+		}
+	}
+
+	public void updateDetectorType(DetectorType detectorType) {
+
+		if(processSettings != null) {
+			for(ReviewSetting reviewSetting : processSettings.getReviewSettings()) {
+				PeakType peakType;
+				switch(detectorType) {
+					case BB:
+						peakType = PeakType.BB;
+						break;
+					case MM:
+						peakType = PeakType.MM;
+						break;
+					default:
+						peakType = PeakType.VV;
+						break;
+				}
+				reviewSetting.setPeakType(peakType);
 			}
 		}
 	}
