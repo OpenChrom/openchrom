@@ -74,6 +74,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Resource;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -97,7 +98,6 @@ import net.openchrom.installer.model.PluginDescriptorKind;
 import net.openchrom.installer.model.PluginDiscovery;
 import net.openchrom.installer.model.RemoteBundleDiscoveryStrategy;
 import net.openchrom.installer.ui.Activator;
-import net.openchrom.installer.ui.swt.GradientCanvas;
 import net.openchrom.installer.ui.swt.OverviewToolTip;
 import net.openchrom.installer.util.DiscoveryCategoryComparator;
 import net.openchrom.installer.util.DiscoveryConnectorComparator;
@@ -615,9 +615,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 					continue;
 				}
 				{ // category header
-					final GradientCanvas categoryHeaderContainer = new GradientCanvas(container, SWT.NONE);
-					categoryHeaderContainer.setSeparatorVisible(true);
-					categoryHeaderContainer.setSeparatorAlignment(SWT.TOP);
+					final Canvas categoryHeaderContainer = new Canvas(container, SWT.NONE);
 					GridDataFactory.fillDefaults().span(2, 1).applyTo(categoryHeaderContainer);
 					GridLayoutFactory.fillDefaults().numColumns(3).margins(5, 5).equalWidth(false).applyTo(categoryHeaderContainer);
 					Label iconLabel = new Label(categoryHeaderContainer, SWT.NULL);
