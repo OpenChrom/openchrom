@@ -31,10 +31,13 @@
 		<unit id="net.openchrom.thirdparty.inchi.feature.feature.group"/>
 	</location>
 	<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-		<repository location="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/release/4.36.0"/>
-		<unit id="org.apache.poi" />
+		<repository location="https://download.eclipse.org/oomph/simrel-orbit/release/4.28.0"/>
+		<unit id="org.apache.poi"/>
 		<unit id="org.apache.poi.ooxml" />
 		<unit id="org.apache.poi.ooxml.schemas" />
+	</location>
+	<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+		<repository location="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/release/4.36.0"/>
 		<unit id="org.apache.commons.commons-csv"/>
 	</location>
 	<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
