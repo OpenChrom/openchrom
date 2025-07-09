@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.xxd.identifier.supplier.cas
 Bundle-ManifestVersion: 2
 Bundle-Name: Chemical Abstract Services Identifier
 Bundle-SymbolicName: net.openchrom.xxd.identifier.supplier.cas;singleton:=true
-Bundle-Version: 1.5.17.qualifier
+Bundle-Version: 1.5.18.qualifier
 Bundle-Activator: net.openchrom.xxd.identifier.supplier.cas.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
