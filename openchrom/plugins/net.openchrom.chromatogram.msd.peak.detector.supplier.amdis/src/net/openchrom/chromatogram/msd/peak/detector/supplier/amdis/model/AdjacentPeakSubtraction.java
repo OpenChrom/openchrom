@@ -16,9 +16,13 @@ import org.eclipse.chemclipse.support.text.ILabel;
 
 public enum AdjacentPeakSubtraction implements ILabel {
 
-	TWO("Two", "2"), //
+	/*
+	 * It looks weird, but the values to control the adjacent peak subtraction are in reverse order in AMDIS.
+	 * Two = 0 and None = 2
+	 */
+	TWO("Two", "0"), //
 	ONE("One", "1"), //
-	NONE("None", "0");
+	NONE("None", "2"); //
 
 	private String label = "";
 	private String value = "";
