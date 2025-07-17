@@ -19,6 +19,7 @@ public enum DetectorType implements ILabel {
 
 	VV("VV (Valley)"), //
 	BB("BB (Baseline)"), //
+	CB("CB (Chromatogram Baseline)"), //
 	MM("MM (Manual)");
 
 	private String label = "";
@@ -44,6 +45,8 @@ public enum DetectorType implements ILabel {
 			return PeakType.BB;
 		} else if(DetectorType.MM.equals(detectorType)) {
 			return PeakType.MM;
+		} else if(DetectorType.CB.equals(detectorType)) {
+			return PeakType.CB;
 		} else {
 			return PeakType.VV;
 		}

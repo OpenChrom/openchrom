@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
+import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 
 public class ReviewValidator extends AbstractTemplateValidator implements ITemplateValidator {
 
@@ -85,7 +86,7 @@ public class ReviewValidator extends AbstractTemplateValidator implements ITempl
 						}
 						//
 						if(peakType == null) {
-							message = "Please select a peak type: " + PeakType.VV + " or " + PeakType.BB + " or " + PeakType.MM;
+							message = PreferenceSupplier.DETECTOR_OPTIONS;
 						}
 					} else {
 						message = ERROR_ENTRY;
@@ -108,11 +109,10 @@ public class ReviewValidator extends AbstractTemplateValidator implements ITempl
 		if(parseString != null) {
 			try {
 				PeakType type = PeakType.valueOf(parseString.toUpperCase());
-				if(DETECTOR_TYPES.contains(type)) {
+				if(PreferenceSupplier.DETECTOR_TYPES.contains(type)) {
 					return type;
 				}
 			} catch(RuntimeException e) {
-				// invalid!
 			}
 		}
 		return null;
@@ -121,7 +121,6 @@ public class ReviewValidator extends AbstractTemplateValidator implements ITempl
 	public ReviewSetting getSetting() {
 
 		ReviewSetting setting = new ReviewSetting();
-		//
 		setting.setPositionStart(positionStart);
 		setting.setPositionStop(positionStop);
 		setting.setName(name);
@@ -130,7 +129,7 @@ public class ReviewValidator extends AbstractTemplateValidator implements ITempl
 		setting.setPeakType(peakType);
 		setting.setOptimizeRange(optimizeRange);
 		setting.setPositionDirective(positionDirective);
-		//
+
 		return setting;
 	}
 }

@@ -12,6 +12,10 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.preferences;
 
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.Set;
+
 import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.support.preferences.AbstractPreferenceSupplier;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
@@ -33,12 +37,15 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 			{"BOTH", Visibility.BOTH.name()} //
 	};
 
+	public static final Set<PeakType> DETECTOR_TYPES = Collections.unmodifiableSet(EnumSet.of(PeakType.VV, PeakType.BB, PeakType.CB, PeakType.MM));
+	public static final String DETECTOR_OPTIONS = "Options: " + PeakType.VV + " or " + PeakType.BB + " or " + PeakType.CB + " or " + PeakType.MM;
 	public static final String[][] PEAK_TYPE_OPTIONS = new String[][]{//
 			{"VV", PeakType.VV.name()}, //
 			{"BB", PeakType.BB.name()}, //
+			{"CB", PeakType.CB.name()}, //
 			{"MM", PeakType.MM.name()} //
 	};
-	//
+
 	public static final double MIN_DELTA_POSITION = 0;
 	public static final double MAX_DELTA_POSITION = 120000;
 	public static final int MIN_DELTA_MILLISECONDS = 0; // 0 Minutes
@@ -208,9 +215,9 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	 * Peak Detector
 	 */
 	public static final String P_DETECTOR_DELTA_LEFT_MILLISECONDS = "detectorDeltaLeftMilliseconds";
-	public static final int DEF_DETECTOR_DELTA_LEFT_MILLISECONDS = 0;
+	public static final int DEF_DETECTOR_DELTA_LEFT_MILLISECONDS = 5000;
 	public static final String P_DETECTOR_DELTA_RIGHT_MILLISECONDS = "detectorDeltaRightMilliseconds";
-	public static final int DEF_DETECTOR_DELTA_RIGHT_MILLISECONDS = 0;
+	public static final int DEF_DETECTOR_DELTA_RIGHT_MILLISECONDS = 5000;
 	public static final String P_DETECTOR_DYNAMIC_OFFSET_MILLISECONDS = "detectorDynamicOffsetMilliseconds";
 	public static final int DEF_DETECTOR_DYNAMIC_OFFSET_MILLISECONDS = 1000;
 	public static final String P_DETECTOR_REPLACE_NEAREST_PEAK = "detectorReplaceNearestPeak";
@@ -233,9 +240,9 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	 * Peak Review
 	 */
 	public static final String P_REVIEW_DELTA_LEFT_MILLISECONDS = "reviewDeltaLeftMilliseconds";
-	public static final int DEF_REVIEW_DELTA_LEFT_MILLISECONDS = 0;
+	public static final int DEF_REVIEW_DELTA_LEFT_MILLISECONDS = 5000;
 	public static final String P_REVIEW_DELTA_RIGHT_MILLISECONDS = "reviewDeltaRightMilliseconds";
-	public static final int DEF_REVIEW_DELTA_RIGHT_MILLISECONDS = 0;
+	public static final int DEF_REVIEW_DELTA_RIGHT_MILLISECONDS = 5000;
 	public static final String P_REVIEW_DYNAMIC_OFFSET_MILLISECONDS = "reviewDynamicOffsetMilliseconds";
 	public static final int DEF_REVIEW_DYNAMIC_OFFSET_MILLISECONDS = 1000;
 	public static final String P_REVIEW_REPLACE_NEAREST_PEAK = "reviewReplaceNearestPeak";
@@ -399,7 +406,6 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 		 * Named Traces
 		 */
 		putDefault(P_PEAK_EXPORT_NUMBER_TRACES, Integer.toString(DEF_PEAK_EXPORT_NUMBER_TRACES));
-		//
 	}
 
 	public static String getSettings(String key, String def) {
@@ -722,8 +728,7 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 
 	public static void toggleShowBaselineDetector() {
 
-		boolean show = isShowBaselineDetector();
-		INSTANCE().putBoolean(P_DETECTOR_SHOW_BASELINE, !show);
+		INSTANCE().putBoolean(P_DETECTOR_SHOW_BASELINE, !isShowBaselineDetector());
 	}
 
 	public static boolean isDetectorShowOnlyRelevantPeaks() {
@@ -828,8 +833,7 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 
 	public static void toggleShowBaselineReview() {
 
-		boolean show = isShowBaselineReview();
-		INSTANCE().putBoolean(P_REVIEW_SHOW_BASELINE, !show);
+		INSTANCE().putBoolean(P_REVIEW_SHOW_BASELINE, !isShowBaselineReview());
 	}
 
 	public static boolean isShowReviewDetails() {

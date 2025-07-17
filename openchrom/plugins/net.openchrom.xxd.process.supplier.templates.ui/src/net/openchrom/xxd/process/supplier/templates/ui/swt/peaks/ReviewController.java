@@ -86,19 +86,7 @@ public class ReviewController {
 
 		if(processSettings != null) {
 			for(ReviewSetting reviewSetting : processSettings.getReviewSettings()) {
-				PeakType peakType;
-				switch(detectorType) {
-					case BB:
-						peakType = PeakType.BB;
-						break;
-					case MM:
-						peakType = PeakType.MM;
-						break;
-					default:
-						peakType = PeakType.VV;
-						break;
-				}
-				reviewSetting.setPeakType(peakType);
+				reviewSetting.setPeakType(DetectorType.translate(detectorType));
 			}
 		}
 	}
@@ -203,7 +191,6 @@ public class ReviewController {
 						chartSettings.setDeltaRetentionTimeRight(PreferenceSupplier.getReviewDeltaRightMilliseconds());
 						chartSettings.setReplacePeak(PreferenceSupplier.isReviewReplaceNearestPeak());
 						chartSettings.setReplacePeakDelta(PreferenceSupplier.getReviewReplacePeakDeltaMilliseconds());
-
 						peakDetectorChart.update(detectorRange, chartSettings);
 						/*
 						 * Focus XIC

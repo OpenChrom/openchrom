@@ -22,7 +22,7 @@ import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessDetectorSe
 
 public class PeakDetectorControl extends Composite {
 
-	private DetectorController controller = new DetectorController();
+	private DetectorController controller = new DetectorController(this);
 
 	public PeakDetectorControl(Composite parent, int style) {
 
@@ -36,6 +36,10 @@ public class PeakDetectorControl extends Composite {
 		controller.setInput(processSettings);
 	}
 
+	public void updateWidgets() {
+
+	}
+
 	private void createControl() {
 
 		setLayout(new FillLayout());
@@ -46,20 +50,16 @@ public class PeakDetectorControl extends Composite {
 	private void create(Composite parent) {
 
 		SashForm sashForm = new SashForm(parent, SWT.HORIZONTAL);
-		//
 		createListSection(sashForm);
 		controller.createPeakDetectorChart(sashForm);
-		//
 		sashForm.setWeights(350, 650);
 	}
 
 	private void createListSection(Composite parent) {
 
 		SashForm sashForm = new SashForm(parent, SWT.VERTICAL);
-		//
 		controller.createExtendedDetectorUI(sashForm);
 		controller.createExtendedPeaksUI(sashForm);
-		//
 		sashForm.setWeights(700, 300);
 	}
 }
