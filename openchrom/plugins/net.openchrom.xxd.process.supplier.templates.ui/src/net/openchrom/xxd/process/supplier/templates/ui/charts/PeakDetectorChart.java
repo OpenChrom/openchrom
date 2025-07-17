@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.chemclipse.model.baseline.IBaselineModel;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogramPeak;
 import org.eclipse.chemclipse.model.core.IPeak;
@@ -518,19 +519,30 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 					 */
 					Set<Integer> traces = detectorRange.getTraces();
 					PeakType detectorType = detectorRange.getDetectorType();
-					if(PeakType.MM.equals(detectorType)) {
-						/*
-						 * MM
-						 */
+					if(PeakType.MM.equals(detectorType) || PeakType.CB.equals(detectorType)) {
 						double height = rectangle.y;
 						if(height > 0) {
-							double factorY1 = 1.0d - yStart / height;
-							double factorY2 = 1.0d - yStop / height;
-							IAxis intensity = axisSet.getYAxis(BaseChart.ID_PRIMARY_Y_AXIS);
-							Range intensityRange = intensity.getRange();
-							double intensityHeight = intensityRange.upper - intensityRange.lower;
-							float startIntensity = (float)(intensityRange.lower + intensityHeight * factorY1);
-							float stopIntensity = (float)(intensityRange.lower + intensityHeight * factorY2);
+							float startIntensity;
+							float stopIntensity;
+							if(PeakType.MM.equals(detectorType)) {
+								/*
+								 * MM
+								 */
+								double factorY1 = 1.0d - yStart / height;
+								double factorY2 = 1.0d - yStop / height;
+								IAxis intensity = axisSet.getYAxis(BaseChart.ID_PRIMARY_Y_AXIS);
+								Range intensityRange = intensity.getRange();
+								double intensityHeight = intensityRange.upper - intensityRange.lower;
+								startIntensity = (float)(intensityRange.lower + intensityHeight * factorY1);
+								stopIntensity = (float)(intensityRange.lower + intensityHeight * factorY2);
+							} else {
+								/*
+								 * CB
+								 */
+								IBaselineModel baselineModel = chromatogram.getBaselineModel();
+								startIntensity = baselineModel.getBackgroundAbundance(startRetentionTime);
+								stopIntensity = baselineModel.getBackgroundAbundance(stopRetentionTime);
+							}
 							peak = peakSupport.extractPeakByRetentionTime(chromatogram, startRetentionTime, stopRetentionTime, startIntensity, stopIntensity, traces);
 						}
 					} else {

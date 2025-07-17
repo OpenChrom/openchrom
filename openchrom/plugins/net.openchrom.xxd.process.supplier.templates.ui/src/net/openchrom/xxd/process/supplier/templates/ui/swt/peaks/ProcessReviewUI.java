@@ -13,6 +13,7 @@
 package net.openchrom.xxd.process.supplier.templates.ui.swt.peaks;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.model.core.IChromatogram;
@@ -24,7 +25,7 @@ import org.eclipse.chemclipse.support.ui.swt.EnhancedComboViewer;
 import org.eclipse.chemclipse.support.updates.IUpdateListener;
 import org.eclipse.chemclipse.swt.ui.components.ISearchListener;
 import org.eclipse.chemclipse.swt.ui.components.SearchSupportUI;
-import org.eclipse.chemclipse.ux.extension.ui.support.PartSupport;
+import org.eclipse.chemclipse.ux.extension.ui.swt.IExtendedPartUI;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferenceManager;
@@ -51,15 +52,19 @@ import net.openchrom.xxd.process.supplier.templates.ui.preferences.PreferencePag
 import net.openchrom.xxd.process.supplier.templates.ui.swt.PeakReviewListUI;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessReviewSettings;
 
-public class ProcessReviewUI extends Composite {
+public class ProcessReviewUI extends Composite implements IExtendedPartUI {
+
+	private static final String IMAGE_BASELINE = IApplicationImage.IMAGE_BASELINE;
+	private static final String TOOLTIP_BASELINE = "the baseline.";
+
+	private AtomicReference<ComboViewer> comboViewerDetectorType = new AtomicReference<>();
+	private AtomicReference<ComboViewer> comboViewerVisibility = new AtomicReference<>();
+	private AtomicReference<Button> buttonToolbarSearch = new AtomicReference<>();
+	private AtomicReference<SearchSupportUI> toolbarSearch = new AtomicReference<>();
+	private AtomicReference<Button> buttonBaseline = new AtomicReference<>();
+	private AtomicReference<PeakReviewListUI> peakReviewList = new AtomicReference<>();
 
 	private ReviewController controller;
-
-	private ComboViewer comboViewerDetectorType;
-	private ComboViewer comboViewerVisibility;
-	private Composite toolbarSearch;
-	private PeakReviewListUI peakReviewListUI;
-
 	private ProcessReviewSettings processSettings;
 
 	public ProcessReviewUI(Composite parent, int style) {
@@ -83,12 +88,12 @@ public class ProcessReviewUI extends Composite {
 
 	public int getSelection() {
 
-		return peakReviewListUI.getTable().getSelectionIndex();
+		return peakReviewList.get().getTable().getSelectionIndex();
 	}
 
 	public void setSelection(int index) {
 
-		Table table = peakReviewListUI.getTable();
+		Table table = peakReviewList.get().getTable();
 		if(index >= 0 && index < table.getItemCount()) {
 			table.setSelection(index);
 			updateSelection();
@@ -101,27 +106,33 @@ public class ProcessReviewUI extends Composite {
 		setLayout(gridLayout);
 
 		createToolbarMain(this);
-		toolbarSearch = createToolbarSearch(this);
-		peakReviewListUI = createTable(this);
+		createToolbarSearch(this);
+		createTable(this);
 
-		PartSupport.setCompositeVisibility(toolbarSearch, false);
+		initialize();
+	}
+
+	private void initialize() {
+
+		enableToolbar(toolbarSearch, buttonToolbarSearch.get(), IMAGE_SEARCH, TOOLTIP_SEARCH, false);
 	}
 
 	private void createToolbarMain(Composite parent) {
 
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		composite.setLayout(new GridLayout(6, false));
+		composite.setLayout(new GridLayout(7, false));
 
-		createToggleToolbarSearch(composite);
-		comboViewerDetectorType = createComboViewerDetectorType(composite);
+		createButtonToggleToolbarSearch(composite);
+		createComboViewerDetectorType(composite);
+		createButtonToggleBaseline(composite);
 		createButtonVisibilityDetails(composite);
-		comboViewerVisibility = createComboViewerVisibility(composite);
+		createComboViewerVisibility(composite);
 		createButtonReplacePeak(composite);
 		createSettingsButton(composite);
 	}
 
-	private SearchSupportUI createToolbarSearch(Composite parent) {
+	private void createToolbarSearch(Composite parent) {
 
 		SearchSupportUI searchSupportUI = new SearchSupportUI(parent, SWT.NONE);
 		searchSupportUI.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -130,14 +141,14 @@ public class ProcessReviewUI extends Composite {
 			@Override
 			public void performSearch(String searchText, boolean caseSensitive) {
 
-				peakReviewListUI.setSearchText(searchText, caseSensitive);
+				peakReviewList.get().setSearchText(searchText, caseSensitive);
 			}
 		});
 
-		return searchSupportUI;
+		toolbarSearch.set(searchSupportUI);
 	}
 
-	private ComboViewer createComboViewerDetectorType(Composite parent) {
+	private void createComboViewerDetectorType(Composite parent) {
 
 		ComboViewer comboViewer = new EnhancedComboViewer(parent, SWT.READ_ONLY);
 		Combo combo = comboViewer.getCombo();
@@ -148,7 +159,7 @@ public class ProcessReviewUI extends Composite {
 			public String getText(Object element) {
 
 				if(element instanceof DetectorType detectorType) {
-					return detectorType.name();
+					return detectorType.label();
 				}
 				return null;
 			}
@@ -167,7 +178,7 @@ public class ProcessReviewUI extends Composite {
 						if(MessageDialog.openQuestion(e.display.getActiveShell(), "Detector Type", "Would you like to switch the detector type to '" + detectorType.label() + "' for all listed templates?")) {
 							controller.updateDetectorType(detectorType);
 							controller.updateSettings();
-							peakReviewListUI.refresh();
+							peakReviewList.get().refresh();
 							updateSelection();
 						}
 					}
@@ -175,7 +186,33 @@ public class ProcessReviewUI extends Composite {
 			}
 		});
 
-		return comboViewer;
+		comboViewerDetectorType.set(comboViewer);
+	}
+
+	private Button createButtonToggleBaseline(Composite parent) {
+
+		Button button = new Button(parent, SWT.TOGGLE);
+		button.setText("");
+		updateBaselineButton(button);
+
+		button.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				PreferenceSupplier.toggleShowBaselineReview();
+				controller.updateSettings();
+				updateSelection();
+				updateBaselineButton(button);
+			}
+		});
+
+		return button;
+	}
+
+	private void updateBaselineButton(Button button) {
+
+		setButtonImage(button, IMAGE_BASELINE, PREFIX_SHOW, PREFIX_HIDE, TOOLTIP_BASELINE, PreferenceSupplier.isShowBaselineReview());
 	}
 
 	private Button createButtonVisibilityDetails(Composite parent) {
@@ -211,30 +248,13 @@ public class ProcessReviewUI extends Composite {
 		}
 	}
 
-	private Button createToggleToolbarSearch(Composite parent) {
+	private void createButtonToggleToolbarSearch(Composite parent) {
 
-		Button button = new Button(parent, SWT.PUSH);
-		button.setToolTipText("Toggle search toolbar.");
-		button.setText("");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImageProvider.SIZE_16x16));
-		button.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				boolean visible = PartSupport.toggleCompositeVisibility(toolbarSearch);
-				if(visible) {
-					button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImageProvider.SIZE_16x16));
-				} else {
-					button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImageProvider.SIZE_16x16));
-				}
-			}
-		});
-
-		return button;
+		Button button = createButtonToggleToolbar(parent, toolbarSearch, IMAGE_SEARCH, TOOLTIP_SEARCH);
+		buttonToolbarSearch.set(button);
 	}
 
-	private ComboViewer createComboViewerVisibility(Composite parent) {
+	private void createComboViewerVisibility(Composite parent) {
 
 		ComboViewer comboViewer = new EnhancedComboViewer(parent, SWT.READ_ONLY);
 		Combo combo = comboViewer.getCombo();
@@ -245,7 +265,7 @@ public class ProcessReviewUI extends Composite {
 			public String getText(Object element) {
 
 				if(element instanceof Visibility visibility) {
-					return visibility.name();
+					return visibility.label();
 				}
 				return null;
 			}
@@ -268,7 +288,7 @@ public class ProcessReviewUI extends Composite {
 			}
 		});
 
-		return comboViewer;
+		comboViewerVisibility.set(comboViewer);
 	}
 
 	private Button createButtonReplacePeak(Composite parent) {
@@ -331,7 +351,7 @@ public class ProcessReviewUI extends Composite {
 		});
 	}
 
-	private PeakReviewListUI createTable(Composite parent) {
+	private void createTable(Composite parent) {
 
 		PeakReviewListUI peakReviewListUI = new PeakReviewListUI(parent, SWT.BORDER, false);
 		Table table = peakReviewListUI.getTable();
@@ -355,7 +375,7 @@ public class ProcessReviewUI extends Composite {
 			}
 		});
 
-		return peakReviewListUI;
+		peakReviewList.set(peakReviewListUI);
 	}
 
 	private void applySettings() {
@@ -363,12 +383,14 @@ public class ProcessReviewUI extends Composite {
 		if(controller != null) {
 			controller.updateSettings();
 		}
+		buttonBaseline.get().setSelection(PreferenceSupplier.isShowBaselineReview());
+		updateBaselineButton(buttonBaseline.get());
 		updateSelection();
 	}
 
 	private ReviewSetting getReviewSetting() {
 
-		Object object = peakReviewListUI.getStructuredSelection().getFirstElement();
+		Object object = peakReviewList.get().getStructuredSelection().getFirstElement();
 		if(object instanceof ReviewSetting reviewSetting) {
 			return reviewSetting;
 		}
@@ -379,63 +401,64 @@ public class ProcessReviewUI extends Composite {
 
 		if(processSettings != null) {
 			List<ReviewSetting> reviewSettings = processSettings.getReviewSettings();
-			peakReviewListUI.setInput(reviewSettings);
+			peakReviewList.get().setInput(reviewSettings);
 			if(!reviewSettings.isEmpty()) {
-				peakReviewListUI.getTable().select(0);
+				peakReviewList.get().getTable().select(0);
 			}
 		} else {
-			peakReviewListUI.setInput(null);
+			peakReviewList.get().setInput(null);
 		}
 	}
 
 	private void updateComboViewerDetectorType() {
 
+		ComboViewer comboViewer = comboViewerDetectorType.get();
 		if(processSettings != null) {
-			comboViewerDetectorType.setInput(DetectorType.values());
+			comboViewer.setInput(DetectorType.values());
 		} else {
-			comboViewerDetectorType.setInput(null);
+			comboViewer.setInput(null);
 		}
 	}
 
 	private void updateComboViewerVisibility() {
 
+		ComboViewer comboViewer = comboViewerVisibility.get();
 		if(processSettings != null) {
 			IChromatogram chromatogram = processSettings.getChromatogram();
 			if(chromatogram instanceof IChromatogramCSD) {
 				/*
 				 * CSD
 				 */
-				Combo combo = comboViewerVisibility.getCombo();
-				comboViewerVisibility.setInput(new Visibility[]{Visibility.TIC});
+				Combo combo = comboViewer.getCombo();
+				comboViewer.setInput(new Visibility[]{Visibility.TIC});
 				combo.select(0);
 			} else {
 				/*
 				 * MSD, WSD
 				 */
 				Visibility[] items = Visibility.values();
-				comboViewerVisibility.setInput(items);
+				comboViewer.setInput(items);
 				Visibility visibility = PreferenceSupplier.getReviewVisibility();
 
 				exitloop:
 				for(int i = 0; i < items.length; i++) {
 					Visibility item = items[i];
 					if(item.equals(visibility)) {
-						Combo combo = comboViewerVisibility.getCombo();
+						Combo combo = comboViewer.getCombo();
 						combo.select(i);
 						break exitloop;
 					}
 				}
 			}
 		} else {
-			comboViewerVisibility.setInput(null);
+			comboViewer.setInput(null);
 		}
 	}
 
 	private void updateSelection() {
 
 		if(controller != null) {
-			ReviewSetting reviewSetting = getReviewSetting();
-			controller.update(reviewSetting);
+			controller.update(getReviewSetting());
 		}
 	}
 }

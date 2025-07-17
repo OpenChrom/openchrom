@@ -40,6 +40,7 @@ import org.eclipse.swtchart.extensions.core.ICustomSelectionHandler;
 
 import net.openchrom.xxd.process.supplier.templates.model.AbstractSetting;
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
+import net.openchrom.xxd.process.supplier.templates.model.DetectorType;
 import net.openchrom.xxd.process.supplier.templates.model.Visibility;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.support.PeakSupport;
@@ -52,14 +53,21 @@ import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorListUtil;
 public class DetectorController {
 
 	private static final String DETECTOR_DESCRIPTION = "Manual (Detector UI)";
-	//
+
 	private ProcessDetectorUI processDetectorUI;
 	private ExtendedPeakDetectorUI extendedPeaksUI;
 	private PeakDetectorChart peakDetectorChart;
-	//
+
 	private PeakDetectorListUtil peakDetectorListUtil = new PeakDetectorListUtil();
 	private ProcessDetectorSettings processSettings;
 	private DetectorSetting detectorSetting;
+
+	private PeakDetectorControl peakDetectorControl;
+
+	public DetectorController(PeakDetectorControl peakDetectorControl) {
+
+		this.peakDetectorControl = peakDetectorControl;
+	}
 
 	public void setInput(ProcessDetectorSettings processSettings) {
 
@@ -70,6 +78,22 @@ public class DetectorController {
 			if(!detectorSettings.isEmpty()) {
 				update(detectorSettings.get(0));
 			}
+		}
+	}
+
+	public void updateDetectorType(DetectorType detectorType) {
+
+		if(processSettings != null) {
+			for(DetectorSetting detectorSetting : processSettings.getDetectorSettings()) {
+				detectorSetting.setPeakType(DetectorType.translate(detectorType));
+			}
+		}
+	}
+
+	public void updateSettings() {
+
+		if(peakDetectorControl != null) {
+			peakDetectorControl.updateWidgets();
 		}
 	}
 
@@ -137,7 +161,6 @@ public class DetectorController {
 							chartSettings.setDeltaRetentionTimeRight(PreferenceSupplier.getDetectorDeltaRightMilliseconds());
 							chartSettings.setReplacePeak(PreferenceSupplier.isDetectorReplaceNearestPeak());
 							chartSettings.setReplacePeakDelta(PreferenceSupplier.getDetectorReplacePeakDeltaMilliseconds());
-							//
 							peakDetectorChart.update(detectorRange, chartSettings);
 							/*
 							 * Focus XIC

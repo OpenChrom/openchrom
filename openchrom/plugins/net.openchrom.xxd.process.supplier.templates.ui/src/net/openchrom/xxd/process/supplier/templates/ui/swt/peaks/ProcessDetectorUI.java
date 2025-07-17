@@ -28,6 +28,7 @@ import org.eclipse.chemclipse.swt.ui.components.ISearchListener;
 import org.eclipse.chemclipse.swt.ui.components.SearchSupportUI;
 import org.eclipse.chemclipse.ux.extension.ui.swt.IExtendedPartUI;
 import org.eclipse.chemclipse.ux.extension.ui.swt.ISettingsHandler;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.SWT;
@@ -42,6 +43,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
+import net.openchrom.xxd.process.supplier.templates.model.DetectorType;
 import net.openchrom.xxd.process.supplier.templates.model.Visibility;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.ui.preferences.PagePeakDetector;
@@ -53,12 +55,16 @@ public class ProcessDetectorUI extends Composite implements IExtendedPartUI {
 
 	private static final String IMAGE_TARGET_INPUT = IApplicationImage.IMAGE_TARGET;
 	private static final String TOOLTIP_TARGET_INPUT = "the target name input dialog";
-	//
+	private static final String IMAGE_BASELINE = IApplicationImage.IMAGE_BASELINE;
+	private static final String TOOLTIP_BASELINE = "the baseline.";
+
 	private AtomicReference<Button> buttonToolbarSearch = new AtomicReference<>();
 	private AtomicReference<SearchSupportUI> toolbarSearch = new AtomicReference<>();
+	private AtomicReference<Button> buttonBaseline = new AtomicReference<>();
+	private AtomicReference<ComboViewer> comboViewerDetectorType = new AtomicReference<>();
 	private AtomicReference<ComboViewer> comboViewerVisibility = new AtomicReference<>();
 	private AtomicReference<PeakDetectorListUI> peakDetectorList = new AtomicReference<>();
-	//
+
 	private DetectorController controller;
 	private ProcessDetectorSettings processSettings;
 
@@ -77,6 +83,7 @@ public class ProcessDetectorUI extends Composite implements IExtendedPartUI {
 
 		this.processSettings = processSettings;
 		updatePeakDetectorList();
+		updateComboViewerDetectorType();
 		updateComboViewerVisibility();
 	}
 
@@ -98,11 +105,11 @@ public class ProcessDetectorUI extends Composite implements IExtendedPartUI {
 
 		GridLayout gridLayout = new GridLayout(1, true);
 		setLayout(gridLayout);
-		//
+
 		createToolbarMain(this);
 		createToolbarSearch(this);
 		createTable(this);
-		//
+
 		initialize();
 	}
 
@@ -114,12 +121,12 @@ public class ProcessDetectorUI extends Composite implements IExtendedPartUI {
 	private void createToolbarMain(Composite parent) {
 
 		Composite composite = new Composite(parent, SWT.NONE);
-		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
-		gridData.horizontalAlignment = SWT.END;
-		composite.setLayoutData(gridData);
-		composite.setLayout(new GridLayout(5, false));
-		//
+		composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		composite.setLayout(new GridLayout(7, false));
+
 		createButtonToggleToolbarSearch(composite);
+		createComboViewerDetectorType(composite);
+		createButtonToggleBaseline(composite);
 		createButtonToggleTargetInput(composite);
 		createComboViewerVisibility(composite);
 		createButtonReplacePeak(composite);
@@ -144,16 +151,83 @@ public class ProcessDetectorUI extends Composite implements IExtendedPartUI {
 				peakDetectorList.get().setSearchText(searchText, caseSensitive);
 			}
 		});
-		//
+
 		toolbarSearch.set(searchSupportUI);
 	}
 
-	private Button createButtonToggleTargetInput(Composite parent) {
+	private void createComboViewerDetectorType(Composite parent) {
+
+		ComboViewer comboViewer = new EnhancedComboViewer(parent, SWT.READ_ONLY);
+		Combo combo = comboViewer.getCombo();
+		comboViewer.setContentProvider(ArrayContentProvider.getInstance());
+		comboViewer.setLabelProvider(new AbstractLabelProvider() {
+
+			@Override
+			public String getText(Object element) {
+
+				if(element instanceof DetectorType detectorType) {
+					return detectorType.label();
+				}
+				return null;
+			}
+		});
+
+		combo.setToolTipText("Select the detector type option.");
+		combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		combo.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				Object object = comboViewer.getStructuredSelection().getFirstElement();
+				if(object instanceof DetectorType detectorType) {
+					if(controller != null) {
+						if(MessageDialog.openQuestion(e.display.getActiveShell(), "Detector Type", "Would you like to switch the detector type to '" + detectorType.label() + "' for all listed templates?")) {
+							controller.updateDetectorType(detectorType);
+							controller.updateSettings();
+							peakDetectorList.get().refresh();
+							updateSelection();
+						}
+					}
+				}
+			}
+		});
+
+		comboViewerDetectorType.set(comboViewer);
+	}
+
+	private void createButtonToggleBaseline(Composite parent) {
+
+		Button button = new Button(parent, SWT.TOGGLE);
+		button.setText("");
+		updateBaselineButton(button);
+
+		button.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				PreferenceSupplier.toggleShowBaselineDetector();
+				controller.updateSettings();
+				updateSelection();
+				updateBaselineButton(button);
+			}
+		});
+
+		buttonBaseline.set(button);
+	}
+
+	private void updateBaselineButton(Button button) {
+
+		setButtonImage(button, IMAGE_BASELINE, PREFIX_SHOW, PREFIX_HIDE, TOOLTIP_BASELINE, PreferenceSupplier.isShowBaselineDetector());
+	}
+
+	private void createButtonToggleTargetInput(Composite parent) {
 
 		Button button = new Button(parent, SWT.TOGGLE);
 		button.setText("");
 		updateTargetButton(button);
-		//
+
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -163,8 +237,6 @@ public class ProcessDetectorUI extends Composite implements IExtendedPartUI {
 				updateTargetButton(button);
 			}
 		});
-		//
-		return button;
 	}
 
 	private void updateTargetButton(Button button) {
@@ -281,6 +353,11 @@ public class ProcessDetectorUI extends Composite implements IExtendedPartUI {
 
 	private void applySettings() {
 
+		if(controller != null) {
+			controller.updateSettings();
+		}
+		buttonBaseline.get().setSelection(PreferenceSupplier.isShowBaselineDetector());
+		updateBaselineButton(buttonBaseline.get());
 		updateSelection();
 	}
 
@@ -306,45 +383,54 @@ public class ProcessDetectorUI extends Composite implements IExtendedPartUI {
 		}
 	}
 
+	private void updateComboViewerDetectorType() {
+
+		if(processSettings != null) {
+			comboViewerDetectorType.get().setInput(DetectorType.values());
+		} else {
+			comboViewerDetectorType.get().setInput(null);
+		}
+	}
+
 	private void updateComboViewerVisibility() {
 
+		ComboViewer comboViewer = comboViewerVisibility.get();
 		if(processSettings != null) {
 			IChromatogram chromatogram = processSettings.getChromatogram();
 			if(chromatogram instanceof IChromatogramCSD) {
 				/*
 				 * CSD
 				 */
-				Combo combo = comboViewerVisibility.get().getCombo();
-				comboViewerVisibility.get().setInput(new Visibility[]{Visibility.TIC});
+				Combo combo = comboViewer.getCombo();
+				comboViewer.setInput(new Visibility[]{Visibility.TIC});
 				combo.select(0);
 			} else {
 				/*
 				 * MSD, WSD
 				 */
 				Visibility[] items = Visibility.values();
-				comboViewerVisibility.get().setInput(items);
+				comboViewer.setInput(items);
 				Visibility visibility = PreferenceSupplier.getDetectorVisibility();
-				//
+
 				exitloop:
 				for(int i = 0; i < items.length; i++) {
 					Visibility item = items[i];
 					if(item.equals(visibility)) {
-						Combo combo = comboViewerVisibility.get().getCombo();
+						Combo combo = comboViewer.getCombo();
 						combo.select(i);
 						break exitloop;
 					}
 				}
 			}
 		} else {
-			comboViewerVisibility.get().setInput(null);
+			comboViewer.setInput(null);
 		}
 	}
 
 	private void updateSelection() {
 
 		if(controller != null) {
-			DetectorSetting detectorSetting = getDetectorSetting();
-			controller.update(detectorSetting);
+			controller.update(getDetectorSetting());
 		}
 	}
 }

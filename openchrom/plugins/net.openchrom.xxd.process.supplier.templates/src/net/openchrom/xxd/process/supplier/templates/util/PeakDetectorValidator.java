@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
+import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 
 public class PeakDetectorValidator extends AbstractTemplateValidator implements ITemplateValidator {
 
@@ -69,7 +70,7 @@ public class PeakDetectorValidator extends AbstractTemplateValidator implements 
 						message = validateRetentionTime(referenceIdentifier, positionStart, positionStop);
 						if(message == null) {
 							if(peakType == null) {
-								message = "Please select a peak type: " + PeakType.VV + " or " + PeakType.BB + " or " + PeakType.MM;
+								message = PreferenceSupplier.DETECTOR_OPTIONS;
 							}
 							//
 							IStatus status = validateTraces(traceValues);
@@ -87,7 +88,7 @@ public class PeakDetectorValidator extends AbstractTemplateValidator implements 
 				message = ERROR_ENTRY;
 			}
 		}
-		//
+
 		if(message != null) {
 			return ValidationStatus.error(message);
 		} else {
@@ -98,7 +99,6 @@ public class PeakDetectorValidator extends AbstractTemplateValidator implements 
 	public DetectorSetting getSetting() {
 
 		DetectorSetting setting = new DetectorSetting();
-		//
 		setting.setPositionStart(positionStart);
 		setting.setPositionStop(positionStop);
 		setting.setPeakType(peakType);
@@ -107,7 +107,7 @@ public class PeakDetectorValidator extends AbstractTemplateValidator implements 
 		setting.setReferenceIdentifier(referenceIdentifier);
 		setting.setName(name);
 		setting.setPositionDirective(positionDirective);
-		//
+
 		return setting;
 	}
 }

@@ -27,8 +27,8 @@ import org.eclipse.swt.widgets.Composite;
 import net.openchrom.xxd.process.supplier.templates.model.AbstractSetting;
 import net.openchrom.xxd.process.supplier.templates.model.IntegratorSetting;
 import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
+import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.ui.swt.AbstractTemplateListUI;
-import net.openchrom.xxd.process.supplier.templates.util.AbstractTemplateValidator;
 import net.openchrom.xxd.process.supplier.templates.util.ReportValidator;
 
 public abstract class AbstractTemplateEditingSupport extends EditingSupport {
@@ -55,7 +55,7 @@ public abstract class AbstractTemplateEditingSupport extends EditingSupport {
 			ComboBoxViewerCellEditor editor = new ComboBoxViewerCellEditor((Composite)tableViewer.getControl());
 			ComboViewer comboViewer = editor.getViewer();
 			comboViewer.setContentProvider(ArrayContentProvider.getInstance());
-			comboViewer.setInput(AbstractTemplateValidator.DETECTOR_TYPES);
+			comboViewer.setInput(PreferenceSupplier.DETECTOR_TYPES);
 			comboViewer.setLabelProvider(enumLabelProvider);
 			this.cellEditor = editor;
 		} else if(column.equals(AbstractTemplateLabelProvider.POSITION_DIRECTIVE)) {

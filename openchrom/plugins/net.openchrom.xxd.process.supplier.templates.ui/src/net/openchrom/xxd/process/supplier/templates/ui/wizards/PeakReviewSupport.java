@@ -13,7 +13,6 @@
 package net.openchrom.xxd.process.supplier.templates.ui.wizards;
 
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
-import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
@@ -36,18 +35,13 @@ public class PeakReviewSupport {
 		WizardDialog wizardDialog = new WizardDialog(shell, wizard) {
 
 			@Override
-			protected void constrainShellSize() {
-
-				super.constrainShellSize();
-				getShell().setMaximized(true);
-			}
-
-			@Override
 			protected void createButtonsForButtonBar(Composite parent) {
 
+				/*
+				 * Prevent that the user accidentally presses the OK button.
+				 */
 				super.createButtonsForButtonBar(parent);
-				getButton(CANCEL).setEnabled(true);
-				getButton(IDialogConstants.FINISH_ID).setText(IDialogConstants.OK_LABEL);
+				getButton(CANCEL).setVisible(false);
 			}
 		};
 		/*
@@ -57,7 +51,6 @@ public class PeakReviewSupport {
 			wizardDialog.setMinimumPageSize(PeakReviewWizard.DEFAULT_WIDTH, PeakReviewWizard.DEFAULT_HEIGHT);
 			wizardDialog.create();
 			wizardDialog.getShell().setBackgroundMode(SWT.INHERIT_DEFAULT);
-			//
 			IProcessingInfo<?> processingInfo = processSettings.getProcessingInfo();
 			if(Window.OK == wizardDialog.open()) {
 				processingInfo.addInfoMessage(DESCRIPTION, "Successfully reviewed the peaks.");

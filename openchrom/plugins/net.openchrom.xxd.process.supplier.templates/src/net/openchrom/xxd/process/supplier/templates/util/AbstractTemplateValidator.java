@@ -12,8 +12,6 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.util;
 
-import java.util.Collections;
-import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,11 +21,10 @@ import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
 import net.openchrom.xxd.process.supplier.templates.model.ReportStrategy;
+import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 
 public abstract class AbstractTemplateValidator extends ValueParserSupport implements ITemplateValidator {
 
-	public static final Set<PeakType> DETECTOR_TYPES = Collections.unmodifiableSet(EnumSet.of(PeakType.VV, PeakType.BB, PeakType.MM));
-	//
 	private TracesValidator tracesValidator = new TracesValidator();
 
 	@Override
@@ -53,7 +50,7 @@ public abstract class AbstractTemplateValidator extends ValueParserSupport imple
 				// default
 			}
 		}
-		//
+
 		return PositionDirective.RETENTION_TIME_MIN;
 	}
 
@@ -67,7 +64,7 @@ public abstract class AbstractTemplateValidator extends ValueParserSupport imple
 				// default
 			}
 		}
-		//
+
 		return ReportStrategy.ALL;
 	}
 
@@ -77,14 +74,14 @@ public abstract class AbstractTemplateValidator extends ValueParserSupport imple
 		if(value != null) {
 			try {
 				PeakType peakType = PeakType.valueOf(value.toUpperCase());
-				if(DETECTOR_TYPES.contains(peakType)) {
+				if(PreferenceSupplier.DETECTOR_TYPES.contains(peakType)) {
 					return peakType;
 				}
 			} catch(RuntimeException e) {
 				// default
 			}
 		}
-		//
+
 		return null; // On purpose
 	}
 
@@ -97,7 +94,7 @@ public abstract class AbstractTemplateValidator extends ValueParserSupport imple
 				return "A negative start/stop position is only allowed if the reference identifier is set.";
 			}
 		}
-		//
+
 		return null;
 	}
 
@@ -106,7 +103,7 @@ public abstract class AbstractTemplateValidator extends ValueParserSupport imple
 		if(positionStop <= positionStart) {
 			return "The stop position must be greater than the start position.";
 		}
-		//
+
 		return null;
 	}
 }
