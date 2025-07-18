@@ -14,6 +14,7 @@
 package net.openchrom.xxd.process.supplier.templates.ui.wizards;
 
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
@@ -37,6 +38,7 @@ public class PeakDetectorSupport {
 				 */
 				super.createButtonsForButtonBar(parent);
 				getButton(CANCEL).setVisible(false);
+				getButton(IDialogConstants.FINISH_ID).setText(IDialogConstants.OK_LABEL);
 			}
 		};
 		/*
