@@ -189,7 +189,7 @@ public class ProcessReviewUI extends Composite implements IExtendedPartUI {
 		comboViewerDetectorType.set(comboViewer);
 	}
 
-	private Button createButtonToggleBaseline(Composite parent) {
+	private void createButtonToggleBaseline(Composite parent) {
 
 		Button button = new Button(parent, SWT.TOGGLE);
 		button.setText("");
@@ -207,7 +207,7 @@ public class ProcessReviewUI extends Composite implements IExtendedPartUI {
 			}
 		});
 
-		return button;
+		buttonBaseline.set(button);
 	}
 
 	private void updateBaselineButton(Button button) {
