@@ -27,5 +27,4 @@ Export-Package: net.openchrom.chromatogram.xxd.report.supplier.csv.core,
  net.openchrom.chromatogram.xxd.report.supplier.csv.service,
  net.openchrom.chromatogram.xxd.report.supplier.csv.settings,
  net.openchrom.chromatogram.xxd.report.supplier.csv.validators
-Import-Package: org.osgi.service.component.annotations;version="1.3.0"
 Service-Component: OSGI-INF/net.openchrom.chromatogram.xxd.report.supplier.csv.service.ReportColumnsSerializationService.xml
