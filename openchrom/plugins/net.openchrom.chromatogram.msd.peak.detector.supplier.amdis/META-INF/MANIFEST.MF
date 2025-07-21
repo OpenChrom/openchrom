@@ -27,7 +27,6 @@ Export-Package: net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.core
  net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.preferences,
  net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.settings,
  net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.support
-Import-Package: org.eclipse.chemclipse.xxd.filter.peaks,
- org.osgi.service.component.annotations;version="1.2.0"
+Import-Package: org.eclipse.chemclipse.xxd.filter.peaks
 Service-Component: OSGI-INF/net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.filter.AmbiguousPeakRemoverFilter.xml
 Bundle-Localization: OSGI-INF/l10n/bundle

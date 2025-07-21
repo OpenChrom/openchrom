@@ -25,4 +25,3 @@ Export-Package: net.openchrom.chromatogram.xxd.report.supplier.excel.template.co
  net.openchrom.chromatogram.xxd.report.supplier.excel.template.io,
  net.openchrom.chromatogram.xxd.report.supplier.excel.template.preferences,
  net.openchrom.chromatogram.xxd.report.supplier.excel.template.settings
-Import-Package: org.osgi.service.component.annotations;version="1.3.0"

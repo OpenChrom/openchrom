@@ -61,7 +61,6 @@ Import-Package: jakarta.annotation;version="2.1.1",
  jakarta.xml.bind,
  jakarta.xml.bind.annotation,
  jakarta.xml.bind.annotation.adapters,
- org.osgi.service.component.annotations;version="[1.2.0,2.0.0)",
  org.osgi.service.event;version="[1.0.0,2.0.0)"
 Export-Package: net.openchrom.xxd.process.supplier.templates.ui.charts,
  net.openchrom.xxd.process.supplier.templates.ui.core,
