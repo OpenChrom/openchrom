@@ -153,23 +153,39 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 
 		int startScan = PeakSupport.getStartScan(chromatogram, retentionTimeRange.getStartRetentionTime());
 		int stopScan = PeakSupport.getStopScan(chromatogram, retentionTimeRange.getStopRetentionTime());
-		Set<Integer> traces = listUtil.extractTraces(detectorSetting.getTraces());
-		IChromatogramPeak peak = peakSupport.extractPeakByScanRange(chromatogram, startScan, stopScan, detectorSetting.isIncludeBackground(), detectorSetting.isOptimizeRange(), traces);
-		if(peak != null) {
-			/*
-			 * Add an identification on demand.
-			 */
-			String name = detectorSetting.getName();
-			if(name != null && !name.isEmpty()) {
-				IIdentificationTarget identificationTarget = IIdentificationTarget.createDefaultTarget(name, "", PeakDetectorSettings.DETECTOR_DESCRIPTION);
-				if(identificationTarget != null) {
-					peak.getTargets().add(identificationTarget);
-				}
+		int deltaScan = stopScan - startScan;
+		if(PreferenceSupplier.isAutoAdjustDetectorRange()) {
+			if(deltaScan <= 2) {
+				/*
+				 * Use the full range
+				 */
+				startScan = 1;
+				stopScan = chromatogram.getNumberOfScans();
+				deltaScan = stopScan - startScan;
 			}
-			/*
-			 * Add the peak.
-			 */
-			PeakSupport.addPeak(chromatogram, peak);
+		}
+		/*
+		 * At least 3 scans must be available.
+		 */
+		if(deltaScan > 2) {
+			Set<Integer> traces = listUtil.extractTraces(detectorSetting.getTraces());
+			IChromatogramPeak peak = peakSupport.extractPeakByScanRange(chromatogram, startScan, stopScan, detectorSetting.isIncludeBackground(), detectorSetting.isOptimizeRange(), traces);
+			if(peak != null) {
+				/*
+				 * Add an identification on demand.
+				 */
+				String name = detectorSetting.getName();
+				if(name != null && !name.isEmpty()) {
+					IIdentificationTarget identificationTarget = IIdentificationTarget.createDefaultTarget(name, "", PeakDetectorSettings.DETECTOR_DESCRIPTION);
+					if(identificationTarget != null) {
+						peak.getTargets().add(identificationTarget);
+					}
+				}
+				/*
+				 * Add the peak.
+				 */
+				PeakSupport.addPeak(chromatogram, peak);
+			}
 		}
 	}
 }

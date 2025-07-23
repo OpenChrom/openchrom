@@ -45,15 +45,19 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new ExtendedIntegerFieldEditor(PreferenceSupplier.P_OFFSET_MIN_Y, "Offset Min Y [%]", PreferenceSupplier.MIN_OFFSET_Y, PreferenceSupplier.MAX_OFFSET_Y, getFieldEditorParent()));
 		addField(new ExtendedIntegerFieldEditor(PreferenceSupplier.P_OFFSET_MAX_Y, "Offset Max Y [%]", PreferenceSupplier.MIN_OFFSET_Y, PreferenceSupplier.MAX_OFFSET_Y, getFieldEditorParent()));
-		//
+
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new ExtendedIntegerFieldEditor(PreferenceSupplier.P_PEAK_EXPORT_NUMBER_TRACES, "Peak Export Number Traces", PreferenceSupplier.MIN_TRACES, PreferenceSupplier.MAX_TRACES, getFieldEditorParent()));
-		//
+
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new LabelFieldEditor("Identifier", getFieldEditorParent()));
 		addField(new FloatFieldEditor(PreferenceSupplier.P_LIMIT_MATCH_FACTOR_IDENTIFIER, "Limit Match Factor", PreferenceSupplier.MIN_FACTOR, PreferenceSupplier.MAX_FACTOR, getFieldEditorParent()));
 		addField(new FloatFieldEditor(PreferenceSupplier.P_MATCH_QUALITY_IDENTIFIER, "Match Quality", PreferenceSupplier.MIN_FACTOR, PreferenceSupplier.MAX_FACTOR, getFieldEditorParent()));
-		//
+
+		addField(new SpacerFieldEditor(getFieldEditorParent()));
+		addField(new LabelFieldEditor("Detector", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_AUTO_ADJUST_DETECTOR_RANGE, "Auto Adjust Detector Range (experimental)", getFieldEditorParent()));
+
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_SORT_IMPORT_TEMPLATE, "Sort Import Template", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_SORT_EXPORT_TEMPLATE, "Sort Export Template", getFieldEditorParent()));
@@ -62,11 +66,6 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_REPORT_SETTINGS_SORT, "Sort Report Settings", getFieldEditorParent()));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
-	 */
 	@Override
 	public void init(IWorkbench workbench) {
 
