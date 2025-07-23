@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.xxd.identifier.supplier.cas.feature"
       label="Chemical Abstract Services"
-      version="1.5.18.qualifier"
+      version="1.5.19.qualifier"
       provider-name="OpenChrom"
       plugin="net.openchrom.feature.branding"
       license-feature="org.eclipse.license"
