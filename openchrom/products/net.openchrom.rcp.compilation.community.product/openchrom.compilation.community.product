@@ -82,6 +82,25 @@ Contributors:
       <property name="sun.awt.xembedserver" value="true" />
    </configurations>
 
+   <repositories>
+      <repository location="https://update.openchrom.net/1.5.20/" name="OpenChrom" enabled="true" />
+      <repository location="https://converter.openchrom.net/1.5.20/" name="Converter" enabled="true" />
+      <repository location="https://plugins.openchrom.net/xident/1.5.20/" name="ChromIdent" enabled="true" />
+      <repository location="https://plugins.openchrom.net/mcrar/1.5.20/" name="MCR-AR" enabled="true" />
+      <repository location="https://plugins.openchrom.net/quantitation/1.5.20/" name="Quantitation" enabled="true" />
+      <repository location="https://plugins.openchrom.net/nist/1.5.20/" name="NIST" enabled="true" />
+      <repository location="https://plugins.openchrom.net/powertools/1.5.20/" name="PowerTools" enabled="true" />
+      <repository location="https://plugins.openchrom.net/pbm/1.5.20/" name="PBM" enabled="true" />
+      <repository location="https://plugins.openchrom.net/rrf/1.5.20/" name="RRF" enabled="true" />
+      <repository location="https://plugins.openchrom.net/allotrope/1.5.20/" name="Allotrope" enabled="true" />
+      <repository location="https://plugins.openchrom.net/ambientair/1.5.20/" name="Ambient Air" enabled="true" />
+      <repository location="https://plugins.openchrom.net/findingsdb/1.5.20/" name="Findings DB" enabled="true" />
+      <repository location="https://plugins.openchrom.net/chrominspector/1.5.20/" name="ChromInspector" enabled="true" />
+      <repository location="https://plugins.openchrom.net/tvoc/1.5.20/" name="TVOC" enabled="true" />
+      <repository location="https://plugins.openchrom.net/chrom2quant/1.5.20/" name="Chrom2Quant" enabled="true" />
+      <repository location="https://plugins.openchrom.net/combine/1.5.20/" name="Combine" enabled="true" />
+   </repositories>
+
    <preferencesInfo>
       <targetfile overwrite="false"/>
    </preferencesInfo>

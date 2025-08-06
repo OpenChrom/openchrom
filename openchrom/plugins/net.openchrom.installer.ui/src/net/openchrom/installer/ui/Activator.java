@@ -13,6 +13,7 @@
 package net.openchrom.installer.ui;
 
 import org.eclipse.chemclipse.support.ui.activator.AbstractActivatorUI;
+import org.eclipse.equinox.p2.ui.Policy;
 import org.osgi.framework.BundleContext;
 
 import net.openchrom.installer.preferences.PreferenceSupplier;
@@ -31,6 +32,7 @@ public class Activator extends AbstractActivatorUI {
 		super.start(context);
 		plugin = this;
 		initializePreferenceStore(PreferenceSupplier.INSTANCE());
+		setPolicy(context);
 	}
 
 	@Override
@@ -43,5 +45,12 @@ public class Activator extends AbstractActivatorUI {
 	public static Activator getDefault() {
 
 		return plugin;
+	}
+
+	private void setPolicy(BundleContext context) {
+
+		Policy policy = context.getService(context.getServiceReference(Policy.class));
+		policy.setRepositoriesVisible(false);
+		policy.setRepositoryPreferencePageId(null);
 	}
 }

@@ -10,7 +10,7 @@
  * Contributors:
  * Matthias Mailänder - initial API and implementation
  *******************************************************************************/
-package net.openchrom.installer.ui.discovery;
+package net.openchrom.installer.ui.handlers;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.support.ui.workbench.DisplayUtils;
@@ -20,11 +20,13 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 
+import net.openchrom.installer.ui.discovery.IPluginInstallJob;
+import net.openchrom.installer.ui.discovery.PrepareInstallProfileJob;
 import net.openchrom.installer.ui.wizards.PluginDiscoveryWizard;
 
-public class PluginInstallHandler {
+public class ConverterInstallHandler {
 
-	private static final Logger logger = Logger.getLogger(PluginInstallHandler.class);
+	private static final Logger logger = Logger.getLogger(ConverterInstallHandler.class);
 
 	@Execute
 	void execute(Shell shell, ECommandService commandService, EHandlerService handlerService) {
