@@ -19,8 +19,8 @@ import java.net.URL;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 public class PathResolver {
 
@@ -34,7 +34,7 @@ public class PathResolver {
 	 */
 	public static String getAbsolutePath(String string) {
 
-		Bundle bundle = Platform.getBundle(Activator.getContext().getBundle().getSymbolicName());
+		Bundle bundle = FrameworkUtil.getBundle(PathResolver.class);
 		IPath path = new Path(string);
 		URL url = FileLocator.find(bundle, path, null);
 		try {

@@ -32,13 +32,15 @@ import org.eclipse.chemclipse.msd.model.core.IRegularMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.support.history.IEditInformation;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
-import net.openchrom.msd.converter.supplier.mzdb.Activator;
 import net.openchrom.msd.converter.supplier.mzdb.internal.DataMode;
 
 public class ChromatogramWriter extends AbstractChromatogramWriter implements IChromatogramMSDWriter {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramWriter.class);
+	private static final Bundle bundle = FrameworkUtil.getBundle(ChromatogramWriter.class);
 
 	@Override
 	public void writeChromatogram(File file, IChromatogramMSD chromatogram, IProgressMonitor monitor) throws FileIsNotWriteableException, IOException {
@@ -158,7 +160,7 @@ public class ChromatogramWriter extends AbstractChromatogramWriter implements IC
 		String insert = "INSERT INTO software(id,name,version,param_tree,shared_param_tree_id) VALUES(?,?,?,?,?)";
 		try (var prepareStatement = connection.prepareStatement(insert)) {
 			prepareStatement.setString(2, "OpenChrom");
-			prepareStatement.setString(3, Activator.getContext().getBundle().getVersion().toString());
+			prepareStatement.setString(3, bundle.getVersion().toString());
 			prepareStatement.setString(4, "");// TODO
 			prepareStatement.setInt(5, 0); // TODO
 			prepareStatement.executeUpdate();

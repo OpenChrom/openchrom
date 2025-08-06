@@ -4,7 +4,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Vectorgraphics
 Bundle-SymbolicName: net.openchrom.swtchart.extension.export.vectorgraphics;singleton:=true
 Bundle-Version: 1.5.19.qualifier
-Bundle-Activator: net.openchrom.swtchart.extension.export.vectorgraphics.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.swtchart;bundle-version="0.8.0",

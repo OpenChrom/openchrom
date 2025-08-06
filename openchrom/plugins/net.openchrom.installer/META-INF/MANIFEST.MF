@@ -1,7 +1,6 @@
 Manifest-Version: 1.0
 Automatic-Module-Name: net.openchrom.installer
 Bundle-ActivationPolicy: lazy
-Bundle-Activator: net.openchrom.installer.Activator
 Bundle-ManifestVersion: 2
 Bundle-Name: Lablicate Installer
 Bundle-SymbolicName: net.openchrom.installer;singleton:=true
@@ -17,7 +16,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.rcp.ui.icons;bundle-version="0.8.0",
  org.eclipse.chemclipse.logging;bundle-version="0.8.0",
  org.eclipse.chemclipse.support;bundle-version="0.9.0"
-Export-Package: net.openchrom.installer,
- net.openchrom.installer.model,
+Export-Package: net.openchrom.installer.model,
  net.openchrom.installer.preferences,
  net.openchrom.installer.util

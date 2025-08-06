@@ -19,8 +19,8 @@ import java.util.Set;
 import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.support.preferences.AbstractPreferenceSupplier;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
+import org.osgi.framework.FrameworkUtil;
 
-import net.openchrom.xxd.process.supplier.templates.Activator;
 import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
 import net.openchrom.xxd.process.supplier.templates.model.Visibility;
 import net.openchrom.xxd.process.supplier.templates.settings.ChromatogramReportSettings;
@@ -63,7 +63,7 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static final int MIN_DELTA_REPLACE_PEAK_MILLISECONDS = 0;
 	public static final int MAX_DELTA_REPLACE_PEAK_MILLISECONDS = Integer.MAX_VALUE;
 	public static final int DEF_DELTA_REPLACE_PEAK_MILLISECONDS = 5000; // 5 Seconds
-	//
+
 	public static final String P_PEAK_DETECTOR_LIST_MSD = "peakDetectorListMSD";
 	public static final String DEF_PEAK_DETECTOR_LIST_MSD = "";
 	public static final String P_PEAK_DETECTOR_LIST_CSD = "peakDetectorListCSD";
@@ -90,17 +90,17 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static final String DEF_CHROMATOGRAM_REVIEW_LIST_MSD = "";
 	public static final String P_CHROMATOGRAM_REVIEW_LIST_CSD = "chromatogramReviewListCSD";
 	public static final String DEF_CHROMATOGRAM_REVIEW_LIST_CSD = "";
-	//
+
 	public static final String P_LIST_PATH_IMPORT = "listPathImport";
 	public static final String DEF_LIST_PATH_IMPORT = "";
 	public static final String P_LIST_PATH_EXPORT = "listPathExport";
 	public static final String DEF_LIST_PATH_EXPORT = "";
-	//
+
 	public static final String P_OFFSET_MIN_Y = "offsetMinY";
 	public static final int DEF_OFFSET_MIN_Y = 50;
 	public static final String P_OFFSET_MAX_Y = "offsetMaxY";
 	public static final int DEF_OFFSET_MAX_Y = 30;
-	//
+
 	public static final String P_SORT_IMPORT_TEMPLATE = "sortImportTemplate";
 	public static final boolean DEF_SORT_IMPORT_TEMPLATE = false;
 	public static final String P_SORT_EXPORT_TEMPLATE = "sortExportTemplate";
@@ -137,7 +137,7 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static final int DEF_EXPORT_DELTA_LEFT_MILLISECONDS_IDENTIFIER = 0;
 	public static final String P_EXPORT_DELTA_RIGHT_MILLISECONDS_IDENTIFIER = "exportDeltaRightMillisecondsIdentifier";
 	public static final int DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_IDENTIFIER = 0;
-	//
+
 	public static final String P_LIMIT_MATCH_FACTOR_IDENTIFIER = "limitMatchFactorIdentifier";
 	public static final float DEF_LIMIT_MATCH_FACTOR_IDENTIFIER = 80.0f;
 	public static final String P_MATCH_QUALITY_IDENTIFIER = "matchQualityIdentifier";
@@ -291,7 +291,7 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	@Override
 	public String getPreferenceNode() {
 
-		return Activator.getContext().getBundle().getSymbolicName();
+		return FrameworkUtil.getBundle(PreferenceSupplier.class).getSymbolicName();
 	}
 
 	@Override

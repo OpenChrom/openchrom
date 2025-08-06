@@ -4,7 +4,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Trace Compare (Model)
 Bundle-SymbolicName: net.openchrom.xxd.processor.supplier.tracecompare
 Bundle-Version: 1.5.19.qualifier
-Bundle-Activator: net.openchrom.xxd.processor.supplier.tracecompare.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.msd.converter;bundle-version="0.8.0",

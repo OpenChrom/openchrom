@@ -19,13 +19,6 @@
    </license>
 
    <plugin
-         id="net.openchrom.wsd.identifier.supplier.geneident"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="net.openchrom.wsd.identifier.supplier.geneident.ui"
          download-size="0"
          install-size="0"

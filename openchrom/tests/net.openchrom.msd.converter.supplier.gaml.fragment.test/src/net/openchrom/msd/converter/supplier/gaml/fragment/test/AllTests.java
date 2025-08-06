@@ -13,8 +13,7 @@
 package net.openchrom.msd.converter.supplier.gaml.fragment.test;
 
 import org.eclipse.chemclipse.rcp.app.test.TestAssembler;
-
-import net.openchrom.msd.converter.supplier.gaml.Activator;
+import org.osgi.framework.FrameworkUtil;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -23,7 +22,7 @@ public class AllTests {
 
 	public static Test suite() {
 
-		TestAssembler testAssembler = new TestAssembler(Activator.getContext().getBundle().getBundleContext().getBundles());
+		TestAssembler testAssembler = new TestAssembler(FrameworkUtil.getBundle(AllTests.class).getBundleContext().getBundles());
 		TestSuite suite = new TestSuite("Run all tests.");
 		String bundleAndPackageName = "net.openchrom.msd.converter.supplier.gaml";
 		testAssembler.assembleTests(suite, bundleAndPackageName, bundleAndPackageName, "*_Test"); // Unit

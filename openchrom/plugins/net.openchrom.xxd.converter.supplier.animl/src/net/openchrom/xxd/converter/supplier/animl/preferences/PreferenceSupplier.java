@@ -15,16 +15,18 @@ package net.openchrom.xxd.converter.supplier.animl.preferences;
 
 import org.eclipse.chemclipse.support.preferences.AbstractPreferenceSupplier;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
+import org.osgi.framework.FrameworkUtil;
 
-import net.openchrom.xxd.converter.supplier.animl.Activator;
 import net.openchrom.xxd.converter.supplier.animl.converter.Format;
 
 public class PreferenceSupplier extends AbstractPreferenceSupplier implements IPreferenceSupplier {
 
 	public static final String P_CHROMATOGRAM_VERSION_SAVE = "chromatogramVersionSave";
 	public static final String DEF_CHROMATOGRAM_VERSION_SAVE = Format.VERSION_LATEST;
+
 	public static final String P_CHROMATOGRAM_SAVE_ENCODED = "chromatogramEncoded";
 	public static final boolean DEF_CHROMATOGRAM_SAVE_ENCODED = true;
+
 	public static final String P_MASS_SPECTRUM_SAVE_ENCODED = "massSpectrumEncoded";
 	public static final boolean DEF_MASS_SPECTRUM_SAVE_ENCODED = true;
 
@@ -36,7 +38,7 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	@Override
 	public String getPreferenceNode() {
 
-		return Activator.getContext().getBundle().getSymbolicName();
+		return FrameworkUtil.getBundle(PreferenceSupplier.class).getSymbolicName();
 	}
 
 	@Override

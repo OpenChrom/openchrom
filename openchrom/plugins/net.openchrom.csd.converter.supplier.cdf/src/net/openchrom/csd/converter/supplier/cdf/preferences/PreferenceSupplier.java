@@ -14,14 +14,13 @@ package net.openchrom.csd.converter.supplier.cdf.preferences;
 
 import org.eclipse.chemclipse.support.preferences.AbstractPreferenceSupplier;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
-
-import net.openchrom.csd.converter.supplier.cdf.Activator;
+import org.osgi.framework.FrameworkUtil;
 
 public class PreferenceSupplier extends AbstractPreferenceSupplier implements IPreferenceSupplier {
 
 	public static final int MIN_MODULATION_TIME = 1;
 	public static final int MAX_MODULATION_TIME = Integer.MAX_VALUE;
-	//
+
 	public static final String P_MODULATION_TIME_2D = "modulationTime2D"; // $NON-NLS-1$
 	public static final int DEF_MODULATION_TIME_2D = 10000; // Milliseconds = 10 s
 
@@ -33,7 +32,7 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	@Override
 	public String getPreferenceNode() {
 
-		return Activator.getContext().getBundle().getSymbolicName();
+		return FrameworkUtil.getBundle(PreferenceSupplier.class).getSymbolicName();
 	}
 
 	@Override
