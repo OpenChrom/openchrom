@@ -14,8 +14,7 @@ package net.openchrom.xxd.processor.supplier.tracecompare.preferences;
 
 import org.eclipse.chemclipse.support.preferences.AbstractPreferenceSupplier;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
-
-import net.openchrom.xxd.processor.supplier.tracecompare.Activator;
+import org.osgi.framework.FrameworkUtil;
 
 public class PreferenceSupplier extends AbstractPreferenceSupplier implements IPreferenceSupplier {
 
@@ -24,27 +23,27 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static final String DETECTOR_WSD = "WSD";
 	public static final String P_DETECTOR_TYPE = "detectorType";
 	public static final String DEF_DETECTOR_TYPE = DETECTOR_WSD;
-	//
+
 	public static final String FILE_EXTENSION_DFM = ".DFM";
 	public static final String P_FILE_EXTENSION = "fileExtenstions";
 	public static final String DEF_FILE_EXTENSION = FILE_EXTENSION_DFM;
-	//
+
 	public static final String P_FILE_PATTERN = "filePattern";
 	public static final String DEF_FILE_PATTERN = "(.*)(A)(\\d+)(\\.)(DFM)";
-	//
+
 	public static final String P_SAMPLE_DIRECTORY = "sampleDirectory";
 	public static final String DEF_SAMPLE_DIRECTORY = "";
 	public static final String P_REFERENCE_DIRECTORY = "referenceDirectory";
 	public static final String DEF_REFERENCE_DIRECTORY = "";
-	//
+
 	public static final String P_SEARCH_CASE_SENSITIVE = "searchCaseSensitive"; // $NON-NLS-1$
 	public static final boolean DEF_SEARCH_CASE_SENSITIVE = false; // $NON-NLS-1$
-	//
+
 	public static final int MIN_SCAN_VELOCITY = 0;
 	public static final int MAX_SCAN_VELOCITY = Integer.MAX_VALUE;
 	public static final String P_SCAN_VELOCITY = "scanVelocity"; // mm/s
 	public static final int DEF_SCAN_VELOCITY = 20;
-	//
+
 	public static final String P_COLOR_DATA_190 = "colorData190";
 	public static final String DEF_COLOR_DATA_190 = "255,255,0";
 	public static final String P_COLOR_DATA_200 = "colorData200";
@@ -61,12 +60,12 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static final String DEF_COLOR_DATA_300 = "185,0,127";
 	public static final String P_COLOR_DATA_DEFAULT = "colorDataDefault";
 	public static final String DEF_COLOR_DATA_DEFAULT = "125,125,125";
-	//
+
 	public static final String P_MIRROR_REFERENCE_DATA = "mirrorReferenceData"; // $NON-NLS-1$
 	public static final boolean DEF_MIRROR_REFERENCE_DATA = true; // $NON-NLS-1$
 	public static final String P_USE_DATA_VALIDATION = "useDataValidation"; // $NON-NLS-1$
 	public static final boolean DEF_USE_DATA_VALIDATION = true; // $NON-NLS-1$
-	//
+
 	public static final String P_LINE_STYLE_SAMPLE = "lineStyleSample";
 	public static final String DEF_LINE_STYLE_SAMPLE = "SOLID";
 	public static final String P_LINE_WIDTH_SAMPLE = "lineWidthSample";
@@ -86,7 +85,7 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	@Override
 	public String getPreferenceNode() {
 
-		return Activator.getContext().getBundle().getSymbolicName();
+		return FrameworkUtil.getBundle(PreferenceSupplier.class).getSymbolicName();
 	}
 
 	@Override

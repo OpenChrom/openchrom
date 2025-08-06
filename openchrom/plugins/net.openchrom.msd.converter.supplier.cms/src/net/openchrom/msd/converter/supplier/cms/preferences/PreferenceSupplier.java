@@ -15,15 +15,16 @@ package net.openchrom.msd.converter.supplier.cms.preferences;
 
 import org.eclipse.chemclipse.support.preferences.AbstractPreferenceSupplier;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
-
-import net.openchrom.msd.converter.supplier.cms.Activator;
+import org.osgi.framework.FrameworkUtil;
 
 public class PreferenceSupplier extends AbstractPreferenceSupplier implements IPreferenceSupplier {
 
 	public static final String P_USE_UNIT_MASS_RESOLUTION = "useUnitMassResolution";
 	public static final boolean DEF_USE_UNIT_MASS_RESOLUTION = true;
+
 	public static final String P_REMOVE_INTENSITIES_LOWER_THAN_ONE = "removeIntensitiesLowerThanOne";
 	public static final boolean DEF_REMOVE_INTENSITIES_LOWER_THAN_ONE = true;
+
 	public static final String P_NORMALIZE_INTENSITIES = "normalizeIntensities";
 	public static final boolean DEF_NORMALIZE_INTENSITIES = true;
 
@@ -35,7 +36,7 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	@Override
 	public String getPreferenceNode() {
 
-		return Activator.getContext().getBundle().getSymbolicName();
+		return FrameworkUtil.getBundle(PreferenceSupplier.class).getSymbolicName();
 	}
 
 	@Override

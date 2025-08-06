@@ -17,8 +17,8 @@ import java.util.Set;
 import org.eclipse.chemclipse.support.preferences.AbstractPreferenceSupplier;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
 import org.openscience.cdk.interfaces.IIsotope;
+import org.osgi.framework.FrameworkUtil;
 
-import net.openchrom.xxd.identifier.supplier.cdk.Activator;
 import net.openchrom.xxd.identifier.supplier.cdk.formula.IsotopeDecider;
 import net.openchrom.xxd.identifier.supplier.cdk.formula.IsotopeDeciderFactory;
 import net.openchrom.xxd.identifier.supplier.cdk.formula.IsotopeParser;
@@ -73,7 +73,7 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	@Override
 	public String getPreferenceNode() {
 
-		return Activator.getContext().getBundle().getSymbolicName();
+		return FrameworkUtil.getBundle(PreferenceSupplier.class).getSymbolicName();
 	}
 
 	@Override

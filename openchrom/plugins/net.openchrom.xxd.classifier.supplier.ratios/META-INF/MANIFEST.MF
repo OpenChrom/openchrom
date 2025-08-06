@@ -4,7 +4,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Ratio Calculator
 Bundle-SymbolicName: net.openchrom.xxd.classifier.supplier.ratios;singleton:=true
 Bundle-Version: 1.5.19.qualifier
-Bundle-Activator: net.openchrom.xxd.classifier.supplier.ratios.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.msd.model;bundle-version="0.8.0",
@@ -22,8 +21,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.wsd.model;bundle-version="0.8.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
-Export-Package: net.openchrom.xxd.classifier.supplier.ratios,
- net.openchrom.xxd.classifier.supplier.ratios.compiler,
+Export-Package: net.openchrom.xxd.classifier.supplier.ratios.compiler,
  net.openchrom.xxd.classifier.supplier.ratios.core,
  net.openchrom.xxd.classifier.supplier.ratios.model,
  net.openchrom.xxd.classifier.supplier.ratios.model.qual,

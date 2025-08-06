@@ -14,8 +14,8 @@ package net.openchrom.swtchart.extension.export.vectorgraphics.preferences;
 
 import org.eclipse.chemclipse.support.preferences.AbstractPreferenceSupplier;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
+import org.osgi.framework.FrameworkUtil;
 
-import net.openchrom.swtchart.extension.export.vectorgraphics.Activator;
 import net.openchrom.swtchart.extension.export.vectorgraphics.model.PageSizeOption;
 import net.openchrom.swtchart.extension.export.vectorgraphics.model.PageUnit;
 
@@ -25,12 +25,12 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static final String DEF_PAGE_SIZE_OPTION = PageSizeOption.FULL_LANDSCAPE.name();
 	public static final String P_PAGE_UNIT = "pageUnit";
 	public static final String DEF_PAGE_UNIT = PageUnit.MM.name();
-	//
+
 	public static final String P_PATH_IMPORT = "pathImport";
 	public static final String DEF_PATH_IMPORT = "";
 	public static final String P_PATH_EXPORT = "pathExport";
 	public static final String DEF_PATH_EXPORT = "";
-	//
+
 	private static IPreferenceSupplier preferenceSupplier = null;
 
 	public static IPreferenceSupplier INSTANCE() {
@@ -38,14 +38,14 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 		if(preferenceSupplier == null) {
 			preferenceSupplier = new PreferenceSupplier();
 		}
-		//
+
 		return preferenceSupplier;
 	}
 
 	@Override
 	public String getPreferenceNode() {
 
-		return Activator.getDefault().getBundle().getSymbolicName();
+		return FrameworkUtil.getBundle(PreferenceSupplier.class).getSymbolicName();
 	}
 
 	@Override

@@ -15,14 +15,13 @@ package net.openchrom.msd.identifier.supplier.massbank.preferences;
 
 import org.eclipse.chemclipse.support.preferences.AbstractPreferenceSupplier;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
-
-import net.openchrom.msd.identifier.supplier.massbank.Activator;
+import org.osgi.framework.FrameworkUtil;
 
 public class PreferenceSupplier extends AbstractPreferenceSupplier implements IPreferenceSupplier {
 
 	public static final String MIRROR_EU = "EU";
 	public static final String MIRROR_JP = "JP";
-	//
+
 	public static final String P_MASSBANK_MIRROR = "massBankMirror";
 	public static final String DEF_MASSBANK_MIRROR = MIRROR_EU;
 
@@ -34,7 +33,7 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	@Override
 	public String getPreferenceNode() {
 
-		return Activator.getContext().getBundle().getSymbolicName();
+		return FrameworkUtil.getBundle(PreferenceSupplier.class).getSymbolicName();
 	}
 
 	@Override

@@ -15,15 +15,16 @@ package net.openchrom.msd.process.supplier.cms.preferences;
 
 import org.eclipse.chemclipse.support.preferences.AbstractPreferenceSupplier;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
-
-import net.openchrom.msd.process.supplier.cms.Activator;
+import org.osgi.framework.FrameworkUtil;
 
 public class PreferenceSupplier extends AbstractPreferenceSupplier implements IPreferenceSupplier {
 
 	public static final String P_PATH_LIBRARY_EXPLORER = "pathLibraryExplorer";
 	public static final String DEF_PATH_LIBRARY_EXPLORER = "";
+
 	public static final String P_PATH_CMS_SCAN_SPECTRA = "pathCmsScanSpectra";
 	public static final String DEF_PATH_CMS_SCAN_SPECTRA = "";
+
 	public static final String P_PATH_CMS_LIBRARY_SPECTRA = "pathCmsLibrarySpectra";
 	public static final String DEF_PATH_CMS_LIBRARY_SPECTRA = "";
 
@@ -35,7 +36,7 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	@Override
 	public String getPreferenceNode() {
 
-		return Activator.getContext().getBundle().getSymbolicName();
+		return FrameworkUtil.getBundle(PreferenceSupplier.class).getSymbolicName();
 	}
 
 	@Override

@@ -4,7 +4,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: CDC MicrobeNet
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.microbenet;singleton:=true
 Bundle-Version: 1.5.19.qualifier
-Bundle-Activator: net.openchrom.msd.converter.supplier.microbenet.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.logging;bundle-version="0.8.0",

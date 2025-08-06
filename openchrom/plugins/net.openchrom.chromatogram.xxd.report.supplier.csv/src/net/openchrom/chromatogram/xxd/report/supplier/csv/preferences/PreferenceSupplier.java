@@ -16,8 +16,8 @@ package net.openchrom.chromatogram.xxd.report.supplier.csv.preferences;
 import org.eclipse.chemclipse.model.settings.Delimiter;
 import org.eclipse.chemclipse.support.preferences.AbstractPreferenceSupplier;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
+import org.osgi.framework.FrameworkUtil;
 
-import net.openchrom.chromatogram.xxd.report.supplier.csv.Activator;
 import net.openchrom.chromatogram.xxd.report.supplier.csv.settings.ChromatogramReportSettings;
 
 public class PreferenceSupplier extends AbstractPreferenceSupplier implements IPreferenceSupplier {
@@ -40,7 +40,7 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	@Override
 	public String getPreferenceNode() {
 
-		return Activator.getContext().getBundle().getSymbolicName();
+		return FrameworkUtil.getBundle(PreferenceSupplier.class).getSymbolicName();
 	}
 
 	@Override

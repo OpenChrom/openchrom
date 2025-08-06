@@ -4,7 +4,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: GAML Fluorimetry
 Bundle-SymbolicName: net.openchrom.fsd.converter.supplier.gaml;singleton:=true
 Bundle-Version: 1.5.19.qualifier
-Bundle-Activator: net.openchrom.fsd.converter.supplier.gaml.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.logging;bundle-version="0.8.0",

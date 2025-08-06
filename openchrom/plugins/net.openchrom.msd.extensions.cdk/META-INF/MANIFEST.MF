@@ -6,7 +6,6 @@ Bundle-SymbolicName: net.openchrom.msd.extensions.cdk;singleton:=true
 Bundle-Version: 1.5.19.qualifier
 Export-Package: net.openchrom.msd.extensions.cdk.calculator,
  net.openchrom.msd.extensions.cdk.preferences
-Bundle-Activator: net.openchrom.msd.extensions.cdk.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
  net.openchrom.thirdparty.cdk;bundle-version="2.10.0",
