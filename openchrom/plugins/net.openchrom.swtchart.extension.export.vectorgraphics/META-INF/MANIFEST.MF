@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.swtchart.extension.export.vectorgraphics
 Bundle-ManifestVersion: 2
 Bundle-Name: Vectorgraphics
 Bundle-SymbolicName: net.openchrom.swtchart.extension.export.vectorgraphics;singleton:=true
-Bundle-Version: 1.5.19.qualifier
+Bundle-Version: 1.5.20.qualifier
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.swtchart;bundle-version="0.8.0",

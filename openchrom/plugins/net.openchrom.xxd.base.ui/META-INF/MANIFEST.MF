@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.xxd.base.ui
 Bundle-ManifestVersion: 2
 Bundle-Name: OpenChrom Base UI
 Bundle-SymbolicName: net.openchrom.xxd.base.ui
-Bundle-Version: 1.5.19.qualifier
+Bundle-Version: 1.5.20.qualifier
 Export-Package: net.openchrom.xxd.base.ui.services,
  net.openchrom.xxd.base.ui.support
 Bundle-Activator: net.openchrom.xxd.base.ui.Activator

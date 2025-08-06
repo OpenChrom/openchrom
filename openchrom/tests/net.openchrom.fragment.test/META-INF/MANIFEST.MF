@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.fragment.test
 Bundle-ManifestVersion: 2
 Bundle-Name: RCP App Test Fragment
 Bundle-SymbolicName: net.openchrom.fragment.test
-Bundle-Version: 1.5.19.qualifier
+Bundle-Version: 1.5.20.qualifier
 Fragment-Host: org.eclipse.chemclipse.rcp.app;bundle-version="0.8.0.qualifier"
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Require-Bundle: org.junit;bundle-version="4.11.0",
