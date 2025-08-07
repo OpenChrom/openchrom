@@ -14,39 +14,34 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.btmsp.converter;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.File;
 
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.junit.Before;
 import org.junit.Test;
 
 import net.openchrom.msd.converter.supplier.btmsp.TestPathHelper;
 import net.openchrom.msd.converter.supplier.btmsp.converter.model.IMainSpectraProjection;
 import net.openchrom.msd.converter.supplier.btmsp.converter.model.MainSpectraProjection;
 
-import junit.framework.TestCase;
-
-public class MassSpectrumImportConverter_Cattle_ITest extends TestCase {
+public class MassSpectrumImportConverter_Cattle_ITest {
 
 	private IMassSpectra massSpectra;
 
-	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 
-		super.setUp();
 		File file = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_CATTLE));
 		DatabaseImportConverter importConverter = new DatabaseImportConverter();
 		IProcessingInfo<IMassSpectra> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		massSpectra = processingInfo.getProcessingResult();
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-
-		massSpectra = null;
-		super.tearDown();
 	}
 
 	@Test

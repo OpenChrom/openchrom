@@ -13,50 +13,39 @@
  *******************************************************************************/
 package net.openchrom.wsd.converter.supplier.abif.io;
 
+import static org.junit.Assert.assertNull;
+
 import java.io.File;
 
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.wsd.converter.chromatogram.ChromatogramConverterWSD;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.junit.Before;
+import org.junit.Test;
 
 import net.openchrom.wsd.converter.supplier.abif.ABIF;
 
-import junit.framework.TestCase;
-
-public class InvalidData_ITest extends TestCase {
+public class InvalidData_ITest {
 
 	protected IChromatogramWSD chromatogram;
 	protected String extensionPointId;
 	protected String pathImport;
 	protected File fileImport;
 
-	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 
-		super.setUp();
 		extensionPointId = ABIF.EXTENSION_POINT_ID;
 		pathImport = ABIF.getAbsolutePath(ABIF.TESTFILE_IMPORT_FAKE_AB1);
 		fileImport = new File(this.pathImport);
 		IProcessingInfo<IChromatogramWSD> processingInfo = ChromatogramConverterWSD.getInstance().convert(fileImport, extensionPointId, new NullProgressMonitor());
-		try {
-			chromatogram = processingInfo.getProcessingResult();
-		} catch(Exception e) {
-			// Test succeeded. Invalid data should throw an exception.
-		}
+		chromatogram = processingInfo.getProcessingResult();
 	}
 
-	@Override
-	protected void tearDown() throws Exception {
-
-		pathImport = null;
-		fileImport = null;
-		chromatogram = null;
-
-		super.tearDown();
-	}
-
+	@Test
 	public void testInvalidFile() {
 
+		assertNull(chromatogram);
 	}
 }

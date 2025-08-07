@@ -12,12 +12,14 @@
  *******************************************************************************/
 package net.openchrom.xxd.identifier.supplier.cdk.support;
 
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
 import org.openscience.cdk.tools.manipulator.MolecularFormulaManipulator;
 
-import junit.framework.TestCase;
+public class MoleculeMassCalculator_1_Test {
 
-public class MoleculeMassCalculator_1_Test extends TestCase {
-
+	@Test
 	public void test1() {
 
 		/*
@@ -33,6 +35,7 @@ public class MoleculeMassCalculator_1_Test extends TestCase {
 		assertEquals(688.367006472d, MoleculeMassCalculator.calculateExactMass("C34H56O14"), 0.000001d);
 	}
 
+	@Test
 	public void test2() {
 
 		/*
@@ -45,6 +48,7 @@ public class MoleculeMassCalculator_1_Test extends TestCase {
 		assertEquals(294.146723804d, MoleculeMassCalculator.calculateExactMass("C16H22O5"), 0.000001d);
 	}
 
+	@Test
 	public void test3() {
 
 		// assertEquals(127.764d, MoleculeMassCalculator.getNeutralMass("", 127.764d));
@@ -52,6 +56,7 @@ public class MoleculeMassCalculator_1_Test extends TestCase {
 		assertEquals(0.0d, MoleculeMassCalculator.calculateExactMass(""), 0.000001d);
 	}
 
+	@Test
 	public void test4() {
 
 		/*
@@ -64,6 +69,7 @@ public class MoleculeMassCalculator_1_Test extends TestCase {
 		assertEquals(705.393555568d, MoleculeMassCalculator.calculateExactMass("C34H59NO14"), 0.000001d);
 	}
 
+	@Test
 	public void test5() {
 
 		/*
@@ -76,6 +82,7 @@ public class MoleculeMassCalculator_1_Test extends TestCase {
 		assertEquals(382.162767792d, MoleculeMassCalculator.calculateExactMass("C19H26O8"), 0.000001d);
 	}
 
+	@Test
 	public void test6() {
 
 		/*
@@ -87,6 +94,7 @@ public class MoleculeMassCalculator_1_Test extends TestCase {
 		assertEquals(392.22256882d, MoleculeMassCalculator.calculateExactMass("C25H30NO3"), 0.000001d);
 	}
 
+	@Test
 	public void test7() {
 
 		/*
@@ -99,6 +107,7 @@ public class MoleculeMassCalculator_1_Test extends TestCase {
 		assertEquals(416.401816284d, MoleculeMassCalculator.calculateExactMass("C29H52O"), 0.000001d);
 	}
 
+	@Test
 	public void test8() {
 
 		/*
@@ -111,6 +120,7 @@ public class MoleculeMassCalculator_1_Test extends TestCase {
 		assertEquals(555.522659688d, MoleculeMassCalculator.calculateExactMass("C34H69NO4"), 0.000001d);
 	}
 
+	@Test
 	public void test9() {
 
 		/*
@@ -123,6 +133,7 @@ public class MoleculeMassCalculator_1_Test extends TestCase {
 		assertEquals(412.120814672d, MoleculeMassCalculator.calculateExactMass("C21H26Cl2O4"), 0.000001d);
 	}
 
+	@Test
 	public void test10() {
 
 		/*
@@ -135,6 +146,7 @@ public class MoleculeMassCalculator_1_Test extends TestCase {
 		assertEquals(750.455427552d, MoleculeMassCalculator.calculateExactMass("C41H66O12"), 0.000001d);
 	}
 
+	@Test
 	public void test11() {
 
 		/*
@@ -147,6 +159,7 @@ public class MoleculeMassCalculator_1_Test extends TestCase {
 		assertEquals(542.324353812d, MoleculeMassCalculator.calculateExactMass("C32H46O7"), 0.000001d);
 	}
 
+	@Test
 	public void test12() {
 
 		/*
@@ -159,6 +172,7 @@ public class MoleculeMassCalculator_1_Test extends TestCase {
 		assertEquals(290.2245802d, MoleculeMassCalculator.calculateExactMass("C19H30O2"), 0.000001d);
 	}
 
+	@Test
 	public void test13() {
 
 		/*
@@ -171,6 +185,7 @@ public class MoleculeMassCalculator_1_Test extends TestCase {
 		assertEquals(798.661475262d, MoleculeMassCalculator.calculateExactMass("C46H91N2O6P"), 0.000001d);
 	}
 
+	@Test
 	public void test14() {
 
 		/*
@@ -183,6 +198,7 @@ public class MoleculeMassCalculator_1_Test extends TestCase {
 		assertEquals(463.074043026d, MoleculeMassCalculator.calculateExactMass("C14H18N5O11P"), 0.000001d);
 	}
 
+	@Test
 	public void test15() {
 
 		/*
@@ -195,6 +211,7 @@ public class MoleculeMassCalculator_1_Test extends TestCase {
 		assertEquals(614.312285532d, MoleculeMassCalculator.calculateExactMass("C23H46N6O13"), 0.000001d);
 	}
 
+	@Test
 	public void test16() {
 
 		/*
@@ -207,6 +224,7 @@ public class MoleculeMassCalculator_1_Test extends TestCase {
 		assertEquals(1142.479001644d, MoleculeMassCalculator.calculateExactMass("C55H82O21S2"), 0.000001d);
 	}
 
+	@Test
 	public void test17() {
 
 		/*
@@ -219,6 +237,7 @@ public class MoleculeMassCalculator_1_Test extends TestCase {
 		assertEquals(373.050123188d, MoleculeMassCalculator.calculateExactMass("C11H19NO9S2"), 0.000001d);
 	}
 
+	@Test
 	public void test18() {
 
 		/*
@@ -231,6 +250,7 @@ public class MoleculeMassCalculator_1_Test extends TestCase {
 		assertEquals(288.208930136d, MoleculeMassCalculator.calculateExactMass("C19H28O2"), 0.000001d);
 	}
 
+	@Test
 	public void test19() {
 
 		/*

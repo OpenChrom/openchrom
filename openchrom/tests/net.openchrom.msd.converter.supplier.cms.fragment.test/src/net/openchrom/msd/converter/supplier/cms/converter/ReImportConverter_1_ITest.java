@@ -14,6 +14,8 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cms.converter;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.File;
 
 import org.eclipse.chemclipse.msd.converter.database.IDatabaseExportConverter;
@@ -22,21 +24,21 @@ import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.junit.Before;
+import org.junit.Test;
 
-import junit.framework.TestCase;
 import net.openchrom.msd.converter.supplier.cms.PathResolver;
 import net.openchrom.msd.converter.supplier.cms.TestPathHelper;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
 
-public class ReImportConverter_1_ITest extends TestCase {
+public class ReImportConverter_1_ITest {
 
 	private IMassSpectra massSpectra1, massSpectra2;
 
-	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 
-		super.setUp();
 		IDatabaseImportConverter importConverter = new DatabaseImportConverter();
 		IDatabaseExportConverter exportConverter = new DatabaseExportConverter();
 		/*
@@ -62,14 +64,7 @@ public class ReImportConverter_1_ITest extends TestCase {
 		// exportFile.delete();
 	}
 
-	@Override
-	protected void tearDown() throws Exception {
-
-		massSpectra1 = null;
-		massSpectra2 = null;
-		super.tearDown();
-	}
-
+	@Test
 	public void test_1() {
 
 		assertEquals(massSpectra1.size(), massSpectra2.size());

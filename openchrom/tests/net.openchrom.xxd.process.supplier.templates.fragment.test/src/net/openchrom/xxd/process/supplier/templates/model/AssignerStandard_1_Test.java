@@ -12,60 +12,57 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.model;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 
-public class AssignerStandard_1_Test extends TestCase {
+import org.junit.Test;
 
-	private AssignerStandard setting;
+public class AssignerStandard_1_Test {
 
-	@Override
-	protected void setUp() throws Exception {
+	private AssignerStandard setting = new AssignerStandard();
 
-		super.setUp();
-		setting = new AssignerStandard();
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-
-		super.tearDown();
-	}
-
+	@Test
 	public void test1() {
 
 		assertEquals("", setting.getName());
 	}
 
+	@Test
 	public void test2() {
 
-		assertEquals(0.0d, setting.getPositionStart());
+		assertEquals(0.0d, setting.getPositionStart(), 0);
 	}
 
+	@Test
 	public void test3() {
 
-		assertEquals(0.0d, setting.getPositionStop());
+		assertEquals(0.0d, setting.getPositionStop(), 0);
 	}
 
+	@Test
 	public void test4() {
 
-		assertEquals(0.0d, setting.getConcentration());
+		assertEquals(0.0d, setting.getConcentration(), 0);
 	}
 
+	@Test
 	public void test5() {
 
 		assertEquals("", setting.getConcentrationUnit());
 	}
 
+	@Test
 	public void test6() {
 
-		assertEquals(1.0d, setting.getCompensationFactor());
+		assertEquals(1.0d, setting.getCompensationFactor(), 0);
 	}
 
+	@Test
 	public void test7() {
 
 		assertEquals("", setting.getTracesIdentification());
 	}
 
+	@Test
 	public void test8() {
 
 		assertEquals(PositionDirective.RETENTION_TIME_MIN, setting.getPositionDirective());

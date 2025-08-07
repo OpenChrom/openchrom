@@ -12,50 +12,48 @@
  *******************************************************************************/
 package net.openchrom.csd.converter.supplier.gaml.fragment.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.File;
 
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.junit.Before;
+import org.junit.Test;
 
 import net.openchrom.csd.converter.supplier.gaml.PathResolver;
 import net.openchrom.csd.converter.supplier.gaml.converter.ChromatogramImportConverter;
 
-import junit.framework.TestCase;
-
-public class TurbochromLC_ITest extends TestCase {
+public class TurbochromLC_ITest {
 
 	private IChromatogramCSD chromatogram;
 
-	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 
-		super.setUp();
 		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.TURBOCHROM_LC));
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramCSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();
 	}
 
-	@Override
-	protected void tearDown() throws Exception {
-
-		chromatogram = null;
-		super.tearDown();
-	}
-
+	@Test
 	public void testLoading() {
 
 		assertNotNull(chromatogram);
 	}
 
+	@Test
 	public void testScans() {
 
 		assertEquals(3075, chromatogram.getNumberOfScans());
-		assertEquals(128090f, chromatogram.getScan(950).getTotalSignal());
+		assertEquals(128090f, chromatogram.getScan(950).getTotalSignal(), 0);
 		assertEquals(194303, chromatogram.getScan(2429).getRetentionTime());
 	}
 
+	@Test
 	public void testPeaks() {
 
 		assertEquals(15, chromatogram.getPeaks().size());

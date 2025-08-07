@@ -12,65 +12,63 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.model;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 
-public class IntegratorSetting_1_Test extends TestCase {
+import org.junit.Test;
 
-	private IntegratorSetting setting;
+public class IntegratorSetting_1_Test {
 
-	@Override
-	protected void setUp() throws Exception {
+	private IntegratorSetting setting = new IntegratorSetting();
 
-		super.setUp();
-		setting = new IntegratorSetting();
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-
-		super.tearDown();
-	}
-
+	@Test
 	public void testOa() {
 
 		assertEquals("Trapezoid", IntegratorSetting.INTEGRATOR_NAME_TRAPEZOID);
 	}
 
+	@Test
 	public void testOb() {
 
 		assertEquals("org.eclipse.chemclipse.chromatogram.xxd.integrator.supplier.trapezoid.peakIntegrator", IntegratorSetting.INTEGRATOR_ID_TRAPEZOID);
 	}
 
+	@Test
 	public void testOc() {
 
 		assertEquals("Max", IntegratorSetting.INTEGRATOR_NAME_MAX);
 	}
 
+	@Test
 	public void testOd() {
 
 		assertEquals("org.eclipse.chemclipse.chromatogram.msd.integrator.supplier.peakmax.peakIntegrator", IntegratorSetting.INTEGRATOR_ID_MAX);
 	}
 
+	@Test
 	public void test1() {
 
 		assertEquals("", setting.getIdentifier());
 	}
 
+	@Test
 	public void test2() {
 
-		assertEquals(0.0d, setting.getPositionStart());
+		assertEquals(0.0d, setting.getPositionStart(), 0);
 	}
 
+	@Test
 	public void test3() {
 
-		assertEquals(0.0d, setting.getPositionStop());
+		assertEquals(0.0d, setting.getPositionStop(), 0);
 	}
 
+	@Test
 	public void test4() {
 
 		assertEquals("", setting.getIntegrator());
 	}
 
+	@Test
 	public void test5() {
 
 		assertEquals(PositionDirective.RETENTION_TIME_MIN, setting.getPositionDirective());

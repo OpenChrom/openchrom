@@ -12,28 +12,19 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cdf.io.support;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.text.ParseException;
 import java.util.Date;
 
 import org.junit.Ignore;
-
-import junit.framework.TestCase;
+import org.junit.Test;
 
 @Ignore("Fails on CI due to time zones?")
-public class DateSupport_1_Test extends TestCase {
+public class DateSupport_1_Test {
 
-	@Override
-	protected void setUp() throws Exception {
-
-		super.setUp();
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-
-		super.tearDown();
-	}
-
+	@Test
 	public void testGetActualDate_1() {
 
 		// 12 Nov 2008 7:41 ! CET > +0100
@@ -41,6 +32,7 @@ public class DateSupport_1_Test extends TestCase {
 		assertEquals("12 Nov 08 7:41", "20081112074135+0100", DateSupport.getDate(date));
 	}
 
+	@Test
 	public void testGetDate_1() {
 
 		try {
@@ -54,6 +46,7 @@ public class DateSupport_1_Test extends TestCase {
 		}
 	}
 
+	@Test
 	public void testGetDate_2() {
 
 		try {
@@ -67,6 +60,7 @@ public class DateSupport_1_Test extends TestCase {
 		}
 	}
 
+	@Test
 	public void testGetDate_3() {
 
 		try {
@@ -80,6 +74,7 @@ public class DateSupport_1_Test extends TestCase {
 		}
 	}
 
+	@Test
 	public void testGetDate_4() {
 
 		try {
@@ -93,6 +88,7 @@ public class DateSupport_1_Test extends TestCase {
 		}
 	}
 
+	@Test
 	public void testGetDate_5() {
 
 		try {
@@ -106,6 +102,7 @@ public class DateSupport_1_Test extends TestCase {
 		}
 	}
 
+	@Test
 	public void testGetDate_6() {
 
 		try {
@@ -119,6 +116,7 @@ public class DateSupport_1_Test extends TestCase {
 		}
 	}
 
+	@Test
 	public void testGetDate_7() {
 
 		try {
@@ -132,6 +130,7 @@ public class DateSupport_1_Test extends TestCase {
 		}
 	}
 
+	@Test
 	public void testGetDate_8() {
 
 		try {
@@ -145,6 +144,7 @@ public class DateSupport_1_Test extends TestCase {
 		}
 	}
 
+	@Test
 	public void testGetDate_9() {
 
 		try {
@@ -158,6 +158,7 @@ public class DateSupport_1_Test extends TestCase {
 		}
 	}
 
+	@Test
 	public void testGetDate_10() {
 
 		try {
@@ -171,6 +172,7 @@ public class DateSupport_1_Test extends TestCase {
 		}
 	}
 
+	@Test
 	public void testGetDate_11() {
 
 		try {
@@ -184,6 +186,7 @@ public class DateSupport_1_Test extends TestCase {
 		}
 	}
 
+	@Test
 	public void testGetDate_12() {
 
 		try {

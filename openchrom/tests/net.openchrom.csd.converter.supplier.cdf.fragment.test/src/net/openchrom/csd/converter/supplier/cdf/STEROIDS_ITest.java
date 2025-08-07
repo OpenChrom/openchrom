@@ -17,6 +17,8 @@ import java.io.File;
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.junit.Before;
+import org.junit.Test;
 
 import net.openchrom.csd.converter.supplier.cdf.converter.ChromatogramImportConverterCSD;
 
@@ -27,31 +29,26 @@ public class STEROIDS_ITest extends TestCase {
 	private IChromatogramCSD chromatogram;
 
 	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 
-		super.setUp();
 		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.STEROIDS));
 		ChromatogramImportConverterCSD importConverter = new ChromatogramImportConverterCSD();
 		IProcessingInfo<IChromatogramCSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();
 	}
 
-	@Override
-	protected void tearDown() throws Exception {
-
-		chromatogram = null;
-		super.tearDown();
-	}
-
+	@Test
 	public void testLoading() {
 
 		assertNotNull(chromatogram);
 	}
 
+	@Test
 	public void testScans() {
 
 		assertEquals(959, chromatogram.getNumberOfScans());
-		assertEquals(-8.064019E-5f, chromatogram.getScan(480).getTotalSignal());
+		assertEquals(-8.064019E-5f, chromatogram.getScan(480).getTotalSignal(), 0);
 		assertEquals(191600, chromatogram.getScan(959).getRetentionTime());
 	}
 }

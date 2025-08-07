@@ -12,45 +12,43 @@
  *******************************************************************************/
 package net.openchrom.csd.converter.supplier.gaml.fragment.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.File;
 import java.util.Collection;
 
 import org.eclipse.chemclipse.model.core.IComplexSignalMeasurement;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.junit.Before;
+import org.junit.Test;
 
 import net.openchrom.nmr.converter.supplier.gaml.PathResolver;
 import net.openchrom.nmr.converter.supplier.gaml.converter.ScanImportConverter;
 
-import junit.framework.TestCase;
-
-public class BrukerXWinNMR1D_ITest extends TestCase {
+public class BrukerXWinNMR1D_ITest {
 
 	private Collection<IComplexSignalMeasurement<?>> complexSignals;
 
-	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 
-		super.setUp();
 		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.BRUKER_XWINNMR_1D));
 		ScanImportConverter importConverter = new ScanImportConverter();
 		IProcessingInfo<Collection<IComplexSignalMeasurement<?>>> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		complexSignals = processingInfo.getProcessingResult();
 	}
 
-	@Override
-	protected void tearDown() throws Exception {
-
-		complexSignals = null;
-		super.tearDown();
-	}
-
+	@Test
 	public void testLoading() {
 
 		assertNotNull(complexSignals);
 		assertFalse(complexSignals.isEmpty());
 	}
 
+	@Test
 	public void testSignals() {
 
 		assertEquals(8192, complexSignals.iterator().next().getSignals().size());

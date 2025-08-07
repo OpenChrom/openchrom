@@ -12,47 +12,44 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.gaml.fragment.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.File;
 
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.junit.Before;
+import org.junit.Test;
 
 import net.openchrom.msd.converter.supplier.gaml.PathResolver;
 import net.openchrom.msd.converter.supplier.gaml.converter.ChromatogramImportConverter;
 
-import junit.framework.TestCase;
-
-public class MicromassMasslynx_ITest extends TestCase {
+public class MicromassMasslynx_ITest {
 
 	private IChromatogramMSD chromatogram;
 
-	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 
-		super.setUp();
 		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.MASSLYNX));
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramMSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();
 	}
 
-	@Override
-	protected void tearDown() throws Exception {
-
-		chromatogram = null;
-		super.tearDown();
-	}
-
+	@Test
 	public void testLoading() {
 
 		assertNotNull(chromatogram);
 	}
 
+	@Test
 	public void testScans() {
 
 		assertEquals(816, chromatogram.getNumberOfScans());
-		assertEquals(5746511f, chromatogram.getScan(275).getTotalSignal());
+		assertEquals(5746511f, chromatogram.getScan(275).getTotalSignal(), 0);
 		assertEquals(518529, chromatogram.getScan(470).getRetentionTime());
 	}
 }

@@ -12,6 +12,9 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.mzdb.fragment.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.File;
 
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
@@ -19,39 +22,33 @@ import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.support.history.IEditInformation;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.junit.Before;
+import org.junit.Test;
 
 import net.openchrom.msd.converter.supplier.mzdb.PathResolver;
 import net.openchrom.msd.converter.supplier.mzdb.converter.ChromatogramImportConverter;
 
-import junit.framework.TestCase;
-
-public class ChromatogramImportConverter_ITest extends TestCase {
+public class ChromatogramImportConverter_ITest {
 
 	private IChromatogramMSD chromatogram;
 
-	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 
-		super.setUp();
 		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.TESTFILE));
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramMSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();
 	}
 
-	@Override
-	protected void tearDown() throws Exception {
-
-		chromatogram = null;
-		super.tearDown();
-	}
-
+	@Test
 	public void testLoading() {
 
 		assertNotNull(chromatogram);
 		assertEquals("1", chromatogram.getSampleName());
 	}
 
+	@Test
 	public void testHistory() {
 
 		assertEquals(2, chromatogram.getEditHistory().size());
@@ -60,13 +57,15 @@ public class ChromatogramImportConverter_ITest extends TestCase {
 		assertEquals("Thermo2mzDB", info.getEditor());
 	}
 
+	@Test
 	public void testScans() {
 
 		assertEquals(48, chromatogram.getNumberOfScans());
-		assertEquals(1.6795854E7f, chromatogram.getScan(1).getTotalSignal());
+		assertEquals(1.6795854E7f, chromatogram.getScan(1).getTotalSignal(), 0);
 		assertEquals(474, chromatogram.getScan(2).getRetentionTime());
 	}
 
+	@Test
 	public void testFirstSpectrum() {
 
 		IScanMSD scanMSD = (IScanMSD)chromatogram.getScan(1);

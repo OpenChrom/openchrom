@@ -12,6 +12,9 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.support;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -39,23 +42,11 @@ import org.eclipse.chemclipse.wsd.model.core.implementation.PeakModelWSD;
 import org.eclipse.chemclipse.wsd.model.core.implementation.PeakWSD;
 import org.eclipse.chemclipse.wsd.model.core.implementation.ScanSignalWSD;
 import org.eclipse.chemclipse.wsd.model.core.implementation.ScanWSD;
+import org.junit.Test;
 
-import junit.framework.TestCase;
+public class PeakSupport_1_Test {
 
-public class PeakSupport_1_Test extends TestCase {
-
-	@Override
-	protected void setUp() throws Exception {
-
-		super.setUp();
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-
-		super.tearDown();
-	}
-
+	@Test
 	public void test1() {
 
 		IPeakMSD peak = null;
@@ -63,6 +54,7 @@ public class PeakSupport_1_Test extends TestCase {
 		assertFalse(PeakSupport.isPeakRelevant(peak, traces));
 	}
 
+	@Test
 	public void test2() {
 
 		IPeakMSD peak = null;
@@ -70,6 +62,7 @@ public class PeakSupport_1_Test extends TestCase {
 		assertFalse(PeakSupport.isPeakRelevant(peak, traces));
 	}
 
+	@Test
 	public void test3a() {
 
 		IScanCSD scan = new ScanCSD(100.0f);
@@ -78,6 +71,7 @@ public class PeakSupport_1_Test extends TestCase {
 		assertFalse(PeakSupport.isPeakRelevant(peak, traces));
 	}
 
+	@Test
 	public void test3b() {
 
 		IScanMSD scan = new ScanMSD();
@@ -86,6 +80,7 @@ public class PeakSupport_1_Test extends TestCase {
 		assertFalse(PeakSupport.isPeakRelevant(peak, traces));
 	}
 
+	@Test
 	public void test3c() {
 
 		IScanWSD scan = new ScanWSD();
@@ -94,6 +89,7 @@ public class PeakSupport_1_Test extends TestCase {
 		assertFalse(PeakSupport.isPeakRelevant(peak, traces));
 	}
 
+	@Test
 	public void test4a() {
 
 		IScanCSD scan = new ScanCSD(100.0f);
@@ -102,6 +98,7 @@ public class PeakSupport_1_Test extends TestCase {
 		assertTrue(PeakSupport.isPeakRelevant(peak, traces));
 	}
 
+	@Test
 	public void test4b() {
 
 		IScanMSD scan = new ScanMSD();
@@ -110,6 +107,7 @@ public class PeakSupport_1_Test extends TestCase {
 		assertTrue(PeakSupport.isPeakRelevant(peak, traces));
 	}
 
+	@Test
 	public void test4c() {
 
 		IScanWSD scan = new ScanWSD();
@@ -118,6 +116,7 @@ public class PeakSupport_1_Test extends TestCase {
 		assertTrue(PeakSupport.isPeakRelevant(peak, traces));
 	}
 
+	@Test
 	public void test5a() {
 
 		/*
@@ -126,6 +125,7 @@ public class PeakSupport_1_Test extends TestCase {
 		assertTrue(true);
 	}
 
+	@Test
 	public void test5b() {
 
 		IScanMSD scan = new ScanMSD();
@@ -135,6 +135,7 @@ public class PeakSupport_1_Test extends TestCase {
 		assertTrue(PeakSupport.isPeakRelevant(peak, traces));
 	}
 
+	@Test
 	public void test5c() {
 
 		IScanWSD scan = new ScanWSD();
@@ -144,6 +145,7 @@ public class PeakSupport_1_Test extends TestCase {
 		assertTrue(PeakSupport.isPeakRelevant(peak, traces));
 	}
 
+	@Test
 	public void test6a() {
 
 		IScanCSD scan = new ScanCSD(100.0f);
@@ -153,6 +155,7 @@ public class PeakSupport_1_Test extends TestCase {
 		assertTrue(PeakSupport.isPeakRelevant(peak, traces));
 	}
 
+	@Test
 	public void test6b() {
 
 		IScanMSD scan = new ScanMSD();
@@ -163,6 +166,7 @@ public class PeakSupport_1_Test extends TestCase {
 		assertTrue(PeakSupport.isPeakRelevant(peak, traces));
 	}
 
+	@Test
 	public void test6c() {
 
 		IScanWSD scan = new ScanWSD();
@@ -173,6 +177,7 @@ public class PeakSupport_1_Test extends TestCase {
 		assertTrue(PeakSupport.isPeakRelevant(peak, traces));
 	}
 
+	@Test
 	public void test7a() {
 
 		IScanCSD scan = new ScanCSD(100.0f);
@@ -183,6 +188,7 @@ public class PeakSupport_1_Test extends TestCase {
 		assertTrue(PeakSupport.isPeakRelevant(peak, traces));
 	}
 
+	@Test
 	public void test7b() {
 
 		IScanMSD scan = new ScanMSD();
@@ -194,6 +200,7 @@ public class PeakSupport_1_Test extends TestCase {
 		assertFalse(PeakSupport.isPeakRelevant(peak, traces));
 	}
 
+	@Test
 	public void test7c() {
 
 		IScanWSD scan = new ScanWSD();
@@ -230,7 +237,7 @@ public class PeakSupport_1_Test extends TestCase {
 		peakIntensityValues.addIntensityValue(100, 10.0f);
 		peakIntensityValues.addIntensityValue(200, 100.0f);
 		peakIntensityValues.addIntensityValue(300, 10.0f);
-		//
+
 		return peakIntensityValues;
 	}
 }

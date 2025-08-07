@@ -12,72 +12,78 @@
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.model.quant;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
-public class QuantRatio_2_Test extends TestCase {
+import org.junit.Before;
+import org.junit.Test;
+
+public class QuantRatio_2_Test {
 
 	private QuantRatio peakRatio;
 
-	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 
-		super.setUp();
 		peakRatio = new QuantRatio();
 	}
 
-	@Override
-	protected void tearDown() throws Exception {
-
-		super.tearDown();
-	}
-
+	@Test
 	public void test1() {
 
 		assertNull(peakRatio.getPeak());
 	}
 
+	@Test
 	public void test2() {
 
 		peakRatio.setName("Test");
 		assertEquals("Test", peakRatio.getName());
 	}
 
+	@Test
 	public void test3() {
 
 		peakRatio.setDeviation(0.64d);
-		assertEquals(0.64d, peakRatio.getDeviation());
+		assertEquals(0.64d, peakRatio.getDeviation(), 0);
 	}
 
+	@Test
 	public void test4() {
 
 		peakRatio.setDeviationWarn(5.0d);
-		assertEquals(5.0d, peakRatio.getDeviationWarn());
+		assertEquals(5.0d, peakRatio.getDeviationWarn(), 0);
 	}
 
+	@Test
 	public void test5() {
 
 		peakRatio.setDeviationError(15.0d);
-		assertEquals(15.0d, peakRatio.getDeviationError());
+		assertEquals(15.0d, peakRatio.getDeviationError(), 0);
 	}
 
+	@Test
 	public void test6() {
 
 		peakRatio.setConcentration(4.5d);
-		assertEquals(4.5d, peakRatio.getConcentration());
+		assertEquals(4.5d, peakRatio.getConcentration(), 0);
 	}
 
+	@Test
 	public void test7() {
 
 		peakRatio.setConcentrationUnit("mg/L");
 		assertEquals("mg/L", peakRatio.getConcentrationUnit());
 	}
 
+	@Test
 	public void test8() {
 
 		peakRatio.setExpectedConcentration(1.0d);
-		assertEquals(1.0d, peakRatio.getExpectedConcentration());
+		assertEquals(1.0d, peakRatio.getExpectedConcentration(), 0);
 	}
 
+	@Test
 	public void test9() {
 
 		peakRatio.setQuantitationName("ISTD");
