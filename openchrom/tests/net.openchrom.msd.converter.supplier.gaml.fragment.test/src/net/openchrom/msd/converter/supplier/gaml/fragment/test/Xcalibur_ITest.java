@@ -12,50 +12,47 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.gaml.fragment.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.File;
 
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.junit.Before;
+import org.junit.Test;
 
 import net.openchrom.msd.converter.supplier.gaml.PathResolver;
 import net.openchrom.msd.converter.supplier.gaml.converter.ChromatogramImportConverter;
 
-import junit.framework.TestCase;
-
-public class Xcalibur_ITest extends TestCase {
+public class Xcalibur_ITest {
 
 	private IChromatogramMSD chromatogram;
 
-	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 
-		super.setUp();
 		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.XCALIBUR));
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramMSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();
 	}
 
-	@Override
-	protected void tearDown() throws Exception {
-
-		chromatogram = null;
-		super.tearDown();
-	}
-
+	@Test
 	public void testLoading() {
 
 		assertNotNull(chromatogram);
 	}
 
+	@Test
 	public void testScans() {
 
 		assertEquals(336, chromatogram.getNumberOfScans());
 		IScanMSD scanMSD = (IScanMSD)chromatogram.getScan(62);
 		assertEquals(135, scanMSD.getNumberOfIons());
-		assertEquals(1458599f, chromatogram.getScan(124).getTotalSignal());
+		assertEquals(1458599f, chromatogram.getScan(124).getTotalSignal(), 0);
 		assertEquals(190500, chromatogram.getScan(277).getRetentionTime());
 	}
 }

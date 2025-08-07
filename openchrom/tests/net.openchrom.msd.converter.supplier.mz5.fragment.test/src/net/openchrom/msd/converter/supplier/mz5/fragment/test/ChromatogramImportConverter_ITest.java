@@ -12,6 +12,9 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.mz5.fragment.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.File;
 
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
@@ -19,51 +22,46 @@ import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IRegularMassSpectrum;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.junit.Before;
+import org.junit.Test;
 
 import net.openchrom.msd.converter.supplier.mz5.PathResolver;
 import net.openchrom.msd.converter.supplier.mz5.converter.ChromatogramImportConverter;
 
-import junit.framework.TestCase;
-
-public class ChromatogramImportConverter_ITest extends TestCase {
+public class ChromatogramImportConverter_ITest {
 
 	private IChromatogramMSD chromatogram;
 
-	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 
-		super.setUp();
 		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.TESTFILE));
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramMSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();
 	}
 
-	@Override
-	protected void tearDown() throws Exception {
-
-		chromatogram = null;
-		super.tearDown();
-	}
-
+	@Test
 	public void testLoading() {
 
 		assertNotNull(chromatogram);
 	}
 
+	@Test
 	public void testScans() {
 
 		assertEquals(26, chromatogram.getNumberOfScans());
-		assertEquals(105525.87f, chromatogram.getScan(10).getTotalSignal());
+		assertEquals(105525.87f, chromatogram.getScan(10).getTotalSignal(), 0);
 		assertEquals(16639, chromatogram.getScan(26).getRetentionTime());
 	}
 
+	@Test
 	public void testIonTransitions() {
 
 		IRegularMassSpectrum massSpectrum = (IRegularMassSpectrum)chromatogram.getScan(3);
-		assertEquals(367.201873779297, massSpectrum.getPrecursorIon());
+		assertEquals(367.201873779297, massSpectrum.getPrecursorIon(), 0);
 		IIon ion = massSpectrum.getIons().get(0);
 		assertEquals(367, ion.getIonTransition().getQ1Ion());
-		assertEquals(112.1d, ion.getIonTransition().getQ3Ion());
+		assertEquals(112.1d, ion.getIonTransition().getQ3Ion(), 0);
 	}
 }

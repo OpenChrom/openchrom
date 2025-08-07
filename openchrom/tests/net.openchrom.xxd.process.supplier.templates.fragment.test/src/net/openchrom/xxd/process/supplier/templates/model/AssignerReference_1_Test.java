@@ -12,45 +12,39 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.model;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 
-public class AssignerReference_1_Test extends TestCase {
+import org.junit.Test;
 
-	private AssignerReference setting;
+public class AssignerReference_1_Test {
 
-	@Override
-	protected void setUp() throws Exception {
+	private AssignerReference setting = new AssignerReference();
 
-		super.setUp();
-		setting = new AssignerReference();
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-
-		super.tearDown();
-	}
-
+	@Test
 	public void test1() {
 
 		assertEquals("", setting.getInternalStandard());
 	}
 
+	@Test
 	public void test2() {
 
-		assertEquals(0.0d, setting.getPositionStart());
+		assertEquals(0.0d, setting.getPositionStart(), 0);
 	}
 
+	@Test
 	public void test3() {
 
-		assertEquals(0.0d, setting.getPositionStop());
+		assertEquals(0.0d, setting.getPositionStop(), 0);
 	}
 
+	@Test
 	public void test4() {
 
 		assertEquals("", setting.getIdentifier());
 	}
 
+	@Test
 	public void test5() {
 
 		assertEquals(PositionDirective.RETENTION_TIME_MIN, setting.getPositionDirective());

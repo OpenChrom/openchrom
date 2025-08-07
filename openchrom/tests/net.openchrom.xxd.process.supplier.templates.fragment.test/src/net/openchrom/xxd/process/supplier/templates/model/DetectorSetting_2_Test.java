@@ -12,61 +12,57 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.model;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 
-public class DetectorSetting_2_Test extends TestCase {
+import org.junit.Test;
 
-	private DetectorSetting setting;
+public class DetectorSetting_2_Test {
 
-	@Override
-	protected void setUp() throws Exception {
+	private DetectorSetting setting = new DetectorSetting();
 
-		super.setUp();
-		setting = new DetectorSetting();
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-
-		super.tearDown();
-	}
-
+	@Test
 	public void test1() {
 
 		setting.setPositionStart(0.78d);
-		assertEquals(0.78d, setting.getPositionStart());
+		assertEquals(0.78d, setting.getPositionStart(), 0);
 	}
 
+	@Test
 	public void test2() {
 
 		setting.setPositionStop(1.28d);
-		assertEquals(1.28d, setting.getPositionStop());
+		assertEquals(1.28d, setting.getPositionStop(), 0);
 	}
 
+	@Test
 	public void test4() {
 
 		setting.setTraces("103, 104");
 		assertEquals("103, 104", setting.getTraces());
 	}
 
+	@Test
 	public void test5() {
 
 		setting.setOptimizeRange(true);
 		assertEquals(true, setting.isOptimizeRange());
 	}
 
+	@Test
 	public void test6() {
 
 		setting.setReferenceIdentifier("Styrene");
 		assertEquals("Styrene", setting.getReferenceIdentifier());
 	}
 
+	@Test
 	public void test7() {
 
 		setting.setName("Benzene");
 		assertEquals("Benzene", setting.getName());
 	}
 
+	@Test
 	public void test8() {
 
 		setting.setPositionDirective(PositionDirective.RETENTION_INDEX);

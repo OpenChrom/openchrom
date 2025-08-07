@@ -12,36 +12,31 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.mgf.converter;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.File;
 
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.junit.Before;
 import org.junit.Test;
 
-import junit.framework.TestCase;
 import net.openchrom.msd.converter.supplier.mgf.TestPathHelper;
 
-public class MassSpectrumImportConverter_ProteinPilot_Single_ITest extends TestCase {
+public class MassSpectrumImportConverter_ProteinPilot_Single_ITest {
 
 	private IMassSpectra massSpectra;
 
-	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 
-		super.setUp();
 		File file = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_PROTEINPILOT_SINGLE_ELEMENT));
 		DatabaseImportConverter importConverter = new DatabaseImportConverter();
 		IProcessingInfo<IMassSpectra> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		massSpectra = processingInfo.getProcessingResult();
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-
-		massSpectra = null;
-		super.tearDown();
 	}
 
 	@Test
@@ -56,8 +51,8 @@ public class MassSpectrumImportConverter_ProteinPilot_Single_ITest extends TestC
 
 		IScanMSD massSpectrum = massSpectra.getMassSpectrum(1);
 		assertEquals(45, massSpectrum.getNumberOfIons());
-		assertEquals(6268.59f, massSpectrum.getBasePeakAbundance());
+		assertEquals(6268.59f, massSpectrum.getBasePeakAbundance(), 0);
 		assertEquals(380000, massSpectrum.getRetentionTime());
-		assertEquals(1505.7377, massSpectrum.getBasePeak());
+		assertEquals(1505.7377, massSpectrum.getBasePeak(), 0);
 	}
 }

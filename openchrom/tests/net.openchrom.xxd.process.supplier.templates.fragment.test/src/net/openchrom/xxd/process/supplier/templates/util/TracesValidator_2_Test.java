@@ -12,28 +12,20 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.util;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Set;
 
 import org.eclipse.core.runtime.IStatus;
+import org.junit.Test;
 
-import junit.framework.TestCase;
-
-public class TracesValidator_2_Test extends TestCase {
+public class TracesValidator_2_Test {
 
 	private TracesValidator tracesValidator = new TracesValidator();
 
-	@Override
-	protected void setUp() throws Exception {
-
-		super.setUp();
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-
-		super.tearDown();
-	}
-
+	@Test
 	public void test1() {
 
 		IStatus status = tracesValidator.validate(null);
@@ -41,6 +33,7 @@ public class TracesValidator_2_Test extends TestCase {
 		assertEquals(0, tracesValidator.getTraces().size());
 	}
 
+	@Test
 	public void test2() {
 
 		IStatus status = tracesValidator.validate("");
@@ -49,6 +42,7 @@ public class TracesValidator_2_Test extends TestCase {
 		assertEquals(0, traces.size()); // TIC
 	}
 
+	@Test
 	public void test3() {
 
 		IStatus status = tracesValidator.validate("A");
@@ -56,6 +50,7 @@ public class TracesValidator_2_Test extends TestCase {
 		assertEquals(0, tracesValidator.getTraces().size());
 	}
 
+	@Test
 	public void test4() {
 
 		IStatus status = tracesValidator.validate(" ");
@@ -63,6 +58,7 @@ public class TracesValidator_2_Test extends TestCase {
 		assertEquals(0, tracesValidator.getTraces().size());
 	}
 
+	@Test
 	public void test5() {
 
 		IStatus status = tracesValidator.validate("A - B");
@@ -70,6 +66,7 @@ public class TracesValidator_2_Test extends TestCase {
 		assertEquals(0, tracesValidator.getTraces().size());
 	}
 
+	@Test
 	public void test6() {
 
 		IStatus status = tracesValidator.validate("18 - B");
@@ -77,6 +74,7 @@ public class TracesValidator_2_Test extends TestCase {
 		assertEquals(0, tracesValidator.getTraces().size());
 	}
 
+	@Test
 	public void test7() {
 
 		IStatus status = tracesValidator.validate("A - 18");
@@ -84,6 +82,7 @@ public class TracesValidator_2_Test extends TestCase {
 		assertEquals(0, tracesValidator.getTraces().size());
 	}
 
+	@Test
 	public void test8() {
 
 		IStatus status = tracesValidator.validate("18 - 45 - 200");
@@ -91,6 +90,7 @@ public class TracesValidator_2_Test extends TestCase {
 		assertEquals(0, tracesValidator.getTraces().size());
 	}
 
+	@Test
 	public void test9() {
 
 		IStatus status = tracesValidator.validate("32 - 18");

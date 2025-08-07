@@ -12,36 +12,34 @@
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.model;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.List;
 
 import org.eclipse.chemclipse.chromatogram.xxd.classifier.result.ResultStatus;
+import org.junit.Before;
+import org.junit.Test;
 
 import net.openchrom.xxd.classifier.supplier.ratios.model.quant.QuantRatios;
 
-import junit.framework.TestCase;
-
-public class PeakRatioResult_1_Test extends TestCase {
+public class PeakRatioResult_1_Test {
 
 	private PeakRatioResult peakRatioResult;
 
-	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 
-		super.setUp();
 		peakRatioResult = new PeakRatioResult(ResultStatus.OK, "Test", new QuantRatios());
 	}
 
-	@Override
-	protected void tearDown() throws Exception {
-
-		super.tearDown();
-	}
-
+	@Test
 	public void test1() {
 
 		assertNotNull(peakRatioResult.getPeakRatios());
 	}
 
+	@Test
 	public void test2() {
 
 		List<? extends IPeakRatio> peakRatios = peakRatioResult.getPeakRatios();

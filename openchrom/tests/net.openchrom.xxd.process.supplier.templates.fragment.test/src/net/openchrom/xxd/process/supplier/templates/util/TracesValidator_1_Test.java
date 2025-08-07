@@ -12,44 +12,39 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.util;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 
-public class TracesValidator_1_Test extends TestCase {
+import org.junit.Test;
+
+public class TracesValidator_1_Test {
 
 	private TracesValidator tracesValidator = new TracesValidator();
 
-	@Override
-	protected void setUp() throws Exception {
-
-		super.setUp();
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-
-		super.tearDown();
-	}
-
+	@Test
 	public void test1() {
 
 		assertEquals(-1, tracesValidator.getTrace(""));
 	}
 
+	@Test
 	public void test2() {
 
 		assertEquals(-1, tracesValidator.getTrace(null));
 	}
 
+	@Test
 	public void test3() {
 
 		assertEquals(-1, tracesValidator.getTrace("-1"));
 	}
 
+	@Test
 	public void test4() {
 
 		assertEquals(-1, tracesValidator.getTrace("0"));
 	}
 
+	@Test
 	public void test5() {
 
 		assertEquals(1, tracesValidator.getTrace("1"));

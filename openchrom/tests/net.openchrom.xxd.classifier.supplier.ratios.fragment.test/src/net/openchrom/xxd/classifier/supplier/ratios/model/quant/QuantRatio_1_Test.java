@@ -12,65 +12,71 @@
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.model.quant;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
-public class QuantRatio_1_Test extends TestCase {
+import org.junit.Before;
+import org.junit.Test;
+
+public class QuantRatio_1_Test {
 
 	private QuantRatio peakRatio;
 
-	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 
-		super.setUp();
 		peakRatio = new QuantRatio();
 	}
 
-	@Override
-	protected void tearDown() throws Exception {
-
-		super.tearDown();
-	}
-
+	@Test
 	public void test1() {
 
 		assertNull(peakRatio.getPeak());
 	}
 
+	@Test
 	public void test2() {
 
 		assertEquals("", peakRatio.getName());
 	}
 
+	@Test
 	public void test3() {
 
-		assertEquals(0.0d, peakRatio.getDeviation());
+		assertEquals(0.0d, peakRatio.getDeviation(), 0);
 	}
 
+	@Test
 	public void test4() {
 
-		assertEquals(0.0d, peakRatio.getDeviationWarn());
+		assertEquals(0.0d, peakRatio.getDeviationWarn(), 0);
 	}
 
+	@Test
 	public void test5() {
 
-		assertEquals(0.0d, peakRatio.getDeviationError());
+		assertEquals(0.0d, peakRatio.getDeviationError(), 0);
 	}
 
+	@Test
 	public void test6() {
 
-		assertEquals(0.0d, peakRatio.getConcentration());
+		assertEquals(0.0d, peakRatio.getConcentration(), 0);
 	}
 
+	@Test
 	public void test7() {
 
 		assertEquals("", peakRatio.getConcentrationUnit());
 	}
 
+	@Test
 	public void test8() {
 
-		assertEquals(0.0d, peakRatio.getExpectedConcentration());
+		assertEquals(0.0d, peakRatio.getExpectedConcentration(), 0);
 	}
 
+	@Test
 	public void test9() {
 
 		assertEquals("", peakRatio.getQuantitationName());

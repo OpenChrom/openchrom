@@ -12,70 +12,69 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.model;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 
-public class IdentifierSetting_1_Test extends TestCase {
+import org.junit.Test;
 
-	private IdentifierSetting setting;
+public class IdentifierSetting_1_Test {
 
-	@Override
-	protected void setUp() throws Exception {
+	private IdentifierSetting setting = new IdentifierSetting();
 
-		super.setUp();
-		setting = new IdentifierSetting();
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-
-		super.tearDown();
-	}
-
+	@Test
 	public void test1() {
 
-		assertEquals(0.0d, setting.getPositionStart());
+		assertEquals(0.0d, setting.getPositionStart(), 0);
 	}
 
+	@Test
 	public void test2() {
 
-		assertEquals(0.0d, setting.getPositionStop());
+		assertEquals(0.0d, setting.getPositionStop(), 0);
 	}
 
+	@Test
 	public void test3() {
 
 		assertEquals("", setting.getName());
 	}
 
+	@Test
 	public void test4() {
 
 		assertEquals("", setting.getCasNumber());
 	}
 
+	@Test
 	public void test5() {
 
 		assertEquals("", setting.getComments());
 	}
 
+	@Test
 	public void test6() {
 
 		assertEquals("", setting.getContributor());
 	}
 
+	@Test
 	public void test7() {
 
 		assertEquals("", setting.getReference());
 	}
 
+	@Test
 	public void test8() {
 
 		assertEquals("", setting.getTraces());
 	}
 
+	@Test
 	public void test9() {
 
 		assertEquals("", setting.getReferenceIdentifier());
 	}
 
+	@Test
 	public void test10() {
 
 		assertEquals(PositionDirective.RETENTION_TIME_MIN, setting.getPositionDirective());

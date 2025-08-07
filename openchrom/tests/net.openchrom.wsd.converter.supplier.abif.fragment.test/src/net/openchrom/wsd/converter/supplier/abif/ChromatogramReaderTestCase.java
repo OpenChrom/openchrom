@@ -20,34 +20,22 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.wsd.converter.chromatogram.ChromatogramConverterWSD;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.junit.Before;
 import org.junit.Ignore;
 
-import junit.framework.TestCase;
-
 @Ignore("Not a test case. Just a template to avoid boiler plate code.")
-public class ChromatogramReaderTestCase extends TestCase {
+public class ChromatogramReaderTestCase {
 
 	protected IChromatogramWSD chromatogram;
 	protected String extensionPointId;
 	protected String pathImport;
 	protected File fileImport;
 
-	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 
-		super.setUp();
 		fileImport = new File(this.pathImport);
 		IProcessingInfo<IChromatogramWSD> processingInfo = ChromatogramConverterWSD.getInstance().convert(fileImport, extensionPointId, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-
-		pathImport = null;
-		fileImport = null;
-		chromatogram = null;
-		//
-		super.tearDown();
 	}
 }

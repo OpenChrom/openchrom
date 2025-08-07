@@ -12,66 +12,63 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.model;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 
-public class AssignerStandard_2_Test extends TestCase {
+import org.junit.Test;
 
-	private AssignerStandard setting;
+public class AssignerStandard_2_Test {
 
-	@Override
-	protected void setUp() throws Exception {
+	private AssignerStandard setting = new AssignerStandard();
 
-		super.setUp();
-		setting = new AssignerStandard();
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-
-		super.tearDown();
-	}
-
+	@Test
 	public void test1() {
 
 		assertEquals("", setting.getName());
 	}
 
+	@Test
 	public void test2() {
 
 		setting.setPositionStart(92.2d);
-		assertEquals(92.2d, setting.getPositionStart());
+		assertEquals(92.2d, setting.getPositionStart(), 0);
 	}
 
+	@Test
 	public void test3() {
 
 		setting.setPositionStop(392.4d);
-		assertEquals(392.4d, setting.getPositionStop());
+		assertEquals(392.4d, setting.getPositionStop(), 0);
 	}
 
+	@Test
 	public void test4() {
 
 		setting.setConcentration(2.78d);
-		assertEquals(2.78d, setting.getConcentration());
+		assertEquals(2.78d, setting.getConcentration(), 0);
 	}
 
+	@Test
 	public void test5() {
 
 		setting.setConcentrationUnit("mg/L");
 		assertEquals("mg/L", setting.getConcentrationUnit());
 	}
 
+	@Test
 	public void test6() {
 
 		setting.setCompensationFactor(0.98d);
-		assertEquals(0.98d, setting.getCompensationFactor());
+		assertEquals(0.98d, setting.getCompensationFactor(), 0);
 	}
 
+	@Test
 	public void test7() {
 
 		setting.setTracesIdentification("104 103");
 		assertEquals("104 103", setting.getTracesIdentification());
 	}
 
+	@Test
 	public void test8() {
 
 		setting.setPositionDirective(PositionDirective.RETENTION_INDEX);

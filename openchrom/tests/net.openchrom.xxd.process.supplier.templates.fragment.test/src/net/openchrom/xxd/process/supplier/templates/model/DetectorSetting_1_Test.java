@@ -12,62 +12,58 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.model;
 
+import static org.junit.Assert.assertEquals;
+
 import org.eclipse.chemclipse.model.core.PeakType;
+import org.junit.Test;
 
-import junit.framework.TestCase;
+public class DetectorSetting_1_Test {
 
-public class DetectorSetting_1_Test extends TestCase {
+	private DetectorSetting setting = new DetectorSetting();
 
-	private DetectorSetting setting;
-
-	@Override
-	protected void setUp() throws Exception {
-
-		super.setUp();
-		setting = new DetectorSetting();
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-
-		super.tearDown();
-	}
-
+	@Test
 	public void test1() {
 
-		assertEquals(0.0d, setting.getPositionStart());
+		assertEquals(0.0d, setting.getPositionStart(), 0);
 	}
 
+	@Test
 	public void test2() {
 
-		assertEquals(0.0d, setting.getPositionStop());
+		assertEquals(0.0d, setting.getPositionStop(), 0);
 	}
 
+	@Test
 	public void test3() {
 
 		assertEquals(PeakType.VV, setting.getPeakType());
 	}
 
+	@Test
 	public void test4() {
 
 		assertEquals("", setting.getTraces());
 	}
 
+	@Test
 	public void test5() {
 
 		assertEquals(false, setting.isOptimizeRange());
 	}
 
+	@Test
 	public void test6() {
 
 		assertEquals("", setting.getReferenceIdentifier());
 	}
 
+	@Test
 	public void test7() {
 
 		assertEquals("", setting.getName());
 	}
 
+	@Test
 	public void test8() {
 
 		assertEquals(PositionDirective.RETENTION_TIME_MIN, setting.getPositionDirective());

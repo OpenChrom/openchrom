@@ -13,25 +13,26 @@
  *******************************************************************************/
 package net.openchrom.wsd.converter.supplier.abif.io;
 
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import net.openchrom.wsd.converter.supplier.abif.ABIF;
 import net.openchrom.wsd.converter.supplier.abif.ChromatogramReaderTestCase;
 
 public class AbiPrism3730GeneticAnalyser_ITest extends ChromatogramReaderTestCase {
 
 	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 
 		extensionPointId = ABIF.EXTENSION_POINT_ID;
 		pathImport = ABIF.getAbsolutePath(ABIF.TESTFILE_IMPORT_3730_AB1);
 		super.setUp();
 	}
 
-	@Override
-	protected void tearDown() throws Exception {
-
-		super.tearDown();
-	}
-
+	@Test
 	public void testScans() {
 
 		assertEquals(16961, chromatogram.getNumberOfScans());

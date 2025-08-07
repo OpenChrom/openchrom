@@ -12,49 +12,43 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.model;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 
-public class IntegratorSetting_2_Test extends TestCase {
+import org.junit.Test;
 
-	private IntegratorSetting setting;
+public class IntegratorSetting_2_Test {
 
-	@Override
-	protected void setUp() throws Exception {
+	private IntegratorSetting setting = new IntegratorSetting();
 
-		super.setUp();
-		setting = new IntegratorSetting();
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-
-		super.tearDown();
-	}
-
+	@Test
 	public void test1() {
 
 		setting.setIdentifier("Test");
 		assertEquals("Test", setting.getIdentifier());
 	}
 
+	@Test
 	public void test2() {
 
 		setting.setPositionStart(2.10d);
-		assertEquals(2.10d, setting.getPositionStart());
+		assertEquals(2.10d, setting.getPositionStart(), 0);
 	}
 
+	@Test
 	public void test3() {
 
 		setting.setPositionStop(7.46d);
-		assertEquals(7.46d, setting.getPositionStop());
+		assertEquals(7.46d, setting.getPositionStop(), 0);
 	}
 
+	@Test
 	public void test4() {
 
 		setting.setIntegrator("PeakMax");
 		assertEquals("PeakMax", setting.getIntegrator());
 	}
 
+	@Test
 	public void test5() {
 
 		setting.setPositionDirective(PositionDirective.RETENTION_INDEX);

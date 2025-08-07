@@ -12,57 +12,60 @@
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.model.time;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
-public class TimeRatio_2_Test extends TestCase {
+import org.junit.Before;
+import org.junit.Test;
+
+public class TimeRatio_2_Test {
 
 	private TimeRatio peakRatio;
 
-	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 
-		super.setUp();
 		peakRatio = new TimeRatio();
 	}
 
-	@Override
-	protected void tearDown() throws Exception {
-
-		super.tearDown();
-	}
-
+	@Test
 	public void test1() {
 
 		assertNull(peakRatio.getPeak());
 	}
 
+	@Test
 	public void test2() {
 
 		peakRatio.setName("Test");
 		assertEquals("Test", peakRatio.getName());
 	}
 
+	@Test
 	public void test3() {
 
 		peakRatio.setDeviation(0.64d);
-		assertEquals(0.64d, peakRatio.getDeviation());
+		assertEquals(0.64d, peakRatio.getDeviation(), 0);
 	}
 
+	@Test
 	public void test4() {
 
 		peakRatio.setDeviationWarn(5.0d);
-		assertEquals(5.0d, peakRatio.getDeviationWarn());
+		assertEquals(5.0d, peakRatio.getDeviationWarn(), 0);
 	}
 
+	@Test
 	public void test5() {
 
 		peakRatio.setDeviationError(15.0d);
-		assertEquals(15.0d, peakRatio.getDeviationError());
+		assertEquals(15.0d, peakRatio.getDeviationError(), 0);
 	}
 
+	@Test
 	public void test6() {
 
 		peakRatio.setExpectedRetentionTimeMinutes(4.5d);
-		assertEquals(4.5d, peakRatio.getExpectedRetentionTimeMinutes());
+		assertEquals(4.5d, peakRatio.getExpectedRetentionTimeMinutes(), 0);
 	}
 }

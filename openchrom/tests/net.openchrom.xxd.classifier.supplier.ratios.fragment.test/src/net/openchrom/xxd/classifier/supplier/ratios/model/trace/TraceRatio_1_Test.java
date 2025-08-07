@@ -12,60 +12,65 @@
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.model.trace;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
-public class TraceRatio_1_Test extends TestCase {
+import org.junit.Before;
+import org.junit.Test;
+
+public class TraceRatio_1_Test {
 
 	private TraceRatio peakRatio;
 
-	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 
-		super.setUp();
 		peakRatio = new TraceRatio();
 	}
 
-	@Override
-	protected void tearDown() throws Exception {
-
-		super.tearDown();
-	}
-
+	@Test
 	public void test1() {
 
 		assertNull(peakRatio.getPeak());
 	}
 
+	@Test
 	public void test2() {
 
 		assertEquals("", peakRatio.getName());
 	}
 
+	@Test
 	public void test3() {
 
-		assertEquals(0.0d, peakRatio.getDeviation());
+		assertEquals(0.0d, peakRatio.getDeviation(), 0);
 	}
 
+	@Test
 	public void test4() {
 
-		assertEquals(0.0d, peakRatio.getDeviationWarn());
+		assertEquals(0.0d, peakRatio.getDeviationWarn(), 0);
 	}
 
+	@Test
 	public void test5() {
 
-		assertEquals(0.0d, peakRatio.getDeviationError());
+		assertEquals(0.0d, peakRatio.getDeviationError(), 0);
 	}
 
+	@Test
 	public void test6() {
 
-		assertEquals(0.0d, peakRatio.getExpectedRatio());
+		assertEquals(0.0d, peakRatio.getExpectedRatio(), 0);
 	}
 
+	@Test
 	public void test7() {
 
-		assertEquals(0.0d, peakRatio.getRatio());
+		assertEquals(0.0d, peakRatio.getRatio(), 0);
 	}
 
+	@Test
 	public void test8() {
 
 		assertEquals("", peakRatio.getTestCase());

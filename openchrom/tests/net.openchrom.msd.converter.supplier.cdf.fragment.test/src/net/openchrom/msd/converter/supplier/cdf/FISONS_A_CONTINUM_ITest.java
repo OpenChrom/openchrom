@@ -12,39 +12,34 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cdf;
 
+import static org.junit.Assert.assertNotNull;
+
 import java.io.File;
 
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.Test;
 
 import net.openchrom.msd.converter.supplier.cdf.converter.ChromatogramImportConverter;
 
-import junit.framework.TestCase;
-
 @Ignore("NotEnoughScanDataStored") // TODO
-public class FISONS_A_CONTINUM_ITest extends TestCase {
+public class FISONS_A_CONTINUM_ITest {
 
 	private IChromatogramMSD chromatogram;
 
-	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 
-		super.setUp();
 		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.FISONS_A_CONTINUM));
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramMSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();
 	}
 
-	@Override
-	protected void tearDown() throws Exception {
-
-		chromatogram = null;
-		super.tearDown();
-	}
-
+	@Test
 	public void testLoading() {
 
 		assertNotNull(chromatogram);

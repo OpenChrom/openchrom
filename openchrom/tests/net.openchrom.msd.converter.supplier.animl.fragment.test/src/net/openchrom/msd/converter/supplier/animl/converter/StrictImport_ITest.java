@@ -12,6 +12,9 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.animl.converter;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.File;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -20,32 +23,23 @@ import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.support.history.IEditInformation;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.junit.Before;
 import org.junit.Test;
 
 import net.openchrom.msd.converter.supplier.animl.PathResolver;
 import net.openchrom.msd.converter.supplier.animl.TestPathHelper;
 
-import junit.framework.TestCase;
-
-public class StrictImport_ITest extends TestCase {
+public class StrictImport_ITest {
 
 	private IChromatogramMSD chromatogram;
 
-	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 
-		super.setUp();
 		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_MS_STRICT));
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramMSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-
-		chromatogram = null;
-		super.tearDown();
 	}
 
 	@Test
@@ -71,7 +65,7 @@ public class StrictImport_ITest extends TestCase {
 	public void testScans() {
 
 		assertEquals(306, chromatogram.getNumberOfScans());
-		assertEquals(79834.98f, chromatogram.getScan(1).getTotalSignal());
+		assertEquals(79834.98f, chromatogram.getScan(1).getTotalSignal(), 0);
 		assertEquals(1000, chromatogram.getScan(2).getRetentionTime());
 	}
 }

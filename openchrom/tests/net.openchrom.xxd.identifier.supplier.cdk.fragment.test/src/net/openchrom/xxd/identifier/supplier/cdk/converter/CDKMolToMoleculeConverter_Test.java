@@ -12,26 +12,21 @@
  *******************************************************************************/
 package net.openchrom.xxd.identifier.supplier.cdk.converter;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
+import org.junit.Before;
 import org.junit.Test;
 import org.openscience.cdk.interfaces.IAtomContainer;
 
-import junit.framework.TestCase;
-
-public class CDKMolToMoleculeConverter_Test extends TestCase {
+public class CDKMolToMoleculeConverter_Test {
 
 	private CDKMolToMoleculeConverter converter;
 
-	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 
-		super.setUp();
 		converter = new CDKMolToMoleculeConverter();
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-
-		super.tearDown();
 	}
 
 	@Test

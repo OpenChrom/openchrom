@@ -12,46 +12,43 @@
  *******************************************************************************/
 package net.openchrom.csd.converter.supplier.cdf;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.File;
 
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.junit.Before;
+import org.junit.Test;
 
 import net.openchrom.csd.converter.supplier.cdf.converter.ChromatogramImportConverterCSD;
 
-import junit.framework.TestCase;
-
-public class WAT_490_ITest extends TestCase {
+public class WAT_490_ITest {
 
 	private IChromatogramCSD chromatogram;
 
-	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 
-		super.setUp();
 		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.WAT_490));
 		ChromatogramImportConverterCSD importConverter = new ChromatogramImportConverterCSD();
 		IProcessingInfo<IChromatogramCSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();
 	}
 
-	@Override
-	protected void tearDown() throws Exception {
-
-		chromatogram = null;
-		super.tearDown();
-	}
-
+	@Test
 	public void testLoading() {
 
 		assertNotNull(chromatogram);
 	}
 
+	@Test
 	public void testScans() {
 
 		assertEquals(600, chromatogram.getNumberOfScans());
-		assertEquals(0.047346f, chromatogram.getScan(300).getTotalSignal());
+		assertEquals(0.047346f, chromatogram.getScan(300).getTotalSignal(), 0);
 		assertEquals(479799, chromatogram.getScan(600).getRetentionTime());
 	}
 }

@@ -13,38 +13,35 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.pkf.converter;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.File;
 
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.junit.Before;
+import org.junit.Test;
 
 import net.openchrom.msd.converter.supplier.pkf.TestPathHelper;
 
-import junit.framework.TestCase;
-
-public class MassSpectrumImportConverter_Ecoli_ITest extends TestCase {
+public class MassSpectrumImportConverter_Ecoli_ITest {
 
 	private IMassSpectra massSpectra = null;
 
-	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 
-		super.setUp();
 		File file = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_ECOLI));
 		DatabaseImportConverter importConverter = new DatabaseImportConverter();
 		IProcessingInfo<IMassSpectra> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		massSpectra = processingInfo.getProcessingResult();
 	}
 
-	@Override
-	protected void tearDown() throws Exception {
-
-		massSpectra = null;
-		super.tearDown();
-	}
-
+	@Test
 	public void testBasicValidation() {
 
 		assertNotNull(massSpectra);
