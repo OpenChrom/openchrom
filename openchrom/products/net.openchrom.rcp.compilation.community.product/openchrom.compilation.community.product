@@ -98,6 +98,7 @@ Contributors:
       <repository location="https://plugins.openchrom.net/tvoc/1.5.20/" name="TVOC" enabled="true" />
       <repository location="https://plugins.openchrom.net/chrom2quant/1.5.20/" name="Chrom2Quant" enabled="true" />
       <repository location="https://plugins.openchrom.net/combine/1.5.20/" name="Combine" enabled="true" />
+      <repository location="https://plugins.openchrom.net/drm/1.5.20" name="DRM" enabled="true" />
    </repositories>
 
    <preferencesInfo>
