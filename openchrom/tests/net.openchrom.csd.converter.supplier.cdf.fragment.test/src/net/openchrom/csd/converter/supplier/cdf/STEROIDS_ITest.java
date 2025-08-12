@@ -12,6 +12,9 @@
  *******************************************************************************/
 package net.openchrom.csd.converter.supplier.cdf;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.File;
 
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
@@ -22,15 +25,12 @@ import org.junit.Test;
 
 import net.openchrom.csd.converter.supplier.cdf.converter.ChromatogramImportConverterCSD;
 
-import junit.framework.TestCase;
-
-public class STEROIDS_ITest extends TestCase {
+public class STEROIDS_ITest {
 
 	private IChromatogramCSD chromatogram;
 
-	@Override
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 
 		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.STEROIDS));
 		ChromatogramImportConverterCSD importConverter = new ChromatogramImportConverterCSD();
