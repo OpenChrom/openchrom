@@ -12,6 +12,9 @@
  *******************************************************************************/
 package net.openchrom.wsd.converter.supplier.gaml.fragment.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.File;
 
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
@@ -23,13 +26,10 @@ import org.junit.Test;
 import net.openchrom.wsd.converter.supplier.gaml.PathResolver;
 import net.openchrom.wsd.converter.supplier.gaml.converter.ScanImportConverter;
 
-import junit.framework.TestCase;
-
-public class Helios_ITest extends TestCase {
+public class Helios_ITest {
 
 	private ISpectrumWSD spectrumWSD;
 
-	@Override
 	@Before
 	public void setUp() throws Exception {
 
