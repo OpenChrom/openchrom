@@ -97,7 +97,10 @@ public class ChromatogramWriter extends AbstractChromatogramMSDWriter {
 		sample.setName(chromatogram.getSampleName());
 		sample.setBarcode(chromatogram.getBarcode());
 		sample.setComment(chromatogram.getMiscInfo());
-		sample.setSampleID(FilenameUtils.removeExtension(chromatogram.getFile().getName()));
+		File file = chromatogram.getFile();
+		if(file != null) {
+			sample.setSampleID(FilenameUtils.removeExtension(file.getName()));
+		}
 		sampleSet.getSample().add(sample);
 		return sampleSet;
 	}
