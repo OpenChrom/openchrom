@@ -21,6 +21,7 @@ import java.util.List;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 
+import org.apache.commons.io.FilenameUtils;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IScan;
@@ -94,7 +95,10 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 		sample.setName(chromatogram.getSampleName());
 		sample.setBarcode(chromatogram.getBarcode());
 		sample.setComment(chromatogram.getMiscInfo());
-		sample.setSampleID(chromatogram.getSampleName());
+		File file = chromatogram.getFile();
+		if(file != null) {
+			sample.setSampleID(FilenameUtils.removeExtension(file.getName()));
+		}
 		sampleSet.getSample().add(sample);
 		return sampleSet;
 	}
