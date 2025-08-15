@@ -21,7 +21,6 @@
 	<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 		<repository location="https://download.eclipse.org/chemclipse/integration/develop/repository/"/>
 		<unit id="org.eclipse.chemclipse.rcp.compilation.community.feature.feature.group"/>
-		<unit id="org.eclipse.chemclipse.rcp.compilation.testing.feature.feature.group"/>
 		<unit id="org.eclipse.chemclipse.assets.feature.feature.group"/>
 	</location>
 	<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
