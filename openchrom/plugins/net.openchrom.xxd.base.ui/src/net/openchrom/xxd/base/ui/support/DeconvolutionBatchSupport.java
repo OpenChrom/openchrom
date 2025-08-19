@@ -26,7 +26,9 @@ public class DeconvolutionBatchSupport {
 			for(Object service : services) {
 				if(service instanceof IDeconvolutionBatchService deconvolutionBatchService) {
 					if(dataType.equals(deconvolutionBatchService.getDataType())) {
-						return deconvolutionBatchService;
+						if(deconvolutionBatchService.getName().equals("MCR-AR Batch")) {
+							return deconvolutionBatchService;
+						}
 					}
 				}
 			}
