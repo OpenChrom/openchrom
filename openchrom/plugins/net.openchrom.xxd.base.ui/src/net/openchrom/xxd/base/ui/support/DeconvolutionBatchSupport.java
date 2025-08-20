@@ -12,6 +12,9 @@
  *******************************************************************************/
 package net.openchrom.xxd.base.ui.support;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.chemclipse.model.types.DataType;
 
 import net.openchrom.xxd.base.ui.Activator;
@@ -26,14 +29,28 @@ public class DeconvolutionBatchSupport {
 			for(Object service : services) {
 				if(service instanceof IDeconvolutionBatchService deconvolutionBatchService) {
 					if(dataType.equals(deconvolutionBatchService.getDataType())) {
-						if(deconvolutionBatchService.getName().equals("MCR-AR Batch")) {
-							return deconvolutionBatchService;
-						}
+						return deconvolutionBatchService;
 					}
 				}
 			}
 		}
-		//
+		return null;
+	}
+
+	public static List<IDeconvolutionBatchService> getDeconvolutionBatchServices(DataType dataType) {
+
+		Object[] services = Activator.getDefault().getDeconvolutionBatchServices();
+		if(services != null) {
+			ArrayList<IDeconvolutionBatchService> servicesList = new ArrayList<>();
+			for(Object service : services) {
+				if(service instanceof IDeconvolutionBatchService deconvolutionBatchService) {
+					if(dataType.equals(deconvolutionBatchService.getDataType())) {
+						servicesList.add((IDeconvolutionBatchService)service);
+					}
+				}
+			}
+			return servicesList;
+		}
 		return null;
 	}
 }
