@@ -111,7 +111,10 @@ public class ChromatogramWriter extends AbstractChromatogramCSDWriter {
 		detectorStep.setExperimentStepID("DETECTOR");
 		detectorStep.getResult().add(createResult(chromatogram));
 		detectorStep.setMethod(createMethod(chromatogram));
-		detectorStep.setSourceDataLocation(chromatogram.getFile().getAbsolutePath());
+		File file = chromatogram.getFile();
+		if(file != null && file.exists()) {
+			detectorStep.setSourceDataLocation(file.getAbsolutePath());
+		}
 		detectorStep.setTechnique(createFlameIonizationTechnique());
 		experimentStepSet.getExperimentStep().add(detectorStep);
 		//

@@ -162,7 +162,10 @@ public class ChromatogramWriter extends AbstractChromatogramMSDWriter {
 		ExperimentStepType totalSignalStep = new ExperimentStepType();
 		totalSignalStep.setName("Total Signal");
 		totalSignalStep.getResult().add(createTotalIonCurrentResult(chromatogram));
-		totalSignalStep.setSourceDataLocation(chromatogram.getFile().getAbsolutePath());
+		File file = chromatogram.getFile();
+		if(file != null && file.exists()) {
+			totalSignalStep.setSourceDataLocation(file.getAbsolutePath());
+		}
 		totalSignalStep.setTechnique(createMassSpectrumTraceTechnique());
 		return totalSignalStep;
 	}

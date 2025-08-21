@@ -116,7 +116,10 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 		singleWavelengthStep.setName(chromatogram.getDataName());
 		singleWavelengthStep.getResult().add(createSignal(chromatogram));
 		singleWavelengthStep.setMethod(createMethod(chromatogram));
-		singleWavelengthStep.setSourceDataLocation(chromatogram.getFile().getAbsolutePath());
+		File file = chromatogram.getFile();
+		if(file != null && file.exists()) {
+			singleWavelengthStep.setSourceDataLocation(file.getAbsolutePath());
+		}
 		singleWavelengthStep.setTechnique(createUltraVioletDetectorTechnique());
 		experimentStepSet.getExperimentStep().add(singleWavelengthStep);
 		//
@@ -124,7 +127,9 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 		multiWavelengthsStep.setName("Multi Wavelength");
 		multiWavelengthsStep.setResult(createSpectra(chromatogram));
 		multiWavelengthsStep.setMethod(createMethod(chromatogram));
-		multiWavelengthsStep.setSourceDataLocation(chromatogram.getFile().getAbsolutePath());
+		if(file != null) {
+			multiWavelengthsStep.setSourceDataLocation(file.getAbsolutePath());
+		}
 		multiWavelengthsStep.setTechnique(createDiodeArrayDetectorTechnique());
 		experimentStepSet.getExperimentStep().add(multiWavelengthsStep);
 		//
