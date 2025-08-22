@@ -122,7 +122,7 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 		 */
 		List<DetectorSetting> detectorSettingsWithoutReferenceIdentifier = new ArrayList<>();
 		List<DetectorSetting> detectorSettingsWithReferenceIdentifier = new ArrayList<>();
-		//
+
 		for(DetectorSetting detectorSetting : detectorSettings) {
 			if(detectorSetting.getReferenceIdentifier().isEmpty()) {
 				detectorSettingsWithoutReferenceIdentifier.add(detectorSetting);
@@ -130,7 +130,7 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 				detectorSettingsWithReferenceIdentifier.add(detectorSetting);
 			}
 		}
-		//
+
 		applySettingsSeparated(chromatogram, detectorSettingsWithoutReferenceIdentifier, retentionIndexMap, subMonitor);
 		applySettingsSeparated(chromatogram, detectorSettingsWithReferenceIdentifier, retentionIndexMap, subMonitor);
 	}

@@ -27,28 +27,28 @@ import net.openchrom.chromatogram.xxd.report.supplier.csv.validators.ReportColum
 public class ChromatogramReportSettings extends DefaultChromatogramReportSettings {
 
 	public static final String DESCRIPTION = "CSV Report";
-	//
+
 	@JsonProperty(value = "Print Header", defaultValue = "true")
 	@JsonPropertyDescription(value = "Print the report header.")
 	private boolean printResultsHeader = true;
-	//
+
 	@JsonProperty(value = "Append Header", defaultValue = "true")
 	@JsonPropertyDescription(value = "Repeat the report header if the file is appended.")
 	private boolean appendResultsHeader = true;
-	//
+
 	@JsonProperty(value = "Section Separator", defaultValue = "true")
 	@JsonPropertyDescription(value = "Print a blank line after each report section.")
 	private boolean printSectionSeparator = true;
-	//
+
 	@JsonProperty(value = "Delimiter", defaultValue = "COMMA")
 	@JsonPropertyDescription(value = "Select the column delimiter.")
 	private Delimiter delimiter = Delimiter.COMMA;
-	//
+
 	@JsonProperty(value = "Columns", defaultValue = "")
 	@JsonPropertyDescription(value = "Select the report columns.")
 	@ValidatorSettingsProperty(validator = ReportColumnsValidator.class)
 	private ReportColumns reportColumns;
-	//
+
 	@JsonProperty(value = "References", defaultValue = "false")
 	@JsonPropertyDescription(value = "Report all referenced chromatograms.")
 	private boolean reportReferencedChromatograms = false;

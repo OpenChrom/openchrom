@@ -77,12 +77,12 @@ public class TimeRatioListEditor implements SettingsUIProvider.SettingsUIControl
 	private AtomicReference<Button> buttonSearchControl = new AtomicReference<>();
 	private AtomicReference<SearchSupportUI> toolbarSearch = new AtomicReference<>();
 	private AtomicReference<TimeRatioListUI> listControl = new AtomicReference<>();
-	//
+
 	private Composite control;
-	//
+
 	private static final String CATEGORY = "Time Ratio";
 	private static final String DELETE = "Delete";
-	//
+
 	private Listener listener;
 	private List<Button> buttons = new ArrayList<>();
 	private Button buttonAdd;
@@ -91,7 +91,7 @@ public class TimeRatioListEditor implements SettingsUIProvider.SettingsUIControl
 	private Button buttonRemoveAll;
 	private Button buttonImport;
 	private Button buttonExport;
-	//
+
 	private TimeRatios settings = new TimeRatios();
 	private IProcessorPreferences<TimeRatioSettings> preferences;
 
@@ -101,7 +101,7 @@ public class TimeRatioListEditor implements SettingsUIProvider.SettingsUIControl
 		if(settings != null) {
 			this.settings.load(settings.getRatioSettings());
 		}
-		//
+
 		control = createControl(parent);
 	}
 
@@ -146,13 +146,13 @@ public class TimeRatioListEditor implements SettingsUIProvider.SettingsUIControl
 	public void addChangeListener(Listener listener) {
 
 		this.listener = listener;
-		//
+
 		Table table = listControl.get().getTable();
 		table.addListener(SWT.Selection, listener);
 		table.addListener(SWT.KeyUp, listener);
 		table.addListener(SWT.MouseUp, listener);
 		table.addListener(SWT.MouseDoubleClick, listener);
-		//
+
 		buttonAdd.addListener(SWT.KeyUp, listener);
 		buttonEdit.addListener(SWT.KeyUp, listener);
 		buttonRemove.addListener(SWT.KeyUp, listener);
@@ -191,13 +191,13 @@ public class TimeRatioListEditor implements SettingsUIProvider.SettingsUIControl
 		gridLayout.marginWidth = 0;
 		gridLayout.marginHeight = 0;
 		composite.setLayout(gridLayout);
-		//
+
 		createToolbarMain(composite);
 		createSearchSection(composite);
 		createTableSection(composite);
-		//
+
 		initialize();
-		//
+
 		return composite;
 	}
 
@@ -217,7 +217,7 @@ public class TimeRatioListEditor implements SettingsUIProvider.SettingsUIControl
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
 		table.setLayoutData(gridData);
-		//
+
 		timeRatioListUI.setEditEnabled(true);
 		timeRatioListUI.setUpdateListener(new IUpdateListener() {
 
@@ -227,13 +227,13 @@ public class TimeRatioListEditor implements SettingsUIProvider.SettingsUIControl
 				setInput();
 			}
 		});
-		//
+
 		Shell shell = timeRatioListUI.getTable().getShell();
 		ITableSettings tableSettings = timeRatioListUI.getTableSettings();
 		addDeleteMenuEntry(shell, tableSettings);
 		addKeyEventProcessors(shell, tableSettings);
 		timeRatioListUI.applySettings(tableSettings);
-		//
+
 		listControl.set(timeRatioListUI);
 	}
 
@@ -259,7 +259,7 @@ public class TimeRatioListEditor implements SettingsUIProvider.SettingsUIControl
 				}
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -290,7 +290,7 @@ public class TimeRatioListEditor implements SettingsUIProvider.SettingsUIControl
 				}
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -308,7 +308,7 @@ public class TimeRatioListEditor implements SettingsUIProvider.SettingsUIControl
 				deleteItems(e.display.getActiveShell());
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -329,7 +329,7 @@ public class TimeRatioListEditor implements SettingsUIProvider.SettingsUIControl
 				}
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -358,7 +358,7 @@ public class TimeRatioListEditor implements SettingsUIProvider.SettingsUIControl
 				}
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -392,14 +392,14 @@ public class TimeRatioListEditor implements SettingsUIProvider.SettingsUIControl
 				}
 			}
 		});
-		//
+
 		return button;
 	}
 
 	private void setInput() {
 
 		listControl.get().setInput(settings);
-		//
+
 		if(listener != null) {
 			listener.handleEvent(new Event());
 		}
@@ -412,7 +412,7 @@ public class TimeRatioListEditor implements SettingsUIProvider.SettingsUIControl
 		gridData.horizontalAlignment = SWT.END;
 		composite.setLayoutData(gridData);
 		composite.setLayout(new GridLayout(7, false));
-		//
+
 		add(createButtonToggleSearch(composite));
 		add(buttonAdd = createButtonAdd(composite));
 		add(buttonEdit = createButtonEdit(composite));
@@ -426,7 +426,7 @@ public class TimeRatioListEditor implements SettingsUIProvider.SettingsUIControl
 
 		Button button = createButtonToggleToolbar(parent, toolbarSearch, IMAGE_SEARCH, TOOLTIP_SEARCH);
 		buttonSearchControl.set(button);
-		//
+
 		return button;
 	}
 
@@ -447,7 +447,7 @@ public class TimeRatioListEditor implements SettingsUIProvider.SettingsUIControl
 				listControl.get().setSearchText(searchText, caseSensitive);
 			}
 		});
-		//
+
 		toolbarSearch.set(searchSupportUI);
 	}
 

@@ -18,7 +18,7 @@ import java.util.Iterator;
 public class ReportColumns extends ArrayList<String> {
 
 	private static final long serialVersionUID = 727322817550120355L;
-	//
+
 	public static final String CHROMATOGRAM_NAME = "Chromatogram Name";
 	public static final String PEAK_NAME = "Peak Name";
 	public static final String CAS_NUMBER = "CAS#";
@@ -61,7 +61,7 @@ public class ReportColumns extends ArrayList<String> {
 	private static final String MARKER_SPACE = " ";
 	private static final String MARKER_BRACKET_OPEN = "(";
 	private static final String MARKER_BRACKET_CLOSE = ")";
-	//
+
 	private static final String SEPARATOR = ",";
 	private static final String SINGLE_TICK = "'";
 	private static final String DOUBLE_TICK = "\"";
@@ -69,7 +69,7 @@ public class ReportColumns extends ArrayList<String> {
 	public static ReportColumns getDefault() {
 
 		ReportColumns reportColumns = new ReportColumns();
-		//
+
 		reportColumns.add(CHROMATOGRAM_NAME);
 		reportColumns.add(PEAK_NAME);
 		reportColumns.add(CAS_NUMBER);
@@ -100,7 +100,7 @@ public class ReportColumns extends ArrayList<String> {
 		reportColumns.add(STDEV_AREA);
 		reportColumns.add(AREA_PERCENT);
 		reportColumns.add(CONCENTRATIONS);
-		//
+
 		return reportColumns;
 	}
 
@@ -142,7 +142,7 @@ public class ReportColumns extends ArrayList<String> {
 		builder.append(MARKER_BRACKET_OPEN);
 		builder.append(Integer.toString(trace));
 		builder.append(MARKER_BRACKET_CLOSE);
-		//
+
 		return builder.toString();
 	}
 

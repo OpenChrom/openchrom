@@ -31,28 +31,28 @@ import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.Abstrac
 public class TimeRatioResultTitles extends AbstractPeakRatioTitles implements ColumnDefinitionProvider {
 
 	public static final String EXPECTED_RETENTION_TIME = "Expected Retention Time [min]";
-	//
+
 	public static final String[] TITLES_SETTINGS = { //
 			NAME, //
 			EXPECTED_RETENTION_TIME, //
 			DEVIATION_WARN, //
 			DEVIATION_ERROR //
 	};
-	//
+
 	public static final int[] BOUNDS_SETTINGS = { //
 			150, //
 			120, //
 			80, //
 			80 //
 	};
-	//
+
 	public static final String[] TITLES_RESULTS = { //
 			RETENTION_TIME, //
 			NAME, //
 			EXPECTED_RETENTION_TIME, //
 			DEVIATION //
 	};
-	//
+
 	public static final int[] BOUNDS_RESULTS = { //
 			80, //
 			150, //
@@ -64,7 +64,7 @@ public class TimeRatioResultTitles extends AbstractPeakRatioTitles implements Co
 	public Collection<? extends ColumnDefinition<?, ?>> getColumnDefinitions() {
 
 		List<ColumnDefinition<?, ?>> list = new ArrayList<>();
-		//
+
 		list.add(defaultSortableColumn(RETENTION_TIME, 80, new Function<TimeRatio, Double>() {
 
 			@Override
@@ -78,7 +78,7 @@ public class TimeRatioResultTitles extends AbstractPeakRatioTitles implements Co
 				}
 			}
 		}).create());
-		//
+
 		list.add(defaultSortableColumn(NAME, 150, new Function<TimeRatio, String>() {
 
 			@Override
@@ -87,7 +87,7 @@ public class TimeRatioResultTitles extends AbstractPeakRatioTitles implements Co
 				return ratio.getName();
 			}
 		}).create());
-		//
+
 		list.add(defaultSortableColumn(EXPECTED_RETENTION_TIME, 80, new Function<TimeRatio, Integer>() {
 
 			@Override
@@ -96,7 +96,7 @@ public class TimeRatioResultTitles extends AbstractPeakRatioTitles implements Co
 				return ratio.getExpectedRetentionTime();
 			}
 		}).create());
-		//
+
 		list.add(defaultSortableColumn(DEVIATION, 80, new Function<TimeRatio, Double>() {
 
 			@Override
@@ -105,7 +105,7 @@ public class TimeRatioResultTitles extends AbstractPeakRatioTitles implements Co
 				return ratio.getDeviation();
 			}
 		}).create());
-		//
+
 		return list;
 	}
 }

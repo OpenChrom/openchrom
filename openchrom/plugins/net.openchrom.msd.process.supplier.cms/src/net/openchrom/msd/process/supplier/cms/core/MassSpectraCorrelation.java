@@ -74,7 +74,7 @@ public class MassSpectraCorrelation {
 		CorrelationResults results = new CorrelationResults(testSpectra.getName());
 		for(IScanMSD scan : testSpectra.getList()) {
 			if(scan instanceof ICalibratedVendorMassSpectrum scanSpectrum) {
-				//
+
 				// CorrelationResult result = new CorrelationResult(libSpectra.getList().size(), scanSpectrum);
 				// for(IScanMSD libSpectrum : libSpectra.getList()) {
 				// if(libSpectrum instanceof ICalibratedVendorLibraryMassSpectrum) {
@@ -84,7 +84,7 @@ public class MassSpectraCorrelation {
 				// } // if
 				// System.out.println();
 				// } // for
-				//
+
 				// results.addCorrelationResult(result);
 				results.addCorrelationResult(correlate(scanSpectrum, libSpectra, massTol, monitor));
 			} // if

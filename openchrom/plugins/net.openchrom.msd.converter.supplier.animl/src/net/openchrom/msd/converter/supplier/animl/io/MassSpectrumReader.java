@@ -60,19 +60,19 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 			return null;
 		}
 		IStandaloneMassSpectrum massSpectrum = null;
-		//
+
 		try {
 			AnIMLType animl = Common.getAnIML(file);
-			//
+
 			massSpectrum = new VendorMassSpectrum();
 			massSpectrum = readSample(animl, massSpectrum);
 			massSpectrum.setFile(file);
 			massSpectrum.setIdentifier(file.getName());
-			//
+
 			double[] mzs = null;
 			float[] intensities = null;
 			int length = 0;
-			//
+
 			for(ExperimentStepType experimentStep : animl.getExperimentStepSet().getExperimentStep()) {
 				if(experimentStep.getTechnique().getName().equals("Mass Spectrometry")) {
 					for(ResultType result : experimentStep.getResult()) {
@@ -133,7 +133,7 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 		} catch(ParserConfigurationException e) {
 			logger.warn(e);
 		}
-		//
+
 		IVendorMassSpectra massSpectra = new VendorMassSpectra();
 		massSpectra.setName(file.getName());
 		massSpectra.addMassSpectrum(massSpectrum);

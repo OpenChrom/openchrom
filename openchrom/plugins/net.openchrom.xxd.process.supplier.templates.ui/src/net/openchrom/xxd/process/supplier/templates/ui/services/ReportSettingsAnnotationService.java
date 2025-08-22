@@ -37,11 +37,11 @@ public class ReportSettingsAnnotationService extends ReportSettingsSerialization
 		gridData.heightHint = 250;
 		gridData.widthHint = 500;
 		templateReportEditor.setLayoutData(gridData);
-		//
+
 		if(currentSelection instanceof String text) {
 			templateReportEditor.load(text);
 		}
-		//
+
 		return templateReportEditor;
 	}
 

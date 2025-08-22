@@ -65,19 +65,19 @@ public class QualRatioClassifier extends AbstractRatioClassifier {
 	private QualRatios calculateRatios(IChromatogram chromatogram, QualRatioSettings classifierSettings) {
 
 		QualRatios ratios = new QualRatios();
-		//
+
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
 		for(IPeak peak : peaks) {
 			IPeakModel peakModel = peak.getPeakModel();
 			QualRatio qualRatio = new QualRatio(peak);
-			//
+
 			calculateLeadingTailing(qualRatio, peakModel);
 			calculateSignalToNoiseRatio(qualRatio, peak);
 			calculateSymmetry(qualRatio, peakModel);
-			//
+
 			ratios.add(qualRatio);
 		}
-		//
+
 		return ratios;
 	}
 
@@ -86,7 +86,7 @@ public class QualRatioClassifier extends AbstractRatioClassifier {
 		PeakQuality peakQuality;
 		float leading = peakModel.getLeading();
 		float tailing = peakModel.getTailing();
-		//
+
 		if(leading <= 1 && tailing <= 1) {
 			peakQuality = PeakQuality.VERY_GOOD;
 		} else if(leading <= 2 && tailing <= 2) {
@@ -100,7 +100,7 @@ public class QualRatioClassifier extends AbstractRatioClassifier {
 		} else {
 			peakQuality = PeakQuality.NONE;
 		}
-		//
+
 		qualRatio.setLeadingTailing(peakQuality);
 	}
 
@@ -133,10 +133,10 @@ public class QualRatioClassifier extends AbstractRatioClassifier {
 		 * Avoid division by 0 exception.
 		 */
 		if(centerRetentionTime < stopRetentionTime) {
-			//
+
 			double factor = Math.abs((centerRetentionTime - startRetentionTime) / (stopRetentionTime - centerRetentionTime));
 			factor = (factor > 1) ? 1 / factor : factor;
-			//
+
 			PeakQuality peakQuality;
 			if(factor >= 0.88f) {
 				peakQuality = PeakQuality.VERY_GOOD;
@@ -149,7 +149,7 @@ public class QualRatioClassifier extends AbstractRatioClassifier {
 			} else {
 				peakQuality = PeakQuality.VERY_BAD;
 			}
-			//
+
 			qualRatio.setSymmetry(peakQuality);
 		}
 	}

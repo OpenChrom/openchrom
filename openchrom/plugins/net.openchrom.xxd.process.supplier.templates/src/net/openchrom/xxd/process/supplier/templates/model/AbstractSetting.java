@@ -22,7 +22,7 @@ public abstract class AbstractSetting {
 
 	public static final int MISSING_RETENTION_TIME = Integer.MIN_VALUE;
 	public static final int FULL_RETENTION_TIME = 0;
-	//
+
 	private double positionStart = 0.0d;
 	private double positionStop = 0.0d;
 	private PositionDirective positionDirective = PositionDirective.RETENTION_TIME_MIN;
@@ -134,7 +134,7 @@ public abstract class AbstractSetting {
 			default:
 				break;
 		}
-		//
+
 		return retentionTime;
 	}
 

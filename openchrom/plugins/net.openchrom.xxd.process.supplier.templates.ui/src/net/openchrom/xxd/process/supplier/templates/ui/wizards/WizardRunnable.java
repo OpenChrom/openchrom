@@ -33,7 +33,7 @@ public class WizardRunnable implements Runnable {
 		Shell shell = new Shell();
 		shell.setSize(0, 0);
 		shell.open();
-		//
+
 		PeakDetectorSupport peakDetectorSupport = new PeakDetectorSupport();
 		peakDetectorSupport.addPeaks(shell, processSettings);
 		shell.close();

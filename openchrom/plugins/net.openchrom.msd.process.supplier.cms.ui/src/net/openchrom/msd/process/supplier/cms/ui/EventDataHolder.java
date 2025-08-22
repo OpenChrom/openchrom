@@ -26,7 +26,7 @@ public class EventDataHolder {
 
 	private static ConcurrentHashMap<String, Object> eventDataMap; // key is topic name string, value is data object for that event
 	private static IEventBroker eventBroker;
-	//
+
 	static {
 		eventDataMap = new ConcurrentHashMap<String, Object>();
 		eventBroker = PlatformUI.getWorkbench().getService(IEventBroker.class);

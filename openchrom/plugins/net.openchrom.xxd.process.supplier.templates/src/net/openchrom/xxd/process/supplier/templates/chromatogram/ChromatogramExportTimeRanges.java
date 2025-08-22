@@ -46,7 +46,7 @@ public class ChromatogramExportTimeRanges extends AbstractChromatogramExportConv
 					timeRanges.add(new TimeRange(name, start, center, stop));
 				}
 			}
-			//
+
 			timeRanges.exportItems(file);
 			processingInfo.setProcessingResult(file);
 		}

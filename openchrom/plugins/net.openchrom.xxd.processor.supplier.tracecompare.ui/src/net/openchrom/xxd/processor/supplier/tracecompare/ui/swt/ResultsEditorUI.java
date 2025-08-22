@@ -47,13 +47,13 @@ import net.openchrom.xxd.processor.supplier.tracecompare.ui.editors.EditorProces
 public class ResultsEditorUI extends Composite {
 
 	private static final Logger logger = Logger.getLogger(ResultsEditorUI.class);
-	//
+
 	private Text textResults;
 	private Text textNotes;
 	private Text textSearch;
-	//
+
 	private ResultsTreeViewerUI resultsTreeViewerUI;
-	//
+
 	private IProcessorModel processorModel;
 
 	public ResultsEditorUI(Composite parent, int style) {
@@ -66,7 +66,7 @@ public class ResultsEditorUI extends Composite {
 		if(object instanceof EditorProcessor) {
 			EditorProcessor editorProcessor = (EditorProcessor)object;
 			processorModel = editorProcessor.getProcessorModel();
-			//
+
 			textResults.setText(processorModel.getCalculatedResult());
 			textNotes.setText(processorModel.getGeneralNotes());
 			resultsTreeViewerUI.setInput(processorModel.getReferenceModels().values());
@@ -165,7 +165,7 @@ public class ResultsEditorUI extends Composite {
 				}
 			}
 		});
-		//
+
 		Button buttonSearch = new Button(parent, SWT.PUSH);
 		buttonSearch.setText("Suchen");
 		buttonSearch.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImage.SIZE_16x16));
@@ -177,7 +177,7 @@ public class ResultsEditorUI extends Composite {
 				search();
 			}
 		});
-		//
+
 		Button buttonExpandAll = new Button(parent, SWT.PUSH);
 		buttonExpandAll.setText("");
 		buttonExpandAll.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EXPAND_ALL, IApplicationImage.SIZE_16x16));
@@ -189,7 +189,7 @@ public class ResultsEditorUI extends Composite {
 				resultsTreeViewerUI.getTreeViewer().expandAll();
 			}
 		});
-		//
+
 		Button buttonCollapseAll = new Button(parent, SWT.PUSH);
 		buttonCollapseAll.setText("");
 		buttonCollapseAll.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_COLLAPSE_ALL, IApplicationImage.SIZE_16x16));
@@ -201,7 +201,7 @@ public class ResultsEditorUI extends Composite {
 				resultsTreeViewerUI.getTreeViewer().collapseAll();
 			}
 		});
-		//
+
 		final IEclipsePreferences preferences = PreferenceSupplier.INSTANCE().getPreferences();
 		final Button buttonCaseSensitive = new Button(parent, SWT.CHECK);
 		buttonCaseSensitive.setText("Case sensitive");
@@ -234,7 +234,7 @@ public class ResultsEditorUI extends Composite {
 		if(!searchCaseSensitive) {
 			searchText = searchText.toLowerCase();
 		}
-		//
+
 		if(searchText.equals("")) {
 			/*
 			 * Default

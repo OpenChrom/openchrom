@@ -111,7 +111,7 @@ public class CompensationQuantifierEditingSupport extends EditingSupport {
 		try {
 			result = Double.parseDouble(((String)value).trim());
 		} catch(NumberFormatException e) {
-			//
+
 		}
 		return result;
 	}

@@ -30,7 +30,7 @@ public abstract class AbstractTemplateExport extends AbstractChromatogramExportC
 		setting.setPositionDirective(positionDirective);
 		int startRetentionTime = peakModel.getStartRetentionTime();
 		int stopRetentionTime = peakModel.getStopRetentionTime();
-		//
+
 		switch(positionDirective) {
 			case RETENTION_TIME_MS:
 				setting.setPositionStart(startRetentionTime - deltaLeft);

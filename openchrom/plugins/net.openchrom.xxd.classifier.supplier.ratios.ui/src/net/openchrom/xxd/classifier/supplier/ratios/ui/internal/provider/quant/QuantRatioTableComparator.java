@@ -75,7 +75,7 @@ public class QuantRatioTableComparator extends AbstractRecordTableComparator imp
 					sortOrder = Double.compare(ratio2.getDeviationError(), ratio1.getDeviationError());
 					break;
 			}
-			//
+
 			if(getDirection() == ASCENDING) {
 				sortOrder = -sortOrder;
 			}
@@ -89,7 +89,7 @@ public class QuantRatioTableComparator extends AbstractRecordTableComparator imp
 		if(e1 instanceof QuantRatio ratio1 && e2 instanceof QuantRatio ratio2) {
 			IPeak peak1 = ratio1.getPeak();
 			IPeak peak2 = ratio2.getPeak();
-			//
+
 			switch(getPropertyIndex()) {
 				case 0:
 					if(peak1 != null && peak2 != null) {
@@ -118,7 +118,7 @@ public class QuantRatioTableComparator extends AbstractRecordTableComparator imp
 					sortOrder = Double.compare(ratio2.getResponseFactor(), ratio1.getResponseFactor());
 					break;
 			}
-			//
+
 			if(getDirection() == ASCENDING) {
 				sortOrder = -sortOrder;
 			}

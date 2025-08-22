@@ -24,7 +24,7 @@ public class MassShiftListTableComparator extends AbstractRecordTableComparator 
 	public int compare(Viewer viewer, Object e1, Object e2) {
 
 		int sortOrder = 0;
-		//
+
 		if(e1 instanceof IMassShift massShift1 && e2 instanceof IMassShift massShift2) {
 			switch(getPropertyIndex()) {
 				case 0:
@@ -44,7 +44,7 @@ public class MassShiftListTableComparator extends AbstractRecordTableComparator 
 					break;
 			}
 		}
-		//
+
 		if(getDirection() == ASCENDING) {
 			sortOrder = -sortOrder;
 		}

@@ -42,7 +42,7 @@ public class IonMeasurementListUI extends ExtendedTableViewer {
 	private void createColumns() {
 
 		createColumns(titles, bounds);
-		//
+
 		setLabelProvider(new IonMeasurementListLabelProvider());
 		setContentProvider(new IonMeasurementListContentProvider());
 		setComparator(new IonMeasurementListTableComparator());

@@ -23,7 +23,7 @@ import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSuppli
 public class ReviewValidator extends AbstractTemplateValidator implements ITemplateValidator {
 
 	private static final String ERROR_ENTRY = "Please enter an item, e.g.: '" + ReviewListUtil.EXAMPLE_SINGLE + "'";
-	//
+
 	private PositionDirective positionDirective = PositionDirective.RETENTION_TIME_MIN;
 	private double positionStart = 0;
 	private double positionStop = 0;
@@ -69,22 +69,22 @@ public class ReviewValidator extends AbstractTemplateValidator implements ITempl
 						if(positionStart < 0.0d) {
 							message = "The start position must be not lower than 0.";
 						}
-						//
+
 						if(positionStop <= positionStart) {
 							message = "The stop position must be greater than the start position.";
 						}
-						//
+
 						if("".equals(name)) {
 							message = "A substance name needs to be set.";
 						}
-						//
+
 						IStatus status = validateTraces(traceValues);
 						if(status.isOK()) {
 							traces = traceValues;
 						} else {
 							message = status.getMessage();
 						}
-						//
+
 						if(peakType == null) {
 							message = PreferenceSupplier.DETECTOR_OPTIONS;
 						}
@@ -96,7 +96,7 @@ public class ReviewValidator extends AbstractTemplateValidator implements ITempl
 				message = ERROR_ENTRY;
 			}
 		}
-		//
+
 		if(message != null) {
 			return ValidationStatus.error(message);
 		} else {

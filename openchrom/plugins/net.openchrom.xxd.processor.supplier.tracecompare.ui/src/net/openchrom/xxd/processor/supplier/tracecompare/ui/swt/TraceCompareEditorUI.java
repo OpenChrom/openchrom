@@ -28,7 +28,7 @@ public class TraceCompareEditorUI extends Composite {
 	private EditorProcessor editorProcessor;
 	private TraceDataComparisonUI traceComparatorSample;
 	private TraceDataComparisonUI traceComparatorValidation;
-	//
+
 	private boolean initialize = true;
 
 	public TraceCompareEditorUI(Composite parent, int style) {
@@ -40,7 +40,7 @@ public class TraceCompareEditorUI extends Composite {
 	public void update(Object object) {
 
 		if(object instanceof EditorProcessor editorProcessor) {
-			//
+
 			this.editorProcessor = editorProcessor;
 			if(initialize) {
 				initializeData();
@@ -52,7 +52,7 @@ public class TraceCompareEditorUI extends Composite {
 	private void initialize(Composite parent) {
 
 		setLayout(new FillLayout());
-		//
+
 		boolean useValidation = PreferenceSupplier.isUseDataValidation();
 		int numColumns = (useValidation) ? 2 : 1;
 		Composite composite = new Composite(this, SWT.NONE);
@@ -86,7 +86,7 @@ public class TraceCompareEditorUI extends Composite {
 
 		traceComparatorSample.setData(editorProcessor);
 		traceComparatorSample.loadSampleAndReferenceModelData();
-		//
+
 		if(traceComparatorValidation != null) {
 			traceComparatorValidation.setData(editorProcessor);
 			traceComparatorValidation.loadSampleAndReferenceModelData();

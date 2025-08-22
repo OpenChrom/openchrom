@@ -73,11 +73,11 @@ import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.ru
 public class PageSettings extends AbstractExtendedEditorPage implements IExtendedEditorPage {
 
 	private static final Logger logger = Logger.getLogger(PageSettings.class);
-	//
+
 	private static final String DESCRIPTION = "MASS SHIFT DETECTOR";
-	//
+
 	private EditorProcessor editorProcessor;
-	//
+
 	private Text referenceChromatogramText;
 	private Text isotopeChromatogramText;
 	private Spinner startShiftLevelSpinner;
@@ -88,13 +88,12 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 	private Button usePeaksCheckBox;
 	private Label labelNotes;
 	private Text descriptionText;
-	//
+
 	private ImageHyperlink referenceChromatogramHyperlink;
 	private ImageHyperlink isotopeChromatogramHyperlink;
 	private ImageHyperlink calculateHyperlink;
-	//
+
 	private String[] ionSelectionStrategies;
-	//
 
 	public PageSettings(Composite container) {
 
@@ -127,7 +126,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 			ProcessorData processorData = editorProcessor.getProcessorData();
 			IProcessorModel processorModel = processorData.getProcessorModel();
 			IProcessorSettings processorSettings = processorModel.getProcessorSettings();
-			//
+
 			referenceChromatogramText.setText(processorModel.getReferenceChromatogramPath());
 			isotopeChromatogramText.setText(processorModel.getIsotopeChromatogramPath());
 			startShiftLevelSpinner.setSelection(processorSettings.getStartShiftLevel());
@@ -138,19 +137,19 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 			usePeaksCheckBox.setSelection(processorSettings.isUsePeaks());
 			labelNotes.setText(processorModel.getNotes());
 			descriptionText.setText(processorModel.getDescription());
-			//
+
 			if(processorSettings.getIonSelectionStrategy().equals(IProcessorSettings.STRATEGY_N_HIGHEST_INTENSITY)) {
 				numberHighestIntensityMZText.setEnabled(true);
 			} else {
 				numberHighestIntensityMZText.setEnabled(false);
 			}
-			//
+
 			IProcessingInfo<?> processingInfo = validateSettings();
 			boolean hasErrorMessage = processingInfo.hasErrorMessages();
 			referenceChromatogramHyperlink.setEnabled(!hasErrorMessage);
 			isotopeChromatogramHyperlink.setEnabled(!hasErrorMessage);
 			calculateHyperlink.setEnabled(!hasErrorMessage);
-			//
+
 		} else {
 			referenceChromatogramText.setText("");
 			isotopeChromatogramText.setText("");
@@ -172,7 +171,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 
 		Section section = createSection(parent, 3, "File Selection", "The selected files are used for the current analysis.");
 		Composite client = createClient(section, 3);
-		//
+
 		createReferenceChromatogramText(client);
 		createIsotopeChromatogramText(client);
 		createNotesLabel(client);
@@ -187,7 +186,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		Section section = createSection(parent, 3, "Settings", "The selected settings are used for the current analysis.");
 		section.setExpanded(false);
 		Composite client = createClient(section, 2);
-		//
+
 		createStartShiftLevelSpinner(client);
 		createStopShiftLevelSpinner(client);
 		createNormalizeDataCheckBox(client);
@@ -203,10 +202,10 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 	private void createReferenceChromatogramText(Composite client) {
 
 		createLabel(client, "Reference - Chromatogram:");
-		//
+
 		referenceChromatogramText = createText(client, SWT.BORDER, "");
 		referenceChromatogramText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		//
+
 		Button button = new Button(client, SWT.PUSH);
 		button.setText("Select");
 		button.addSelectionListener(new SelectionAdapter() {
@@ -231,10 +230,10 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 	private void createIsotopeChromatogramText(Composite client) {
 
 		createLabel(client, "Isotope - Chromatogram:");
-		//
+
 		isotopeChromatogramText = createText(client, SWT.BORDER, "");
 		isotopeChromatogramText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		//
+
 		Button button = new Button(client, SWT.PUSH);
 		button.setText("Select");
 		button.addSelectionListener(new SelectionAdapter() {
@@ -259,7 +258,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 	private void createStartShiftLevelSpinner(Composite client) {
 
 		createLabel(client, "Start Shift Level:");
-		//
+
 		startShiftLevelSpinner = new Spinner(client, SWT.BORDER);
 		startShiftLevelSpinner.setMinimum(MassShiftDetector.MIN_ISOTOPE_LEVEL);
 		startShiftLevelSpinner.setMaximum(MassShiftDetector.MAX_ISOTOPE_LEVEL);
@@ -288,7 +287,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 	private void createStopShiftLevelSpinner(Composite client) {
 
 		createLabel(client, "Stop Shift Level:");
-		//
+
 		stopShiftLevelSpinner = new Spinner(client, SWT.BORDER);
 		stopShiftLevelSpinner.setMinimum(MassShiftDetector.MIN_ISOTOPE_LEVEL);
 		stopShiftLevelSpinner.setMaximum(MassShiftDetector.MAX_ISOTOPE_LEVEL);
@@ -337,7 +336,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 	private void createIonSelectionStrategyCombo(Composite client) {
 
 		createLabel(client, "Ion Selection Strategy:");
-		//
+
 		ionSelectionStrategies = new String[]{IProcessorSettings.STRATEGY_SELECT_ALL, IProcessorSettings.STRATEGY_ABOVE_MEAN, IProcessorSettings.STRATEGY_ABOVE_MEDIAN, IProcessorSettings.STRATEGY_N_HIGHEST_INTENSITY};
 		ionSelectionStrategyCombo = EnhancedCombo.create(client, SWT.READ_ONLY);
 		ionSelectionStrategyCombo.setItems(ionSelectionStrategies);
@@ -355,7 +354,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 					IProcessorSettings processorSettings = processorModel.getProcessorSettings();
 					processorSettings.setIonSelectionStrategy(ionSelectionStrategy);
 				}
-				//
+
 				if(ionSelectionStrategy.equals(IProcessorSettings.STRATEGY_N_HIGHEST_INTENSITY)) {
 					numberHighestIntensityMZText.setEnabled(true);
 				} else {
@@ -368,7 +367,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 	private void createNumberHighestIntensityText(Composite client) {
 
 		createLabel(client, "Number n Highest Intesity m/z:");
-		//
+
 		numberHighestIntensityMZText = new Text(client, SWT.BORDER);
 		numberHighestIntensityMZText.setText("");
 		numberHighestIntensityMZText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -380,13 +379,13 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 				ProcessorData processorData = editorProcessor.getProcessorData();
 				IProcessorModel processorModel = processorData.getProcessorModel();
 				IProcessorSettings processorSettings = processorModel.getProcessorSettings();
-				//
+
 				if(processorSettings.getIonSelectionStrategy().equals(IProcessorSettings.STRATEGY_N_HIGHEST_INTENSITY)) {
 					try {
 						int numberHighestIntensityMZ = Integer.parseInt(numberHighestIntensityMZText.getText().trim());
 						processorSettings.setNumberHighestIntensityMZ(numberHighestIntensityMZ);
 					} catch(NumberFormatException e1) {
-						//
+
 					}
 				}
 			}
@@ -484,7 +483,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 				String pathChromatogramIsotope = isotopeChromatogramText.getText().trim();
 				ChromatogramImportRunnable runnable = new ChromatogramImportRunnable(pathChromatogramReference, pathChromatogramIsotope);
 				ProgressMonitorDialog monitor = new ProgressMonitorDialog(display.getActiveShell());
-				//
+
 				try {
 					monitor.run(true, true, runnable);
 				} catch(InterruptedException e1) {
@@ -492,12 +491,12 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 				} catch(InvocationTargetException e1) {
 					logger.warn(e1);
 				}
-				//
+
 				List<IChromatogramSelectionMSD> chromatogramSelections = runnable.getChromatogramSelections();
 				ProcessorData processorRawData = editorProcessor.getProcessorData();
 				processorRawData.setReferenceChromatogramSelection(chromatogramSelections.get(0));
 				processorRawData.setIsotopeChromatogramSelection(chromatogramSelections.get(1));
-				//
+
 				display.asyncExec(new Runnable() {
 
 					@Override
@@ -573,7 +572,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 
 		Display display = Display.getDefault();
 		Shell shell = display.getActiveShell();
-		//
+
 		ImageHyperlink imageHyperlink = getFormToolkit().createImageHyperlink(client, SWT.NONE);
 		imageHyperlink.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EXECUTE, IApplicationImage.SIZE_16x16));
 		imageHyperlink.setText(text);
@@ -619,28 +618,28 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		ProcessorData processorData = editorProcessor.getProcessorData();
 		IProcessorModel processorModel = processorData.getProcessorModel();
 		IProcessorSettings processorSettings = processorModel.getProcessorSettings();
-		//
+
 		if(processorData.getReferenceChromatogram() == null || processorData.getIsotopeChromatogram() == null) {
 			processingInfo.addErrorMessage(DESCRIPTION, "Please select a reference and an isotope chromatogram.");
 		} else {
 			int numberOfScans1 = processorData.getReferenceChromatogram().getNumberOfScans();
 			int numberOfScans2 = processorData.getIsotopeChromatogram().getNumberOfScans();
-			//
+
 			if(numberOfScans1 != numberOfScans2) {
 				processingInfo.addWarnMessage(DESCRIPTION, "The selected chromatograms have a different number of scans (" + numberOfScans1 + " vs. " + numberOfScans2 + ").");
 			} else {
 				processingInfo.addInfoMessage(DESCRIPTION, "The selected chromatograms are valid.");
 			}
-			//
+
 			if(processorSettings.getStartShiftLevel() > processorSettings.getStopShiftLevel()) {
 				processingInfo.addErrorMessage(DESCRIPTION, "The start shift level must be <= stop shift level.");
 			}
-			//
+
 			String ionSelectionStrategy = processorSettings.getIonSelectionStrategy();
 			if(!isValidStrategy(ionSelectionStrategy)) {
 				processingInfo.addErrorMessage(DESCRIPTION, "Please select a valid ion selection strategy.");
 			}
-			//
+
 			if(ionSelectionStrategy.equals(IProcessorSettings.STRATEGY_N_HIGHEST_INTENSITY)) {
 				int numberHighestIntensityMZ = processorSettings.getNumberHighestIntensityMZ();
 				if(numberHighestIntensityMZ < IProcessorSettings.MIN_N_HIGHEST_INTENSITY || numberHighestIntensityMZ > IProcessorSettings.MAX_N_HIGHEST_INTENSITY) {
@@ -648,7 +647,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 				}
 			}
 		}
-		//
+
 		return processingInfo;
 	}
 

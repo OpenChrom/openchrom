@@ -48,22 +48,22 @@ public class ChromatogramWriterCSD extends AbstractChromatogramWriter implements
 	private void writeCDFChromatogram(File file, IChromatogramCSD chromatogram, IProgressMonitor monitor) throws IOException {
 
 		Builder builder = NetcdfFormatWriter.createNewNetcdf3(file.getAbsolutePath());
-		//
+
 		DimensionSupport dimensionSupport = new DimensionSupport(builder, chromatogram);
 		dimensionSupport.addVariableOrdinateValues();
-		//
+
 		AttributeSupport.setAttributes(builder, chromatogram);
-		//
+
 		VariableSupport.defineFloatVariable(builder, CDFConstants.VARIABLE_ACTUAL_DELAY_TIME);
 		VariableSupport.defineFloatVariable(builder, CDFConstants.VARIABLE_ACTUAL_SAMPLING_INTERVAL);
-		//
+
 		try (NetcdfFormatWriter writer = builder.build()) {
-			//
+
 			float scanDelay = (float)(chromatogram.getScanDelay() / IChromatogramOverview.SECOND_CORRELATION_FACTOR);
 			VariableSupport.writeScalarFloat(writer, CDFConstants.VARIABLE_ACTUAL_DELAY_TIME, scanDelay);
 			float scanInterval = (float)(chromatogram.getScanInterval() / IChromatogramOverview.SECOND_CORRELATION_FACTOR);
 			VariableSupport.writeScalarFloat(writer, CDFConstants.VARIABLE_ACTUAL_SAMPLING_INTERVAL, scanInterval);
-			//
+
 			for(IDataEntry entry : dimensionSupport.getDataEntries()) {
 				monitor.subTask(entry.getVarName());
 				writer.write(entry.getVarName(), entry.getValues());

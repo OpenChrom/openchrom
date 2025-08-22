@@ -76,7 +76,7 @@ public class StandardsAssignerSettings extends AbstractPeakQuantifierSettings im
 		StandardsAssignerListUtil util = new StandardsAssignerListUtil();
 		StandardsAssignerValidator validator = new StandardsAssignerValidator();
 		List<AssignerStandard> settings = new ArrayList<>();
-		//
+
 		List<String> items = util.getList(assignerSettings);
 		for(String item : items) {
 			IStatus status = validator.validate(item);
@@ -84,7 +84,7 @@ public class StandardsAssignerSettings extends AbstractPeakQuantifierSettings im
 				settings.add(validator.getSetting());
 			}
 		}
-		//
+
 		return settings;
 	}
 }

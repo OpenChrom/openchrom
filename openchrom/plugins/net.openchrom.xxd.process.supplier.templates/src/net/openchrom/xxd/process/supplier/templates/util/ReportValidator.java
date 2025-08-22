@@ -26,9 +26,9 @@ import net.openchrom.xxd.process.supplier.templates.model.ReportStrategy;
 public class ReportValidator extends AbstractTemplateValidator implements ITemplateValidator {
 
 	public static final Set<ReportStrategy> REPORT_STRATEGIES = Collections.unmodifiableSet(EnumSet.of(ReportStrategy.ALL, ReportStrategy.BEST_MATCH, ReportStrategy.LARGEST_AREA, ReportStrategy.SMALLEST_AREA));
-	//
+
 	private static final String ERROR_ENTRY = "Please enter an item, e.g.: '" + ReportListUtil.EXAMPLE_SINGLE + "'";
-	//
+
 	private PositionDirective positionDirective = PositionDirective.RETENTION_TIME_MIN;
 	private double positionStart = 0;
 	private double positionStop = 0;
@@ -78,17 +78,17 @@ public class ReportValidator extends AbstractTemplateValidator implements ITempl
 							if(positionStart < 0.0d) {
 								message = "The start position must be not lower than 0.";
 							}
-							//
+
 							if(positionStop <= positionStart) {
 								message = "The stop position must be greater than the start position.";
 							}
 						}
-						//
+
 						if("".equals(name)) {
 							message = "A substance name needs to be set.";
 						}
-						//
-						//
+
+
 						try {
 							reportStrategy = ReportStrategy.valueOf(parseString(values, 4));
 						} catch(Exception e) {
@@ -102,7 +102,7 @@ public class ReportValidator extends AbstractTemplateValidator implements ITempl
 				message = ERROR_ENTRY;
 			}
 		}
-		//
+
 		if(message != null) {
 			return ValidationStatus.error(message);
 		} else {
@@ -113,14 +113,14 @@ public class ReportValidator extends AbstractTemplateValidator implements ITempl
 	public ReportSetting getSetting() {
 
 		ReportSetting setting = new ReportSetting();
-		//
+
 		setting.setPositionStart(positionStart);
 		setting.setPositionStop(positionStop);
 		setting.setName(name);
 		setting.setCasNumber(casNumber);
 		setting.setReportStrategy(reportStrategy);
 		setting.setPositionDirective(positionDirective);
-		//
+
 		return setting;
 	}
 }

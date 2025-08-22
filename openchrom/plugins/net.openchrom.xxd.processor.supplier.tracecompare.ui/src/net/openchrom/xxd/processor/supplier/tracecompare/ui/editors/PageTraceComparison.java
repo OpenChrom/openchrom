@@ -46,12 +46,12 @@ public class PageTraceComparison {
 
 		control = new Composite(parent, SWT.NONE);
 		control.setLayout(new FillLayout());
-		//
+
 		enhancedTraceCompareEditor = new EnhancedTraceCompareEditor(control, SWT.NONE);
 		enhancedTraceCompareEditor.setLayoutData(new GridData(GridData.FILL_BOTH));
 		enhancedTraceCompareEditor.setLayout(new GridLayout(1, true));
 		enhancedTraceCompareEditor.setBackground(Colors.WHITE);
-		//
+
 		enhancedTraceCompareEditor.addNextListener(new INextListener() {
 
 			@Override

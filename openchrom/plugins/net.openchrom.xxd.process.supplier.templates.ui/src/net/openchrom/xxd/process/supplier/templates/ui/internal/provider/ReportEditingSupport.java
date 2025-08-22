@@ -44,7 +44,7 @@ public class ReportEditingSupport extends AbstractTemplateEditingSupport {
 				}
 			}
 		}
-		//
+
 		return false;
 	}
 
@@ -66,7 +66,7 @@ public class ReportEditingSupport extends AbstractTemplateEditingSupport {
 					}
 					break;
 			}
-			//
+
 			updateTableViewer();
 		}
 	}

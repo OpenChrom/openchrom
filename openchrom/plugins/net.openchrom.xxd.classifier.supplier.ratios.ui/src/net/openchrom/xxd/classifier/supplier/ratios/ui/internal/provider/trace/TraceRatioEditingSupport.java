@@ -24,7 +24,7 @@ import net.openchrom.xxd.classifier.supplier.ratios.ui.swt.AbstractRatioListUI;
 public class TraceRatioEditingSupport extends EditingSupport {
 
 	private static final Logger logger = Logger.getLogger(TraceRatioEditingSupport.class);
-	//
+
 	private CellEditor cellEditor;
 	private AbstractRatioListUI tableViewer;
 	private String column;
@@ -94,7 +94,7 @@ public class TraceRatioEditingSupport extends EditingSupport {
 					}
 					break;
 			}
-			//
+
 			tableViewer.refresh();
 			tableViewer.updateContent();
 		}

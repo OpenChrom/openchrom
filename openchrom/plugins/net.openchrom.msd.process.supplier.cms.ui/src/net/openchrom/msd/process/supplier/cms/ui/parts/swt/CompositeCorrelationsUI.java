@@ -61,24 +61,24 @@ public class CompositeCorrelationsUI extends Composite {
 		this.setLayout(thisGridLayout);
 		GridData thisGridData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		this.setLayoutData(thisGridData);
-		//
+
 		Composite compositeTopRow = new Composite(this, SWT.NONE);
 		GridLayout topRowCompositeGridLayout = new GridLayout(2, false);
 		compositeTopRow.setLayout(topRowCompositeGridLayout);
 		GridData topRowCompositeGridData = new GridData(SWT.FILL, SWT.TOP, true, false);
 		compositeTopRow.setLayoutData(topRowCompositeGridData);
-		//
+
 		Group compositGroup = new Group(compositeTopRow, SWT.NONE);
 		GridLayout compositGroupGridLayout = new GridLayout(4, false);
 		compositGroup.setLayout(compositGroupGridLayout);
 		GridData compositGroupGridData = new GridData(SWT.LEFT, SWT.CENTER, false, false);
 		compositGroup.setLayoutData(compositGroupGridData);
-		//
+
 		spinnerTopSelectLabel = new Label(compositGroup, SWT.RIGHT);
 		spinnerTopSelectLabel.setText("Show Top:");
 		GridData labelGridData = new GridData(SWT.LEFT, SWT.CENTER, false, true);
 		spinnerTopSelectLabel.setLayoutData(labelGridData);
-		//
+
 		spinnerTopSelect = new Spinner(compositGroup, SWT.RIGHT | SWT.BORDER | SWT.READ_ONLY);
 		spinnerTopSelect.setMinimum(1);
 		spinnerTopSelect.setMaximum(10);
@@ -98,12 +98,12 @@ public class CompositeCorrelationsUI extends Composite {
 				updateXYGraph();
 			}
 		});
-		//
+
 		Composite compositeGraph = new Composite(this, SWT.NONE);
 		GridData compositeGraphGridData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		compositeGraph.setLayout(new FillLayout());
 		compositeGraph.setLayoutData(compositeGraphGridData);
-		//
+
 		LightweightSystem lightweightSystem = new LightweightSystem(new Canvas(compositeGraph, SWT.NONE));
 		xyGraphCorrelation = new XYGraph();
 		traceCorrelationsMap = new TreeMap<String, Trace>();
@@ -159,11 +159,11 @@ public class CompositeCorrelationsUI extends Composite {
 			}
 			xyGraphCorrelation.getPrimaryYAxis().setTitle("Correlation Value");
 			xyGraphCorrelationNumberOfPoints = results.getDecompositionResultsList().size();
-			//
+
 			double[] xDataTraceCorrelation = new double[xyGraphCorrelationNumberOfPoints];
 			TreeMap<String, ArrayList<Double>> yDataLookupMap = new TreeMap<String, ArrayList<Double>>();
 			ConcurrentSkipListSet<String> topNamesList = new ConcurrentSkipListSet<String>();
-			//
+
 			String libraryName;
 			CorrelationResult correlationResult;
 			int selectCount;
@@ -195,7 +195,7 @@ public class CompositeCorrelationsUI extends Composite {
 			if(0 >= yDataLookupMap.size()) {
 				return; // no correlation results
 			}
-			//
+
 			Iterator<String> itr = traceCorrelationsMap.keySet().iterator();
 			while(itr.hasNext()) {
 				String strName = itr.next();
@@ -205,7 +205,7 @@ public class CompositeCorrelationsUI extends Composite {
 					itr.remove();
 				}
 			}
-			//
+
 			for(String strName : topNamesList) {
 				ArrayList<Double> templist;
 				Color traceColor;

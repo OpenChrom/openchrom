@@ -22,7 +22,7 @@ import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
 public class StandardsAssignerValidator extends AbstractTemplateValidator implements ITemplateValidator {
 
 	private static final String ERROR_ENTRY = "Please enter an item, e.g.: '" + StandardsAssignerListUtil.EXAMPLE_SINGLE + "'";
-	//
+
 	private PositionDirective positionDirective = PositionDirective.RETENTION_TIME_MIN;
 	private double positionStart = 0;
 	private double positionStop = 0;
@@ -32,7 +32,6 @@ public class StandardsAssignerValidator extends AbstractTemplateValidator implem
 	private double compensationFactor = IInternalStandard.STANDARD_COMPENSATION_FACTOR;
 	private String traces = "";
 
-	//
 	@Override
 	public IStatus validate(Object value) {
 
@@ -70,23 +69,23 @@ public class StandardsAssignerValidator extends AbstractTemplateValidator implem
 						if(positionStart < 0.0d) {
 							message = "The start position must be not lower than 0.";
 						}
-						//
+
 						if(positionStop <= positionStart) {
 							message = "The stop position must be greater than the start position.";
 						}
-						//
+
 						if("".equals(name)) {
 							message = "A substance name needs to be set.";
 						}
-						//
+
 						if(concentration <= 0) {
 							message = "The concentration must be > 0.";
 						}
-						//
+
 						if("".equals(concentrationUnit)) {
 							message = "A concentration unit needs to be set.";
 						}
-						//
+
 						if(compensationFactor <= 0) {
 							message = "The compensation factor must be > 0.";
 						}
@@ -98,7 +97,7 @@ public class StandardsAssignerValidator extends AbstractTemplateValidator implem
 				message = ERROR_ENTRY;
 			}
 		}
-		//
+
 		if(message != null) {
 			return ValidationStatus.error(message);
 		} else {
@@ -121,7 +120,7 @@ public class StandardsAssignerValidator extends AbstractTemplateValidator implem
 	public AssignerStandard getSetting() {
 
 		AssignerStandard setting = new AssignerStandard();
-		//
+
 		setting.setPositionStart(positionStart);
 		setting.setPositionStop(positionStop);
 		setting.setName(name);
@@ -130,7 +129,7 @@ public class StandardsAssignerValidator extends AbstractTemplateValidator implem
 		setting.setCompensationFactor(compensationFactor);
 		setting.setTracesIdentification(traces);
 		setting.setPositionDirective(positionDirective);
-		//
+
 		return setting;
 	}
 }

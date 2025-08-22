@@ -102,7 +102,7 @@ public class PeakSupport {
 				}
 			}
 		}
-		//
+
 		return isPeakRelevant;
 	}
 
@@ -131,7 +131,7 @@ public class PeakSupport {
 		 */
 		int startRetentionTime = 0;
 		int stopRetentionTime = 0;
-		//
+
 		if(!referenceIdentifier.isEmpty()) {
 			/*
 			 * Position via Reference
@@ -153,7 +153,7 @@ public class PeakSupport {
 				IPeakModel peakModel = peak.getPeakModel();
 				int startRetentionTimePeak = peakModel.getStartRetentionTime();
 				int stopRetentionTimePeak = peakModel.getStopRetentionTime();
-				//
+
 				if(isUseRetentionIndex(setting)) {
 					/*
 					 * The position is based on retention index.
@@ -167,7 +167,7 @@ public class PeakSupport {
 						if(retentionIndexStop != RetentionIndexMath.RETENTION_INDEX_MISSING) {
 							retentionIndexStart += setting.getPositionStart();
 							retentionIndexStop += setting.getPositionStop();
-							//
+
 							DefaultSetting defaultSetting = new DefaultSetting();
 							defaultSetting.setPositionDirective(PositionDirective.RETENTION_INDEX);
 							defaultSetting.setPositionStart(retentionIndexStart);
@@ -192,7 +192,7 @@ public class PeakSupport {
 			startRetentionTime = setting.getRetentionTimeStart(retentionIndexMap);
 			stopRetentionTime = setting.getRetentionTimeStop(retentionIndexMap);
 		}
-		//
+
 		return new RetentionTimeRange(startRetentionTime, stopRetentionTime);
 	}
 
@@ -261,7 +261,7 @@ public class PeakSupport {
 	public IPeak extractPeakByScanRange(IChromatogram chromatogram, int startScan, int stopScan, float startIntensity, float stopIntensity, Set<Integer> traces) {
 
 		IPeak peak = null;
-		//
+
 		try {
 			if(startScan > 0 && startScan < stopScan) {
 				/*
@@ -300,7 +300,7 @@ public class PeakSupport {
 		} catch(PeakException e) {
 			logger.warn(e);
 		}
-		//
+
 		return peak;
 	}
 
@@ -355,7 +355,7 @@ public class PeakSupport {
 				stopScanOptimized = i;
 			}
 		}
-		//
+
 		return new ScanRange(startScanOptimized, stopScanOptimized);
 	}
 

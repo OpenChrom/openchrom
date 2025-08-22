@@ -31,14 +31,14 @@ import jakarta.inject.Inject;
 public class CompositeCompositionsPart {
 
 	private DecompositionResults decompositionResults = null;
-	//
+
 	@Inject
 	private Composite parent;
 	@Inject
 	private IEventBroker eventBroker;
 	@Inject
 	private EventHandler eventHandler;
-	//
+
 	private CompositeCompositionsUI compositeCompositionsUI;
 
 	@PostConstruct

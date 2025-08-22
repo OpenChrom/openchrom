@@ -25,7 +25,7 @@ public class TraceRatioValidator extends ValueParserSupport implements IValidato
 	private static final String SEPARATOR_TOKEN = TraceRatioListUtil.SEPARATOR_TOKEN;
 	private static final String SEPARATOR_ENTRY = TraceRatioListUtil.SEPARATOR_ENTRY;
 	private static final String ERROR_TOKEN = "The item must not contain: " + SEPARATOR_TOKEN;
-	//
+
 	private String name = "";
 	private String testCase = "";
 	private double expectedRatio = 0.0d;
@@ -59,7 +59,7 @@ public class TraceRatioValidator extends ValueParserSupport implements IValidato
 						if("".equals(name)) {
 							message = "A substance name needs to be set.";
 						}
-						//
+
 						testCase = parseString(values, 1);
 						if("".equals(testCase)) {
 							message = "A test case needs to be set.";
@@ -68,19 +68,19 @@ public class TraceRatioValidator extends ValueParserSupport implements IValidato
 								message = "Please set a valid test case, e.g. 104:103.";
 							}
 						}
-						//
+
 						expectedRatio = parseDouble(values, 2);
 						deviationWarn = parseDouble(values, 3);
 						deviationError = parseDouble(values, 4);
-						//
+
 						if(deviationWarn <= 0) {
 							message = "The deviation warn must be >= 0.";
 						}
-						//
+
 						if(deviationError <= 0) {
 							message = "The deviation error must be >= 0.";
 						}
-						//
+
 						if(deviationError < deviationWarn) {
 							message = "The deviation error must be > deviation warn.";
 						}
@@ -92,7 +92,7 @@ public class TraceRatioValidator extends ValueParserSupport implements IValidato
 				message = ERROR_ENTRY;
 			}
 		}
-		//
+
 		if(message != null) {
 			return ValidationStatus.error(message);
 		} else {

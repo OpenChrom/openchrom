@@ -45,7 +45,7 @@ public class ChromatogramValidator {
 				detectorSettings.add(detectorSetting);
 			}
 		}
-		//
+
 		return RetentionIndexSupport.adjustDetectorSettings(chromatogram, detectorSettings);
 	}
 
@@ -57,14 +57,14 @@ public class ChromatogramValidator {
 				reviewSettings.add(reviewSetting);
 			}
 		}
-		//
+
 		return reviewSettings;
 	}
 
 	public static boolean chromatogramContainsTraces(IChromatogram chromatogram, String tracesSetting) {
 
 		boolean tracesAvailable = false;
-		//
+
 		if(!tracesSetting.isEmpty()) {
 			PeakDetectorListUtil peakDetectorListUtil = new PeakDetectorListUtil();
 			Set<Integer> traces = peakDetectorListUtil.extractTraces(tracesSetting);
@@ -94,7 +94,7 @@ public class ChromatogramValidator {
 		} else {
 			tracesAvailable = true; // TIC
 		}
-		//
+
 		return tracesAvailable;
 	}
 }

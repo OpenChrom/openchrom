@@ -91,7 +91,7 @@ public class StandardsAssigner extends AbstractPeakQuantifier implements IPeakQu
 		int startRetentionTime = setting.getRetentionTimeStart(retentionIndexMap);
 		int stopRetentionTime = setting.getRetentionTimeStop(retentionIndexMap);
 		TracesUtil tracesUtil = new TracesUtil();
-		//
+
 		try {
 			if(startRetentionTime > 0 && startRetentionTime < stopRetentionTime) {
 				for(IPeak peak : peaks) {

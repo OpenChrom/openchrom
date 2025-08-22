@@ -70,9 +70,9 @@ public class TraceDataComparisonUI extends Composite {
 
 	private static final Logger logger = Logger.getLogger(TraceDataComparisonUI.class);
 	private static final int HORIZONTAL_INDENT = 15;
-	//
+
 	private EditorProcessor editorProcessor;
-	//
+
 	private Combo comboSampleMeasurements;
 	private Combo comboReferenceMeasurements;
 	private Combo comboSampleTracks;
@@ -84,13 +84,13 @@ public class TraceDataComparisonUI extends Composite {
 	private Button buttonCreateSnapshot;
 	private Text notesText;
 	private Label labelDataStatus;
-	//
+
 	private TraceDataUI traceDataUI;
-	//
+
 	private String analysisType = ""; // Qualification, Validation
 	private String sampleGroup = ""; // e.g. "0196"
 	private String referenceGroup = ""; // e.g. "0236"
-	//
+
 	private IProcessorModel processorModel;
 	private ITrackModel trackModel;
 	private DataProcessorUI dataProcessorUI;
@@ -128,7 +128,7 @@ public class TraceDataComparisonUI extends Composite {
 
 		int track = getTrack();
 		trackModel = retrieveTrackModel(track);
-		//
+
 		if(trackModel != null) {
 			/*
 			 * Set the data.
@@ -187,12 +187,12 @@ public class TraceDataComparisonUI extends Composite {
 	private void initialize() {
 
 		setLayout(new GridLayout(1, true));
-		//
+
 		createButtonSectionTracks(this);
 		createButtonSectionIdentify(this);
 		createCommentsSection(this);
 		createTraceDataSection(this);
-		//
+
 		showComments(false);
 	}
 
@@ -202,7 +202,7 @@ public class TraceDataComparisonUI extends Composite {
 		GridData gridDataComposite = new GridData(GridData.FILL_HORIZONTAL);
 		composite.setLayoutData(gridDataComposite);
 		composite.setLayout(new GridLayout(6, false));
-		//
+
 		createButtonPreviousTrack(composite);
 		createComboSampleMeasurements(composite);
 		createComboSampleTracks(composite);
@@ -323,7 +323,7 @@ public class TraceDataComparisonUI extends Composite {
 		GridData gridDataComposite = new GridData(GridData.FILL_HORIZONTAL);
 		composite.setLayoutData(gridDataComposite);
 		composite.setLayout(new GridLayout(10, false));
-		//
+
 		createDataStatusLabel(composite);
 		createComboWavelengths(composite);
 		createButtonToggleComments(composite);
@@ -387,13 +387,13 @@ public class TraceDataComparisonUI extends Composite {
 
 				boolean isVisible = !notesText.isVisible();
 				showComments(isVisible);
-				//
+
 				if(isVisible) {
 					button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_COLLAPSE_ALL, IApplicationImage.SIZE_16x16));
 				} else {
 					button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EDIT_DEFAULT, IApplicationImage.SIZE_16x16));
 				}
-				//
+
 				editorProcessor.setDirty(true);
 			}
 		});
@@ -432,7 +432,7 @@ public class TraceDataComparisonUI extends Composite {
 						} catch(CoreException e1) {
 							logger.warn(e1);
 						}
-						//
+
 						MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Save Image", "A screenshot of the sample and reference has been saved.");
 						editorProcessor.setDirty(true);
 					}
@@ -528,7 +528,7 @@ public class TraceDataComparisonUI extends Composite {
 				preferencePage.setTitle("Trace Compare");
 				PreferenceManager preferenceManager = new PreferenceManager();
 				preferenceManager.addToRoot(new PreferenceNode("1", preferencePage));
-				//
+
 				PreferenceDialog preferenceDialog = new PreferenceDialog(Display.getDefault().getActiveShell(), preferenceManager);
 				preferenceDialog.create();
 				preferenceDialog.setMessage("Settings");
@@ -584,7 +584,7 @@ public class TraceDataComparisonUI extends Composite {
 
 		traceDataUI = new TraceDataUI(parent, SWT.NONE);
 		traceDataUI.setLayoutData(new GridData(GridData.FILL_BOTH));
-		//
+
 		IChartSettings chartSettings = traceDataUI.getChartSettings();
 		chartSettings.setEnableRangeSelector(true);
 		chartSettings.setShowRangeSelectorInitially(false);
@@ -600,7 +600,7 @@ public class TraceDataComparisonUI extends Composite {
 		chartSettings.setTitleColor(Colors.BLACK);
 		chartSettings.setCreateMenu(true);
 		traceDataUI.applySettings(chartSettings);
-		//
+
 		BaseChart baseChart = traceDataUI.getBaseChart();
 		baseChart.addSeriesModificationListener(new ISeriesModificationListener() {
 
@@ -689,7 +689,7 @@ public class TraceDataComparisonUI extends Composite {
 		 * Button images.
 		 */
 		if(trackModel != null) {
-			//
+
 			notesText.setText(trackModel.getNotes());
 			setButtonIcons();
 			/*
@@ -752,11 +752,11 @@ public class TraceDataComparisonUI extends Composite {
 			trackModel.setSkipped(isSkipped);
 			String imageSkipped = (trackModel.isSkipped()) ? IApplicationImage.IMAGE_SKIPPED : IApplicationImage.IMAGE_SKIP;
 			buttonIsSkipped.setImage(ApplicationImageFactory.getInstance().getImage(imageSkipped, IApplicationImage.SIZE_16x16));
-			//
+
 			if(isSkipped) {
 				setEvaluated(false);
 			}
-			//
+
 			setElementStatusAndValues();
 			editorProcessor.setDirty(true);
 		}
@@ -768,7 +768,7 @@ public class TraceDataComparisonUI extends Composite {
 			trackModel.setEvaluated(isEvaluated);
 			String imageEvaluated = (trackModel.isEvaluated()) ? IApplicationImage.IMAGE_EVALUATED : IApplicationImage.IMAGE_EVALUATE;
 			buttonIsEvaluated.setImage(ApplicationImageFactory.getInstance().getImage(imageEvaluated, IApplicationImage.SIZE_16x16));
-			//
+
 			if(isEvaluated) {
 				setSkipped(false);
 				BaseChart baseChart = traceDataUI.getBaseChart();
@@ -780,7 +780,7 @@ public class TraceDataComparisonUI extends Composite {
 			} else {
 				setSelectedRange(null, null);
 			}
-			//
+
 			setElementStatusAndValues();
 			editorProcessor.setDirty(true);
 		}
@@ -824,7 +824,7 @@ public class TraceDataComparisonUI extends Composite {
 
 		String fileExtension = PreferenceSupplier.getFileExtension();
 		String sampleDirectory = processorModel.getSampleDirectory();
-		//
+
 		List<String> samplePatterns = dataProcessorUI.getMeasurementPatterns(sampleDirectory, fileExtension);
 		setMeasurementComboItems(comboSampleMeasurements, samplePatterns, sampleGroup);
 		sampleGroup = comboSampleMeasurements.getText();
@@ -834,7 +834,7 @@ public class TraceDataComparisonUI extends Composite {
 
 		String fileExtension = PreferenceSupplier.getFileExtension();
 		String referenceDirectory = processorModel.getReferenceDirectory();
-		//
+
 		List<String> referencePatterns = dataProcessorUI.getMeasurementPatterns(referenceDirectory, fileExtension);
 		setMeasurementComboItems(comboReferenceMeasurements, referencePatterns, referenceGroup);
 		referenceGroup = comboReferenceMeasurements.getText();
@@ -861,7 +861,7 @@ public class TraceDataComparisonUI extends Composite {
 		} else {
 			builder.append(analysisType);
 		}
-		//
+
 		String title = builder.toString();
 		IChartSettings chartSettings = traceDataUI.getChartSettings();
 		chartSettings.setTitle(title);

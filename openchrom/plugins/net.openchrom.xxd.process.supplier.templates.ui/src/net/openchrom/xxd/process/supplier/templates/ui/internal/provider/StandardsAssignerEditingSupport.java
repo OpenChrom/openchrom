@@ -83,7 +83,7 @@ public class StandardsAssignerEditingSupport extends AbstractTemplateEditingSupp
 					setting.setTracesIdentification(((String)value).trim());
 					break;
 			}
-			//
+
 			updateTableViewer();
 		}
 	}

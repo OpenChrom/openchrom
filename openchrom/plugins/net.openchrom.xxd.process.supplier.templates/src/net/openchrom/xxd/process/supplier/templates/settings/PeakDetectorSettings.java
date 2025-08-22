@@ -34,7 +34,7 @@ import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorValidator;
 public class PeakDetectorSettings extends AbstractPeakDetectorSettingsMSD implements IPeakDetectorSettingsMSD, IPeakDetectorSettingsCSD, IPeakDetectorSettingsWSD, ITemplateSettings {
 
 	public static final String DETECTOR_DESCRIPTION = "Template Peak Detector";
-	//
+
 	@JsonProperty(value = "Detector Settings", defaultValue = "")
 	@JsonPropertyDescription(value = "Use the editor to modify the settings.")
 	private String detectorSettings = "";
@@ -62,7 +62,7 @@ public class PeakDetectorSettings extends AbstractPeakDetectorSettingsMSD implem
 		PeakDetectorListUtil util = new PeakDetectorListUtil();
 		PeakDetectorValidator validator = new PeakDetectorValidator();
 		List<DetectorSetting> settings = new ArrayList<>();
-		//
+
 		List<String> items = util.getList(detectorSettings);
 		for(String item : items) {
 			IStatus status = validator.validate(item);
@@ -70,7 +70,7 @@ public class PeakDetectorSettings extends AbstractPeakDetectorSettingsMSD implem
 				settings.add(validator.getSetting());
 			}
 		}
-		//
+
 		return settings;
 	}
 }

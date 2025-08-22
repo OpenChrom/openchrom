@@ -133,7 +133,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 
 		List<String> dataProcessing = readDataProcessing(statement);
 		List<String> software = readSoftware(statement);
-		//
+
 		int size = Math.min(dataProcessing.size(), software.size());
 		for(int i = 0; i < size; i++) {
 			chromatogram.getEditHistory().add(new EditInformation(dataProcessing.get(i), software.get(i)));

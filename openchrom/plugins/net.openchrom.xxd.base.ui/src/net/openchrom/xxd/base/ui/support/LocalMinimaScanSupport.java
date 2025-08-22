@@ -31,7 +31,7 @@ public class LocalMinimaScanSupport {
 				}
 			}
 		}
-		//
+
 		return null;
 	}
 }

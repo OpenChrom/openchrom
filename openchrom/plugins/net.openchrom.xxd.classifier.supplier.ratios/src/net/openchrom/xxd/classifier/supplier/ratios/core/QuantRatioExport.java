@@ -40,11 +40,11 @@ public class QuantRatioExport extends AbstractChromatogramExportConverter implem
 		IProcessingInfo<File> processingInfo = new ProcessingInfo<>();
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
 		QuantRatios settings = new QuantRatios();
-		//
+
 		float deviationWarn = PreferenceSupplier.getAllowedDeviationOk();
 		float deviationError = PreferenceSupplier.getAllowedDeviationWarn();
 		DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.000");
-		//
+
 		for(IPeak peak : peaks) {
 			String name = getName(peak);
 			if(!"".equals(name)) {
@@ -62,9 +62,9 @@ public class QuantRatioExport extends AbstractChromatogramExportConverter implem
 				}
 			}
 		}
-		//
+
 		settings.exportItems(file);
-		//
+
 		processingInfo.setProcessingResult(file);
 		processingInfo.addInfoMessage(DESCRIPTION, "The ratio classifier settings have been exported successfully.");
 		return processingInfo;

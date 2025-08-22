@@ -57,7 +57,7 @@ public class PeakReviewCSD extends AbstractPeakIdentifier implements IPeakIdenti
 			 */
 			IChromatogram chromatogram = getChromatogram(peaks);
 			ProcessReviewSettings processSettings = new ProcessReviewSettings(processingInfo, chromatogram, settings);
-			//
+
 			try {
 				DisplayUtils.executeInUserInterfaceThread(new Runnable() {
 

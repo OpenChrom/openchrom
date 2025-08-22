@@ -37,9 +37,9 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 
 	public static final String CRLF = "\r\n";
 	public static final float NORMALIZATION_BASE = 1000.0f;
-	//
+
 	private static final Logger logger = Logger.getLogger(MassSpectrumWriter.class);
-	//
+
 	// private static final String RT = "RT: ";
 	// private static final String RRT = "RRT: ";
 	// private static final String RI = "RI: ";
@@ -54,7 +54,7 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 	private static final String MW = "MW: ";
 	// private static final String DB = "DB: ";
 	// private static final String REFID = "REFID: ";
-	//
+
 	private static final String SOURCEP = "SOURCEP: ";
 	private static final String SPUNITS = "SPUNITS: ";
 	private static final String SIGUNITS = "SIGUNITS: ";
@@ -163,7 +163,7 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 		if("" != line) {
 			fileWriter.write(line);
 		}
-		//
+
 		fileWriter.write(getNumberOfPeaksField(cvmSpectrum));
 		if(!(massSpectrum instanceof ICalibratedVendorMassSpectrum)) {
 			fileWriter.write(getIons(cvmSpectrum));
@@ -187,7 +187,7 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 
 		String field = "";
 		String iname = cvmSpectrum.getInstrumentName();
-		//
+
 		if((null != iname) && ("" != iname)) {
 			field = INAME + iname + CRLF;
 		}
@@ -204,7 +204,7 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 
 		String field = "";
 		double ienergy = cvmSpectrum.getIenergy();
-		//
+
 		if(0d < ienergy) {
 			field = IENERGYV + ienergy + CRLF;
 		}
@@ -221,7 +221,7 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 
 		String field = "";
 		double eenergy = cvmSpectrum.getEenergy();
-		//
+
 		if(0d < eenergy) {
 			field = EENERGYV + eenergy + CRLF;
 		}
@@ -238,7 +238,7 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 
 		String field = "";
 		double etimes = cvmSpectrum.getEtimes();
-		//
+
 		if(0d <= etimes) {
 			field = ETIMES + etimes + CRLF;
 		}
@@ -255,7 +255,7 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 
 		String field = "";
 		String tstamp = cvmSpectrum.getTimeStamp();
-		//
+
 		if((null != tstamp) && ("" != tstamp)) {
 			field = TSTAMP + tstamp + CRLF;
 		}
@@ -272,7 +272,7 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 
 		String field = "";
 		String units = cvmSpectrum.getSignalUnits();
-		//
+
 		if((null != units) && ("" != units)) {
 			field = SIGUNITS + units + CRLF;
 		}
@@ -289,7 +289,7 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 
 		String field = "";
 		String units = cvmSpectrum.getSourcePressureUnits();
-		//
+
 		if((null != units) && ("" != units)) {
 			field = SPUNITS + units + CRLF;
 		}
@@ -306,7 +306,7 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 
 		String field = "";
 		double pressure = cvmSpectrum.getSourcePressure();
-		//
+
 		if(0d < pressure) {
 			field = SOURCEP + pressure + CRLF;
 		}
@@ -324,7 +324,7 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 		StringBuilder builder = new StringBuilder();
 		StringBuilder line = new StringBuilder(80);
 		String lineStr;
-		//
+
 		List<IIon> ions = massSpectrum.getIons();
 		for(IIon ion : ions) {
 			/*
@@ -358,7 +358,7 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 		StringBuilder builder = new StringBuilder();
 		StringBuilder line = new StringBuilder(80);
 		String lineStr;
-		//
+
 		List<IIonMeasurement> peaks = massSpectrum.getIonMeasurements();
 		float signalOffset = massSpectrum.getSignalOffset();
 		for(IIonMeasurement peak : peaks) {
@@ -398,17 +398,17 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 		String field = NAME;
 		String identification = "";
 		String identifier = massSpectrum.getIdentifier();
-		//
+
 		if(identifier != null && !identifier.equals("")) {
 			identification = identifier;
 		} else if(identificationTarget != null) {
 			identification = identificationTarget.getLibraryInformation().getName();
 		}
-		//
+
 		if(identification.equals("")) {
 			identification = "NO IDENTIFIER AVAILABLE";
 		}
-		//
+
 		return field + identification;
 	}
 
@@ -422,7 +422,7 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 
 		String field = "";
 		String cas = massSpectrum.getLibraryInformation().getCasNumber();
-		//
+
 		if((null != cas) && ("" != cas)) {
 			field = CASNO + cas + CRLF;
 		}
@@ -450,7 +450,7 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 
 		String field = "";
 		String form = massSpectrum.getLibraryInformation().getFormula();
-		//
+
 		if((null != form) && ("" != form)) {
 			field = FORMULA + form + CRLF;
 		}
@@ -467,7 +467,7 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 
 		String field = "";
 		double mw = massSpectrum.getLibraryInformation().getMolWeight();
-		//
+
 		if(0d < mw) {
 			field = MW + mw + CRLF;
 		}

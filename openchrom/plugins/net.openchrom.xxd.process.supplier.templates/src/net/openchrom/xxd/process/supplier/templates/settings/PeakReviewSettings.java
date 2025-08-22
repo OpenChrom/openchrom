@@ -75,7 +75,7 @@ public class PeakReviewSettings extends AbstractIdentifierSettings implements IP
 		ReviewListUtil util = new ReviewListUtil();
 		ReviewValidator validator = new ReviewValidator();
 		List<ReviewSetting> settings = new ArrayList<>();
-		//
+
 		List<String> items = util.getList(reviewSettings);
 		for(String item : items) {
 			IStatus status = validator.validate(item);
@@ -83,7 +83,7 @@ public class PeakReviewSettings extends AbstractIdentifierSettings implements IP
 				settings.add(validator.getSetting());
 			}
 		}
-		//
+
 		return settings;
 	}
 }

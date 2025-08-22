@@ -45,7 +45,7 @@ public class PeakIntegratorEditingSupport extends AbstractTemplateEditingSupport
 				}
 			}
 		}
-		//
+
 		return false;
 	}
 
@@ -63,7 +63,7 @@ public class PeakIntegratorEditingSupport extends AbstractTemplateEditingSupport
 					setting.setIntegrator(integrator);
 					break;
 			}
-			//
+
 			updateTableViewer();
 		}
 	}

@@ -41,7 +41,7 @@ import net.openchrom.xxd.process.supplier.templates.settings.StandardsExtractorS
 public class StandardsExtractor extends AbstractPeakQuantifier implements IPeakQuantifier {
 
 	private static final Logger logger = Logger.getLogger(StandardsExtractor.class);
-	//
+
 	private static final Pattern ISTD_PATTERN = Pattern.compile("(IS:)(\\d+)(:)(\\d+\\.?\\d{0,5})");
 
 	/*

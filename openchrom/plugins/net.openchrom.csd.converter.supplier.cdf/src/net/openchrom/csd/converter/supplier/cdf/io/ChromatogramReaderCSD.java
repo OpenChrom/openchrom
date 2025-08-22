@@ -134,7 +134,7 @@ public class ChromatogramReaderCSD extends AbstractChromatogramCSDReader impleme
 		 */
 		in.readPeakTable(chromatogram);
 		cdfChromatogram.close();
-		//
+
 		return chromatogram;
 	}
 

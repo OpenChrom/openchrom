@@ -70,7 +70,7 @@ public class StandardsReferencerSettings extends AbstractPeakQuantifierSettings 
 		StandardsReferencerListUtil util = new StandardsReferencerListUtil();
 		StandardsReferencerValidator validator = new StandardsReferencerValidator();
 		List<AssignerReference> settings = new ArrayList<>();
-		//
+
 		List<String> items = util.getList(referencerSettings);
 		for(String item : items) {
 			IStatus status = validator.validate(item);
@@ -78,7 +78,7 @@ public class StandardsReferencerSettings extends AbstractPeakQuantifierSettings 
 				settings.add(validator.getSetting());
 			}
 		}
-		//
+
 		return settings;
 	}
 }

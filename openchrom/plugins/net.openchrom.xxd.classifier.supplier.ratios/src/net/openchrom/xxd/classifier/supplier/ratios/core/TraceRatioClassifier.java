@@ -39,7 +39,7 @@ import net.openchrom.xxd.classifier.supplier.ratios.settings.TraceRatioSettings;
 public class TraceRatioClassifier extends AbstractRatioClassifier {
 
 	public static final String CLASSIFIER_ID = "net.openchrom.xxd.classifier.supplier.ratios.trace";
-	//
+
 	private static final Logger logger = Logger.getLogger(TraceRatioClassifier.class);
 
 	@Override
@@ -51,7 +51,7 @@ public class TraceRatioClassifier extends AbstractRatioClassifier {
 		} else {
 			settings = PreferenceSupplier.getSettingsTrace();
 		}
-		//
+
 		IProcessingInfo<IChromatogramClassifierResult> processingInfo = validate(chromatogramSelection, chromatogramClassifierSettings);
 		if(!processingInfo.hasErrorMessages()) {
 			/*
@@ -63,14 +63,14 @@ public class TraceRatioClassifier extends AbstractRatioClassifier {
 			chromatogramSelection.getChromatogram().addMeasurementResult(measurementResult);
 			processingInfo.setProcessingResult(classifierResult);
 		}
-		//
+
 		return processingInfo;
 	}
 
 	private TraceRatios calculateRatios(IChromatogram chromatogram, TraceRatioSettings classifierSettings) {
 
 		TraceRatios ratios = classifierSettings.getRatioSettingsList();
-		//
+
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
 		for(TraceRatio traceRatio : ratios) {
 			for(IPeak peak : peaks) {
@@ -91,7 +91,7 @@ public class TraceRatioClassifier extends AbstractRatioClassifier {
 								traceRatio.setPeak(peak);
 								traceRatio.setRatio(Double.NaN);
 								traceRatio.setDeviation(Double.NaN);
-								//
+
 								if(intensityReference != 0) {
 									double expectedRatio = traceRatio.getExpectedRatio();
 									if(expectedRatio != 0) {
@@ -112,7 +112,7 @@ public class TraceRatioClassifier extends AbstractRatioClassifier {
 				}
 			}
 		}
-		//
+
 		return ratios;
 	}
 }

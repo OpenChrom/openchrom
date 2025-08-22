@@ -42,19 +42,19 @@ import jakarta.xml.bind.JAXBException;
 public class EditorProcessor extends MultiPageEditorPart {
 
 	private static final Logger logger = Logger.getLogger(EditorProcessor.class);
-	//
+
 	private File file; // This report file.
-	//
+
 	public static final int PAGE_INDEX_SETTINGS = 0;
 	public static final int PAGE_INDEX_SHIFT_HEATMAP = 1;
 	public static final int PAGE_INDEX_SHIFT_TABLE = 2;
-	//
+
 	private PageSettings pageSettings;
 	private PageIsotopeHeatmap pageIsotopeHeatmap;
 	private PageScanMarkerTable pageScanMarkerTable;
-	//
+
 	private ProcessorData processorData;
-	//
+
 	private boolean isDirty = false;
 
 	public EditorProcessor() {
@@ -89,11 +89,11 @@ public class EditorProcessor extends MultiPageEditorPart {
 		pageSettings = new PageSettings(getContainer());
 		addPage(pageSettings.getControl());
 		setPageText(PAGE_INDEX_SETTINGS, "Settings");
-		//
+
 		pageIsotopeHeatmap = new PageIsotopeHeatmap(getContainer());
 		addPage(pageIsotopeHeatmap.getControl());
 		setPageText(PAGE_INDEX_SHIFT_HEATMAP, "Shift Heatmap");
-		//
+
 		pageScanMarkerTable = new PageScanMarkerTable(getContainer());
 		addPage(pageScanMarkerTable.getControl());
 		setPageText(PAGE_INDEX_SHIFT_TABLE, "Shift Table");
@@ -171,7 +171,7 @@ public class EditorProcessor extends MultiPageEditorPart {
 				ProcessorModelReader processorModelReader = new ProcessorModelReader();
 				processorData = new ProcessorData();
 				processorData.setProcessorModel(processorModelReader.read(file, new NullProgressMonitor()));
-				//
+
 			} catch(JAXBException e) {
 				logger.warn(e);
 			}

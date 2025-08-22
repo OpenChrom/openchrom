@@ -19,14 +19,14 @@ public class PeakDetectorWizard extends Wizard {
 
 	public static final int DEFAULT_WIDTH = 500;
 	public static final int DEFAULT_HEIGHT = 650;
-	//
+
 	private ProcessDetectorSettings processSettings;
 
 	public PeakDetectorWizard(ProcessDetectorSettings processSettings) {
 
 		setNeedsProgressMonitor(false);
 		setWindowTitle(PeakDetectorSupport.DESCRIPTION);
-		//
+
 		this.processSettings = processSettings;
 	}
 

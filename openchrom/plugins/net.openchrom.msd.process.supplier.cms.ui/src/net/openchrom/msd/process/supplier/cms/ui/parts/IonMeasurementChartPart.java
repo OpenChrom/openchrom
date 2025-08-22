@@ -58,7 +58,7 @@ public class IonMeasurementChartPart extends AbstractPart<IonMeasurementChartUI>
 				return false;
 			}
 		}
-		//
+
 		return false;
 	}
 

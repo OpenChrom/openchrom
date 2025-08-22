@@ -71,7 +71,7 @@ public class CompensationQuantifierSettings extends AbstractPeakQuantifierSettin
 		CompensationQuantListUtil util = new CompensationQuantListUtil();
 		CompensationQuantValidator validator = new CompensationQuantValidator();
 		List<CompensationSetting> settings = new ArrayList<>();
-		//
+
 		List<String> items = util.getList(compensationSettings);
 		for(String item : items) {
 			IStatus status = validator.validate(item);
@@ -79,7 +79,7 @@ public class CompensationQuantifierSettings extends AbstractPeakQuantifierSettin
 				settings.add(validator.getSetting());
 			}
 		}
-		//
+
 		return settings;
 	}
 }

@@ -87,11 +87,11 @@ public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUICon
 	private AtomicReference<Button> buttonAdjustControl = new AtomicReference<>();
 	private AtomicReference<PositionAdjusterUI> toolbarAdjuster = new AtomicReference<>();
 	private AtomicReference<StandardsAssignerListUI> listControl = new AtomicReference<>();
-	//
+
 	private Composite control;
-	//
+
 	private static final String DELETE = "Delete";
-	//
+
 	private Listener listener;
 	private List<Button> buttons = new ArrayList<>();
 	private Button buttonAdd;
@@ -100,7 +100,7 @@ public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUICon
 	private Button buttonRemoveAll;
 	private Button buttonImport;
 	private Button buttonExport;
-	//
+
 	private AssignerStandards settings = new AssignerStandards();
 	private IProcessorPreferences<StandardsAssignerSettings> preferences;
 
@@ -110,7 +110,7 @@ public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUICon
 		if(settings != null) {
 			this.settings.load(settings.getAssignerSettings());
 		}
-		//
+
 		control = createControl(parent);
 	}
 
@@ -150,13 +150,13 @@ public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUICon
 	public void addChangeListener(Listener listener) {
 
 		this.listener = listener;
-		//
+
 		Table table = listControl.get().getTable();
 		table.addListener(SWT.Selection, listener);
 		table.addListener(SWT.KeyUp, listener);
 		table.addListener(SWT.MouseUp, listener);
 		table.addListener(SWT.MouseDoubleClick, listener);
-		//
+
 		buttonAdd.addListener(SWT.KeyUp, listener);
 		buttonEdit.addListener(SWT.KeyUp, listener);
 		buttonRemove.addListener(SWT.KeyUp, listener);
@@ -195,14 +195,14 @@ public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUICon
 		gridLayout.marginWidth = 0;
 		gridLayout.marginHeight = 0;
 		composite.setLayout(gridLayout);
-		//
+
 		createToolbarMain(composite);
 		createSearchSection(composite);
 		createAdjustSection(composite);
 		createTableSection(composite);
-		//
+
 		initialize();
-		//
+
 		return composite;
 	}
 
@@ -223,7 +223,7 @@ public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUICon
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
 		table.setLayoutData(gridData);
-		//
+
 		table.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -234,17 +234,17 @@ public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUICon
 				 */
 				List<AbstractSetting> settings = new ArrayList<>();
 				List<?> objects = standardsAssignerListUI.getStructuredSelection().toList();
-				//
+
 				for(Object object : objects) {
 					if(object instanceof AbstractSetting setting) {
 						settings.add(setting);
 					}
 				}
-				//
+
 				toolbarAdjuster.get().setInput(settings);
 			}
 		});
-		//
+
 		standardsAssignerListUI.setEditEnabled(true);
 		standardsAssignerListUI.setUpdateListener(new IUpdateListener() {
 
@@ -254,13 +254,13 @@ public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUICon
 				setInput();
 			}
 		});
-		//
+
 		Shell shell = standardsAssignerListUI.getTable().getShell();
 		ITableSettings tableSettings = standardsAssignerListUI.getTableSettings();
 		addDeleteMenuEntry(shell, tableSettings);
 		addKeyEventProcessors(shell, tableSettings);
 		standardsAssignerListUI.applySettings(tableSettings);
-		//
+
 		listControl.set(standardsAssignerListUI);
 	}
 
@@ -286,7 +286,7 @@ public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUICon
 				}
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -317,7 +317,7 @@ public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUICon
 				}
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -335,7 +335,7 @@ public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUICon
 				deleteItems(e.display.getActiveShell());
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -356,7 +356,7 @@ public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUICon
 				}
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -385,7 +385,7 @@ public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUICon
 				}
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -419,7 +419,7 @@ public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUICon
 				}
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -427,7 +427,7 @@ public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUICon
 
 		toolbarAdjuster.get().setInput(settings);
 		listControl.get().setInput(settings);
-		//
+
 		if(listener != null) {
 			listener.handleEvent(new Event());
 		}
@@ -440,7 +440,7 @@ public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUICon
 		gridData.horizontalAlignment = SWT.END;
 		composite.setLayoutData(gridData);
 		composite.setLayout(new GridLayout(8, false));
-		//
+
 		add(createButtonToggleSearch(composite));
 		add(createButtonToggleAdjust(composite));
 		add(buttonAdd = createButtonAdd(composite));
@@ -455,7 +455,7 @@ public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUICon
 
 		Button button = createButtonToggleToolbar(parent, toolbarSearch, IMAGE_SEARCH, TOOLTIP_SEARCH);
 		buttonSearchControl.set(button);
-		//
+
 		return button;
 	}
 
@@ -463,7 +463,7 @@ public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUICon
 
 		Button button = createButtonToggleToolbar(parent, toolbarAdjuster, IMAGE_ADJUST_POSITION, TOOLTIP_ADJUST_POSITION);
 		buttonAdjustControl.set(button);
-		//
+
 		return button;
 	}
 
@@ -484,7 +484,7 @@ public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUICon
 				listControl.get().setSearchText(searchText, caseSensitive);
 			}
 		});
-		//
+
 		toolbarSearch.set(searchSupportUI);
 	}
 
@@ -492,7 +492,7 @@ public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUICon
 
 		PositionAdjusterUI positionAdjusterUI = new PositionAdjusterUI(parent, SWT.NONE);
 		positionAdjusterUI.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		//
+
 		positionAdjusterUI.setUpdateListener(new IUpdateListener() {
 
 			@Override
@@ -501,7 +501,7 @@ public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUICon
 				listControl.get().refresh();
 			}
 		});
-		//
+
 		toolbarAdjuster.set(positionAdjusterUI);
 	}
 

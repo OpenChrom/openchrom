@@ -74,7 +74,7 @@ public class Common {
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		Document document = documentBuilder.parse(file);
 		NodeList topNode = document.getElementsByTagName(AnIMLType.NODE_NAME);
-		//
+
 		JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
 		Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 		return (AnIMLType)unmarshaller.unmarshal(topNode.item(0));
@@ -128,27 +128,27 @@ public class Common {
 		SeriesSetType seriesSet = new SeriesSetType();
 		seriesSet.setName("Peak Table");
 		seriesSet.setLength(chromatogram.getPeaks().size());
-		//
+
 		SeriesType numberSeries = new SeriesType();
 		numberSeries.setName("Number");
 		numberSeries.setSeriesType(ParameterTypeType.INT_32);
 		numberSeries.setPlotScale(PlotScaleType.NONE);
-		//
+
 		SeriesType idSeries = new SeriesType();
 		idSeries.setName("ID");
 		idSeries.setSeriesType(ParameterTypeType.STRING);
 		idSeries.setPlotScale(PlotScaleType.NONE);
-		//
+
 		SeriesType groupIdSeries = new SeriesType();
 		groupIdSeries.setName("Group ID");
 		groupIdSeries.setSeriesType(ParameterTypeType.STRING);
 		groupIdSeries.setPlotScale(PlotScaleType.NONE);
-		//
+
 		SeriesType nameSeries = new SeriesType();
 		nameSeries.setName("Name");
 		nameSeries.setSeriesType(ParameterTypeType.STRING);
 		nameSeries.setPlotScale(PlotScaleType.NONE);
-		//
+
 		SeriesType retentionTimeSeries = new SeriesType();
 		retentionTimeSeries.setName("Retention Time");
 		UnitType retentionTimeUnit = new UnitType();
@@ -158,7 +158,7 @@ public class Common {
 		retentionTimeSeries.setSeriesType(ParameterTypeType.FLOAT_32);
 		retentionTimeSeries.setDependency(DependencyType.INDEPENDENT);
 		retentionTimeSeries.setPlotScale(PlotScaleType.NONE);
-		//
+
 		SeriesType adjustedRetentionTimeSeries = new SeriesType();
 		adjustedRetentionTimeSeries.setName("Adjusted Retention Time");
 		UnitType adjustedRetentionTimeUnit = new UnitType();
@@ -168,7 +168,7 @@ public class Common {
 		adjustedRetentionTimeSeries.setSeriesType(ParameterTypeType.FLOAT_32);
 		adjustedRetentionTimeSeries.setDependency(DependencyType.DEPENDENT);
 		adjustedRetentionTimeSeries.setPlotScale(PlotScaleType.NONE);
-		//
+
 		SeriesType startTimeSeries = new SeriesType();
 		startTimeSeries.setName("Start Time");
 		UnitType startTimeUnit = new UnitType();
@@ -178,7 +178,7 @@ public class Common {
 		startTimeSeries.setSeriesType(ParameterTypeType.FLOAT_32);
 		startTimeSeries.setDependency(DependencyType.DEPENDENT);
 		startTimeSeries.setPlotScale(PlotScaleType.NONE);
-		//
+
 		SeriesType endTimeSeries = new SeriesType();
 		endTimeSeries.setName("End Time");
 		UnitType endTimeUnit = new UnitType();
@@ -188,7 +188,7 @@ public class Common {
 		endTimeSeries.setSeriesType(ParameterTypeType.FLOAT_32);
 		endTimeSeries.setDependency(DependencyType.DEPENDENT);
 		endTimeSeries.setPlotScale(PlotScaleType.NONE);
-		//
+
 		SeriesType peakHeightSeries = new SeriesType();
 		peakHeightSeries.setName("Value");
 		UnitType peakHeightUnit = new UnitType();
@@ -198,7 +198,7 @@ public class Common {
 		peakHeightSeries.setSeriesType(ParameterTypeType.FLOAT_32);
 		peakHeightSeries.setDependency(DependencyType.DEPENDENT);
 		peakHeightSeries.setPlotScale(PlotScaleType.NONE);
-		//
+
 		IndividualValueSetType numbers = new IndividualValueSetType();
 		IndividualValueSetType ids = new IndividualValueSetType();
 		IndividualValueSetType groups = new IndividualValueSetType();
@@ -248,7 +248,7 @@ public class Common {
 		startTimeSeries.getIndividualValueSet().add(startTimes);
 		endTimeSeries.getIndividualValueSet().add(endTimes);
 		peakHeightSeries.getIndividualValueSet().add(peakHeights);
-		//
+
 		seriesSet.getSeries().add(numberSeries);
 		seriesSet.getSeries().add(idSeries);
 		seriesSet.getSeries().add(groupIdSeries);
@@ -258,7 +258,7 @@ public class Common {
 		seriesSet.getSeries().add(startTimeSeries);
 		seriesSet.getSeries().add(endTimeSeries);
 		seriesSet.getSeries().add(peakHeightSeries);
-		//
+
 		ResultType result = new ResultType();
 		result.setName("Peak Table");
 		result.setSeriesSet(seriesSet);

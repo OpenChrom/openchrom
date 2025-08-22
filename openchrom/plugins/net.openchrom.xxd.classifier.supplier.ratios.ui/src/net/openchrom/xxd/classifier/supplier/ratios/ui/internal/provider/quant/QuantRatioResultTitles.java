@@ -35,13 +35,13 @@ public class QuantRatioResultTitles extends AbstractPeakRatioTitles implements C
 	public static final String CONCENTRATION_UNIT = "ConcentrationUnit";
 	public static final String EXPECTED_CONCENTRATION = "Expected Concentration";
 	public static final String RESPONSE_FACTOR = "Response Factor";
-	//
+
 	public static final int INDEX_SETTINGS_DEVIATION_WARN = 4;
 	public static final int INDEX_SETTINGS_DEVIATION_ERROR = 5;
-	//
+
 	public static final int INDEX_RESULTS_CONCENTRATION = 4;
 	public static final int INDEX_RESULTS_CONCENTRATION_UNIT = 5;
-	//
+
 	public static final String[] TITLES_SETTINGS = { //
 			NAME, //
 			QUANTITATION_NAME, //
@@ -50,7 +50,7 @@ public class QuantRatioResultTitles extends AbstractPeakRatioTitles implements C
 			DEVIATION_WARN, //
 			DEVIATION_ERROR //
 	};
-	//
+
 	public static final int[] BOUNDS_SETTINGS = { //
 			150, //
 			150, //
@@ -59,7 +59,7 @@ public class QuantRatioResultTitles extends AbstractPeakRatioTitles implements C
 			80, //
 			80 //
 	};
-	//
+
 	public static final String[] TITLES_RESULTS = { //
 			RETENTION_TIME, //
 			NAME, //
@@ -70,7 +70,7 @@ public class QuantRatioResultTitles extends AbstractPeakRatioTitles implements C
 			DEVIATION, //
 			RESPONSE_FACTOR //
 	};
-	//
+
 	public static final int[] BOUNDS_RESULTS = { //
 			80, //
 			80, //
@@ -86,7 +86,7 @@ public class QuantRatioResultTitles extends AbstractPeakRatioTitles implements C
 	public Collection<? extends ColumnDefinition<?, ?>> getColumnDefinitions() {
 
 		List<ColumnDefinition<?, ?>> list = new ArrayList<>();
-		//
+
 		addColumnRetentionTime(list);
 		addColumnName(list);
 		addColumnQuantitationName(list);
@@ -95,7 +95,7 @@ public class QuantRatioResultTitles extends AbstractPeakRatioTitles implements C
 		addColumnConcentrationUnit(list);
 		addColumnDeviation(list);
 		addColumnResponseFactor(list);
-		//
+
 		return list;
 	}
 

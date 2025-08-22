@@ -147,7 +147,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 		Composite container = new Composite(parent, SWT.NULL);
 		container.addDisposeListener(e -> refreshJob.cancel());
 		container.setLayout(new GridLayout(1, false));
-		//
+
 		{ // header
 			Composite header = new Composite(container, SWT.NULL);
 			GridLayoutFactory.fillDefaults().applyTo(header);

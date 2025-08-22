@@ -260,7 +260,7 @@ public class ProcessDetectorUI extends Composite implements IExtendedPartUI {
 				return null;
 			}
 		});
-		//
+
 		combo.setToolTipText("Select the visibility option.");
 		GridData gridData = new GridData();
 		gridData.widthHint = 150;
@@ -277,7 +277,7 @@ public class ProcessDetectorUI extends Composite implements IExtendedPartUI {
 				}
 			}
 		});
-		//
+
 		comboViewerVisibility.set(comboViewer);
 	}
 
@@ -286,7 +286,7 @@ public class ProcessDetectorUI extends Composite implements IExtendedPartUI {
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		updateReplacePeakButton(button);
-		//
+
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -297,7 +297,7 @@ public class ProcessDetectorUI extends Composite implements IExtendedPartUI {
 				updateSelection();
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -329,7 +329,7 @@ public class ProcessDetectorUI extends Composite implements IExtendedPartUI {
 		PeakDetectorListUI peakDetectorListUI = new PeakDetectorListUI(parent, SWT.BORDER, false);
 		Table table = peakDetectorListUI.getTable();
 		table.setLayoutData(new GridData(GridData.FILL_BOTH));
-		//
+
 		peakDetectorListUI.setUpdateListener(new IUpdateListener() {
 
 			@Override
@@ -338,7 +338,7 @@ public class ProcessDetectorUI extends Composite implements IExtendedPartUI {
 				updateSelection();
 			}
 		});
-		//
+
 		table.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -347,7 +347,7 @@ public class ProcessDetectorUI extends Composite implements IExtendedPartUI {
 				updateSelection();
 			}
 		});
-		//
+
 		peakDetectorList.set(peakDetectorListUI);
 	}
 

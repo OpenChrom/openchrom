@@ -35,19 +35,18 @@ import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model
 public class PageSettings extends AbstractExtendedWizardPage {
 
 	private IProcessorWizardElements wizardElements;
-	//
+
 	private Spinner startShiftLevelSpinner;
 	private Spinner stopShiftLevelSpinner;
 	private Button normalizeDataCheckBox;
 	private Combo ionSelectionStrategyCombo;
 	private Text numberHighestIntensityMZText;
 	private Button usePeaksCheckBox;
-	//
+
 	private String[] ionSelectionStrategies = new String[]{IProcessorSettings.STRATEGY_SELECT_ALL, IProcessorSettings.STRATEGY_ABOVE_MEAN, IProcessorSettings.STRATEGY_ABOVE_MEDIAN, IProcessorSettings.STRATEGY_N_HIGHEST_INTENSITY};
 
 	public PageSettings(IProcessorWizardElements wizardElements) {
 
-		//
 		super(PageSettings.class.getName());
 		setTitle("Settings");
 		setDescription("Select the settings which are used to identify shifts.");
@@ -59,33 +58,33 @@ public class PageSettings extends AbstractExtendedWizardPage {
 
 		IProcessorModel processorModel = wizardElements.getProcessorModel();
 		IProcessorSettings processorSettings = processorModel.getProcessorSettings();
-		//
+
 		if(getErrorMessage() != null) {
 			return false;
 		}
-		//
+
 		if(processorSettings.getStartShiftLevel() < MassShiftDetector.MIN_ISOTOPE_LEVEL || processorSettings.getStartShiftLevel() > MassShiftDetector.MAX_ISOTOPE_LEVEL) {
 			return false;
 		}
-		//
+
 		if(processorSettings.getStopShiftLevel() < MassShiftDetector.MIN_ISOTOPE_LEVEL || processorSettings.getStopShiftLevel() > MassShiftDetector.MAX_ISOTOPE_LEVEL) {
 			return false;
 		}
-		//
+
 		if(processorSettings.getStartShiftLevel() > processorSettings.getStopShiftLevel()) {
 			return false;
 		}
-		//
+
 		if(!isValidStrategy(processorSettings.getIonSelectionStrategy())) {
 			return false;
 		}
-		//
+
 		if(processorSettings.getIonSelectionStrategy().equals(IProcessorSettings.STRATEGY_N_HIGHEST_INTENSITY)) {
 			if(processorSettings.getNumberHighestIntensityMZ() < IProcessorSettings.MIN_N_HIGHEST_INTENSITY || processorSettings.getNumberHighestIntensityMZ() > IProcessorSettings.MAX_N_HIGHEST_INTENSITY) {
 				return false;
 			}
 		}
-		//
+
 		return true;
 	}
 
@@ -107,13 +106,13 @@ public class PageSettings extends AbstractExtendedWizardPage {
 			ionSelectionStrategyCombo.setText(processorSettings.getIonSelectionStrategy());
 			numberHighestIntensityMZText.setText(Integer.toString(processorSettings.getNumberHighestIntensityMZ()));
 			usePeaksCheckBox.setSelection(processorSettings.isUsePeaks());
-			//
+
 			if(processorSettings.getIonSelectionStrategy().equals(IProcessorSettings.STRATEGY_N_HIGHEST_INTENSITY)) {
 				numberHighestIntensityMZText.setEnabled(true);
 			} else {
 				numberHighestIntensityMZText.setEnabled(false);
 			}
-			//
+
 			validateData();
 		}
 	}
@@ -123,16 +122,16 @@ public class PageSettings extends AbstractExtendedWizardPage {
 
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout(1, false));
-		//
+
 		createStartShiftLevelSection(composite);
 		createStopShiftLevelSection(composite);
 		createNormalizeDataSection(composite);
 		createIonSelectionStrategySection(composite);
 		createNumberHighestIntensitySection(composite);
 		createUsePeaksSection(composite);
-		//
+
 		validateData();
-		//
+
 		setControl(composite);
 	}
 
@@ -141,7 +140,7 @@ public class PageSettings extends AbstractExtendedWizardPage {
 		Label label = new Label(parent, SWT.NONE);
 		label.setText("Start Shift Level:");
 		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		//
+
 		startShiftLevelSpinner = new Spinner(parent, SWT.BORDER);
 		startShiftLevelSpinner.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		startShiftLevelSpinner.setMinimum(MassShiftDetector.MIN_ISOTOPE_LEVEL);
@@ -161,7 +160,7 @@ public class PageSettings extends AbstractExtendedWizardPage {
 		Label label = new Label(parent, SWT.NONE);
 		label.setText("Stop Shift Level:");
 		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		//
+
 		stopShiftLevelSpinner = new Spinner(parent, SWT.BORDER);
 		stopShiftLevelSpinner.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		stopShiftLevelSpinner.setMinimum(MassShiftDetector.MIN_ISOTOPE_LEVEL);
@@ -199,7 +198,7 @@ public class PageSettings extends AbstractExtendedWizardPage {
 		Label label = new Label(parent, SWT.NONE);
 		label.setText("Ion Selection Strategy:");
 		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		//
+
 		ionSelectionStrategyCombo = EnhancedCombo.create(parent, SWT.READ_ONLY);
 		ionSelectionStrategyCombo.setItems(ionSelectionStrategies);
 		ionSelectionStrategyCombo.select(0);
@@ -224,7 +223,7 @@ public class PageSettings extends AbstractExtendedWizardPage {
 		Label label = new Label(parent, SWT.NONE);
 		label.setText("Number n Highest Intesity m/z:");
 		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		//
+
 		numberHighestIntensityMZText = new Text(parent, SWT.BORDER);
 		numberHighestIntensityMZText.setText("");
 		numberHighestIntensityMZText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -260,21 +259,21 @@ public class PageSettings extends AbstractExtendedWizardPage {
 		String message = null;
 		IProcessorModel processorModel = wizardElements.getProcessorModel();
 		IProcessorSettings processorSettings = processorModel.getProcessorSettings();
-		//
+
 		if(startShiftLevelSpinner.getSelection() > stopShiftLevelSpinner.getSelection()) {
 			message = "The start shift level must be <= stop shift level.";
 		} else {
 			processorSettings.setStartShiftLevel(startShiftLevelSpinner.getSelection());
 			processorSettings.setStopShiftLevel(stopShiftLevelSpinner.getSelection());
 		}
-		//
+
 		String ionSelectionStrategy = ionSelectionStrategyCombo.getText().trim();
 		if(!isValidStrategy(ionSelectionStrategy)) {
 			message = "Please select a valid ion selection strategy.";
 		} else {
 			processorSettings.setIonSelectionStrategy(ionSelectionStrategy);
 		}
-		//
+
 		if(ionSelectionStrategy.equals(IProcessorSettings.STRATEGY_N_HIGHEST_INTENSITY)) {
 			try {
 				int numberHighestIntensityMZ = Integer.parseInt(numberHighestIntensityMZText.getText().trim());

@@ -44,17 +44,17 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 
 		IntegerFieldEditor scanVelocityFieldEditor = new IntegerFieldEditor(PreferenceSupplier.P_SCAN_VELOCITY, "Scan velocity [mm/s]:", getFieldEditorParent());
 		scanVelocityFieldEditor.setValidRange(PreferenceSupplier.MIN_SCAN_VELOCITY, PreferenceSupplier.MAX_SCAN_VELOCITY);
-		//
+
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new ComboFieldEditor(PreferenceSupplier.P_DETECTOR_TYPE, "Detector Type:", PreferenceSupplier.getDetectorTypes(), getFieldEditorParent()));
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new DirectoryFieldEditor(PreferenceSupplier.P_SAMPLE_DIRECTORY, "Sample Directory:", getFieldEditorParent()));
 		addField(new DirectoryFieldEditor(PreferenceSupplier.P_REFERENCE_DIRECTORY, "Reference Directory:", getFieldEditorParent()));
 		addField(scanVelocityFieldEditor);
-		//
+
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_SEARCH_CASE_SENSITIVE, "Search case sensitive", getFieldEditorParent()));
-		//
+
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new ColorFieldEditor(PreferenceSupplier.P_COLOR_DATA_190, "Color 190 nm:", getFieldEditorParent()));
 		addField(new ColorFieldEditor(PreferenceSupplier.P_COLOR_DATA_200, "Color 200 nm:", getFieldEditorParent()));
@@ -64,11 +64,11 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 		addField(new ColorFieldEditor(PreferenceSupplier.P_COLOR_DATA_280, "Color 280 nm:", getFieldEditorParent()));
 		addField(new ColorFieldEditor(PreferenceSupplier.P_COLOR_DATA_300, "Color 300 nm:", getFieldEditorParent()));
 		addField(new ColorFieldEditor(PreferenceSupplier.P_COLOR_DATA_DEFAULT, "Color Data Default:", getFieldEditorParent()));
-		//
+
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_MIRROR_REFERENCE_DATA, "Mirror reference data (editor reload needed)", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_USE_DATA_VALIDATION, "Use data validation (editor reload needed)", getFieldEditorParent()));
-		//
+
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new ComboFieldEditor(PreferenceSupplier.P_LINE_STYLE_SAMPLE, "Line Style Sample:", PreferenceSupport.LINE_STYLES, getFieldEditorParent()));
 		addField(new IntegerFieldEditor(PreferenceSupplier.P_LINE_WIDTH_SAMPLE, "Line Width Sample:", getFieldEditorParent()));

@@ -133,13 +133,13 @@ public class DetectorController {
 					 */
 					int startRetentionTime = getStartRetentionTime();
 					int stopRetentionTime = getStopRetentionTime();
-					//
+
 					if(isRetentionTimeRangeValid(startRetentionTime, stopRetentionTime)) {
 						startRetentionTime = (startRetentionTime < chromatogram.getStartRetentionTime()) ? chromatogram.getStartRetentionTime() : startRetentionTime;
 						stopRetentionTime = (stopRetentionTime > chromatogram.getStopRetentionTime()) ? chromatogram.getStopRetentionTime() : stopRetentionTime;
 						PeakType peakType = detectorSetting.getPeakType();
 						boolean optimizeRange = detectorSetting.isOptimizeRange();
-						//
+
 						if(peakType != null) {
 							/*
 							 * The detector range defines how to detect peaks.
@@ -234,7 +234,7 @@ public class DetectorController {
 											if(content == null || content.isBlank()) {
 												return "The name must not be null or empty.";
 											}
-											//
+
 											return null;
 										}
 									});
@@ -268,7 +268,7 @@ public class DetectorController {
 				}
 			}
 		});
-		//
+
 		peakDetectorChart.setSectionUpdateListener(new ISectionUpdateListener() {
 
 			@Override
@@ -283,7 +283,7 @@ public class DetectorController {
 				processDetectorUI.setSelection(index);
 			}
 		});
-		//
+
 		peakDetectorChart.setRangeUpdateListener(new IRangeUpdateListener() {
 
 			@Override
@@ -297,9 +297,9 @@ public class DetectorController {
 					int retentionTimeDelta = zoomIn ? -offset : offset;
 					int startRetentionTime = detectorSetting.getStartRetentionTime() - retentionTimeDelta;
 					int stopRetentionTime = detectorSetting.getStopRetentionTime() + retentionTimeDelta;
-					//
+
 					if(startRetentionTime < stopRetentionTime) {
-						//
+
 						detectorSetting.setStartRetentionTime(startRetentionTime);
 						detectorSetting.setStopRetentionTime(stopRetentionTime);
 						/*
@@ -312,7 +312,7 @@ public class DetectorController {
 				}
 			}
 		});
-		//
+
 		BaseChart baseChart = peakDetectorChart.getBaseChart();
 		baseChart.addCustomRangeSelectionHandler(new ICustomSelectionHandler() {
 
@@ -362,7 +362,7 @@ public class DetectorController {
 	private void updatePeakStatusUI(IPeak peak) {
 
 		List<IChromatogramPeak> peaks = new ArrayList<>();
-		//
+
 		if(processDetectorUI != null) {
 			if(detectorSetting != null) {
 				if(processSettings != null) {
@@ -374,7 +374,7 @@ public class DetectorController {
 						int startRetentionTime = getStartRetentionTime();
 						int stopRetentionTime = getStopRetentionTime();
 						List<? extends IChromatogramPeak> chromatogramPeaks = chromatogram.getPeaks(startRetentionTime, stopRetentionTime);
-						//
+
 						if(PreferenceSupplier.isDetectorShowOnlyRelevantPeaks() && isChromatogramMSD(chromatogram)) {
 							Set<Integer> traces = peakDetectorListUtil.extractTraces(detectorSetting.getTraces());
 							for(IChromatogramPeak chromatogramPeak : chromatogramPeaks) {
@@ -389,7 +389,7 @@ public class DetectorController {
 				}
 			}
 		}
-		//
+
 		if(extendedPeaksUI != null) {
 			extendedPeaksUI.setInput(detectorSetting, peaks, peak);
 		}
@@ -412,7 +412,7 @@ public class DetectorController {
 			int retentionTimeDeltaLeft = PreferenceSupplier.getDetectorDeltaLeftMilliseconds();
 			retentionTime = detectorSetting.getStartRetentionTime() - retentionTimeDeltaLeft;
 		}
-		//
+
 		return retentionTime;
 	}
 
@@ -423,7 +423,7 @@ public class DetectorController {
 			int retentionTimeDeltaRight = PreferenceSupplier.getDetectorDeltaRightMilliseconds();
 			retentionTime = detectorSetting.getStopRetentionTime() + retentionTimeDeltaRight;
 		}
-		//
+
 		return retentionTime;
 	}
 

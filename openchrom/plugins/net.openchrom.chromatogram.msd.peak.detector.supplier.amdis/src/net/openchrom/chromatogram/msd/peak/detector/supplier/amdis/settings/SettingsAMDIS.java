@@ -42,7 +42,7 @@ public class SettingsAMDIS extends AbstractProcessSettings {
 	@JsonPropertyDescription("Select the data folder, normally called tmp.")
 	@FileSettingProperty(dialogType = DialogType.OPEN_DIALOG, onlyDirectory = true, allowEmpty = false)
 	private File tmpFolder = null;
-	//
+
 	@JsonProperty(value = "Autodetect low m/z", defaultValue = "true")
 	private boolean lowMzAuto = true;
 	@JsonProperty(value = "Start m/z", defaultValue = "35")
@@ -53,12 +53,12 @@ public class SettingsAMDIS extends AbstractProcessSettings {
 	@JsonProperty(value = "Stop m/z", defaultValue = "600")
 	@IntSettingsProperty(minValue = 1, maxValue = 1000)
 	private int stopMZ = 600;
-	//
+
 	@JsonProperty(value = "Omit m/z", defaultValue = "false")
 	private boolean omitMz = false;
 	@JsonProperty(value = "Up to 8 m/z values separated by a space, 0 to omit TIC.", defaultValue = "0 18 28")
 	private String omitedMZ = "0 18 28";
-	//
+
 	@JsonProperty(value = "Use solvent tailing", defaultValue = "true")
 	private boolean useSolventTailing = true;
 	@JsonProperty(value = "Solvent tailing m/z.", defaultValue = "84")
@@ -67,7 +67,7 @@ public class SettingsAMDIS extends AbstractProcessSettings {
 	private boolean useColumnBleed = true;
 	@JsonProperty(value = "Column Bleed m/z.", defaultValue = "207")
 	private String columnBleedMZ = "207";
-	//
+
 	@JsonProperty(value = "Threshold", defaultValue = "MEDIUM")
 	private Threshold threshold = Threshold.MEDIUM;
 	@JsonProperty(value = "Component Width", defaultValue = "12")
@@ -81,7 +81,7 @@ public class SettingsAMDIS extends AbstractProcessSettings {
 	private Sensitivity sensitivity = Sensitivity.MEDIUM;
 	@JsonProperty(value = "Shape Requirements", defaultValue = "HIGH")
 	private ShapeRequirements shapeRequirements = ShapeRequirements.HIGH;
-	//
+
 	@JsonIgnore
 	private IOnsiteSettings onsiteSettings = null;
 
@@ -98,20 +98,20 @@ public class SettingsAMDIS extends AbstractProcessSettings {
 			onsiteSettings.setValue(IOnsiteSettings.KEY_SCAN_DIRECTION, ScanDirection.NONE.value());
 			onsiteSettings.setValue(IOnsiteSettings.KEY_INSTRUMENT_FILE, InstrumentFile.CDF.value());
 			onsiteSettings.setValue(IOnsiteSettings.KEY_INSTRUMENT_TYPE, InstrumentType.QUADRUPOLE.value());
-			//
+
 			onsiteSettings.setValue(IOnsiteSettings.KEY_LOW_MZ_AUTO, lowMzAuto ? Option.YES.value() : Option.NO.value());
 			onsiteSettings.setValue(IOnsiteSettings.KEY_START_MZ, Integer.toString(startMZ));
 			onsiteSettings.setValue(IOnsiteSettings.KEY_HIGH_MZ_AUTO, highMzAuto ? Option.YES.value() : Option.NO.value());
 			onsiteSettings.setValue(IOnsiteSettings.KEY_STOP_MZ, Integer.toString(stopMZ));
-			//
+
 			onsiteSettings.setValue(IOnsiteSettings.KEY_OMIT_MZ, omitMz ? Option.YES.value() : Option.NO.value());
 			onsiteSettings.setValue(IOnsiteSettings.KEY_OMITED_MZ, omitedMZ);
-			//
+
 			onsiteSettings.setValue(IOnsiteSettings.KEY_USE_SOLVENT_TAILING, useSolventTailing ? Option.YES.value() : Option.NO.value());
 			onsiteSettings.setValue(IOnsiteSettings.KEY_SOLVENT_TAILING_MZ, solventTailingMZ);
 			onsiteSettings.setValue(IOnsiteSettings.KEY_USE_COLUMN_BLEED, useColumnBleed ? Option.YES.value() : Option.NO.value());
 			onsiteSettings.setValue(IOnsiteSettings.KEY_COLUMN_BLEED_MZ, columnBleedMZ);
-			//
+
 			onsiteSettings.setValue(IOnsiteSettings.KEY_THRESHOLD, threshold.value());
 			onsiteSettings.setValue(IOnsiteSettings.KEY_PEAK_WIDTH, Integer.toString(componentWidth));
 			onsiteSettings.setValue(IOnsiteSettings.KEY_ADJACENT_PEAK_SUBTRACTION, adjactentPeakSubtraction.value());
@@ -119,7 +119,7 @@ public class SettingsAMDIS extends AbstractProcessSettings {
 			onsiteSettings.setValue(IOnsiteSettings.KEY_SENSITIVITY, sensitivity.value());
 			onsiteSettings.setValue(IOnsiteSettings.KEY_SHAPE_REQUIREMENTS, shapeRequirements.value());
 		}
-		//
+
 		return onsiteSettings;
 	}
 

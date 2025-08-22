@@ -33,7 +33,7 @@ public class TraceRatioResultTitles extends AbstractPeakRatioTitles implements C
 	public static final String TEST_CASE = "Test Case";
 	public static final String EXPECTED_RATIO = "Expected Ratio [%]";
 	public static final String RATIO = "Ratio [%]";
-	//
+
 	public static final String[] TITLES_SETTINGS = { //
 			NAME, //
 			TEST_CASE, //
@@ -41,7 +41,7 @@ public class TraceRatioResultTitles extends AbstractPeakRatioTitles implements C
 			DEVIATION_WARN, //
 			DEVIATION_ERROR //
 	};
-	//
+
 	public static final int[] BOUNDS_SETTINGS = { //
 			150, //
 			120, //
@@ -49,7 +49,7 @@ public class TraceRatioResultTitles extends AbstractPeakRatioTitles implements C
 			80, //
 			80 //
 	};
-	//
+
 	public static final String[] TITLES_RESULTS = { //
 			RETENTION_TIME, //
 			NAME, //
@@ -58,7 +58,7 @@ public class TraceRatioResultTitles extends AbstractPeakRatioTitles implements C
 			RATIO, //
 			DEVIATION //
 	};
-	//
+
 	public static final int[] BOUNDS_RESULTS = { //
 			80, //
 			130, //
@@ -72,7 +72,7 @@ public class TraceRatioResultTitles extends AbstractPeakRatioTitles implements C
 	public Collection<? extends ColumnDefinition<?, ?>> getColumnDefinitions() {
 
 		List<ColumnDefinition<?, ?>> list = new ArrayList<>();
-		//
+
 		list.add(defaultSortableColumn(RETENTION_TIME, 80, new Function<TraceRatio, Double>() {
 
 			@Override
@@ -86,7 +86,7 @@ public class TraceRatioResultTitles extends AbstractPeakRatioTitles implements C
 				}
 			}
 		}).create());
-		//
+
 		list.add(defaultSortableColumn(NAME, 130, new Function<TraceRatio, String>() {
 
 			@Override
@@ -95,7 +95,7 @@ public class TraceRatioResultTitles extends AbstractPeakRatioTitles implements C
 				return ratio.getName();
 			}
 		}).create());
-		//
+
 		list.add(defaultSortableColumn(TEST_CASE, 110, new Function<TraceRatio, String>() {
 
 			@Override
@@ -104,7 +104,7 @@ public class TraceRatioResultTitles extends AbstractPeakRatioTitles implements C
 				return ratio.getTestCase();
 			}
 		}).create());
-		//
+
 		list.add(defaultSortableColumn(EXPECTED_RATIO, 80, new Function<TraceRatio, Double>() {
 
 			@Override
@@ -113,7 +113,7 @@ public class TraceRatioResultTitles extends AbstractPeakRatioTitles implements C
 				return ratio.getExpectedRatio();
 			}
 		}).create());
-		//
+
 		list.add(defaultSortableColumn(RATIO, 80, new Function<TraceRatio, Double>() {
 
 			@Override
@@ -122,7 +122,7 @@ public class TraceRatioResultTitles extends AbstractPeakRatioTitles implements C
 				return ratio.getRatio();
 			}
 		}).create());
-		//
+
 		list.add(defaultSortableColumn(DEVIATION, 80, new Function<TraceRatio, Double>() {
 
 			@Override
@@ -131,7 +131,7 @@ public class TraceRatioResultTitles extends AbstractPeakRatioTitles implements C
 				return ratio.getDeviation();
 			}
 		}).create());
-		//
+
 		return list;
 	}
 }

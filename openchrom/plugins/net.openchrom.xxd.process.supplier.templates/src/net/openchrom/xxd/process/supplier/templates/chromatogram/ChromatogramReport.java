@@ -32,9 +32,9 @@ import net.openchrom.xxd.process.supplier.templates.settings.ChromatogramReportS
 public class ChromatogramReport extends AbstractChromatogramReportGenerator {
 
 	public static final String TOPIC_PROCESSING_FILE_CREATED = "processing/file/created/template/report"; // $NON-NLS-1$
-	//
+
 	private static final Logger logger = Logger.getLogger(ChromatogramReport.class);
-	//
+
 	public static final String DESCRIPTION = "Template Chromatogram Report";
 	public static final String FILE_EXTENSION = ".tsv";
 	public static final String FILE_NAME = DESCRIPTION.replaceAll("\\s", "") + FILE_EXTENSION;

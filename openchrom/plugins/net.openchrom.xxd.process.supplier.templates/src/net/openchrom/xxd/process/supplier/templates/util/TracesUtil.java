@@ -63,21 +63,21 @@ public class TracesUtil {
 							detected++;
 						}
 					}
-					//
+
 					if(detected == traceSet.size()) {
 						traceMatch = true;
 					}
 				}
 			}
 		}
-		//
+
 		return traceMatch;
 	}
 
 	private boolean isTraceContained(IScan scan, int trace) {
 
 		boolean isTraceContained = false;
-		//
+
 		if(scan instanceof IScanMSD scanMSD) {
 			try {
 				IIon ion = scanMSD.getIon(trace);
@@ -91,7 +91,7 @@ public class TracesUtil {
 			Optional<IScanSignalWSD> optional = scanWSD.getScanSignal((float)trace);
 			isTraceContained = optional.isPresent();
 		}
-		//
+
 		return isTraceContained;
 	}
 

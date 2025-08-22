@@ -25,7 +25,7 @@ public class CompensationQuantifierComparator extends AbstractRecordTableCompara
 
 		int sortOrder = 0;
 		if(e1 instanceof CompensationSetting setting1 && e2 instanceof CompensationSetting setting2) {
-			//
+
 			switch(getPropertyIndex()) {
 				case 0:
 					sortOrder = setting2.getName().compareTo(setting1.getName());

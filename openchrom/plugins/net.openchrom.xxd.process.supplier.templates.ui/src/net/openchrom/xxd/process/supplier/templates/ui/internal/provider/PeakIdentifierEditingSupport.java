@@ -89,7 +89,7 @@ public class PeakIdentifierEditingSupport extends AbstractTemplateEditingSupport
 					setting.setReferenceIdentifier(((String)value).trim());
 					break;
 			}
-			//
+
 			updateTableViewer();
 		}
 	}

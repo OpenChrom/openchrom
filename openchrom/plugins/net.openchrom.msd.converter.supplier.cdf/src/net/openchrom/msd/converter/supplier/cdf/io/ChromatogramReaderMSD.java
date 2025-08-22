@@ -46,7 +46,7 @@ import ucar.nc2.NetcdfFiles;
 public class ChromatogramReaderMSD extends AbstractChromatogramMSDReader implements IChromatogramMSDReader {
 
 	public static final String CONVERTER_ID = "net.openchrom.msd.converter.supplier.cdf";
-	//
+
 	private static final Logger logger = Logger.getLogger(ChromatogramReaderMSD.class);
 
 	@Override
@@ -119,10 +119,10 @@ public class ChromatogramReaderMSD extends AbstractChromatogramMSDReader impleme
 		CDFChromtogramArrayReader in = new CDFChromtogramArrayReader(cdfChromatogram);
 		chromatogram = new VendorChromatogram();
 		setChromatogramEntries(chromatogram, in, file);
-		//
+
 		int precision = PreferenceSupplier.getPrecision();
 		boolean forceParseNominal = PreferenceSupplier.isForceParseNominal();
-		//
+
 		for(int i = 1; i <= in.getNumberOfScans(); i++) {
 			try {
 				massSpectrum = in.getMassSpectrum(i, precision, forceParseNominal);
@@ -152,7 +152,7 @@ public class ChromatogramReaderMSD extends AbstractChromatogramMSDReader impleme
 		CDFChromatogramOverviewArrayReader in = new CDFChromatogramOverviewArrayReader(cdfChromatogram);
 		VendorChromatogram chromatogram = new VendorChromatogram();
 		setChromatogramEntries(chromatogram, in, file);
-		//
+
 		for(int i = 1; i <= in.getNumberOfScans(); i++) {
 			try {
 				VendorScan massSpectrum = new VendorScan();
@@ -162,7 +162,7 @@ public class ChromatogramReaderMSD extends AbstractChromatogramMSDReader impleme
 				massSpectrum.addIon(ion);
 				chromatogram.addScan(massSpectrum);
 			} catch(Exception e) {
-				//
+
 			}
 		}
 		cdfChromatogram.close();

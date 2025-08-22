@@ -36,21 +36,21 @@ public class ReviewExport extends AbstractChromatogramExportConverter implements
 
 		IProcessingInfo<File> processingInfo = new ProcessingInfo<>();
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
-		//
+
 		ReviewExportProcessSettings reviewExportProcessSettings = new ReviewExportProcessSettings();
 		reviewExportProcessSettings.setRetentionTimeDeltaLeft(PreferenceSupplier.getExportDeltaLeftMillisecondsReview());
 		reviewExportProcessSettings.setRetentionTimeDeltaRight(PreferenceSupplier.getExportDeltaRightMillisecondsReview());
 		reviewExportProcessSettings.setNumberTraces(PreferenceSupplier.getExportNumberTracesReview());
 		reviewExportProcessSettings.setOptimizeRange(PreferenceSupplier.isExportOptimizeRangeReview());
 		ReviewTemplateCompiler reviewTemplateCompiler = new ReviewTemplateCompiler();
-		//
+
 		if(reviewTemplateCompiler.compilePeaks(file, peaks, reviewExportProcessSettings)) {
 			processingInfo.setProcessingResult(file);
 			processingInfo.addInfoMessage(DESCRIPTION, "The review template has been exported successfully.");
 		} else {
 			processingInfo.addWarnMessage(DESCRIPTION, "Something has gone wrong to export the review template.");
 		}
-		//
+
 		return processingInfo;
 	}
 }

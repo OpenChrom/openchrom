@@ -34,7 +34,7 @@ public class TimeRatioCompiler implements ITemplateExport {
 		 */
 		float deviationWarn = timeRatioExportSettings.getAllowedDeviationOk();
 		float deviationError = timeRatioExportSettings.getAllowedDeviationWarn();
-		//
+
 		for(IPeak peak : peaks) {
 			String name = getName(peak);
 			if(!name.isEmpty()) {
@@ -47,7 +47,7 @@ public class TimeRatioCompiler implements ITemplateExport {
 				settings.add(timeRatio);
 			}
 		}
-		//
+
 		return settings.exportItems(file);
 	}
 
@@ -59,7 +59,7 @@ public class TimeRatioCompiler implements ITemplateExport {
 		 */
 		float deviationWarn = timeRatioExportSettings.getAllowedDeviationOk();
 		float deviationError = timeRatioExportSettings.getAllowedDeviationWarn();
-		//
+
 		for(IScan scan : scans) {
 			String name = getName(scan);
 			if(!name.isEmpty()) {
@@ -71,7 +71,7 @@ public class TimeRatioCompiler implements ITemplateExport {
 				settings.add(timeRatio);
 			}
 		}
-		//
+
 		return settings.exportItems(file);
 	}
 }

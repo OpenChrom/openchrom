@@ -36,16 +36,16 @@ import net.openchrom.xxd.processor.supplier.tracecompare.preferences.PreferenceS
 public class PageSettingsSelection extends AbstractExtendedWizardPage {
 
 	private static final int VERTIAL_INDENT = 10;
-	//
+
 	private IProcessorWizardElements wizardElements;
-	//
+
 	private Text textSampleDirectory;
 	private Text textReferenceDirectory;
 	private Button buttonUseValidation;
 	private Text textGeneralNotes;
 
 	public PageSettingsSelection(IProcessorWizardElements wizardElements) {
-		//
+
 		super(PageSettingsSelection.class.getName());
 		setTitle("Trace Compare Setup");
 		setDescription("Select the sample and reference directories and set the preferences.");
@@ -56,27 +56,27 @@ public class PageSettingsSelection extends AbstractExtendedWizardPage {
 	public boolean canFinish() {
 
 		IProcessorModel processorModel = wizardElements.getProcessorModel();
-		//
+
 		if(getErrorMessage() != null) {
 			return false;
 		}
-		//
+
 		if(processorModel.getSampleDirectory() == null || "".equals(processorModel.getSampleDirectory())) {
 			return false;
 		}
-		//
+
 		if(processorModel.getReferenceDirectory() == null || "".equals(processorModel.getReferenceDirectory())) {
 			return false;
 		}
-		//
+
 		if(processorModel.getReferenceDirectory() == null || "".equals(processorModel.getReferenceDirectory())) {
 			return false;
 		}
-		//
+
 		if(processorModel.getGeneralNotes() == null) {
 			return false;
 		}
-		//
+
 		return true;
 	}
 
@@ -98,12 +98,12 @@ public class PageSettingsSelection extends AbstractExtendedWizardPage {
 				if(textSampleDirectory.getText().trim().equals("")) {
 					textSampleDirectory.setText(PreferenceSupplier.getSampleDirectory());
 				}
-				//
+
 				if(textReferenceDirectory.getText().trim().equals("")) {
 					textReferenceDirectory.setText(PreferenceSupplier.getReferenceDirectory());
 				}
 			}
-			//
+
 			textGeneralNotes.setText((processorModel.getGeneralNotes() != null) ? processorModel.getGeneralNotes() : "");
 			validateData();
 		}
@@ -114,14 +114,14 @@ public class PageSettingsSelection extends AbstractExtendedWizardPage {
 
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout(2, false));
-		//
+
 		createLabelSampleSection(composite);
 		createSampleGroupSection(composite);
 		createLabelReferenceSection(composite);
 		createReferenceGroupSection(composite);
 		createUseValidationSection(composite);
 		createGeneralNotesSection(composite);
-		//
+
 		validateData();
 		setControl(composite);
 	}
@@ -138,7 +138,7 @@ public class PageSettingsSelection extends AbstractExtendedWizardPage {
 	private void createSampleGroupSection(Composite parent) {
 
 		Shell shell = Display.getDefault().getActiveShell();
-		//
+
 		textSampleDirectory = new Text(parent, SWT.BORDER);
 		textSampleDirectory.setText("");
 		textSampleDirectory.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -149,7 +149,7 @@ public class PageSettingsSelection extends AbstractExtendedWizardPage {
 				validateData();
 			}
 		});
-		//
+
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("Select");
 		button.addSelectionListener(new SelectionAdapter() {
@@ -171,7 +171,7 @@ public class PageSettingsSelection extends AbstractExtendedWizardPage {
 						textSampleDirectory.setText("Directory doesn't exist.");
 					}
 				}
-				//
+
 				validateData();
 			}
 		});
@@ -190,7 +190,7 @@ public class PageSettingsSelection extends AbstractExtendedWizardPage {
 	private void createReferenceGroupSection(Composite parent) {
 
 		Shell shell = Display.getDefault().getActiveShell();
-		//
+
 		textReferenceDirectory = new Text(parent, SWT.BORDER);
 		textReferenceDirectory.setText("");
 		textReferenceDirectory.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -201,7 +201,7 @@ public class PageSettingsSelection extends AbstractExtendedWizardPage {
 				validateData();
 			}
 		});
-		//
+
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("Select");
 		button.addSelectionListener(new SelectionAdapter() {
@@ -223,7 +223,7 @@ public class PageSettingsSelection extends AbstractExtendedWizardPage {
 						textReferenceDirectory.setText("Directory doesn't exist.");
 					}
 				}
-				//
+
 				validateData();
 			}
 		});
@@ -256,7 +256,7 @@ public class PageSettingsSelection extends AbstractExtendedWizardPage {
 		gridDataLabel.horizontalSpan = 2;
 		gridDataLabel.verticalIndent = VERTIAL_INDENT;
 		label.setLayoutData(gridDataLabel);
-		//
+
 		textGeneralNotes = new Text(parent, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 		GridData gridData = new GridData(GridData.FILL_BOTH);
 		gridData.horizontalSpan = 2;
@@ -274,17 +274,17 @@ public class PageSettingsSelection extends AbstractExtendedWizardPage {
 
 		String message = null;
 		IProcessorModel processorModel = wizardElements.getProcessorModel();
-		//
+
 		boolean useDataValidation = buttonUseValidation.getSelection();
 		PreferenceSupplier.setUseDataValidation(useDataValidation);
-		//
+
 		String sampleDirectory = PreferenceSupplier.getSampleDirectory();
 		if(!new File(sampleDirectory).exists()) {
 			message = "Please select the sample directory.";
 		} else {
 			processorModel.setSampleDirectory(sampleDirectory);
 		}
-		//
+
 		if(message == null) {
 			String referenceDirectory = PreferenceSupplier.getReferenceDirectory();
 			if(!new File(referenceDirectory).exists()) {
@@ -293,7 +293,7 @@ public class PageSettingsSelection extends AbstractExtendedWizardPage {
 				processorModel.setReferenceDirectory(referenceDirectory);
 			}
 		}
-		//
+
 		processorModel.setGeneralNotes(textGeneralNotes.getText().trim());
 		/*
 		 * Updates the status

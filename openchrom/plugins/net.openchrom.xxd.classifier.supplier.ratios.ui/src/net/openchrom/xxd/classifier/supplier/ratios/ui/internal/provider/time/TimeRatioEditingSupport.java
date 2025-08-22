@@ -24,7 +24,7 @@ import net.openchrom.xxd.classifier.supplier.ratios.ui.swt.AbstractRatioListUI;
 public class TimeRatioEditingSupport extends EditingSupport {
 
 	private static final Logger logger = Logger.getLogger(TimeRatioEditingSupport.class);
-	//
+
 	private CellEditor cellEditor;
 	private AbstractRatioListUI tableViewer;
 	private String column;
@@ -91,7 +91,7 @@ public class TimeRatioEditingSupport extends EditingSupport {
 					}
 					break;
 			}
-			//
+
 			tableViewer.refresh();
 			tableViewer.updateContent();
 		}

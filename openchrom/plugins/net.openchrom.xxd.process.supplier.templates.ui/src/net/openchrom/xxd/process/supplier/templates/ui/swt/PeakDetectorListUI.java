@@ -31,7 +31,7 @@ public class PeakDetectorListUI extends AbstractTemplateListUI {
 
 	private static final String[] TITLES = PeakDetectorLabelProvider.TITLES;
 	private static final int[] BOUNDS = PeakDetectorLabelProvider.BOUNDS;
-	//
+
 	private PeakDetectorLabelProvider labelProvider = new PeakDetectorLabelProvider();
 	private PeakDetectorComparator tableComparator = new PeakDetectorComparator();
 	private PeakDetectorFilter listFilter = new PeakDetectorFilter();

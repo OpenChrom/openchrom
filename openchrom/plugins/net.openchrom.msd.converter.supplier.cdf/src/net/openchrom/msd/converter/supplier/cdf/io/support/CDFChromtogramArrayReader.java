@@ -98,7 +98,7 @@ public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReade
 		--scan;
 		int peaks = valueArrayPointCount[scan];
 		int offset = valueArrayScanIndex[scan];
-		//
+
 		for(int i = 0; i < peaks; i++) {
 			int position = offset + i;
 			/*
@@ -107,7 +107,7 @@ public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReade
 			if(forceNominal) {
 				int mz = AbstractIon.getIon(valueArrayIon[position]);
 				float intensity = valueArrayAbundance[position];
-				//
+
 				if(intensity > 0) {
 					DataPoint dataPoint = dataPointMap.get(mz);
 					if(dataPoint == null) {
@@ -124,7 +124,7 @@ public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReade
 				 */
 				double mz = AbstractIon.getIon(valueArrayIon[position], precision);
 				float intensity = valueArrayAbundance[position];
-				//
+
 				if(intensity > 0) {
 					addIon(massSpectrum, mz, intensity);
 				}

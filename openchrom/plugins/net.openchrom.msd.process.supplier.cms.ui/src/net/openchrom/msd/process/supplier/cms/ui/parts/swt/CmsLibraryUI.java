@@ -28,7 +28,7 @@ public class CmsLibraryUI extends ExtendedTableViewer {
 	public static final String BASE_PEAK_ABUNDANCE = "Base Peak Abundance";
 	public static final String NUMBER_OF_IONS = "Number of Ions";
 	public static final String FORMULA = "Formula";
-	//
+
 	private String[] titles = {//
 			NAME, //
 			CAS_NUMBER, //
@@ -37,7 +37,7 @@ public class CmsLibraryUI extends ExtendedTableViewer {
 			BASE_PEAK_ABUNDANCE, //
 			NUMBER_OF_IONS, //
 			FORMULA};
-	//
+
 	private int bounds[] = {//
 			250, //
 			100, //
@@ -55,7 +55,7 @@ public class CmsLibraryUI extends ExtendedTableViewer {
 	private void createColumns() {
 
 		createColumns(titles, bounds);
-		//
+
 		setLabelProvider(new CmsLibraryListLabelProvider());
 		setContentProvider(new CmsLibraryListContentProvider());
 		setComparator(new CmsLibraryListTableComparator());

@@ -72,7 +72,7 @@ public class GenericMassToFormulaBridge {
 	public List<String> getNames(IMolecularFormulaSet formulas) {
 
 		List<String> results = new ArrayList<>();
-		//
+
 		for(int i = 0; i < formulas.size(); i++) {
 			IMolecularFormula molecularFormulaIterator = formulas.getMolecularFormula(i);
 			StringBuilder formulaString = new StringBuilder();

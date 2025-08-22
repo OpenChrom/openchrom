@@ -51,13 +51,13 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 
 		int mirrors = 2;
 		String[][] elements = new String[mirrors][2];
-		//
+
 		elements[0][0] = "Europe";
 		elements[0][1] = MIRROR_EU;
-		//
+
 		elements[1][0] = "Japan";
 		elements[1][1] = MIRROR_JP;
-		//
+
 		return elements;
 	}
 

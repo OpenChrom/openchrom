@@ -42,7 +42,7 @@ import org.osgi.framework.Bundle;
 public class DiscoveryRegistryStrategy extends RegistryStrategy {
 
 	private static final Logger logger = Logger.getLogger(DiscoveryRegistryStrategy.class);
-	//
+
 	private final List<JarFile> jars = new ArrayList<>();
 	private final Map<IContributor, File> contributorToJarFile = new HashMap<>();
 	private final Map<IContributor, String> contributorToDirectoryEntry = new HashMap<>();

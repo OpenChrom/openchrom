@@ -74,7 +74,7 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
 			Marshaller marshaller = jaxbContext.createMarshaller();
-			//
+
 			AnIMLType anIML = new AnIMLType();
 			anIML.setVersion("0.90");
 			anIML.setSampleSet(createSampleSet(chromatogram));
@@ -106,12 +106,12 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 	private ExperimentStepSetType createSingleWavelengthExperimentStep(IChromatogramWSD chromatogram) {
 
 		ExperimentStepSetType experimentStepSet = new ExperimentStepSetType();
-		//
+
 		ExperimentStepType chromatographyStep = new ExperimentStepType();
 		chromatographyStep.setName("Chromatography");
 		chromatographyStep.setTechnique(createChromatographyTechnique());
 		experimentStepSet.getExperimentStep().add(chromatographyStep);
-		//
+
 		ExperimentStepType singleWavelengthStep = new ExperimentStepType();
 		singleWavelengthStep.setName(chromatogram.getDataName());
 		singleWavelengthStep.getResult().add(createSignal(chromatogram));
@@ -122,7 +122,7 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 		}
 		singleWavelengthStep.setTechnique(createUltraVioletDetectorTechnique());
 		experimentStepSet.getExperimentStep().add(singleWavelengthStep);
-		//
+
 		ExperimentStepType multiWavelengthsStep = new ExperimentStepType();
 		multiWavelengthsStep.setName("Multi Wavelength");
 		multiWavelengthsStep.setResult(createSpectra(chromatogram));
@@ -132,7 +132,7 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 		}
 		multiWavelengthsStep.setTechnique(createDiodeArrayDetectorTechnique());
 		experimentStepSet.getExperimentStep().add(multiWavelengthsStep);
-		//
+
 		ExperimentStepType peakStep = new ExperimentStepType();
 		peakStep.setName("Peaks");
 		peakStep.getResult().add(Common.createPeaks(chromatogram));
@@ -163,7 +163,7 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 				EncodedValueSetType encodedWavelengths = new EncodedValueSetType();
 				encodedWavelengths.setValue(BinaryReader.encodeArray(wavelengths));
 				wavelengthSeries.getEncodedValueSet().add(encodedWavelengths);
-				//
+
 				EncodedValueSetType encodedIntensities = new EncodedValueSetType();
 				encodedIntensities.setValue(BinaryReader.encodeArray(intensities));
 				intensitySeries.getEncodedValueSet().add(encodedIntensities);
@@ -221,7 +221,7 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 		seriesSet.setLength(chromatogram.getNumberOfScans());
 		SeriesType retentionTimeSeries = describeRetentionTime();
 		SeriesType intensitySeries = describeIntensities();
-		//
+
 		int scans = chromatogram.getNumberOfScans();
 		if(PreferenceSupplier.getChromatogramSaveEncoded()) {
 			int[] retentionTimes = new int[scans];
@@ -235,7 +235,7 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 			EncodedValueSetType encodedRetentionTimes = new EncodedValueSetType();
 			encodedRetentionTimes.setValue(BinaryReader.encodeArray(retentionTimes));
 			retentionTimeSeries.getEncodedValueSet().add(encodedRetentionTimes);
-			//
+
 			EncodedValueSetType encodedIntensities = new EncodedValueSetType();
 			encodedIntensities.setValue(BinaryReader.encodeArray(abundance));
 			intensitySeries.getEncodedValueSet().add(encodedIntensities);

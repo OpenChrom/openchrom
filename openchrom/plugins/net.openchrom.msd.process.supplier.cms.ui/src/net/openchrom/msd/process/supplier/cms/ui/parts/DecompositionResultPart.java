@@ -35,7 +35,7 @@ public class DecompositionResultPart {
 	private Composite parent;
 	@Inject
 	private IEventBroker eventBroker;
-	//
+
 	private DecompositionResultUI decompositionResultUI;
 
 	@PostConstruct

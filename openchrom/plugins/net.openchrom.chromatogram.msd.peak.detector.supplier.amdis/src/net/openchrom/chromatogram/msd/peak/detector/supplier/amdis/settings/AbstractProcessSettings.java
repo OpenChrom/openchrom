@@ -127,7 +127,7 @@ public class AbstractProcessSettings extends AbstractPeakDetectorSettingsMSD imp
 		} catch(Exception e) {
 			content = "https://doi.org/10.1016/S1044-0305(99)00047-1";
 		}
-		//
+
 		return new LiteratureReference(content);
 	}
 }

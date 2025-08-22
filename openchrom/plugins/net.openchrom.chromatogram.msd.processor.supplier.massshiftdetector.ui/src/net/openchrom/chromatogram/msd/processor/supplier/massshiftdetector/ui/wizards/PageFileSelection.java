@@ -38,16 +38,15 @@ import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.Ac
 
 public class PageFileSelection extends AbstractExtendedWizardPage {
 
-	//
 	private IProcessorWizardElements wizardElements;
-	//
+
 	private Text referenceChromatogramText;
 	private Text isotopeChromatogramText;
 	private Text notesText;
 	private Text descriptionText;
 
 	public PageFileSelection(IProcessorWizardElements wizardElements) {
-		//
+
 		super(PageFileSelection.class.getName());
 		setTitle("File Selection");
 		setDescription("Select the reference and isotope chromatogram.");
@@ -58,27 +57,27 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 	public boolean canFinish() {
 
 		IProcessorModel processorModel = wizardElements.getProcessorModel();
-		//
+
 		if(getErrorMessage() != null) {
 			return false;
 		}
-		//
+
 		if(processorModel.getReferenceChromatogramPath() == null || "".equals(processorModel.getReferenceChromatogramPath())) {
 			return false;
 		}
-		//
+
 		if(processorModel.getIsotopeChromatogramPath() == null || "".equals(processorModel.getIsotopeChromatogramPath())) {
 			return false;
 		}
-		//
+
 		if(processorModel.getNotes() == null) {
 			return false;
 		}
-		//
+
 		if(processorModel.getDescription() == null) {
 			return false;
 		}
-		//
+
 		return true;
 	}
 
@@ -106,14 +105,14 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout(2, false));
-		//
+
 		createReferenceChromatogramSection(composite);
 		createIstopeChromatogramSection(composite);
 		createNoteSection(composite);
 		createDescriptionSection(composite);
-		//
+
 		validateData();
-		//
+
 		setControl(composite);
 	}
 
@@ -124,11 +123,11 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 		GridData gridDataLabel = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataLabel.horizontalSpan = 2;
 		label.setLayoutData(gridDataLabel);
-		//
+
 		referenceChromatogramText = new Text(parent, SWT.BORDER);
 		referenceChromatogramText.setText("");
 		referenceChromatogramText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		//
+
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("Select");
 		button.addSelectionListener(new SelectionAdapter() {
@@ -156,11 +155,11 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 		GridData gridDataLabel = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataLabel.horizontalSpan = 2;
 		label.setLayoutData(gridDataLabel);
-		//
+
 		isotopeChromatogramText = new Text(parent, SWT.BORDER);
 		isotopeChromatogramText.setText("");
 		isotopeChromatogramText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		//
+
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("Select");
 		button.addSelectionListener(new SelectionAdapter() {
@@ -188,7 +187,7 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 		GridData gridDataLabel = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataLabel.horizontalSpan = 2;
 		label.setLayoutData(gridDataLabel);
-		//
+
 		notesText = new Text(parent, SWT.BORDER);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
@@ -210,7 +209,7 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 		GridData gridDataLabel = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataLabel.horizontalSpan = 2;
 		label.setLayoutData(gridDataLabel);
-		//
+
 		descriptionText = new Text(parent, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL | SWT.WRAP);
 		GridData gridData = new GridData(GridData.FILL_BOTH);
 		gridData.horizontalSpan = 2;
@@ -229,21 +228,21 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 
 		String message = null;
 		IProcessorModel processorModel = wizardElements.getProcessorModel();
-		//
+
 		String referenceChromatogramPath = referenceChromatogramText.getText().trim();
 		if(!new File(referenceChromatogramPath).exists()) {
 			message = "Please select the reference chromatogram.";
 		} else {
 			processorModel.setReferenceChromatogramPath(referenceChromatogramPath);
 		}
-		//
+
 		String isotopeChromatogramPath = isotopeChromatogramText.getText().trim();
 		if(!new File(isotopeChromatogramPath).exists()) {
 			message = "Please select the isotope chromatogram.";
 		} else {
 			processorModel.setIsotopeChromatogramPath(isotopeChromatogramPath);
 		}
-		//
+
 		processorModel.setNotes(notesText.getText().trim());
 		processorModel.setDescription(descriptionText.getText().trim());
 		/*

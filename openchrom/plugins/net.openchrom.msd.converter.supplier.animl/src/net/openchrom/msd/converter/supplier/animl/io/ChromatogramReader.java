@@ -198,7 +198,7 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader {
 						}
 					}
 				}
-				//
+
 				for(int i = 0; i < seriesSet.getLength(); i++) {
 					IRegularMassSpectrum scan = new VendorScan();
 					VendorIon ion = new VendorIon(IIon.TIC_ION, signals.get(i));

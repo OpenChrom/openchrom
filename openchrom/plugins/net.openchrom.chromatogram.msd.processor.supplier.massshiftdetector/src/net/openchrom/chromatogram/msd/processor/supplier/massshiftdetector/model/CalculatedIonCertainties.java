@@ -21,7 +21,7 @@ public class CalculatedIonCertainties {
 	private int stopScan;
 	private int startRetentionTime;
 	private int stopRetentionTime;
-	//
+
 	private Map<Integer, Integer> shiftLevelStartIonMap;
 	private Map<Integer, Integer> shiftLevelStopIonMap;
 	/*

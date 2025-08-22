@@ -39,13 +39,13 @@ public class ReviewSettings extends ArrayList<ReviewSetting> implements ISetting
 
 	private static final Logger logger = Logger.getLogger(ReviewSettings.class);
 	private static final long serialVersionUID = -6161941038059031059L;
-	//
+
 	public static final String DESCRIPTION = "Peak Review Template";
 	public static final String FILE_EXTENSION = ".prt";
 	public static final String FILE_NAME = DESCRIPTION.replaceAll("\\s", "") + FILE_EXTENSION;
 	public static final String FILTER_EXTENSION = "*" + FILE_EXTENSION;
 	public static final String FILTER_NAME = DESCRIPTION + " (*" + FILE_EXTENSION + ")";
-	//
+
 	private ReviewListUtil listUtil = new ReviewListUtil();
 
 	public Set<String> keySet() {
@@ -128,12 +128,12 @@ public class ReviewSettings extends ArrayList<ReviewSetting> implements ISetting
 
 		boolean success = false;
 		try (PrintWriter printWriter = new PrintWriter(file)) {
-			//
+
 			List<ReviewSetting> settings = new ArrayList<>(this);
 			if(PreferenceSupplier.isSortExportTemplate()) {
 				Collections.sort(settings, new ReviewComparator()); // SORT OK
 			}
-			//
+
 			for(ReviewSetting setting : settings) {
 				StringBuilder builder = new StringBuilder();
 				extractSetting(setting, builder);
@@ -144,7 +144,7 @@ public class ReviewSettings extends ArrayList<ReviewSetting> implements ISetting
 		} catch(FileNotFoundException e) {
 			logger.warn(e);
 		}
-		//
+
 		return success;
 	}
 
@@ -152,14 +152,14 @@ public class ReviewSettings extends ArrayList<ReviewSetting> implements ISetting
 
 		ReviewSetting setting = null;
 		ReviewValidator validator = listUtil.getValidator();
-		//
+
 		IStatus status = validator.validate(text);
 		if(status.isOK()) {
 			setting = validator.getSetting();
 		} else {
 			logger.warn(status.getMessage());
 		}
-		//
+
 		return setting;
 	}
 
@@ -181,7 +181,7 @@ public class ReviewSettings extends ArrayList<ReviewSetting> implements ISetting
 	private void extractSetting(ReviewSetting setting, StringBuilder builder) {
 
 		List<String> entries = new ArrayList<>();
-		//
+
 		entries.add(getFormattedPosition(setting.getPositionStart()));
 		entries.add(getFormattedPosition(setting.getPositionStop()));
 		entries.add(setting.getName());
@@ -190,7 +190,7 @@ public class ReviewSettings extends ArrayList<ReviewSetting> implements ISetting
 		entries.add(setting.getPeakType().name());
 		entries.add(Boolean.toString(setting.isOptimizeRange()));
 		entries.add(setting.getPositionDirective().name());
-		//
+
 		compile(builder, entries);
 	}
 }

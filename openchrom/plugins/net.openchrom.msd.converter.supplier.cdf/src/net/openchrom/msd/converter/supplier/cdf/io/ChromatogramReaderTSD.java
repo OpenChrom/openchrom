@@ -80,15 +80,15 @@ public class ChromatogramReaderTSD implements IImportConverterTSD {
 		int modulationTime = PreferenceSupplier.getModulationTime2D();
 		ChromatogramReaderMSD chromatogramReader = new ChromatogramReaderMSD();
 		IChromatogramMSD chromatogramMSD = chromatogramReader.read(file, monitor);
-		//
+
 		IChromatogramTSD chromatogram = new VendorChromatogramTSD();
 		int offset = 0;
 		List<Float> signals = new ArrayList<>();
-		//
+
 		for(IScan scan : chromatogramMSD.getScans()) {
 			int retentionTime = scan.getRetentionTime();
 			float intensity = scan.getTotalSignal();
-			//
+
 			int delta = retentionTime - offset;
 			if(delta < modulationTime) {
 				float signal = intensity;
@@ -104,7 +104,7 @@ public class ChromatogramReaderTSD implements IImportConverterTSD {
 				signals = new ArrayList<>();
 			}
 		}
-		//
+
 		return chromatogram;
 	}
 
@@ -114,7 +114,7 @@ public class ChromatogramReaderTSD implements IImportConverterTSD {
 		for(int i = 0; i < signals.size(); i++) {
 			array[i] = signals.get(i);
 		}
-		//
+
 		return array;
 	}
 }

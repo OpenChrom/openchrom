@@ -31,7 +31,7 @@ public class PluginDiscoveryExtensionReader {
 	public static final String OVERVIEW = "overview"; //$NON-NLS-1$
 	public static final String FEATURE_FILTER = "featureFilter"; //$NON-NLS-1$
 	public static final String GROUP = "group"; //$NON-NLS-1$
-	//
+
 	private static final Logger logger = Logger.getLogger(PluginDiscoveryExtensionReader.class);
 
 	public PluginDescriptor readConnectorDescriptor(IConfigurationElement element) {

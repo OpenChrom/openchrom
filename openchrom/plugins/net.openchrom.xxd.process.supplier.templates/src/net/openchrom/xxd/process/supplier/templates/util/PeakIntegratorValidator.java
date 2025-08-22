@@ -21,7 +21,7 @@ import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
 public class PeakIntegratorValidator extends AbstractTemplateValidator implements ITemplateValidator {
 
 	private static final String ERROR_ENTRY = "Please enter an item, e.g.: '" + PeakIntegratorListUtil.EXAMPLE_SINGLE + "'";
-	//
+
 	private String identifier = "";
 	private PositionDirective positionDirective = PositionDirective.RETENTION_TIME_MIN;
 	private double positionStart = 0;
@@ -65,7 +65,7 @@ public class PeakIntegratorValidator extends AbstractTemplateValidator implement
 								message = "The integrator must be either '" + IntegratorSetting.INTEGRATOR_NAME_TRAPEZOID + "' or '" + IntegratorSetting.INTEGRATOR_NAME_MAX + "'";
 							}
 						}
-						//
+
 						if(positionStart == 0.0d && positionStop == 0.0d) {
 							if("".equals(identifier)) {
 								message = "A substance name needs to be set.";
@@ -83,7 +83,7 @@ public class PeakIntegratorValidator extends AbstractTemplateValidator implement
 				message = ERROR_ENTRY;
 			}
 		}
-		//
+
 		if(message != null) {
 			return ValidationStatus.error(message);
 		} else {
@@ -94,13 +94,13 @@ public class PeakIntegratorValidator extends AbstractTemplateValidator implement
 	public IntegratorSetting getSetting() {
 
 		IntegratorSetting setting = new IntegratorSetting();
-		//
+
 		setting.setPositionStart(positionStart);
 		setting.setPositionStop(positionStop);
 		setting.setIdentifier(identifier);
 		setting.setIntegrator(integrator);
 		setting.setPositionDirective(positionDirective);
-		//
+
 		return setting;
 	}
 }

@@ -36,9 +36,9 @@ import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.sw
 public class PageIsotopeHeatmap {
 
 	private static final Logger logger = Logger.getLogger(PageIsotopeHeatmap.class);
-	//
+
 	private EditorProcessor editorProcessor;
-	//
+
 	private Composite control;
 	private EnhancedIsotopeHeatmapEditor enhancedIsotopeHeatmapEditor;
 
@@ -55,12 +55,12 @@ public class PageIsotopeHeatmap {
 
 		control = new Composite(parent, SWT.NONE);
 		control.setLayout(new GridLayout());
-		//
+
 		enhancedIsotopeHeatmapEditor = new EnhancedIsotopeHeatmapEditor(control, SWT.NONE);
 		enhancedIsotopeHeatmapEditor.setLayoutData(new GridData(GridData.FILL_BOTH));
 		enhancedIsotopeHeatmapEditor.setLayout(new GridLayout(1, true));
 		enhancedIsotopeHeatmapEditor.setBackground(Colors.WHITE);
-		//
+
 		enhancedIsotopeHeatmapEditor.addPreviousListener(new IPreviousListener() {
 
 			@Override
@@ -69,7 +69,7 @@ public class PageIsotopeHeatmap {
 				editorProcessor.setActivePage(EditorProcessor.PAGE_INDEX_SETTINGS);
 			}
 		});
-		//
+
 		enhancedIsotopeHeatmapEditor.addNextListener(new INextListener() {
 
 			@Override
@@ -78,7 +78,7 @@ public class PageIsotopeHeatmap {
 				editorProcessor.setActivePage(EditorProcessor.PAGE_INDEX_SHIFT_TABLE);
 			}
 		});
-		//
+
 		enhancedIsotopeHeatmapEditor.addProcessListener(new IProcessListener() {
 
 			@Override
@@ -93,7 +93,7 @@ public class PageIsotopeHeatmap {
 					Shell shell = Display.getDefault().getActiveShell();
 					IonCertaintiesCalculatorRunnable runnable = new IonCertaintiesCalculatorRunnable(processorData);
 					ProgressMonitorDialog monitor = new ProgressMonitorDialog(shell);
-					//
+
 					try {
 						monitor.run(true, true, runnable);
 					} catch(InterruptedException e1) {
@@ -101,7 +101,7 @@ public class PageIsotopeHeatmap {
 					} catch(InvocationTargetException e1) {
 						logger.warn(e1);
 					}
-					//
+
 					processorData.setCacluatedIonCertainties(runnable.getCalculatedIonCertainties());
 					processorData.getProcessorModel().setScanMarker(new ArrayList<IScanMarker>());
 				}

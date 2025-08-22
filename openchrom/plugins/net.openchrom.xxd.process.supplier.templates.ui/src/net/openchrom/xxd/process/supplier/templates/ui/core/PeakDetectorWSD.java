@@ -48,7 +48,7 @@ public class PeakDetectorWSD extends AbstractPeakDetectorWSD {
 			IChromatogram chromatogram = chromatogramSelection.getChromatogram();
 			ProcessDetectorSettings processSettings = new ProcessDetectorSettings(processingInfo, chromatogramSelection.getChromatogram(), settings);
 			List<DetectorSetting> detectorSettings = ChromatogramValidator.filterValidDetectorSettings(chromatogram, settings);
-			//
+
 			if(detectorSettings.isEmpty()) {
 				processingInfo.addWarnMessage(DESCRIPTION, "The chromatogram doesn't contain any of the given peak traces.");
 			} else {

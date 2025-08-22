@@ -18,7 +18,7 @@ public class PlaceholderProcessor {
 
 	public static final String PLACEHOLDER_START = "{";
 	public static final String PLACEHOLDER_STOP = "}";
-	//
+
 	private String key = "";
 	private String placeholder = "";
 	private Function<CellData, String> function = null;

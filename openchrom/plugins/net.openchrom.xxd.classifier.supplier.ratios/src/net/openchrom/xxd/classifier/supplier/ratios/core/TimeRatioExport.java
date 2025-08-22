@@ -36,11 +36,11 @@ public class TimeRatioExport extends AbstractChromatogramExportConverter impleme
 
 		IProcessingInfo<File> processingInfo = new ProcessingInfo<>();
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
-		//
+
 		TimeRatioExportSettings timeRatioExportSettings = new TimeRatioExportSettings();
 		timeRatioExportSettings.setAllowedDeviationOk(PreferenceSupplier.getAllowedDeviationOk());
 		timeRatioExportSettings.setAllowedDeviationWarn(PreferenceSupplier.getAllowedDeviationWarn());
-		//
+
 		TimeRatioCompiler timeRatioCompiler = new TimeRatioCompiler();
 		if(timeRatioCompiler.compilePeaks(file, peaks, timeRatioExportSettings)) {
 			processingInfo.setProcessingResult(file);
@@ -48,7 +48,7 @@ public class TimeRatioExport extends AbstractChromatogramExportConverter impleme
 		} else {
 			processingInfo.addWarnMessage(DESCRIPTION, "Something went wrong to compile the time ratios.");
 		}
-		//
+
 		return processingInfo;
 	}
 }

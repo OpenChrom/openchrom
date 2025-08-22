@@ -49,7 +49,7 @@ public class PeakRegionParameter {
 		if(isValid()) {
 			return points.get(0);
 		}
-		//
+
 		return null;
 	}
 
@@ -58,7 +58,7 @@ public class PeakRegionParameter {
 		if(isValid()) {
 			return points.subList(1, size() - 1);
 		}
-		//
+
 		return null;
 	}
 
@@ -67,7 +67,7 @@ public class PeakRegionParameter {
 		if(isValid()) {
 			return points.get(size() - 1);
 		}
-		//
+
 		return null;
 	}
 

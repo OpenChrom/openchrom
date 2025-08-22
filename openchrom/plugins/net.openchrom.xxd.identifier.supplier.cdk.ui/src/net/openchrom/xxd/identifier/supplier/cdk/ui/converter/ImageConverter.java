@@ -43,7 +43,7 @@ import net.openchrom.xxd.identifier.supplier.cdk.preferences.PreferenceSupplier;
 public class ImageConverter {
 
 	private static final Logger logger = Logger.getLogger(ImageConverter.class);
-	//
+
 	public static final int DEFAULT_WIDTH = 400;
 	public static final int DEFAULT_HEIGHT = 400;
 	/**
@@ -59,7 +59,6 @@ public class ImageConverter {
 		return singleton;
 	}
 
-	//
 	public Image smilesToImage(String smilesString, int width, int height) {
 
 		IAtomContainer molecule = new CDKSmilesToMoleculeConverter().generate(smilesString);
@@ -98,11 +97,11 @@ public class ImageConverter {
 			 */
 			image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 			Rectangle drawArea = new Rectangle(width, height);
-			//
+
 			if(PreferenceSupplier.isShowAtomsH()) {
 				AtomContainerManipulator.convertImplicitToExplicitHydrogens(molecule);
 			}
-			//
+
 			StructureDiagramGenerator structureDiagramGenerator = new StructureDiagramGenerator();
 			structureDiagramGenerator.setMolecule(molecule);
 			try {
@@ -123,7 +122,7 @@ public class ImageConverter {
 			generators.add(new BasicSceneGenerator());
 			generators.add(new BasicBondGenerator());
 			generators.add(new BasicAtomGenerator());
-			//
+
 			IRenderer<IAtomContainer> renderer = new AtomContainerRenderer(generators, new AWTFontManager());
 			renderer.setup(diagramMolecule, drawArea);
 			// Paint the background
@@ -133,7 +132,7 @@ public class ImageConverter {
 			// The paint method also needs a toolkit-specific renderer
 			renderer.paint(diagramMolecule, new AWTDrawVisitor(g2));
 		}
-		//
+
 		return image;
 	}
 }

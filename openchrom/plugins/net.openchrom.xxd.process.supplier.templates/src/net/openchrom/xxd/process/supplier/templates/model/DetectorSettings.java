@@ -37,13 +37,13 @@ import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorValidator;
 public class DetectorSettings extends ArrayList<DetectorSetting> implements ISettings {
 
 	private static final Logger logger = Logger.getLogger(DetectorSettings.class);
-	//
+
 	public static final String DESCRIPTION = "Peak Detector Template";
 	public static final String FILE_EXTENSION = ".pdt";
 	public static final String FILE_NAME = DESCRIPTION.replaceAll("\\s", "") + FILE_EXTENSION;
 	public static final String FILTER_EXTENSION = "*" + FILE_EXTENSION;
 	public static final String FILTER_NAME = DESCRIPTION + " (*" + FILE_EXTENSION + ")";
-	//
+
 	private static final long serialVersionUID = -4685218696168308093L;
 	private PeakDetectorListUtil listUtil = new PeakDetectorListUtil();
 
@@ -113,7 +113,7 @@ public class DetectorSettings extends ArrayList<DetectorSetting> implements ISet
 			if(PreferenceSupplier.isSortExportTemplate()) {
 				Collections.sort(settings, new DetectorComparator()); // SORT OK
 			}
-			//
+
 			for(DetectorSetting setting : settings) {
 				StringBuilder builder = new StringBuilder();
 				extractSetting(setting, builder);
@@ -124,7 +124,7 @@ public class DetectorSettings extends ArrayList<DetectorSetting> implements ISet
 		} catch(FileNotFoundException e) {
 			logger.warn(e);
 		}
-		//
+
 		return success;
 	}
 
@@ -132,14 +132,14 @@ public class DetectorSettings extends ArrayList<DetectorSetting> implements ISet
 
 		DetectorSetting setting = null;
 		PeakDetectorValidator validator = listUtil.getValidator();
-		//
+
 		IStatus status = validator.validate(text);
 		if(status.isOK()) {
 			setting = validator.getSetting();
 		} else {
 			logger.warn(status.getMessage());
 		}
-		//
+
 		return setting;
 	}
 
@@ -161,7 +161,7 @@ public class DetectorSettings extends ArrayList<DetectorSetting> implements ISet
 	private void extractSetting(DetectorSetting setting, StringBuilder builder) {
 
 		List<String> entries = new ArrayList<>();
-		//
+
 		entries.add(getFormattedPosition(setting.getPositionStart()));
 		entries.add(getFormattedPosition(setting.getPositionStop()));
 		entries.add(setting.getPeakType().name());
@@ -170,7 +170,7 @@ public class DetectorSettings extends ArrayList<DetectorSetting> implements ISet
 		entries.add(setting.getReferenceIdentifier());
 		entries.add(setting.getName());
 		entries.add(setting.getPositionDirective().name());
-		//
+
 		compile(builder, entries);
 	}
 }

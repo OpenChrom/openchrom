@@ -66,7 +66,7 @@ public class ChromatogramWriter extends AbstractChromatogramCSDWriter {
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
 			Marshaller marshaller = jaxbContext.createMarshaller();
-			//
+
 			AnIMLType anIML = new AnIMLType();
 			anIML.setVersion("0.90");
 			anIML.setSampleSet(createSampleSet(chromatogram));
@@ -99,13 +99,13 @@ public class ChromatogramWriter extends AbstractChromatogramCSDWriter {
 	private ExperimentStepSetType createExperimentStep(IChromatogramCSD chromatogram) {
 
 		ExperimentStepSetType experimentStepSet = new ExperimentStepSetType();
-		//
+
 		ExperimentStepType chromatographyStep = new ExperimentStepType();
 		chromatographyStep.setName("Chromatography");
 		chromatographyStep.setExperimentStepID("CHROMATOGRAPHY");
 		chromatographyStep.setTechnique(createChromatographyTechnique());
 		experimentStepSet.getExperimentStep().add(chromatographyStep);
-		//
+
 		ExperimentStepType detectorStep = new ExperimentStepType();
 		detectorStep.setName("Detector");
 		detectorStep.setExperimentStepID("DETECTOR");
@@ -117,7 +117,7 @@ public class ChromatogramWriter extends AbstractChromatogramCSDWriter {
 		}
 		detectorStep.setTechnique(createFlameIonizationTechnique());
 		experimentStepSet.getExperimentStep().add(detectorStep);
-		//
+
 		ExperimentStepType peakStep = new ExperimentStepType();
 		peakStep.setName("Peaks");
 		peakStep.setExperimentStepID("PEAKS");
@@ -133,7 +133,7 @@ public class ChromatogramWriter extends AbstractChromatogramCSDWriter {
 		seriesSet.setId("FID");
 		seriesSet.setName("FID Trace");
 		seriesSet.setLength(chromatogram.getNumberOfScans());
-		//
+
 		SeriesType retentionTimeSeries = new SeriesType();
 		retentionTimeSeries.setSeriesID("RETENTION_TIME");
 		retentionTimeSeries.setName("Retention Time");
@@ -144,7 +144,7 @@ public class ChromatogramWriter extends AbstractChromatogramCSDWriter {
 		retentionTimeSeries.setDependency(DependencyType.INDEPENDENT);
 		retentionTimeSeries.setSeriesType(ParameterTypeType.FLOAT_32);
 		retentionTimeSeries.setPlotScale(PlotScaleType.LINEAR);
-		//
+
 		SeriesType signalSeries = new SeriesType();
 		signalSeries.setSeriesID("SIGNAL");
 		signalSeries.setName("Signal");
@@ -155,7 +155,7 @@ public class ChromatogramWriter extends AbstractChromatogramCSDWriter {
 		signalSeries.setDependency(DependencyType.DEPENDENT);
 		signalSeries.setSeriesType(ParameterTypeType.FLOAT_32);
 		signalSeries.setPlotScale(PlotScaleType.LINEAR);
-		//
+
 		if(PreferenceSupplier.getChromatogramSaveEncoded()) {
 			int scans = chromatogram.getNumberOfScans();
 			float[] retentionTimes = new float[scans];
@@ -169,7 +169,7 @@ public class ChromatogramWriter extends AbstractChromatogramCSDWriter {
 			EncodedValueSetType encodedRetentionTimes = new EncodedValueSetType();
 			encodedRetentionTimes.setValue(BinaryReader.encodeArray(retentionTimes));
 			retentionTimeSeries.getEncodedValueSet().add(encodedRetentionTimes);
-			//
+
 			EncodedValueSetType encodedTotalSignals = new EncodedValueSetType();
 			encodedTotalSignals.setValue(BinaryReader.encodeArray(signals));
 			signalSeries.getEncodedValueSet().add(encodedTotalSignals);

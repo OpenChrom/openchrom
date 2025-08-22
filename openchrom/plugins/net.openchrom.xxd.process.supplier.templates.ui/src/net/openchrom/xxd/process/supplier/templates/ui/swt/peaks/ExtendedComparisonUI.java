@@ -34,7 +34,7 @@ import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSuppli
 public class ExtendedComparisonUI extends Composite {
 
 	private static final float NORMALIZATION_FACTOR = 1000.0f;
-	//
+
 	private ScanChartUI scanChartUI;
 
 	public ExtendedComparisonUI(Composite parent, int style) {
@@ -47,7 +47,7 @@ public class ExtendedComparisonUI extends Composite {
 
 		GridLayout gridLayout = new GridLayout(1, true);
 		setLayout(gridLayout);
-		//
+
 		scanChartUI = createScanChart(this);
 	}
 
@@ -94,7 +94,7 @@ public class ExtendedComparisonUI extends Composite {
 				});
 			}
 		});
-		//
+
 		try {
 			if(runnable.requireProgressMonitor()) {
 				DisplayUtils.executeInUserInterfaceThread(() -> {
@@ -111,7 +111,7 @@ public class ExtendedComparisonUI extends Composite {
 		} catch(InterruptedException e) {
 			Thread.currentThread().interrupt();
 		} catch(ExecutionException e) {
-			//
+
 		}
 	}
 

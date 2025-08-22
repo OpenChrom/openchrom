@@ -46,7 +46,7 @@ public class TraceDataUI extends LineChart {
 
 		try {
 			IChartSettings chartSettings = getChartSettings();
-			//
+
 			IPrimaryAxisSettings primaryAxisSettingsX = chartSettings.getPrimaryAxisSettingsX();
 			primaryAxisSettingsX.setTitle("Time [ms]");
 			primaryAxisSettingsX.setDecimalFormat(new DecimalFormat(("0.0##"), new DecimalFormatSymbols(Locale.ENGLISH)));
@@ -54,28 +54,28 @@ public class TraceDataUI extends LineChart {
 			primaryAxisSettingsX.setPosition(Position.Secondary);
 			primaryAxisSettingsX.setGridLineStyle(LineStyle.NONE);
 			primaryAxisSettingsX.setVisible(false);
-			//
+
 			IPrimaryAxisSettings primaryAxisSettingsY = chartSettings.getPrimaryAxisSettingsY();
 			primaryAxisSettingsY.setTitle("Intensity [counts]");
 			primaryAxisSettingsY.setDecimalFormat(new DecimalFormat(("0.0#E0"), new DecimalFormatSymbols(Locale.ENGLISH)));
 			primaryAxisSettingsY.setColor(Display.getDefault().getSystemColor(SWT.COLOR_BLACK));
 			primaryAxisSettingsY.setGridLineStyle(LineStyle.NONE);
 			primaryAxisSettingsY.setVisible(false);
-			//
+
 			ISecondaryAxisSettings secondaryAxisSettingsX = new SecondaryAxisSettings("Distance [mm]", "mm", new MillisecondsToMillimeterConverter());
 			secondaryAxisSettingsX.setPosition(Position.Primary);
 			secondaryAxisSettingsX.setDecimalFormat(new DecimalFormat(("0.00"), new DecimalFormatSymbols(Locale.ENGLISH)));
 			secondaryAxisSettingsX.setColor(Display.getDefault().getSystemColor(SWT.COLOR_BLACK));
 			secondaryAxisSettingsX.setVisible(true);
 			chartSettings.getSecondaryAxisSettingsListX().add(secondaryAxisSettingsX);
-			//
+
 			ISecondaryAxisSettings secondaryAxisSettingsY = new SecondaryAxisSettings("Int [%]", "Relative Intensity [%]", new PercentageConverter(SWT.VERTICAL, true));
 			secondaryAxisSettingsY.setPosition(Position.Secondary);
 			secondaryAxisSettingsY.setDecimalFormat(new DecimalFormat(("0.00"), new DecimalFormatSymbols(Locale.ENGLISH)));
 			secondaryAxisSettingsY.setColor(Display.getDefault().getSystemColor(SWT.COLOR_BLACK));
 			secondaryAxisSettingsY.setVisible(false);
 			chartSettings.getSecondaryAxisSettingsListY().add(secondaryAxisSettingsY);
-			//
+
 			applySettings(chartSettings);
 		} catch(Exception e) {
 			System.out.println(e);

@@ -34,32 +34,32 @@ public class StandardsAssignerFilter extends ViewerFilter {
 		if(searchText == null || searchText.equals("")) {
 			return true;
 		}
-		//
+
 		if(element instanceof AssignerStandard setting) {
 			String name = setting.getName();
 			String concentrationUnit = setting.getConcentrationUnit();
 			String tracesIdentification = setting.getTracesIdentification();
-			//
+
 			if(!caseSensitive) {
 				searchText = searchText.toLowerCase();
 				name = name.toLowerCase();
 				concentrationUnit = concentrationUnit.toLowerCase();
 				tracesIdentification = tracesIdentification.toLowerCase();
 			}
-			//
+
 			if(name.contains(searchText)) {
 				return true;
 			}
-			//
+
 			if(concentrationUnit.contains(searchText)) {
 				return true;
 			}
-			//
+
 			if(tracesIdentification.contains(searchText)) {
 				return true;
 			}
 		}
-		//
+
 		return false;
 	}
 }

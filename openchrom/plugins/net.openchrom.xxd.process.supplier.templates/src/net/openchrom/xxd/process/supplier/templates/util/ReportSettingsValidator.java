@@ -36,7 +36,7 @@ public class ReportSettingsValidator implements IValidator<Object> {
 				message = "The settings class is not of type: " + ReportSettings.class.getName();
 			}
 		}
-		//
+
 		if(message != null) {
 			return ValidationStatus.error(message);
 		} else {

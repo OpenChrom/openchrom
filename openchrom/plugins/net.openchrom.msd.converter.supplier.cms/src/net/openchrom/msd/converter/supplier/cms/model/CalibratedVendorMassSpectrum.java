@@ -39,7 +39,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	 */
 	private static final long serialVersionUID = 788113431263082687L;
 	// private static final Logger logger = Logger.getLogger(CalibratedVendorMassSpectrum.class);
-	//
+
 	private List<IIonMeasurement> ionMeasurements;
 	private String scanName = "";
 	private float minSignal = 0; // ignored in compareTo()
@@ -66,7 +66,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	 */
 	// @Override
 	// public void sortMZ() {
-	//
+
 	// Collections.sort(this.getIonMeasurements()); // uses IonMeasurement.compareTo(IIonMeasurement)
 	// }
 	@Override
@@ -260,7 +260,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 		if(!minMaxSignalIsValid) {
 			updateSignalLimits();
 		}
-		//
+
 		scaleOffset = minAbsSignal - minSignal;
 		scaleSlope = 1.0f / (maxSignal + scaleOffset);
 		/*
@@ -358,11 +358,11 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 					maxSignal = signal;
 					baseMZ = peak.getMZ();
 				}
-				//
+
 				if(minSignal > signal) {
 					minSignal = signal;
 				}
-				//
+
 				if(signal != 0) {
 					signal = java.lang.StrictMath.abs(signal);
 					if(minAbsSignal == 0 || minAbsSignal > signal) {
@@ -386,7 +386,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 		if(ionMeasurement == null || ionMeasurement.getMZ() <= 0) {
 			return false;
 		}
-		//
+
 		ionMeasurements.add(ionMeasurement);
 		resetSumSignal();
 		resetMinMaxSignal();
@@ -424,7 +424,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 
 		ICalibratedVendorMassSpectrum vendorMassSpectrum = (ICalibratedVendorMassSpectrum)super.clone();
 		vendorMassSpectrum.createNewIonMeasurementList();
-		//
+
 		for(IIonMeasurement ionMeasurement : this.getIonMeasurements()) {
 			float signal = ionMeasurement.getSignal();
 			vendorMassSpectrum.addIonMeasurement(ionMeasurement.getMZ(), signal);
@@ -440,7 +440,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 		Random random = new Random(seed);
 		ICalibratedVendorMassSpectrum vendorMassSpectrum = (ICalibratedVendorMassSpectrum)super.clone();
 		vendorMassSpectrum.createNewIonMeasurementList();
-		//
+
 		for(IIonMeasurement ionMeasurement : this.getIonMeasurements()) {
 			float signal = ionMeasurement.getSignal();
 			float noise = (float)(relativeError * signal * random.nextGaussian());
@@ -833,7 +833,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 
 	// @Override
 	// public <T> T getAdapter(Class<T> adapter) {
-	//
+
 	// return null;
 	// }
 	@Override

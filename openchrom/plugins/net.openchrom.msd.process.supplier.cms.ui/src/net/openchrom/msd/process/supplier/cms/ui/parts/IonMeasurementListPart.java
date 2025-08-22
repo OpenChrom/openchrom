@@ -54,7 +54,7 @@ public class IonMeasurementListPart extends AbstractPart<ExtendedMeasurementUI> 
 				return false;
 			}
 		}
-		//
+
 		return false;
 	}
 

@@ -18,14 +18,14 @@ public class PeakReviewWizard extends Wizard {
 
 	public static final int DEFAULT_WIDTH = 500;
 	public static final int DEFAULT_HEIGHT = 650;
-	//
+
 	private ProcessReviewSettings processSettings;
 
 	public PeakReviewWizard(ProcessReviewSettings processSettings) {
 
 		setNeedsProgressMonitor(false);
 		setWindowTitle(PeakReviewSupport.DESCRIPTION);
-		//
+
 		this.processSettings = processSettings;
 	}
 

@@ -176,7 +176,7 @@ public class ChromatogramWriter extends AbstractChromatogramMSDWriter {
 		seriesSet.setId("TIC");
 		seriesSet.setName("Mass Chromatogram");
 		seriesSet.setLength(chromatogram.getNumberOfScans());
-		//
+
 		SeriesType retentionTimeSeries = new SeriesType();
 		retentionTimeSeries.setName("Retention Time");
 		UnitType retentionTimeUnit = new UnitType();
@@ -186,7 +186,7 @@ public class ChromatogramWriter extends AbstractChromatogramMSDWriter {
 		retentionTimeSeries.setDependency(DependencyType.INDEPENDENT);
 		retentionTimeSeries.setSeriesType(ParameterTypeType.INT_32);
 		retentionTimeSeries.setPlotScale(PlotScaleType.LINEAR);
-		//
+
 		SeriesType totalSignalSeries = new SeriesType();
 		totalSignalSeries.setName("Total Signal");
 		UnitType totalSignalUnit = new UnitType();
@@ -196,7 +196,7 @@ public class ChromatogramWriter extends AbstractChromatogramMSDWriter {
 		totalSignalSeries.setDependency(DependencyType.DEPENDENT);
 		totalSignalSeries.setSeriesType(ParameterTypeType.FLOAT_32);
 		totalSignalSeries.setPlotScale(PlotScaleType.LINEAR);
-		//
+
 		if(PreferenceSupplier.getChromatogramSaveEncoded()) {
 			int scans = chromatogram.getNumberOfScans();
 			int[] retentionTimes = new int[scans];
@@ -210,7 +210,7 @@ public class ChromatogramWriter extends AbstractChromatogramMSDWriter {
 			EncodedValueSetType encodedRetentionTimes = new EncodedValueSetType();
 			encodedRetentionTimes.setValue(BinaryReader.encodeArray(retentionTimes));
 			retentionTimeSeries.getEncodedValueSet().add(encodedRetentionTimes);
-			//
+
 			EncodedValueSetType encodedTotalSignals = new EncodedValueSetType();
 			encodedTotalSignals.setValue(BinaryReader.encodeArray(totalSignals));
 			totalSignalSeries.getEncodedValueSet().add(encodedTotalSignals);
@@ -259,7 +259,7 @@ public class ChromatogramWriter extends AbstractChromatogramMSDWriter {
 				EncodedValueSetType encodedIons = new EncodedValueSetType();
 				encodedIons.setValue(BinaryReader.encodeArray(ions));
 				massChargeSeries.getEncodedValueSet().add(encodedIons);
-				//
+
 				EncodedValueSetType encodedIntensities = new EncodedValueSetType();
 				encodedIntensities.setValue(BinaryReader.encodeArray(intensities));
 				intensitySeries.getEncodedValueSet().add(encodedIntensities);

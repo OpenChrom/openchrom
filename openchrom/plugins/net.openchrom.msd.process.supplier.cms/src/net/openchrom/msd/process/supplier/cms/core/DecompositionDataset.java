@@ -99,7 +99,7 @@ public class DecompositionDataset {
 		if(!matched) {
 			throw new InvalidLibIonCountException();
 		}
-		//
+
 		if(0 >= libIonsUsed) {
 			throw new InvalidLibIonCountException();
 		}
@@ -122,7 +122,7 @@ public class DecompositionDataset {
 		if(!matched) {
 			throw new InvalidGetCompCountException(libCompsUsed);
 		}
-		//
+
 		if(0 >= libCompsUsed) {
 			throw new InvalidGetCompCountException(libCompsUsed);
 		}

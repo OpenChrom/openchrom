@@ -18,7 +18,7 @@ public class IntegratorSetting extends AbstractSetting {
 	public static final String INTEGRATOR_ID_TRAPEZOID = "org.eclipse.chemclipse.chromatogram.xxd.integrator.supplier.trapezoid.peakIntegrator";
 	public static final String INTEGRATOR_NAME_MAX = "Max";
 	public static final String INTEGRATOR_ID_MAX = "org.eclipse.chemclipse.chromatogram.msd.integrator.supplier.peakmax.peakIntegrator";
-	//
+
 	private String identifier = "";
 	private String integrator = "";
 

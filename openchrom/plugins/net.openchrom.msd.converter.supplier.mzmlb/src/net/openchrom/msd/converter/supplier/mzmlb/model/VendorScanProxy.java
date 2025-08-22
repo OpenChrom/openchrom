@@ -34,7 +34,7 @@ public class VendorScanProxy extends AbstractRegularMassSpectrumProxy implements
 	 */
 	private static final long serialVersionUID = 7247916814647121133L;
 	private static final Logger logger = Logger.getLogger(VendorScanProxy.class);
-	//
+
 	private File file;
 	private IScanMarker scanMarker;
 

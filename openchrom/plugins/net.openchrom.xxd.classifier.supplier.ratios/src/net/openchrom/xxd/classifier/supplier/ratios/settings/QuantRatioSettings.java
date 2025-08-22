@@ -72,7 +72,7 @@ public class QuantRatioSettings extends AbstractChromatogramClassifierSettings i
 		QuantRatioListUtil util = new QuantRatioListUtil();
 		QuantRatioValidator validator = new QuantRatioValidator();
 		QuantRatios ratios = new QuantRatios();
-		//
+
 		List<String> items = util.getList(ratioSettings);
 		for(String item : items) {
 			IStatus status = validator.validate(item);
@@ -80,7 +80,7 @@ public class QuantRatioSettings extends AbstractChromatogramClassifierSettings i
 				ratios.add(validator.getSetting());
 			}
 		}
-		//
+
 		return ratios;
 	}
 }

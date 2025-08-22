@@ -133,7 +133,7 @@ public class ChartExportRunnable implements Runnable {
 				IScan scan = chromatogram.getScan(scanNumber);
 				double x = retentionTime;
 				double y = scan.getTotalSignal(); // Show on top of TIC
-				//
+
 				TextElement textElement = new TextElement();
 				textElement.setLabel("P" + (i + 1));
 				textElement.setColor(Colors.DARK_GRAY);
@@ -151,7 +151,7 @@ public class ChartExportRunnable implements Runnable {
 				IScan scan = scans.get(i);
 				double x = scan.getRetentionTime();
 				double y = scan.getTotalSignal();
-				//
+
 				TextElement textElement = new TextElement();
 				textElement.setLabel("S" + (i + 1));
 				textElement.setColor(Colors.DARK_GRAY);

@@ -47,7 +47,7 @@ public class TimeRatioListUI extends AbstractRatioListUI {
 
 		String[] titles = DisplayOption.SETTINGS.equals(displayOption) ? TimeRatioResultTitles.TITLES_SETTINGS : TimeRatioResultTitles.TITLES_RESULTS;
 		int[] bounds = DisplayOption.SETTINGS.equals(displayOption) ? TimeRatioResultTitles.BOUNDS_SETTINGS : TimeRatioResultTitles.BOUNDS_RESULTS;
-		//
+
 		createColumns(titles, bounds);
 		setLabelProvider(labelProvider);
 		setContentProvider(new ListContentProvider());

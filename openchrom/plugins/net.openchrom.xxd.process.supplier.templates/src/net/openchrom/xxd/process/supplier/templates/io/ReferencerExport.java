@@ -43,10 +43,10 @@ public class ReferencerExport extends AbstractChromatogramExportConverter implem
 		IProcessingInfo<File> processingInfo = new ProcessingInfo<>();
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
 		AssignerReferences assignerReferences = new AssignerReferences();
-		//
+
 		int deltaLeft = PreferenceSupplier.getExportDeltaLeftMillisecondsAssigner();
 		int deltaRight = PreferenceSupplier.getExportDeltaRightMillisecondsAssigner();
-		//
+
 		for(IPeak peak : peaks) {
 			IPeakModel peakModel = peak.getPeakModel();
 			String identifier = getIdentifier(peak);
@@ -70,14 +70,14 @@ public class ReferencerExport extends AbstractChromatogramExportConverter implem
 						setting.setPositionStart(AbstractSetting.FULL_RETENTION_TIME);
 						setting.setPositionStop(AbstractSetting.FULL_RETENTION_TIME);
 					}
-					//
+
 					assignerReferences.add(setting);
 				}
 			}
 		}
-		//
+
 		assignerReferences.exportItems(file);
-		//
+
 		processingInfo.setProcessingResult(file);
 		processingInfo.addInfoMessage(DESCRIPTION, "The references template has been exported successfully.");
 		return processingInfo;

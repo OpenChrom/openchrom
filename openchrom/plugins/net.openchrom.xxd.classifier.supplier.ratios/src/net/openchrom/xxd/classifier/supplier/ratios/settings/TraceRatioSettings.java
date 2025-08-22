@@ -70,7 +70,7 @@ public class TraceRatioSettings extends AbstractChromatogramClassifierSettings i
 		TraceRatioListUtil util = new TraceRatioListUtil();
 		TraceRatioValidator validator = new TraceRatioValidator();
 		TraceRatios ratios = new TraceRatios();
-		//
+
 		List<String> items = util.getList(ratioSettings);
 		for(String item : items) {
 			IStatus status = validator.validate(item);
@@ -78,7 +78,7 @@ public class TraceRatioSettings extends AbstractChromatogramClassifierSettings i
 				ratios.add(validator.getSetting());
 			}
 		}
-		//
+
 		return ratios;
 	}
 }

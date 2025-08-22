@@ -177,19 +177,19 @@ public class ChromatogramReaderVersion120 extends AbstractChromatogramReader imp
 	public IChromatogramOverview readOverview(File file, IProgressMonitor monitor) throws FileNotFoundException, FileIsNotReadableException, FileIsEmptyException, IOException {
 
 		IVendorChromatogram chromatogram = null;
-		//
+
 		try {
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			Document document = documentBuilder.parse(file);
 			NodeList nodeList = document.getElementsByTagName(Reader.NODE_GAML);
-			//
+
 			JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 			GAML gaml = (GAML)unmarshaller.unmarshal(nodeList.item(0));
-			//
+
 			chromatogram = new VendorChromatogram();
-			//
+
 			Experiment experiment = gaml.getExperiment().get(0);
 			chromatogram.setDataName(experiment.getName());
 			chromatogram.setDate(experiment.getCollectdate().toGregorianCalendar().getTime());

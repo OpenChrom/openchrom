@@ -35,32 +35,32 @@ public class PeakReviewFilter extends ViewerFilter {
 		if(searchText == null || searchText.equals("")) {
 			return true;
 		}
-		//
+
 		if(element instanceof ReviewSetting setting) {
 			String name = setting.getName();
 			String cas = setting.getCasNumber();
 			String traces = setting.getTraces();
 			PeakType detectorType = setting.getPeakType();
-			//
+
 			if(!caseSensitive) {
 				searchText = searchText.toLowerCase();
 				name = name.toLowerCase();
 				cas = cas.toLowerCase();
 				traces = traces.toLowerCase();
 			}
-			//
+
 			if(name.contains(searchText)) {
 				return true;
 			}
-			//
+
 			if(cas.contains(searchText)) {
 				return true;
 			}
-			//
+
 			if(traces.contains(searchText)) {
 				return true;
 			}
-			//
+
 			if(detectorType != null) {
 				if(caseSensitive) {
 					if(detectorType.name().contains(searchText)) {
@@ -73,7 +73,7 @@ public class PeakReviewFilter extends ViewerFilter {
 				}
 			}
 		}
-		//
+
 		return false;
 	}
 }

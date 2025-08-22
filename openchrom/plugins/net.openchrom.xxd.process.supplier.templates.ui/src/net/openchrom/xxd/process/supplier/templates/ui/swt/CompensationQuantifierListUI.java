@@ -28,7 +28,7 @@ public class CompensationQuantifierListUI extends AbstractTemplateListUI {
 
 	private static final String[] TITLES = CompensationQuantifierLabelProvider.TITLES;
 	private static final int[] BOUNDS = CompensationQuantifierLabelProvider.BOUNDS;
-	//
+
 	private CompensationQuantifierLabelProvider labelProvider = new CompensationQuantifierLabelProvider();
 	private CompensationQuantifierComparator tableComparator = new CompensationQuantifierComparator();
 	private CompensationQuantifierFilter listFilter = new CompensationQuantifierFilter();

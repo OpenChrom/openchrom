@@ -29,7 +29,7 @@ public class MeasurementImportRunnable implements IRunnableWithProgress {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(MeasurementImportRunnable.class);
-	//
+
 	private List<IChromatogramWSD> measurements;
 	private List<File> measurementFiles;
 

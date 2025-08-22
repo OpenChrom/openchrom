@@ -235,7 +235,7 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 		try {
 			String path = INSTANCE().get(key, "");
 			if(path != null && !path.isEmpty()) {
-				//
+
 				File file = new File(path);
 				if(file.isFile()) {
 					file.getParentFile();

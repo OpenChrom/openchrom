@@ -51,7 +51,7 @@ public class ChromatogramImportRunnable implements IRunnableWithProgress {
 		if(referenceChromatogram != null) {
 			chromatogramSelections.add(new ChromatogramSelectionMSD(referenceChromatogram));
 		}
-		//
+
 		IChromatogramMSD isotopeChromatogram = importChromatogram(pathChromatogramIsotope, monitor);
 		if(isotopeChromatogram != null) {
 			chromatogramSelections.add(new ChromatogramSelectionMSD(isotopeChromatogram));

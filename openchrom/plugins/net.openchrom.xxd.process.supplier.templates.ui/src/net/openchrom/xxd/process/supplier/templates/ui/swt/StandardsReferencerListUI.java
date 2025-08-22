@@ -29,7 +29,7 @@ public class StandardsReferencerListUI extends AbstractTemplateListUI {
 
 	private static final String[] TITLES = StandardsReferencerLabelProvider.TITLES;
 	private static final int[] BOUNDS = StandardsReferencerLabelProvider.BOUNDS;
-	//
+
 	private StandardsReferencerLabelProvider labelProvider = new StandardsReferencerLabelProvider();
 	private StandardsReferencerComparator tableComparator = new StandardsReferencerComparator();
 	private StandardsReferencerFilter listFilter = new StandardsReferencerFilter();

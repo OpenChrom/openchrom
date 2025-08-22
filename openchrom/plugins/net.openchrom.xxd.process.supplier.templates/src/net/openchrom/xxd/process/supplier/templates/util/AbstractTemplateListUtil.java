@@ -32,17 +32,17 @@ import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSuppli
 public abstract class AbstractTemplateListUtil<T extends ITemplateValidator> implements ITemplateListUtil<T> {
 
 	private static final Logger logger = Logger.getLogger(AbstractTemplateListUtil.class);
-	//
+
 	public static final String WHITE_SPACE = " ";
 	public static final String SEPARATOR_TOKEN = ";";
 	public static final String SEPARATOR_ENTRY = "|";
-	//
+
 	public static final String SEPARATOR_TRACE_ITEM = ",";
 	public static final String SEPARATOR_TRACE_RANGE = "-";
 	public static final int TRACE_ERROR = -1;
-	//
+
 	public static final String ERROR_TOKEN = "The item must not contain: " + SEPARATOR_TOKEN;
-	//
+
 	private T validator;
 
 	public AbstractTemplateListUtil(T validator) {
@@ -61,7 +61,7 @@ public abstract class AbstractTemplateListUtil<T extends ITemplateValidator> imp
 
 		String lineDelimiterSpecific = OperatingSystemUtils.getLineDelimiter();
 		String lineDelimiterGeneric = "\n";
-		//
+
 		String[] decodedArray;
 		if(stringList.contains(SEPARATOR_TOKEN)) {
 			decodedArray = stringList.split(SEPARATOR_TOKEN);
@@ -104,7 +104,7 @@ public abstract class AbstractTemplateListUtil<T extends ITemplateValidator> imp
 		} catch(IOException e) {
 			logger.warn(e);
 		}
-		//
+
 		return items;
 	}
 
@@ -133,11 +133,11 @@ public abstract class AbstractTemplateListUtil<T extends ITemplateValidator> imp
 				}
 			}
 		}
-		//
+
 		if(PreferenceSupplier.isSortImportTemplate()) {
 			Collections.sort(values); // SORT OK
 		}
-		//
+
 		return values;
 	}
 

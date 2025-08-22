@@ -54,7 +54,7 @@ public class ResultsTreeViewerLabelProvider extends LabelProvider {
 	private String getReferenceModelData(IReferenceModel referenceModel) {
 
 		TrackStatistics trackStatistics = dataProcessor.getTrackStatistics(referenceModel);
-		//
+
 		StringBuilder builder = new StringBuilder();
 		builder.append("Reference Group: " + referenceModel.getReferenceGroup());
 		builder.append("\n");
@@ -87,7 +87,7 @@ public class ResultsTreeViewerLabelProvider extends LabelProvider {
 	public String getTrackModelData(ITrackModel trackModel) {
 
 		double factor = trackModel.getScanVelocity() / 1000.0d;
-		//
+
 		StringBuilder builder = new StringBuilder();
 		builder.append("Sample Track: " + trackModel.getSampleTrack());
 		builder.append("\n");

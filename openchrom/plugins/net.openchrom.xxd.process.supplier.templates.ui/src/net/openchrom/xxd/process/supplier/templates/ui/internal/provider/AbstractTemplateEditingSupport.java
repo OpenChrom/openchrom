@@ -37,7 +37,7 @@ public abstract class AbstractTemplateEditingSupport extends EditingSupport {
 			IntegratorSetting.INTEGRATOR_NAME_TRAPEZOID, //
 			IntegratorSetting.INTEGRATOR_NAME_MAX //
 	};
-	//
+
 	private AbstractTemplateListUI tableViewer;
 	private String column;
 	private CellEditor cellEditor;
@@ -48,7 +48,7 @@ public abstract class AbstractTemplateEditingSupport extends EditingSupport {
 		this.tableViewer = tableViewer;
 		this.column = column;
 		EnumLabelProvider enumLabelProvider = new EnumLabelProvider();
-		//
+
 		if(column.equals(AbstractTemplateLabelProvider.OPTIMIZE_RANGE)) {
 			this.cellEditor = new CheckboxCellEditor(tableViewer.getTable());
 		} else if(column.equals(AbstractTemplateLabelProvider.PEAK_TYPE)) {
@@ -120,7 +120,7 @@ public abstract class AbstractTemplateEditingSupport extends EditingSupport {
 					return setting.getPositionDirective();
 			}
 		}
-		//
+
 		return null;
 	}
 
@@ -181,7 +181,7 @@ public abstract class AbstractTemplateEditingSupport extends EditingSupport {
 					break;
 			}
 		}
-		//
+
 		return value;
 	}
 
@@ -191,7 +191,7 @@ public abstract class AbstractTemplateEditingSupport extends EditingSupport {
 		try {
 			result = Double.parseDouble(((String)value).trim());
 		} catch(NumberFormatException e) {
-			//
+
 		}
 		return result;
 	}

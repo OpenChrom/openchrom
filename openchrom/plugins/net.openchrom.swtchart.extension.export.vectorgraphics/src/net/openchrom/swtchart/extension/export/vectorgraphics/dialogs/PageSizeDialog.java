@@ -81,13 +81,13 @@ public class PageSizeDialog extends Dialog {
 
 		Composite composite = (Composite)super.createDialogArea(parent);
 		composite.setLayout(new GridLayout(4, false));
-		//
+
 		createComboViewerPageSize(composite);
 		createPageSizeSection(composite);
 		createGraphicsFactorSection(composite);
 		createFontFactorSection(composite);
 		createNumberTicsSection(composite);
-		//
+
 		initialize();
 		return composite;
 	}
@@ -115,7 +115,7 @@ public class PageSizeDialog extends Dialog {
 				return null;
 			}
 		});
-		//
+
 		combo.setToolTipText("Select a page size option.");
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 4;
@@ -136,7 +136,7 @@ public class PageSizeDialog extends Dialog {
 				}
 			}
 		});
-		//
+
 		comboViewer.setInput(PageSizeOption.values());
 		comboViewer.setSelection(new StructuredSelection(pageSizeOption));
 	}
@@ -213,7 +213,7 @@ public class PageSizeDialog extends Dialog {
 				return null;
 			}
 		});
-		//
+
 		combo.setToolTipText("Select a page unit.");
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.widthHint = 150;
@@ -231,7 +231,7 @@ public class PageSizeDialog extends Dialog {
 				}
 			}
 		});
-		//
+
 		comboViewer.setInput(PageUnit.values());
 		comboViewer.setSelection(new StructuredSelection(pageUnit));
 		comboViewerUnitControl.set(comboViewer);
@@ -315,7 +315,7 @@ public class PageSizeDialog extends Dialog {
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 3;
 		spinner.setLayoutData(gridData);
-		//
+
 		spinner.addSelectionListener(new SelectionAdapter() {
 
 			@Override

@@ -24,9 +24,9 @@ public class ScanMarkerListTableComparator extends AbstractRecordTableComparator
 	public int compare(Viewer viewer, Object e1, Object e2) {
 
 		int sortOrder = 0;
-		//
+
 		if(e1 instanceof IScanMarker scanMarker1 && e2 instanceof IScanMarker scanMarker2) {
-			//
+
 			switch(getPropertyIndex()) {
 				case 0:
 					sortOrder = Double.compare(scanMarker2.getScanNumber(), scanMarker1.getScanNumber());
@@ -42,7 +42,7 @@ public class ScanMarkerListTableComparator extends AbstractRecordTableComparator
 					break;
 			}
 		}
-		//
+
 		if(getDirection() == ASCENDING) {
 			sortOrder = -sortOrder;
 		}

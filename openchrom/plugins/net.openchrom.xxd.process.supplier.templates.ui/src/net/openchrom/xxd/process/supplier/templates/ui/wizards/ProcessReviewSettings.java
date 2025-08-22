@@ -36,7 +36,7 @@ public class ProcessReviewSettings {
 		this.processingInfo = processingInfo;
 		this.chromatogram = chromatogram;
 		this.reviewSettings.addAll(RetentionIndexSupport.adjustReviewSettings(chromatogram, peakReviewSettings.getReviewSettingsList()));
-		//
+
 		if(PreferenceSupplier.isReviewSettingsSort()) {
 			Collections.sort(reviewSettings, new ReviewComparator()); // SORT OK
 		}

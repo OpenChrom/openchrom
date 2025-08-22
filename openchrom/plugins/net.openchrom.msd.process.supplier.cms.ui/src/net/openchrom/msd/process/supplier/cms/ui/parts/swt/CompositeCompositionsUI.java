@@ -149,7 +149,7 @@ public class CompositeCompositionsUI extends Composite {
 	private Button buttonPP; // select partial pressures
 	private CircularBufferDataProvider dataProviderTraceComposition;
 	private DecimalFormat decimalFormatMouseHover = ValueFormat.getDecimalFormatEnglish("0.0##E00");
-	//
+
 	private DecimalFormat decimalFormatscaleOffset = ValueFormat.getDecimalFormatEnglish("0.0##E00");
 	private TreeMap<String, ArrayList<Double>> lookup;
 	private Polyline pLine;
@@ -197,19 +197,19 @@ public class CompositeCompositionsUI extends Composite {
 		this.setLayout(thisGridLayout);
 		GridData thisGridData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		this.setLayoutData(thisGridData);
-		//
+
 		Composite compositeTopRow = new Composite(this, SWT.NONE);
 		GridLayout topRowCompositeGridLayout = new GridLayout(2, false);
 		compositeTopRow.setLayout(topRowCompositeGridLayout);
 		GridData topRowCompositeGridData = new GridData(SWT.FILL, SWT.TOP, true, false);
 		compositeTopRow.setLayoutData(topRowCompositeGridData);
-		//
+
 		Composite compositeLeftColumn = new Composite(compositeTopRow, SWT.NONE);
 		GridLayout leftColumnGridLayout = new GridLayout(1, true);
 		compositeLeftColumn.setLayout(leftColumnGridLayout);
 		GridData leftColumnGridData = new GridData(SWT.FILL, SWT.TOP, true, false);
 		compositeLeftColumn.setLayoutData(leftColumnGridData);
-		//
+
 		Group displayUnitsGroup = new Group(compositeLeftColumn, SWT.NONE);
 		GridLayout compositGroupGridLayout = new GridLayout(4, false);
 		displayUnitsGroup.setLayout(compositGroupGridLayout);
@@ -218,7 +218,7 @@ public class CompositeCompositionsUI extends Composite {
 		// display units Buttons
 		Label label = new Label(displayUnitsGroup, SWT.NONE);
 		label.setText("Display Units:");
-		//
+
 		buttonPP = new Button(displayUnitsGroup, SWT.RADIO);
 		buttonPP.setText("Partial Pressure");
 		buttonPP.setSelection(true);
@@ -239,7 +239,7 @@ public class CompositeCompositionsUI extends Composite {
 				}
 			}
 		});
-		//
+
 		buttonMF = new Button(displayUnitsGroup, SWT.RADIO);
 		buttonMF.setText("Mol Fraction");
 		buttonMF.setSelection(false);
@@ -260,7 +260,7 @@ public class CompositeCompositionsUI extends Composite {
 				}
 			}
 		});
-		//
+
 		buttonLF = new Button(displayUnitsGroup, SWT.RADIO);
 		buttonLF.setText("Library Fraction");
 		buttonLF.setSelection(false);
@@ -286,13 +286,13 @@ public class CompositeCompositionsUI extends Composite {
 		textMouseOut.setText("empty");
 		GridData textMouseOutGridData = new GridData(SWT.FILL, SWT.TOP, true, false);
 		textMouseOut.setLayoutData(textMouseOutGridData);
-		//
+
 		Group compositGroup2 = new Group(compositeTopRow, SWT.NONE); // place for log scale controls
 		GridLayout compositGroup2GridLayout = new GridLayout(1, false);
 		compositGroup2.setLayout(compositGroup2GridLayout);
 		GridData compositGroup2GridData = new GridData(SWT.LEFT, SWT.CENTER, false, false);
 		compositGroup2.setLayoutData(compositGroup2GridData);
-		//
+
 		buttonLogScale = new Button(compositGroup2, SWT.CHECK);
 		buttonLogScale.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
 		buttonLogScale.setText("Use Offset Log Scale");
@@ -319,7 +319,7 @@ public class CompositeCompositionsUI extends Composite {
 				}
 			}
 		});
-		//
+
 		textLogScaleOffset = new Text(compositGroup2, SWT.RIGHT | SWT.BORDER);
 		textLogScaleOffset.setText("");
 		GridData textLogScaleOffsetGridData = new GridData(SWT.FILL, SWT.CENTER, true, true);
@@ -339,7 +339,7 @@ public class CompositeCompositionsUI extends Composite {
 		GridData compositeGraphGridData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		compositeGraph.setLayout(new FillLayout());
 		compositeGraph.setLayoutData(compositeGraphGridData);
-		//
+
 		LightweightSystem lightweightSystem = new LightweightSystem(new Canvas(compositeGraph, SWT.NONE));
 		xyGraphComposition = new XYGraph();
 		toolbarArmedXYGraph = new ToolbarArmedXYGraph(xyGraphComposition);
@@ -427,7 +427,7 @@ public class CompositeCompositionsUI extends Composite {
 				// A decimal floating-point string representing a finite positive
 				// number without a leading sign has at most five basic pieces:
 				// Digits . Digits ExponentPart FloatTypeSuffix
-				//
+
 				// Since this method allows integer-only strings as input
 				// in addition to strings of floating-point literals, the
 				// two sub-patterns below are simplifications of the grammar
@@ -535,11 +535,11 @@ public class CompositeCompositionsUI extends Composite {
 						if(maxY < signal) {
 							maxY = signal;
 						}
-						//
+
 						if(minY > signal) {
 							minY = signal;
 						}
-						//
+
 						if(signal != 0) {
 							signal = java.lang.StrictMath.abs(signal);
 							if(minAbsY == 0 || minAbsY > signal) {

@@ -54,7 +54,7 @@ public abstract class AbstractTraceRatioLabelProvider extends AbstractChemClipse
 				}
 			}
 		}
-		//
+
 		return null;
 	}
 
@@ -71,7 +71,7 @@ public abstract class AbstractTraceRatioLabelProvider extends AbstractChemClipse
 				}
 			}
 		}
-		//
+
 		return null;
 	}
 }

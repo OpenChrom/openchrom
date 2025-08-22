@@ -61,17 +61,17 @@ public class AmdisIdentifier {
 			result.addErrorMessage(PreferenceSupplier.IDENTIFIER, "Conversion to CDF returned no result");
 			return result;
 		}
-		//
+
 		for(IProcessingMessage message : processingInfo.getMessages()) {
 			result.addMessage(message);
 		}
-		//
+
 		File fileChromatogram = processingInfo.getProcessingResult();
 		if(fileChromatogram == null) {
 			result.addErrorMessage(PreferenceSupplier.IDENTIFIER, "Conversion to CDF returned no file");
 			return result;
 		}
-		//
+
 		if(result.hasErrorMessages()) {
 			return result;
 		}
@@ -85,20 +85,20 @@ public class AmdisIdentifier {
 			if(result.hasErrorMessages()) {
 				return result;
 			}
-			//
+
 			IPeaksMSD peaks = amdisPeaks.getProcessingResult();
 			if(peaks == null) {
 				result.addErrorMessage(PreferenceSupplier.IDENTIFIER, "Parsing peaks does not return a result");
 				return result;
 			}
-			//
+
 			IProcessingResult<Void> insertPeaks = PeakProcessorSupport.insertPeaks(chromatogramSelection, peaks.getPeaks(), settingsAMDIS, subMonitor.split(10));
 			result.addMessages(insertPeaks);
 			result.addMessage(new ProcessingMessage(MessageType.INFO, PreferenceSupplier.IDENTIFIER, MessageFormat.format("{0} peaks have been detected.", peaks.getPeaks().size())));
 		} finally {
 			fileChromatogram.delete();
 		}
-		//
+
 		return result;
 	}
 
@@ -107,13 +107,13 @@ public class AmdisIdentifier {
 		IExtendedRuntimeSupport runtimeSupport;
 		String amdisApplication = settingsAMDIS.getAmdisFolder().getAbsolutePath() + File.separator + PreferenceSupplier.AMDIS_EXECUTABLE;
 		String filePath = getAmdisCompatibleFilePath(fileChromatogram, settingsAMDIS);
-		//
+
 		try {
 			runtimeSupport = RuntimeSupportFactory.getRuntimeSupport(amdisApplication, filePath);
 		} catch(FileNotFoundException e) {
 			return createErrorResult("Can't get AMDIS executable, make sure that AMDIS is installed and the configuration points to the right AMDIS location", e);
 		}
-		//
+
 		try {
 			try {
 				IOnsiteSettings onsiteSettings = settingsAMDIS.getOnsiteSettings();
@@ -180,7 +180,7 @@ public class AmdisIdentifier {
 				filePath = "C:\\tmp\\" + fileChromatogram.getName();
 			}
 		}
-		//
+
 		return filePath;
 	}
 }

@@ -17,7 +17,7 @@ public abstract class AbstractPeakRatioTitles {
 
 	public static final String RETENTION_TIME = "Retention Time [min]";
 	public static final String NAME = "Name";
-	//
+
 	public static final String DEVIATION = "Deviation [%]";
 	public static final String DEVIATION_WARN = "Deviation Warn [%]";
 	public static final String DEVIATION_ERROR = "Deviation Error [%]";

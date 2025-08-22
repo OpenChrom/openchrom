@@ -25,7 +25,7 @@ public class RetentionTimeValidator implements IValidator<Object> {
 	public IStatus validate(Object value) {
 
 		String message = null;
-		//
+
 		if(value == null) {
 			message = ERROR;
 		} else {
@@ -42,7 +42,7 @@ public class RetentionTimeValidator implements IValidator<Object> {
 				message = ERROR;
 			}
 		}
-		//
+
 		if(message != null) {
 			return ValidationStatus.error(message);
 		} else {

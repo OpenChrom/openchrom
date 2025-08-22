@@ -39,7 +39,7 @@ import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.settings.Mode
 public class PeakProcessorSupport {
 
 	private static final Logger logger = Logger.getLogger(PeakProcessorSupport.class);
-	//
+
 	public static final String DETECTOR_DESCRIPTION = "AMDIS (Extern)";
 	public static final String PEAK_CONVERTER_ID = "org.eclipse.chemclipse.msd.converter.supplier.amdis.peak.elu"; // backwards compatibility
 
@@ -67,12 +67,12 @@ public class PeakProcessorSupport {
 		int stopRetentionTime = chromatogramSelection.getStopRetentionTime();
 		ModelPeakOption modelPeakOption = processSettings.getModelPeakOption();
 		String modelPeakMarker = "MP" + modelPeakOption.value();
-		//
+
 		for(IPeakMSD peak : peaks) {
 			String header = peak.getTemporaryData();
 			try {
 				IPeakModelMSD peakModelMSD = peak.getPeakModel();
-				//
+
 				int startScan = peakModelMSD.getTemporarilyInfo(IPeakReader.TEMP_INFO_START_SCAN) instanceof Integer ? (int)peakModelMSD.getTemporarilyInfo(IPeakReader.TEMP_INFO_START_SCAN) : 0;
 				int stopScan = peakModelMSD.getTemporarilyInfo(IPeakReader.TEMP_INFO_STOP_SCAN) instanceof Integer ? (int)peakModelMSD.getTemporarilyInfo(IPeakReader.TEMP_INFO_STOP_SCAN) : 0;
 				int maxScan = peakModelMSD.getTemporarilyInfo(IPeakReader.TEMP_INFO_MAX_SCAN) instanceof Integer ? (int)peakModelMSD.getTemporarilyInfo(IPeakReader.TEMP_INFO_MAX_SCAN) : 0;
@@ -143,7 +143,7 @@ public class PeakProcessorSupport {
 		if(peak == null) {
 			return false;
 		}
-		//
+
 		IPeakModel peakModel = peak.getPeakModel();
 		/*
 		 * Chromatogram Selection Check

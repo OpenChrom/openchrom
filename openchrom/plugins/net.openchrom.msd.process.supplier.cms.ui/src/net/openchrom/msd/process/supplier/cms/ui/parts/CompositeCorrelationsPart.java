@@ -32,14 +32,14 @@ import jakarta.inject.Inject;
 public class CompositeCorrelationsPart {
 
 	private DecompositionResults decompositionResults = null;
-	//
+
 	@Inject
 	private Composite parent;
 	@Inject
 	private IEventBroker eventBroker;
 	@Inject
 	private EventHandler eventHandler;
-	//
+
 	private CompositeCorrelationsUI compositeCorrelationsUI;
 
 	CompositeCorrelationsPart() {

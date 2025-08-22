@@ -25,7 +25,7 @@ public class QuantRatioValidator extends ValueParserSupport implements IValidato
 	private static final String SEPARATOR_TOKEN = QuantRatioListUtil.SEPARATOR_TOKEN;
 	private static final String SEPARATOR_ENTRY = QuantRatioListUtil.SEPARATOR_ENTRY;
 	private static final String ERROR_TOKEN = "The item must not contain: " + SEPARATOR_TOKEN;
-	//
+
 	private String name = "";
 	private String quantitationName = "";
 	private double expectedConcentration = 0.0d;
@@ -60,33 +60,33 @@ public class QuantRatioValidator extends ValueParserSupport implements IValidato
 						if(name.isEmpty()) {
 							message = "A substance name needs to be set.";
 						}
-						//
+
 						quantitationName = parseString(values, 1);
 						if(quantitationName.isEmpty()) {
 							message = "A quantitation name needs to be set.";
 						}
-						//
+
 						expectedConcentration = parseDouble(values, 2);
 						if(expectedConcentration <= 0) {
 							message = "The expected concentration must be > 0.";
 						}
-						//
+
 						concentrationUnit = parseString(values, 3);
 						if(concentrationUnit.isEmpty()) {
 							message = "A concentration unit needs to be set.";
 						}
-						//
+
 						deviationWarn = parseDouble(values, 4);
 						deviationError = parseDouble(values, 5);
-						//
+
 						if(deviationWarn <= 0) {
 							message = "The deviation warn must be >= 0.";
 						}
-						//
+
 						if(deviationError <= 0) {
 							message = "The deviation error must be >= 0.";
 						}
-						//
+
 						if(deviationError < deviationWarn) {
 							message = "The deviation error must be > deviation warn.";
 						}
@@ -98,7 +98,7 @@ public class QuantRatioValidator extends ValueParserSupport implements IValidato
 				message = ERROR_ENTRY;
 			}
 		}
-		//
+
 		if(message != null) {
 			return ValidationStatus.error(message);
 		} else {
@@ -125,7 +125,7 @@ public class QuantRatioValidator extends ValueParserSupport implements IValidato
 		setting.setConcentrationUnit(concentrationUnit);
 		setting.setDeviationWarn(deviationWarn);
 		setting.setDeviationError(deviationError);
-		//
+
 		return setting;
 	}
 }

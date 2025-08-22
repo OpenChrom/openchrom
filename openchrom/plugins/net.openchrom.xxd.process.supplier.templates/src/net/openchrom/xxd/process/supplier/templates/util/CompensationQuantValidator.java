@@ -20,7 +20,7 @@ import net.openchrom.xxd.process.supplier.templates.model.CompensationSetting;
 public class CompensationQuantValidator extends AbstractTemplateValidator implements ITemplateValidator {
 
 	private static final String ERROR_ENTRY = "Please enter an item, e.g.: '" + CompensationQuantListUtil.EXAMPLE_SINGLE + "'";
-	//
+
 	private String name = "";
 	private String internalStandard = "";
 	private double expectedConcentration = 0.0d;
@@ -54,22 +54,22 @@ public class CompensationQuantValidator extends AbstractTemplateValidator implem
 						if("".equals(name)) {
 							message = "A substance name needs to be set.";
 						}
-						//
+
 						internalStandard = parseString(values, 1);
 						if("".equals(name)) {
 							message = "A internal standard name needs to be set.";
 						}
-						//
+
 						expectedConcentration = parseDouble(values, 2);
 						if(expectedConcentration <= 0) {
 							message = "The concentration must be > 0.";
 						}
-						//
+
 						concentrationUnit = parseString(values, 3);
 						if("".equals(concentrationUnit)) {
 							message = "A concentration unit needs to be set.";
 						}
-						//
+
 						adjustQuantitationEntry = parseBoolean(values, 4);
 						targetUnit = parseString(values, 5);
 					} else {
@@ -80,7 +80,7 @@ public class CompensationQuantValidator extends AbstractTemplateValidator implem
 				message = ERROR_ENTRY;
 			}
 		}
-		//
+
 		if(message != null) {
 			return ValidationStatus.error(message);
 		} else {

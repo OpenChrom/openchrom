@@ -28,7 +28,7 @@ public abstract class AbstractFieldEditor extends FieldEditor {
 	public static final String REMOVE_ALL_TOOLTIP = "Remove All Templates";
 	public static final String IMPORT = "Import";
 	public static final String EXPORT = "Export";
-	//
+
 	public static final String IMPORT_TITLE = "Import Templates";
 	public static final String EXPORT_TITLE = "Export Templates";
 	public static final String DIALOG_TITLE = "Templates";
@@ -38,7 +38,7 @@ public abstract class AbstractFieldEditor extends FieldEditor {
 	public static final String MESSAGE_REMOVE_ALL = "Do you want to delete all templates?";
 	public static final String MESSAGE_EXPORT_SUCCESSFUL = "Templates have been exported successfully.";
 	public static final String MESSAGE_EXPORT_FAILED = "Failed to export the templates.";
-	//
+
 	public static final String TOOLTIP_ADJUST_POSITION = "the position adjust toolbar.";
 	public static final String IMAGE_ADJUST_POSITION = IApplicationImage.IMAGE_ADJUST_CHROMATOGRAMS;
 }

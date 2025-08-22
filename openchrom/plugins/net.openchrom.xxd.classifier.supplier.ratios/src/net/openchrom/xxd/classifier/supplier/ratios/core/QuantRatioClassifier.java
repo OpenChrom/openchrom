@@ -63,7 +63,7 @@ public class QuantRatioClassifier extends AbstractRatioClassifier {
 	private QuantRatios calculateRatios(IChromatogram chromatogram, QuantRatioSettings classifierSettings) {
 
 		QuantRatios ratios = classifierSettings.getRatioSettingsList();
-		//
+
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
 		for(QuantRatio ratio : ratios) {
 			for(IPeak peak : peaks) {
@@ -82,7 +82,7 @@ public class QuantRatioClassifier extends AbstractRatioClassifier {
 				}
 			}
 		}
-		//
+
 		return ratios;
 	}
 

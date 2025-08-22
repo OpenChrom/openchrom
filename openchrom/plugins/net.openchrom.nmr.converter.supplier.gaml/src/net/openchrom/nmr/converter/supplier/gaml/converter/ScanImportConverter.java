@@ -48,7 +48,7 @@ public class ScanImportConverter extends AbstractScanImportConverter<Collection<
 			final char[] charBuffer = new char[100];
 			fileReader.read(charBuffer);
 			fileReader.close();
-			//
+
 			final String header = new String(charBuffer);
 			if(header.contains(Reader100.VERSION)) {
 				ScanReaderVersion100 scanReader = new ScanReaderVersion100();

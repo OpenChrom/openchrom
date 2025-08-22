@@ -30,9 +30,9 @@ public class CompensationQuantifierLabelProvider extends AbstractChemClipseLabel
 	public static final String CONCENTRATION_UNIT = "Concentration Unit";
 	public static final String TARGET_UNIT = "Target Unit";
 	public static final String ADJUST_QUANTITATION_ENTRY = "Adjust Quantitation Entry";
-	//
+
 	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.0##");
-	//
+
 	public static final String[] TITLES = { //
 			NAME, //
 			INTERNAL_STANDARD, //
@@ -41,7 +41,7 @@ public class CompensationQuantifierLabelProvider extends AbstractChemClipseLabel
 			TARGET_UNIT, //
 			ADJUST_QUANTITATION_ENTRY //
 	};
-	//
+
 	public static final int[] BOUNDS = { //
 			150, //
 			150, //

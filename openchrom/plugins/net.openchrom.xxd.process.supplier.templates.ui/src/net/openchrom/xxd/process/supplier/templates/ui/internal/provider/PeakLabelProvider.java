@@ -32,11 +32,11 @@ public class PeakLabelProvider extends AbstractChemClipseLabelProvider {
 	public static final String STOP_RETENTION_TIME = "Stop [min]";
 	public static final String NAME = "Name";
 	public static final String AREA = "Area";
-	//
+
 	public static final int INDEX_NAME = 2;
-	//
+
 	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.0##");
-	//
+
 	public static final String[] TITLES = { //
 			START_RETENTION_TIME, //
 			STOP_RETENTION_TIME, //
@@ -65,7 +65,7 @@ public class PeakLabelProvider extends AbstractChemClipseLabelProvider {
 		String text = "";
 		if(element instanceof IPeak peak) {
 			IPeakModel peakModel = peak.getPeakModel();
-			//
+
 			switch(columnIndex) {
 				case 0:
 					text = decimalFormat.format(peakModel.getStartRetentionTime() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);

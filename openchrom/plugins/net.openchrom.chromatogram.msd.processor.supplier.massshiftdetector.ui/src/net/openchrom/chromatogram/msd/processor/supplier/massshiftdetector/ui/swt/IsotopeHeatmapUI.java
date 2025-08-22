@@ -55,7 +55,7 @@ public class IsotopeHeatmapUI extends Composite {
 	private Scale scaleThreshold;
 	private LightweightSystem lightweightSystem;
 	private IntensityGraphFigure intensityGraphFigure;
-	//
+
 	private ProcessorData processorData;
 	private Map<Integer, ColorMap> colorMaps;
 
@@ -74,10 +74,10 @@ public class IsotopeHeatmapUI extends Composite {
 			 */
 			IProcessorModel processorModel = processorData.getProcessorModel();
 			IProcessorSettings processorSettings = processorModel.getProcessorSettings();
-			//
+
 			int startShiftLevel = processorSettings.getStartShiftLevel();
 			int stopShiftLevel = processorSettings.getStopShiftLevel();
-			//
+
 			int size = stopShiftLevel - startShiftLevel + 1;
 			String[] items = new String[size];
 			for(int i = 0; i < size; i++) {
@@ -105,7 +105,7 @@ public class IsotopeHeatmapUI extends Composite {
 		setLayout(new FillLayout());
 		Composite composite = new Composite(this, SWT.FILL);
 		composite.setLayout(new GridLayout(3, false));
-		//
+
 		colorMaps = new HashMap<>();
 		for(int i = MassShiftDetector.SCALE_CERTAINTY_MIN; i <= MassShiftDetector.SCALE_CERTAINTY_MAX; i++) {
 			ColorMap colorMap = new ColorMap();
@@ -126,7 +126,7 @@ public class IsotopeHeatmapUI extends Composite {
 		 */
 		createMassShiftCombo(composite);
 		createHeatmapComposite(composite);
-		//
+
 		Composite compositeThreshold = new Composite(composite, SWT.NONE);
 		GridData gridDataThreshold = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataThreshold.horizontalSpan = 3;
@@ -147,10 +147,10 @@ public class IsotopeHeatmapUI extends Composite {
 				showData();
 			}
 		});
-		//
+
 		Label label = new Label(parent, SWT.NONE);
 		label.setText("Threshold:");
-		//
+
 		createTextThreshold(parent);
 	}
 
@@ -183,16 +183,16 @@ public class IsotopeHeatmapUI extends Composite {
 	private void createHeatmapComposite(Composite parent) {
 
 		Display display = Display.getDefault();
-		//
+
 		Canvas canvas = new Canvas(parent, SWT.FILL | SWT.BORDER);
 		GridData gridDataCanvas = new GridData(GridData.FILL_BOTH);
 		gridDataCanvas.horizontalSpan = 3;
 		canvas.setLayoutData(gridDataCanvas);
 		canvas.setBackground(display.getSystemColor(SWT.COLOR_WHITE));
-		//
+
 		lightweightSystem = new LightweightSystem(canvas);
 		lightweightSystem.getRootFigure().setBackgroundColor(display.getSystemColor(SWT.COLOR_WHITE));
-		//
+
 		intensityGraphFigure = new IntensityGraphFigure();
 		intensityGraphFigure.setForegroundColor(display.getSystemColor(SWT.COLOR_BLACK));
 		intensityGraphFigure.getXAxis().setTitle("Retention Time (Minutes)");
@@ -229,7 +229,7 @@ public class IsotopeHeatmapUI extends Composite {
 
 				int threshold = scaleThreshold.getSelection() - MassShiftDetector.SCALE_CERTAINTY_INCREMENT;
 				threshold = (threshold < MassShiftDetector.SCALE_CERTAINTY_MIN) ? MassShiftDetector.SCALE_CERTAINTY_MIN : threshold;
-				//
+
 				setThreshold(threshold);
 			}
 		});
@@ -266,7 +266,7 @@ public class IsotopeHeatmapUI extends Composite {
 
 				int threshold = scaleThreshold.getSelection() + MassShiftDetector.SCALE_CERTAINTY_INCREMENT;
 				threshold = (threshold > MassShiftDetector.SCALE_CERTAINTY_MAX) ? MassShiftDetector.SCALE_CERTAINTY_MAX : threshold;
-				//
+
 				setThreshold(threshold);
 			}
 		});
@@ -276,20 +276,20 @@ public class IsotopeHeatmapUI extends Composite {
 
 		int massShiftLevel = getMassShiftLevel();
 		if(processorData != null && processorData.getCalculatedIonCertainties() != null) {
-			//
+
 			// Map<Integer, Map<Integer, Map<Integer, Double>>>: ShiftLevel, Scan, m/z, Intensity
-			//
+
 			CalculatedIonCertainties calculatedIonCertainties = processorData.getCalculatedIonCertainties();
 			if(calculatedIonCertainties.getMap().get(massShiftLevel) != null) {
-				//
+
 				int startScan = calculatedIonCertainties.getStartScan();
 				int stopScan = calculatedIonCertainties.getStopScan();
 				double startRetentionTimeMinutes = calculatedIonCertainties.getStartRetentionTime() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR;
 				double stopRetentionTimeMinutes = calculatedIonCertainties.getStopRetentionTime() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR;
-				//
+
 				int startIon = calculatedIonCertainties.getShiftLevelStartIonMap().get(massShiftLevel);
 				int stopIon = calculatedIonCertainties.getShiftLevelStopIonMap().get(massShiftLevel);
-				//
+
 				int dataHeight = stopScan - startScan + 1; // y -> scans
 				int dataWidth = stopIon - startIon + 1; // x -> m/z values
 				/*
@@ -309,7 +309,7 @@ public class IsotopeHeatmapUI extends Composite {
 				for(int scan = startScan; scan <= stopScan; scan++) {
 					int xScan = scan - startScan; // xScan as zero based heatmap scan array index
 					Map<Integer, Double> ionSignalCertainties = shiftLevelMap.get(scan);
-					//
+
 					if(ionSignalCertainties != null) {
 						for(int ion = startIon; ion <= stopIon; ion++) {
 							/*
@@ -360,7 +360,7 @@ public class IsotopeHeatmapUI extends Composite {
 		intensityGraphFigure.setDataArray(new double[]{0, 0, 0, 0});
 		intensityGraphFigure.setMin(0);
 		intensityGraphFigure.setMax(0);
-		//
+
 		scaleThreshold.setSelection(MassShiftDetector.SCALE_CERTAINTY_SELECTION);
 		textCertaintyThreshold.setText(Integer.toString(MassShiftDetector.SCALE_CERTAINTY_SELECTION));
 	}
@@ -387,7 +387,7 @@ public class IsotopeHeatmapUI extends Composite {
 
 		scaleThreshold.setSelection(threshold);
 		textCertaintyThreshold.setText(Integer.toString(threshold));
-		//
+
 		int massShiftLevel = getMassShiftLevel();
 		Map<Integer, Integer> levelCertainty = processorData.getLevelCertainty();
 		levelCertainty.put(massShiftLevel, threshold);

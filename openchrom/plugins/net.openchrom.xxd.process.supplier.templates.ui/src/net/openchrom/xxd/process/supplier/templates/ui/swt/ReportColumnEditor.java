@@ -44,7 +44,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 	private Table tableAvailableColumns;
 	private Table tableReportColumns;
 	private List<ToolItem> toolItems = new ArrayList<>();
-	//
+
 	private ReportColumns reportColumns = new ReportColumns();
 	private List<String> availableColumns = new ArrayList<>();
 
@@ -104,9 +104,9 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 		gridLayout.marginWidth = 0;
 		gridLayout.marginHeight = 0;
 		setLayout(gridLayout);
-		//
+
 		createDataSection(this);
-		//
+
 		initialize();
 	}
 
@@ -134,7 +134,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 				addColumn();
 			}
 		});
-		//
+
 		table.addKeyListener(new KeyAdapter() {
 
 			@Override
@@ -153,7 +153,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 				}
 			}
 		});
-		//
+
 		return table;
 	}
 
@@ -169,7 +169,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 				removeColumn();
 			}
 		});
-		//
+
 		table.addKeyListener(new KeyAdapter() {
 
 			@Override
@@ -198,7 +198,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 				}
 			}
 		});
-		//
+
 		return table;
 	}
 
@@ -208,9 +208,9 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 		table.setLayoutData(new GridData(GridData.FILL_BOTH));
-		//
+
 		addTableColumn(table, "Column", 500);
-		//
+
 		return table;
 	}
 
@@ -224,7 +224,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 	private void createToolbarSelectItems(Composite parent) {
 
 		ToolBar toolBar = new ToolBar(parent, SWT.VERTICAL | SWT.FLAT);
-		//
+
 		toolItems.add(createToolItemAdd(toolBar));
 		toolItems.add(createToolItemRemove(toolBar));
 		toolItems.add(createToolItemRemoveAll(toolBar));
@@ -237,7 +237,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 		ToolItem toolItem = new ToolItem(toolBar, SWT.PUSH);
 		toolItem.setToolTipText("Add Column");
 		toolItem.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ARROW_FORWARD, IApplicationImage.SIZE_16x16));
-		//
+
 		toolItem.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -246,7 +246,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 				addColumn();
 			}
 		});
-		//
+
 		return toolItem;
 	}
 
@@ -255,7 +255,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 		ToolItem toolItem = new ToolItem(toolBar, SWT.PUSH);
 		toolItem.setToolTipText("Remove Column");
 		toolItem.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ARROW_BACKWARD, IApplicationImage.SIZE_16x16));
-		//
+
 		toolItem.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -264,7 +264,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 				removeColumn();
 			}
 		});
-		//
+
 		return toolItem;
 	}
 
@@ -273,7 +273,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 		ToolItem toolItem = new ToolItem(toolBar, SWT.PUSH);
 		toolItem.setToolTipText("Clear Columns");
 		toolItem.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CLEAR, IApplicationImage.SIZE_16x16));
-		//
+
 		toolItem.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -283,7 +283,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 				updateTables();
 			}
 		});
-		//
+
 		return toolItem;
 	}
 
@@ -292,7 +292,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 		ToolItem toolItem = new ToolItem(toolBar, SWT.PUSH);
 		toolItem.setToolTipText("Move Column Up");
 		toolItem.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ARROW_UP_2, IApplicationImage.SIZE_16x16));
-		//
+
 		toolItem.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -301,7 +301,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 				moveColumnUp();
 			}
 		});
-		//
+
 		return toolItem;
 	}
 
@@ -310,7 +310,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 		ToolItem toolItem = new ToolItem(toolBar, SWT.PUSH);
 		toolItem.setToolTipText("Move Column Down");
 		toolItem.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ARROW_DOWN_2, IApplicationImage.SIZE_16x16));
-		//
+
 		toolItem.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -319,7 +319,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 				moveColumnDown();
 			}
 		});
-		//
+
 		return toolItem;
 	}
 
@@ -362,7 +362,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 	private int switchColumns(boolean moveUp) {
 
 		int indexNew = -1;
-		//
+
 		int index = tableReportColumns.getSelectionIndex();
 		int size = reportColumns.size();
 		if(index >= 0 && index < size) {
@@ -372,7 +372,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 				indexNew = indexSwitch;
 			}
 		}
-		//
+
 		return indexNew;
 	}
 
@@ -390,12 +390,12 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 		 */
 		availableColumns.clear();
 		availableColumns.addAll(ReportColumns.getDefault());
-		//
+
 		for(String reportColumn : reportColumns) {
 			availableColumns.remove(reportColumn);
 			addTableRow(tableReportColumns, reportColumn);
 		}
-		//
+
 		for(String availableColumn : availableColumns) {
 			addTableRow(tableAvailableColumns, availableColumn);
 		}

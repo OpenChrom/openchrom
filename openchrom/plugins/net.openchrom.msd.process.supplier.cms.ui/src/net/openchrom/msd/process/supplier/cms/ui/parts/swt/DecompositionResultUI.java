@@ -62,7 +62,7 @@ import net.openchrom.msd.process.supplier.cms.ui.preferences.PreferencePage;
 public class DecompositionResultUI extends Composite {
 
 	private static final Logger logger = Logger.getLogger(DecompositionResultUI.class);
-	//
+
 	private DecimalFormat decimalFormatTextETimes = ValueFormat.getDecimalFormatEnglish("0.0");
 	private CompositeSignals compositeSignalsGraph;
 	private IMassSpectra cmsSpectra; // if cmsSpectra == null, then XYGraph data items are invalid
@@ -81,7 +81,7 @@ public class DecompositionResultUI extends Composite {
 	private Button buttonEtimes;
 	private Button buttonUseRelError;
 	private Button buttonApplyZeroCorrection;
-	//
+
 	private List<IDecompositionResultsListener> resultsListener;
 
 	public DecompositionResultUI(Composite parent, int style) {
@@ -140,7 +140,7 @@ public class DecompositionResultUI extends Composite {
 				// MessageConsoleStream messageConsoleStream = messageConsole.newMessageStream();
 				// System.setOut(new PrintStream(messageConsoleStream));
 				// System.setErr(new PrintStream(messageConsoleStream));
-				//
+
 				System.out.println("Decompose button clicked");
 				decomposeSpectra();
 				// } catch(Exception e1) {
@@ -199,7 +199,7 @@ public class DecompositionResultUI extends Composite {
 			MassSpectraDecomposition decomposer = new MassSpectraDecomposition();
 			// do the work
 			results = decomposer.decompose(scanSpectra, libMassSpectra, buttonUseRelError.getSelection(), tables, new NullProgressMonitor());
-			//
+
 		} catch(Exception e1) {
 			logger.warn(e1);
 		} finally {
@@ -261,10 +261,10 @@ public class DecompositionResultUI extends Composite {
 
 				IPreferencePage preferencePage = new PreferencePage();
 				preferencePage.setTitle("CMS Preferences");
-				//
+
 				PreferenceManager preferenceManager = new PreferenceManager();
 				preferenceManager.addToRoot(new PreferenceNode("1", preferencePage));
-				//
+
 				PreferenceDialog preferenceDialog = new PreferenceDialog(Display.getCurrent().getActiveShell(), preferenceManager);
 				preferenceDialog.create();
 				preferenceDialog.setMessage("CMS Calibrated Mass Spectra");
@@ -282,19 +282,19 @@ public class DecompositionResultUI extends Composite {
 		compositeLeftRangeSelect.setLayout(layoutCompositeLeftRangeSelect);
 		GridData compositeLeftRangeSelectGridData = new GridData(SWT.FILL, SWT.TOP, true, false);
 		compositeLeftRangeSelect.setLayoutData(compositeLeftRangeSelectGridData);
-		//
+
 		labelTextLeftETimes = new Label(compositeLeftRangeSelect, SWT.RIGHT);
 		labelTextLeftETimes.setText("Start Time, s:");
 		GridData labelGridData = new GridData(SWT.LEFT, SWT.CENTER, false, true);
 		labelTextLeftETimes.setLayoutData(labelGridData);
-		//
+
 		textLeftETimes = new Text(compositeLeftRangeSelect, SWT.RIGHT | SWT.BORDER);
 		textLeftETimes.setText("");
 		GridData textLeftETimesGridData = new GridData(SWT.FILL, SWT.CENTER, true, true);
 		textLeftETimes.setLayoutData(textLeftETimesGridData);
-		//
+
 		new Label(compositeLeftRangeSelect, SWT.RIGHT).setText("Scan #:");
-		//
+
 		spinnerLeftScanNumber = new Spinner(compositeLeftRangeSelect, SWT.RIGHT | SWT.BORDER | SWT.READ_ONLY);
 		spinnerLeftScanNumber.setMinimum(1);
 		spinnerLeftScanNumber.setMaximum(1);
@@ -330,21 +330,21 @@ public class DecompositionResultUI extends Composite {
 		compositeRightRangeSelect.setLayout(layoutCompositeRightRangeSelect);
 		GridData compositeRightRangeSelectGridData = new GridData(SWT.FILL, SWT.TOP, true, false);
 		compositeRightRangeSelect.setLayoutData(compositeRightRangeSelectGridData);
-		//
+
 		Label labelTextRightETimes = new Label(compositeRightRangeSelect, SWT.RIGHT);
 		labelTextRightETimes.setText("End Time, s:");
 		GridData labelGridData = new GridData(SWT.LEFT, SWT.CENTER, false, true);
 		int width = labelTextLeftETimes.computeSize(SWT.DEFAULT, SWT.DEFAULT).x;
 		labelGridData.widthHint = width;
 		labelTextRightETimes.setLayoutData(labelGridData);
-		//
+
 		textRightETimes = new Text(compositeRightRangeSelect, SWT.RIGHT | SWT.BORDER);
 		textRightETimes.setText("");
 		GridData textRightETimesGridData = new GridData(SWT.FILL, SWT.CENTER, true, true);
 		textRightETimes.setLayoutData(textRightETimesGridData);
-		//
+
 		new Label(compositeRightRangeSelect, SWT.NONE).setText("Scan #:");
-		//
+
 		spinnerRightScanNumber = new Spinner(compositeRightRangeSelect, SWT.RIGHT | SWT.BORDER | SWT.READ_ONLY);
 		spinnerRightScanNumber.setMinimum(1);
 		spinnerRightScanNumber.setMaximum(1);
@@ -374,7 +374,7 @@ public class DecompositionResultUI extends Composite {
 	private void initialize() {
 
 		this.setLayout(new FillLayout());
-		//
+
 		Composite compositeSignals = new Composite(this, SWT.NONE);
 		GridLayout compositeSignalsGridLayout = new GridLayout(2, false);
 		compositeSignalsGridLayout.marginHeight = 0;
@@ -382,7 +382,7 @@ public class DecompositionResultUI extends Composite {
 		compositeSignals.setLayout(compositeSignalsGridLayout);
 		GridData compositeSignalsGridData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		compositeSignals.setLayoutData(compositeSignalsGridData);
-		//
+
 		Composite compositeTopRow = new Composite(compositeSignals, SWT.NONE);
 		GridLayout topRowCompositeGridLayout = new GridLayout(2, false);
 		topRowCompositeGridLayout.marginHeight = 0;
@@ -396,7 +396,7 @@ public class DecompositionResultUI extends Composite {
 		textCmsSpectraPath.setText("");
 		GridData textCmsSpectraPathGridData = new GridData(SWT.FILL, SWT.CENTER, true, true);
 		textCmsSpectraPath.setLayoutData(textCmsSpectraPathGridData);
-		//
+
 		Composite compositeButtons = new Composite(compositeTopRow, SWT.NONE);
 		compositeButtons.setLayout(new GridLayout(3, true));
 		GridData compositeButtonsGridData = new GridData(SWT.RIGHT, SWT.TOP, false, true);
@@ -404,14 +404,14 @@ public class DecompositionResultUI extends Composite {
 		addButtonSelect(compositeButtons);
 		addButtonDecompose(compositeButtons);
 		addButtonSettings(compositeButtons);
-		//
+
 		Group compositCheckboxGroup = new Group(compositeSignals, SWT.NONE);
 		GridLayout compositCheckboxGroupGridLayout = new GridLayout(2, false);
 		compositCheckboxGroup.setLayout(compositCheckboxGroupGridLayout);
 		GridData compositCheckboxGroupGridData = new GridData(SWT.LEFT, SWT.CENTER, false, false);
 		compositCheckboxGroup.setLayoutData(compositCheckboxGroupGridData);
 		addCheckboxButtons(compositCheckboxGroup);
-		//
+
 		Group compositSelectSpectrumGroup = new Group(compositeSignals, SWT.NONE);
 		GridLayout compositSelectSpectrumGroupGridLayout = new GridLayout(1, false);
 		compositSelectSpectrumGroup.setLayout(compositSelectSpectrumGroupGridLayout);
@@ -420,7 +420,7 @@ public class DecompositionResultUI extends Composite {
 		// ETimes Text and scan # Spinners
 		addSelectLeftSpectrum(compositSelectSpectrumGroup);
 		addSelectRightSpectrum(compositSelectSpectrumGroup);
-		//
+
 		compositeSignalsGraph = new CompositeSignals(compositeSignals, SWT.NONE);
 	}
 
@@ -449,7 +449,7 @@ public class DecompositionResultUI extends Composite {
 				}
 			}
 		});
-		//
+
 		buttonEtimes = new Button(parent, SWT.CHECK);
 		buttonEtimes.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
 		buttonEtimes.setText("Use ETimeS");
@@ -490,12 +490,12 @@ public class DecompositionResultUI extends Composite {
 				}
 			}
 		});
-		//
+
 		buttonUseRelError = new Button(parent, SWT.CHECK);
 		buttonUseRelError.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
 		buttonUseRelError.setText("Use Weighted Error");
 		buttonUseRelError.setSelection(true);
-		//
+
 		buttonApplyZeroCorrection = new Button(parent, SWT.CHECK);
 		buttonApplyZeroCorrection.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
 		buttonApplyZeroCorrection.setText("Apply Zero Correction");

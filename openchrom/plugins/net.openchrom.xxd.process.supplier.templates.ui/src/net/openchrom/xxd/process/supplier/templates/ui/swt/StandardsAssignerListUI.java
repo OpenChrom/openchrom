@@ -29,7 +29,7 @@ public class StandardsAssignerListUI extends AbstractTemplateListUI {
 
 	private static final String[] TITLES = StandardsAssignerLabelProvider.TITLES;
 	private static final int[] BOUNDS = StandardsAssignerLabelProvider.BOUNDS;
-	//
+
 	private StandardsAssignerLabelProvider labelProvider = new StandardsAssignerLabelProvider();
 	private StandardsAssignerComparator tableComparator = new StandardsAssignerComparator();
 	private StandardsAssignerFilter listFilter = new StandardsAssignerFilter();

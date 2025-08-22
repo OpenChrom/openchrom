@@ -45,15 +45,15 @@ import net.openchrom.xxd.processor.supplier.tracecompare.ui.internal.runnables.M
 public class DataProcessorUI extends DataProcessor {
 
 	private static final Logger logger = Logger.getLogger(DataProcessorUI.class);
-	//
+
 	public static final String MEASUREMENT_SAMPLE = "Sample";
 	public static final String MEASUREMENT_REFERENCE = "Reference";
-	//
+
 	public static final String ANALYSIS_TYPE_QUALIFICATION = "Qualification";
 	public static final String ANALYSIS_TYPE_VALIDATION = "Validation";
-	//
+
 	public static final String SHOW_ALL_WAVELENGTHS = "Show All";
-	//
+
 	private Map<String, Color> colorMap;
 	private Color colorDefault;
 
@@ -90,14 +90,14 @@ public class DataProcessorUI extends DataProcessor {
 		wavelenghts.add("260");
 		wavelenghts.add("280");
 		wavelenghts.add("300");
-		//
+
 		return wavelenghts.toArray(new String[wavelenghts.size()]);
 	}
 
 	public Map<Integer, Map<String, ISeriesData>> extractMeasurementsData(List<File> measurementFiles, String type) {
 
 		Map<Integer, Map<String, ISeriesData>> measurementsData = new HashMap<Integer, Map<String, ISeriesData>>();
-		//
+
 		MeasurementImportRunnable runnable = new MeasurementImportRunnable(measurementFiles);
 		ProgressMonitorDialog monitor = new ProgressMonitorDialog(Display.getDefault().getActiveShell());
 		try {
@@ -107,10 +107,10 @@ public class DataProcessorUI extends DataProcessor {
 		} catch(InvocationTargetException e1) {
 			logger.warn(e1);
 		}
-		//
+
 		ISeriesData seriesData;
 		String wavelength;
-		//
+
 		List<IChromatogramWSD> measurements = runnable.getMeasurements();
 		for(IChromatogram measurement : measurements) {
 			/*
@@ -129,7 +129,7 @@ public class DataProcessorUI extends DataProcessor {
 				addMeasurementData(measurementsData, wavelength, seriesData, index++);
 			}
 		}
-		//
+
 		return measurementsData;
 	}
 
@@ -146,13 +146,13 @@ public class DataProcessorUI extends DataProcessor {
 	public ISeriesData extractMeasurement(IChromatogram measurement, String type) {
 
 		boolean isMirrorReferenceData = PreferenceSupplier.isMirrorReferenceData();
-		//
+
 		List<IScan> scans = measurement.getScans();
 		double[] xSeries = new double[scans.size()];
 		double[] ySeries = new double[scans.size()];
 		int wavelength = getWavelength(measurement);
 		boolean isReference = type.startsWith(MEASUREMENT_REFERENCE);
-		//
+
 		int index = 0;
 		ExtractedWavelengthSignalExtractor signalExtractor = new ExtractedWavelengthSignalExtractor((IChromatogramWSD)measurement);
 		IExtractedWavelengthSignals extractedWavelengthSignals = signalExtractor.getExtractedWavelengthSignals();
@@ -193,7 +193,7 @@ public class DataProcessorUI extends DataProcessor {
 
 		ISeriesData seriesData = wavelengthData.get(wavelength);
 		boolean isReference = seriesData.getId().startsWith(MEASUREMENT_REFERENCE);
-		//
+
 		ILineSeriesData lineSeriesData = new LineSeriesData(seriesData);
 		ILineSeriesSettings lineSeriesSettings = lineSeriesData.getSettings();
 		lineSeriesSettings.setEnableArea(false);
@@ -216,7 +216,7 @@ public class DataProcessorUI extends DataProcessor {
 		 */
 		ILineSeriesSettings lineSeriesSettingsHighlight = (ILineSeriesSettings)lineSeriesSettings.getSeriesSettingsHighlight();
 		lineSeriesSettingsHighlight.setLineWidth(PreferenceSupplier.getLineWidthHighlight());
-		//
+
 		return lineSeriesData;
 	}
 
@@ -224,7 +224,7 @@ public class DataProcessorUI extends DataProcessor {
 
 		List<ILineSeriesData> lineSeriesDataList = new ArrayList<ILineSeriesData>();
 		boolean addEmptySeriesData = true;
-		//
+
 		if(measurementsData != null) {
 			if(measurementsData.containsKey(track)) {
 				/*
@@ -235,11 +235,11 @@ public class DataProcessorUI extends DataProcessor {
 				addLineSeriesData(lineSeriesDataList, wavelengthData, wavelengthSelection);
 			}
 		}
-		//
+
 		if(addEmptySeriesData) {
 			lineSeriesDataList.add(getEmptyLineSeriesData());
 		}
-		//
+
 		return lineSeriesDataList;
 	}
 
@@ -263,14 +263,14 @@ public class DataProcessorUI extends DataProcessor {
 			 */
 			String fileExtension = PreferenceSupplier.getFileExtension();
 			String directory = (meausurementType.equals(MEASUREMENT_SAMPLE)) ? processorModel.getSampleDirectory() : processorModel.getReferenceDirectory();
-			//
+
 			if(processorModel != null) {
 				if(!"".equals(groupSelection)) {
 					referenceFiles = getMeasurementFiles(directory, fileExtension, groupSelection);
 				}
 			}
 		}
-		//
+
 		return referenceFiles;
 	}
 }

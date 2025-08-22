@@ -56,23 +56,23 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 
 	private BaselineSelectionPaintListener baselineSelectionPaintListener;
 	private Cursor defaultCursor;
-	//
+
 	private int xStart;
 	private int yStart;
 	private int xStop;
 	private int yStop;
-	//
+
 	private PeakSupport peakSupport = new PeakSupport();
 	private DetectorRange detectorRange;
 	private IChromatogramSelection chromatogramSelection = null;
-	//
+
 	private IPeakUpdateListener peakUpdateListener = null;
 	private ISectionUpdateListener sectionUpdateListener = null;
 	private IRangeUpdateListener rangeUpdateListener = null;
-	//
+
 	private PeakDetectorChartSettings chartSettingsDefault = new PeakDetectorChartSettings();
 	private DeltaRangePaintListener deltaRangePaintListener = new DeltaRangePaintListener(this.getBaseChart());
-	//
+
 	private boolean isReplacePeak = false;
 	private int replacePeakDelta = 5000; // 5 Seconds
 
@@ -220,7 +220,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		IPlotArea plotArea = getBaseChart().getPlotArea();
 		baselineSelectionPaintListener = new BaselineSelectionPaintListener();
 		plotArea.addCustomPaintListener(baselineSelectionPaintListener);
-		//
+
 		getBaseChart().addCustomRangeSelectionHandler(new ICustomSelectionHandler() {
 
 			@Override
@@ -251,12 +251,12 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 
 		xStop = x;
 		yStop = y;
-		//
+
 		baselineSelectionPaintListener.setX1(xStart);
 		baselineSelectionPaintListener.setY1(yStart);
 		baselineSelectionPaintListener.setX2(xStop);
 		baselineSelectionPaintListener.setY2(yStop);
-		//
+
 		redrawChart();
 	}
 
@@ -269,12 +269,12 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 	private void resetSelectedRange() {
 
 		baselineSelectionPaintListener.reset();
-		//
+
 		xStart = 0;
 		yStart = 0;
 		xStop = 0;
 		yStop = 0;
-		//
+
 		redrawChart();
 	}
 
@@ -378,7 +378,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 	private double getMinY(IChromatogramSelection chromatogramSelection, int startRetentionTime, int stopRetentionTime) {
 
 		IChromatogram chromatogram = chromatogramSelection.getChromatogram();
-		//
+
 		double minY = Double.MAX_VALUE;
 		int startScan = PeakSupport.getStartScan(chromatogram, startRetentionTime);
 		int stopScan = PeakSupport.getStopScan(chromatogram, stopRetentionTime);
@@ -386,16 +386,16 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 			double intensity = chromatogram.getScan(i).getTotalSignal();
 			minY = Math.min(intensity, minY);
 		}
-		//
+
 		minY -= minY * PreferenceSupplier.getOffsetMinY() / 100.0d;
-		//
+
 		return minY;
 	}
 
 	private double getMaxY(IChromatogramSelection chromatogramSelection, int startRetentionTime, int stopRetentionTime) {
 
 		IChromatogram chromatogram = chromatogramSelection.getChromatogram();
-		//
+
 		double maxY = Double.MIN_VALUE;
 		int startScan = PeakSupport.getStartScan(chromatogram, startRetentionTime);
 		int stopScan = PeakSupport.getStopScan(chromatogram, stopRetentionTime);
@@ -403,10 +403,10 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 			double intensity = chromatogram.getScan(i).getTotalSignal();
 			maxY = Math.max(intensity, maxY);
 		}
-		//
+
 		maxY += maxY * PreferenceSupplier.getOffsetMaxY() / 100.0d;
 		maxY = (maxY == 0) ? chromatogramSelection.getStopAbundance() : maxY;
-		//
+
 		return maxY;
 	}
 
@@ -439,7 +439,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		int retentionTimeSource = peakSource.getPeakModel().getRetentionTimeAtPeakMaximum();
 		List<? extends IChromatogramPeak> peaks = chromatogram.getPeaks(startRetentionTime, stopRetentionTime);
 		IPeak peakDelete = null;
-		//
+
 		for(IPeak peak : peaks) {
 			if(peakDelete == null) {
 				/*
@@ -452,13 +452,13 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 				 */
 				int retentionTime = peak.getPeakModel().getRetentionTimeAtPeakMaximum();
 				int retentionTimeDelete = peakDelete.getPeakModel().getRetentionTimeAtPeakMaximum();
-				//
+
 				if(Math.abs(retentionTimeSource - retentionTime) < Math.abs(retentionTimeDelete - retentionTime)) {
 					peakDelete = peak;
 				}
 			}
 		}
-		//
+
 		if(peakDelete != null) {
 			/*
 			 * Keep identification results.
@@ -491,7 +491,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 			IAxisSet axisSet = baseChart.getAxisSet();
 			Point rectangle = baseChart.getPlotArea().getSize();
 			int width = rectangle.x;
-			//
+
 			if(width != 0) {
 				double factorWidth = 100.0d / width;
 				double percentageStartWidth = (factorWidth * xStart) / 100.0d;

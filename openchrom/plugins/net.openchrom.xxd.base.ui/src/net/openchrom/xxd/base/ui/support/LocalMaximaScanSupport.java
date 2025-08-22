@@ -31,7 +31,7 @@ public class LocalMaximaScanSupport {
 				}
 			}
 		}
-		//
+
 		return null;
 	}
 }

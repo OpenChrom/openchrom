@@ -32,7 +32,7 @@ public class MassShiftListUI extends ExtendedTableViewer {
 	private void createColumns() {
 
 		createColumns(titles, bounds);
-		//
+
 		setLabelProvider(new MassShiftListLabelProvider());
 		setContentProvider(new ListContentProvider());
 		setComparator(new MassShiftListTableComparator());

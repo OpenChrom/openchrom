@@ -40,11 +40,11 @@ public class TraceRatioCompiler implements ITemplateExport {
 	public boolean compilePeaks(File file, List<? extends IPeak> peaks, TraceRatioExportSettings traceRatioExportSettings) {
 
 		TraceRatios settings = new TraceRatios();
-		//
+
 		int numberTraces = traceRatioExportSettings.getNumberTraces();
 		float deviationWarn = traceRatioExportSettings.getAllowedDeviationOk();
 		float deviationError = traceRatioExportSettings.getAllowedDeviationWarn();
-		//
+
 		for(IPeak peak : peaks) {
 			if(peak instanceof IPeakMSD peakMSD) {
 				String name = getName(peak);
@@ -54,32 +54,32 @@ public class TraceRatioCompiler implements ITemplateExport {
 				}
 			}
 		}
-		//
+
 		return settings.exportItems(file);
 	}
 
 	public boolean compileScans(File file, List<? extends IScanMSD> scansMSD, TraceRatioExportSettings traceRatioExportSettings) {
 
 		TraceRatios settings = new TraceRatios();
-		//
+
 		int numberTraces = traceRatioExportSettings.getNumberTraces();
 		float deviationWarn = traceRatioExportSettings.getAllowedDeviationOk();
 		float deviationError = traceRatioExportSettings.getAllowedDeviationWarn();
-		//
+
 		for(IScanMSD scanMSD : scansMSD) {
 			String name = getName(scanMSD);
 			if(!name.isEmpty()) {
 				settings.addAll(extract(scanMSD, name, numberTraces, deviationWarn, deviationError));
 			}
 		}
-		//
+
 		return settings.exportItems(file);
 	}
 
 	private List<TraceRatio> extract(IScanMSD scanMSD, String name, int numberTraces, float deviationWarn, float deviationError) {
 
 		List<TraceRatio> traceRatios = new ArrayList<>();
-		//
+
 		List<IIon> ions = new ArrayList<>(scanMSD.getIons());
 		Collections.sort(ions, ionComparator);
 		if(ions.size() >= 2) {
@@ -91,7 +91,7 @@ public class TraceRatioCompiler implements ITemplateExport {
 						IIon reference = ions.get(i);
 						String testCase = AbstractIon.getIon(master.getIon()) + TraceRatio.TEST_CASE_SEPARATOR + AbstractIon.getIon(reference.getIon());
 						double ratio = Double.valueOf(decimalFormat.format(100.0d / master.getAbundance() * reference.getAbundance()));
-						//
+
 						TraceRatio traceRatio = new TraceRatio();
 						traceRatio.setName(name);
 						traceRatio.setTestCase(testCase);
@@ -105,7 +105,7 @@ public class TraceRatioCompiler implements ITemplateExport {
 				}
 			}
 		}
-		//
+
 		return traceRatios;
 	}
 }

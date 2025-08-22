@@ -33,7 +33,7 @@ public class AWTUtils {
 		float[] elements = new float[6];
 		transform.getElements(elements);
 		AffineTransform affineTransform = new AffineTransform(elements);
-		//
+
 		return affineTransform;
 	}
 

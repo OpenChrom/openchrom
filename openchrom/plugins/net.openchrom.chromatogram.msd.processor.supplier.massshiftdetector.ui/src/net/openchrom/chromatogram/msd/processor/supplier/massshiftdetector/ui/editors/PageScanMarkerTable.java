@@ -24,7 +24,7 @@ import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.sw
 public class PageScanMarkerTable {
 
 	private EditorProcessor editorProcessor;
-	//
+
 	private Composite control;
 	private EnhancedScanMarkerEditor enhancedScanMarkerEditor;
 
@@ -42,7 +42,7 @@ public class PageScanMarkerTable {
 
 		control = new Composite(parent, SWT.NONE);
 		control.setLayout(new FillLayout());
-		//
+
 		enhancedScanMarkerEditor = new EnhancedScanMarkerEditor(control, SWT.NONE);
 		enhancedScanMarkerEditor.setLayoutData(new GridData(GridData.FILL_BOTH));
 		enhancedScanMarkerEditor.setLayout(new GridLayout(1, true));

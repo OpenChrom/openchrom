@@ -47,7 +47,7 @@ public class ModelPeakDemo {
 	private static Text textSigmaFront;
 	private static Text textSigmaBack;
 	private static LineChart chartGaussian;
-	//
+
 	private static Text textShape;
 	private static Text textScale;
 	private static LineChart chartDistribution;
@@ -59,10 +59,10 @@ public class ModelPeakDemo {
 		shell.setText("Model Peak Demo");
 		shell.setSize(500, 500);
 		shell.setLayout(new FillLayout());
-		//
+
 		createSection(shell);
 		shell.open();
-		//
+
 		while(!shell.isDisposed()) {
 			if(!display.readAndDispatch()) {
 				display.sleep();
@@ -75,10 +75,10 @@ public class ModelPeakDemo {
 
 		Composite composite = new Composite(shell, SWT.NONE);
 		composite.setLayout(new GridLayout(2, true));
-		//
+
 		createSectionGaussian(composite);
 		createSectionDistribution(composite);
-		//
+
 		redrawCharts();
 	}
 
@@ -87,7 +87,7 @@ public class ModelPeakDemo {
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout(1, true));
 		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
-		//
+
 		createToolbarGaussian(composite);
 		chartGaussian = createChart(composite);
 	}
@@ -97,7 +97,7 @@ public class ModelPeakDemo {
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout(2, true));
 		composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		//
+
 		textSigmaFront = createText(composite, 60.0d, "Sigma Front: 1 - 200");
 		textSigmaBack = createText(composite, 60.0d, "Sigma Back: 1 - 200");
 	}
@@ -107,7 +107,7 @@ public class ModelPeakDemo {
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout(1, true));
 		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
-		//
+
 		createToolbarDistribution(composite);
 		chartDistribution = createChart(composite);
 	}
@@ -117,7 +117,7 @@ public class ModelPeakDemo {
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout(2, true));
 		composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		//
+
 		textShape = createText(composite, 9.0d, "Shape: 1 - 9");
 		textScale = createText(composite, 0.1d, "Scale: 0.1 - 2");
 	}
@@ -136,7 +136,7 @@ public class ModelPeakDemo {
 				redrawCharts();
 			}
 		});
-		//
+
 		return text;
 	}
 
@@ -152,7 +152,7 @@ public class ModelPeakDemo {
 		adjustPrimaryAxes(chartSettings);
 		chartSettings.setBufferSelection(true);
 		lineChart.applySettings(chartSettings);
-		//
+
 		return lineChart;
 	}
 
@@ -205,7 +205,7 @@ public class ModelPeakDemo {
 		} catch(NumberFormatException e) {
 			value = 1.0d;
 		}
-		//
+
 		return value;
 	}
 
@@ -221,13 +221,13 @@ public class ModelPeakDemo {
 		int size = stop - start + 1;
 		double norm = 1000.0d;
 		double mean = 250.0d;
-		//
+
 		double[] ySeries = new double[size];
 		double[] xSeries = new double[size];
-		//
+
 		Gaussian gaussianFront = new Gaussian(norm, mean, sigmaFront);
 		Gaussian gaussianBack = new Gaussian(norm, mean, sigmaBack);
-		//
+
 		for(int x = start, i = 0; x <= stop; x++, i++) {
 			xSeries[i] = x;
 			if(x <= mean) {
@@ -239,7 +239,7 @@ public class ModelPeakDemo {
 				ySeries[i] = gaussianBack.value(x);
 			}
 		}
-		//
+
 		return new SeriesData(xSeries, ySeries, "Sigma: " + sigmaFront + "|" + sigmaBack);
 	}
 
@@ -248,16 +248,16 @@ public class ModelPeakDemo {
 		int start = 1;
 		int stop = 50000;
 		int size = stop - start + 1;
-		//
+
 		double[] ySeries = new double[size];
 		double[] xSeries = new double[size];
-		//
+
 		GammaDistribution distribution = new GammaDistribution(shape, scale);
 		for(int x = start, i = 0; x <= stop; x++, i++) {
 			xSeries[i] = x;
 			ySeries[i] = distribution.density(x / 1000.0d);
 		}
-		//
+
 		return new SeriesData(xSeries, ySeries, " Shape: " + shape + " Scale: " + scale);
 	}
 
@@ -265,7 +265,7 @@ public class ModelPeakDemo {
 
 		IPrimaryAxisSettings primaryAxisSettingsX = chartSettings.getPrimaryAxisSettingsX();
 		primaryAxisSettingsX.setTitle("X");
-		//
+
 		IPrimaryAxisSettings primaryAxisSettingsY = chartSettings.getPrimaryAxisSettingsY();
 		primaryAxisSettingsY.setTitle("Y");
 	}

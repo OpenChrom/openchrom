@@ -73,17 +73,17 @@ import net.openchrom.xxd.process.supplier.templates.ui.support.ReviewSupport;
 public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 
 	private static final String MENU_CATEGORY_TARGETS = "Targets";
-	//
+
 	private ComboTarget comboTarget;
 	private Button buttonTargetAdd;
 	private Button buttonTargetDelete;
 	private Button buttonToolbarSearch;
 	private Button buttonTableEdit;
-	//
+
 	private AtomicReference<ScanIdentifierUI> identifierControl = new AtomicReference<>();
 	private AtomicReference<SearchSupportUI> toolbarSearch = new AtomicReference<>();
 	private AtomicReference<TargetsListUI> targetListControl = new AtomicReference<>();
-	//
+
 	private ReviewController controller;
 	private ReviewSetting reviewSetting;
 	private IPeak peak;
@@ -103,7 +103,7 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 
 		this.reviewSetting = reviewSetting;
 		this.peak = peak;
-		//
+
 		updateInput();
 	}
 
@@ -111,11 +111,11 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 
 		GridLayout gridLayout = new GridLayout(1, true);
 		setLayout(gridLayout);
-		//
+
 		createToolbarMain(this);
 		createToolbarSearch(this);
 		createTableTargets(this);
-		//
+
 		initialize();
 	}
 
@@ -130,7 +130,7 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		composite.setLayout(new GridLayout(7, false));
-		//
+
 		comboTarget = createComboTarget(composite);
 		buttonTargetAdd = createButtonTargetAdd(composite);
 		buttonTargetDelete = createButtonTargetDelete(composite);
@@ -152,7 +152,7 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 				fireUpdate(true);
 			}
 		});
-		//
+
 		identifierControl.set(scanIdentifierUI);
 	}
 
@@ -166,7 +166,7 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 				applySettings();
 			}
 		};
-		//
+
 		Button button = createSettingsButtonBasic(parent);
 		button.addSelectionListener(new SelectionAdapter() {
 
@@ -208,7 +208,7 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 				}
 			}
 		}
-		//
+
 		return preferencePages;
 	}
 
@@ -230,7 +230,7 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 				targetListControl.get().setSearchText(searchText, caseSensitive);
 			}
 		});
-		//
+
 		toolbarSearch.set(searchSupportUI);
 	}
 
@@ -241,7 +241,7 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 		Table table = targetListUI.getTable();
 		table.setLayoutData(new GridData(GridData.FILL_BOTH));
 		setCellColorProvider(targetListUI);
-		//
+
 		table.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -261,7 +261,7 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 		addUnverifyTargetsMenuEntry(tableSettings);
 		addKeyEventProcessors(shell, tableSettings);
 		targetListUI.applySettings(tableSettings);
-		//
+
 		targetListControl.set(targetListUI);
 	}
 
@@ -375,7 +375,7 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 				identificationTarget.setVerified(verified);
 			}
 		}
-		//
+
 		targetListControl.get().refresh(true);
 		fireUpdate(true);
 	}
@@ -418,7 +418,7 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 				}
 			}
 		});
-		//
+
 		return comboTarget;
 	}
 
@@ -439,7 +439,7 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 				}
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -448,7 +448,7 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 		if(peak instanceof ITargetSupplier targetSupplier) {
 			targetSupplier.getTargets().add(identificationTarget);
 		}
-		//
+
 		updateInput();
 		fireUpdate(true);
 	}
@@ -467,7 +467,7 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 				deleteTargets(e.display.getActiveShell());
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -488,7 +488,7 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 					deleteTarget((ITarget)object);
 				}
 			}
-			//
+
 			updateInput();
 			fireUpdate(true);
 		}
@@ -568,7 +568,7 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 		if(object instanceof IIdentificationTarget identificationTarget) {
 			return identificationTarget;
 		}
-		//
+
 		return null;
 	}
 
@@ -581,7 +581,7 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 		} else if(peak instanceof IPeakWSD) {
 			return DataType.WSD;
 		}
-		//
+
 		return DataType.NONE;
 	}
 
