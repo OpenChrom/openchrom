@@ -175,7 +175,7 @@ public class DetectorController {
 		}
 	}
 
-	public void deletePeaks(List<IChromatogramPeak> peaks) {
+	public void deletePeaks(List<? extends IChromatogramPeak> peaks) {
 
 		if(detectorSetting != null) {
 			IChromatogram chromatogram = processSettings.getChromatogram();
@@ -333,7 +333,6 @@ public class DetectorController {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	private void updatePeakListSelection(BaseChart baseChart) {
 
 		Range rangeX = baseChart.getAxisSet().getXAxis(BaseChart.ID_PRIMARY_X_AXIS).getRange();
@@ -345,7 +344,7 @@ public class DetectorController {
 				 */
 				int startRetentionTime = (int)rangeX.lower;
 				int stopRetentionTime = (int)rangeX.upper;
-				List<IChromatogramPeak> peaks = (List<IChromatogramPeak>)chromatogram.getPeaks(startRetentionTime, stopRetentionTime);
+				List<? extends IChromatogramPeak> peaks = chromatogram.getPeaks(startRetentionTime, stopRetentionTime);
 				if(extendedPeaksUI != null) {
 					extendedPeaksUI.setInput(detectorSetting, peaks, null);
 				}

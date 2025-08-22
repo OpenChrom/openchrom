@@ -47,7 +47,7 @@ public class ExtendedPeakDetectorUI extends Composite {
 	private DetectorController controller;
 	private PeakListUI peakListUI;
 
-	private List<IChromatogramPeak> peaks;
+	private List<? extends IChromatogramPeak> peaks;
 
 	private DetectorSetting detectorSetting;
 
@@ -57,7 +57,7 @@ public class ExtendedPeakDetectorUI extends Composite {
 		createControl();
 	}
 
-	public void setInput(DetectorSetting detectorSetting, List<IChromatogramPeak> peaks, IPeak peak) {
+	public void setInput(DetectorSetting detectorSetting, List<? extends IChromatogramPeak> peaks, IPeak peak) {
 
 		this.detectorSetting = detectorSetting;
 		this.peaks = peaks;
