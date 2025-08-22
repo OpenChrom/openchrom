@@ -53,7 +53,6 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 	// Directory entry packed structure (no padding)
 	private String tagName;
 	private int tagNumber;
-	@SuppressWarnings("unused")
 	private short elementType;
 	private short elementSize;
 	private int elements;
@@ -129,6 +128,7 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 		for(int n = 0; n < directoryElements; n++) {
 			readDirectory(in);
 			if(tagName.isEmpty()) {
+				logger.warn("Ignoring empty tag name of element type " + elementType);
 				continue;
 			}
 			switch(tagName) {
