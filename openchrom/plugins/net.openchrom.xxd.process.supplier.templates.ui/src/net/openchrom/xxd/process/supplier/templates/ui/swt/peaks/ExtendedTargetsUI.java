@@ -365,10 +365,9 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 		});
 	}
 
-	@SuppressWarnings("rawtypes")
 	private void verifyTargets(boolean verified) {
 
-		Iterator iterator = targetListControl.get().getStructuredSelection().iterator();
+		Iterator<?> iterator = targetListControl.get().getStructuredSelection().iterator();
 		while(iterator.hasNext()) {
 			Object object = iterator.next();
 			if(object instanceof IIdentificationTarget identificationTarget) {
@@ -471,7 +470,6 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 		return button;
 	}
 
-	@SuppressWarnings("rawtypes")
 	private void deleteTargets(Shell shell) {
 
 		MessageBox messageBox = new MessageBox(shell, SWT.ICON_QUESTION | SWT.YES | SWT.NO);
@@ -481,7 +479,7 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 			/*
 			 * Delete Target
 			 */
-			Iterator iterator = targetListControl.get().getStructuredSelection().iterator();
+			Iterator<?> iterator = targetListControl.get().getStructuredSelection().iterator();
 			while(iterator.hasNext()) {
 				Object object = iterator.next();
 				if(object instanceof IIdentificationTarget) {
