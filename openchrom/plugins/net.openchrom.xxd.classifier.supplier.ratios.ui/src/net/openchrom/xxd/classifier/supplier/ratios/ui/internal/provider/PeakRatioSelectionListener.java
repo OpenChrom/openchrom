@@ -42,7 +42,7 @@ public class PeakRatioSelectionListener extends SelectionAdapter implements Sele
 				handleSelection(e.display, data);
 			}
 		} catch(Exception ex) {
-			//
+
 		}
 	}
 

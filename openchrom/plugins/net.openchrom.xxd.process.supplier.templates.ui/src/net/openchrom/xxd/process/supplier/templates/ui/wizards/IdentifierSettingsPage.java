@@ -41,17 +41,17 @@ public class IdentifierSettingsPage extends WizardPage implements IExtendedPartU
 	private AtomicReference<Text> casNumberControl = new AtomicReference<>();
 	private AtomicReference<Text> referenceIdentifierControl = new AtomicReference<>();
 	private AtomicReference<Text> commentsControl = new AtomicReference<>();
-	//
+
 	private IdentifierSetting identifierSetting = null;
 	private Set<String> invalidNames = null;
 
 	protected IdentifierSettingsPage(IdentifierSetting identifierSetting, Set<String> invalidNames) {
 
 		super(IdentifierSettingsPage.class.getName());
-		//
+
 		setTitle("Identifier Settings");
 		setDescription("Edit the identifier details.");
-		//
+
 		this.identifierSetting = identifierSetting;
 		this.invalidNames = invalidNames;
 	}
@@ -62,12 +62,12 @@ public class IdentifierSettingsPage extends WizardPage implements IExtendedPartU
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout(2, false));
 		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
-		//
+
 		createNameSection(composite);
 		createCasSection(composite);
 		createReferenceIdentifierSection(composite);
 		createCommentsSection(composite);
-		//
+
 		updateInput();
 		setControl(composite);
 	}
@@ -75,7 +75,7 @@ public class IdentifierSettingsPage extends WizardPage implements IExtendedPartU
 	private void createNameSection(Composite parent) {
 
 		createLabel(parent, "Name", "Enter a substance name.");
-		//
+
 		Text text = createText(parent);
 		IValidator<String> nameValidator = new IValidator<>() {
 
@@ -96,7 +96,7 @@ public class IdentifierSettingsPage extends WizardPage implements IExtendedPartU
 				} else {
 					message = "No name is supported yet.";
 				}
-				//
+
 				if(message != null) {
 					return ValidationStatus.error(message);
 				} else {
@@ -116,14 +116,14 @@ public class IdentifierSettingsPage extends WizardPage implements IExtendedPartU
 				}
 			}
 		});
-		//
+
 		nameControl.set(text);
 	}
 
 	private void createCasSection(Composite parent) {
 
 		createLabel(parent, "CAS#", "Enter a valid CAS# or leave it empty.");
-		//
+
 		Text text = createText(parent);
 		CasValidator casValidator = new CasValidator(true);
 		ControlDecoration controlDecoration = new ControlDecoration(text, SWT.LEFT | SWT.TOP);
@@ -138,14 +138,14 @@ public class IdentifierSettingsPage extends WizardPage implements IExtendedPartU
 				}
 			}
 		});
-		//
+
 		casNumberControl.set(text);
 	}
 
 	private void createReferenceIdentifierSection(Composite parent) {
 
 		createLabel(parent, "Reference Identifier", "Enter e.g. an internal tracking number.");
-		//
+
 		Text text = createText(parent);
 		text.addModifyListener(new ModifyListener() {
 
@@ -157,14 +157,14 @@ public class IdentifierSettingsPage extends WizardPage implements IExtendedPartU
 				}
 			}
 		});
-		//
+
 		referenceIdentifierControl.set(text);
 	}
 
 	private void createCommentsSection(Composite parent) {
 
 		createLabel(parent, "Comments", "Enter e.g. an analysis hint.");
-		//
+
 		Text text = createText(parent);
 		text.addModifyListener(new ModifyListener() {
 
@@ -176,7 +176,7 @@ public class IdentifierSettingsPage extends WizardPage implements IExtendedPartU
 				}
 			}
 		});
-		//
+
 		commentsControl.set(text);
 	}
 
@@ -192,7 +192,7 @@ public class IdentifierSettingsPage extends WizardPage implements IExtendedPartU
 		Text text = new Text(parent, SWT.BORDER);
 		text.setText("");
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		//
+
 		return text;
 	}
 
@@ -225,7 +225,7 @@ public class IdentifierSettingsPage extends WizardPage implements IExtendedPartU
 			setErrorMessage(status.getMessage());
 			setPageComplete(false);
 		}
-		//
+
 		return status;
 	}
 }

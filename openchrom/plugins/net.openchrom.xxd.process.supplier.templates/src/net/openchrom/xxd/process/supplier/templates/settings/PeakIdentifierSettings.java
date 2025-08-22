@@ -84,7 +84,7 @@ public class PeakIdentifierSettings extends AbstractIdentifierSettings implement
 		PeakIdentifierListUtil util = new PeakIdentifierListUtil();
 		PeakIdentifierValidator validator = new PeakIdentifierValidator();
 		List<IdentifierSetting> settings = new ArrayList<>();
-		//
+
 		List<String> items = util.getList(identifierSettings);
 		for(String item : items) {
 			IStatus status = validator.validate(item);
@@ -92,7 +92,7 @@ public class PeakIdentifierSettings extends AbstractIdentifierSettings implement
 				settings.add(validator.getSetting());
 			}
 		}
-		//
+
 		return settings;
 	}
 }

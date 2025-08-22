@@ -35,7 +35,7 @@ public class PeakIdentifierWSD extends AbstractPeakIdentifier implements IPeakId
 		if(settings == null) {
 			settings = getSettings(PreferenceSupplier.P_PEAK_IDENTIFIER_LIST_WSD);
 		}
-		//
+
 		RetentionIndexMap retentionIndexMap = RetentionIndexSupport.getRetentionIndexMap(peaks);
 		return applyIdentifier(peaks, settings, retentionIndexMap, monitor);
 	}

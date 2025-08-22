@@ -28,7 +28,7 @@ import net.openchrom.xxd.process.supplier.templates.util.ReportSettingsValidator
 public class ChromatogramReportSettings extends DefaultChromatogramReportSettings implements ITemplateSettings {
 
 	public static final String DESCRIPTION = "Template Report";
-	//
+
 	@JsonProperty(value = "Chromatogram Header", defaultValue = "true")
 	@JsonPropertyDescription(value = "The chromatogram header data is printed on top.")
 	private boolean printHeader = true;

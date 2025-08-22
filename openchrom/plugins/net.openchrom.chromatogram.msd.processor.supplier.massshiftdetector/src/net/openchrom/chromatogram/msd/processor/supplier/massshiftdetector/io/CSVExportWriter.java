@@ -32,13 +32,13 @@ public class CSVExportWriter {
 	public void write(File file, ProcessorData processorData) throws FileNotFoundException {
 
 		PrintWriter printWriter = new PrintWriter(file);
-		//
+
 		if(processorData != null) {
 			IChromatogramMSD referenceChromatogram = processorData.getReferenceChromatogram();
 			IChromatogramMSD isotopeChromatogram = processorData.getIsotopeChromatogram();
-			//
+
 			if(referenceChromatogram != null && isotopeChromatogram != null) {
-				//
+
 				printWriter.print("Scan#");
 				printWriter.print(",");
 				printWriter.print("Reference RT (min)");
@@ -46,7 +46,7 @@ public class CSVExportWriter {
 				printWriter.print("Isotope RT (min)");
 				printWriter.print(",");
 				printWriter.println("Validated");
-				//
+
 				if(processorData.getProcessorModel() != null) {
 					if(processorData.getProcessorModel().getScanMarker() != null) {
 						for(IScanMarker scanMarker : processorData.getProcessorModel().getScanMarker()) {
@@ -67,7 +67,7 @@ public class CSVExportWriter {
 		} else {
 			printWriter.println("The processor data is not available.");
 		}
-		//
+
 		printWriter.flush();
 		printWriter.close();
 	}

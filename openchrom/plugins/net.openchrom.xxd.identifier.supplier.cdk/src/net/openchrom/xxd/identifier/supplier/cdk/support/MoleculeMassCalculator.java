@@ -72,7 +72,7 @@ public class MoleculeMassCalculator {
 						 */
 						double count = 1;
 						double mass;
-						//
+
 						formula = formula.substring(1, formula.length());
 						Matcher matcherCount = PATTERN_COUNT.matcher(formula);
 						if(matcherCount.find()) {
@@ -82,17 +82,17 @@ public class MoleculeMassCalculator {
 							} catch(NumberFormatException e) {
 							}
 						}
-						//
+
 						mass = calculateMolecularWeight(formula);
 						mass *= count;
 						adjustByMass += add ? mass : -mass;
 					}
-					//
+
 					return precursorIon + adjustByMass;
 				}
 			}
 		}
-		//
+
 		return precursorIon;
 	}
 
@@ -115,7 +115,7 @@ public class MoleculeMassCalculator {
 				molecularWeight = calculateMolecularWeight(molecule);
 			}
 		}
-		//
+
 		return molecularWeight;
 	}
 
@@ -133,7 +133,7 @@ public class MoleculeMassCalculator {
 		if(molecule != null) {
 			molecularWeight = AtomContainerManipulator.getMass(molecule);
 		}
-		//
+
 		return molecularWeight;
 	}
 
@@ -153,7 +153,7 @@ public class MoleculeMassCalculator {
 			molecularFormula = MolecularFormulaManipulator.getMolecularFormula(formula, molecularFormula);
 			exactMass = calculateExactMass(molecularFormula);
 		}
-		//
+
 		return exactMass;
 	}
 
@@ -171,7 +171,7 @@ public class MoleculeMassCalculator {
 		if(molecularFormula != null) {
 			exactMass = MolecularFormulaManipulator.getMass(molecularFormula, MolecularFormulaManipulator.MonoIsotopic);
 		}
-		//
+
 		return exactMass;
 	}
 }

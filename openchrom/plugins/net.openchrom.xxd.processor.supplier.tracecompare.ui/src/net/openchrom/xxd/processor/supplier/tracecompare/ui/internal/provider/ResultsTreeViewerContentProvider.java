@@ -45,7 +45,7 @@ public class ResultsTreeViewerContentProvider implements ITreeContentProvider {
 		} else if(inputElement instanceof ISampleModel sampleModel) {
 			return sampleModel.getTrackModels().values().toArray();
 		}
-		//
+
 		return null;
 	}
 
@@ -61,7 +61,7 @@ public class ResultsTreeViewerContentProvider implements ITreeContentProvider {
 		} else if(parentElement instanceof ISampleModel sampleModel) {
 			return sampleModel.getTrackModels().values().toArray();
 		}
-		//
+
 		return null;
 	}
 

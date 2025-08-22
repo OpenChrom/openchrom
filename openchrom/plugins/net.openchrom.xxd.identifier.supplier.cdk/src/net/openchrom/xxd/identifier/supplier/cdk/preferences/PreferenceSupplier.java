@@ -29,7 +29,7 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 
 	public static final int MIN_LENGTH_NAME_EXPORT = 1;
 	public static final int MAX_LENGTH_NAME_EXPORT = 1000;
-	//
+
 	public static final String P_ISOTOPE_SET = "isotopeSet";
 	public static final String DEF_ISOTOPE_SET = IsotopePreference.BASIC.toString();
 	public static final String P_ISOTOPE_ITERATION_DEPTH = "isotopesIterationDepth";
@@ -54,7 +54,7 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static final boolean DEF_INTERPRET_ACIDS_WITHOUT_THE_WORD_ACID = false;
 	public static final String P_WARN_RATHER_THAN_FAIL = "warnRatherThanFailOnUninterpretableStereochemistry";
 	public static final boolean DEF_WARN_RATHER_THAN_FAIL = false;
-	//
+
 	public static final String P_DELETE_SCAN_TARGETS = "deleteScanTargets";
 	public static final boolean DEF_DELETE_SCAN_TARGETS = false;
 	public static final String P_DELETE_PEAK_TARGETS = "deletePeakTargets";
@@ -82,18 +82,18 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 		putDefault(P_ISOTOPE_ITERATION_DEPTH, Integer.toString(DEF_ISOTOPE_ITERATION_DEPTH));
 		putDefault(P_ISOTOPE_SET, DEF_ISOTOPE_SET);
 		putDefault(P_USER_DEFINED_ISOTOPES, DEF_USER_DEFINED_ISOTOPES);
-		//
+
 		putDefault(P_SMILES_STRICT, Boolean.toString(DEF_SMILES_STRICT));
-		//
+
 		putDefault(P_ALLOW_RADICALS, Boolean.toString(DEF_ALLOW_RADICALS));
 		putDefault(P_OUTPUT_RADICALS_AS_WILD_CARD_ATOMS, Boolean.toString(DEF_OUTPUT_RADICALS_AS_WILD_CARD_ATOMS));
 		putDefault(P_DETAILED_FAILURE_ANALYSIS, Boolean.toString(DEF_DETAILED_FAILURE_ANALYSIS));
 		putDefault(P_INTERPRET_ACIDS_WITHOUT_THE_WORD_ACID, Boolean.toString(DEF_INTERPRET_ACIDS_WITHOUT_THE_WORD_ACID));
 		putDefault(P_WARN_RATHER_THAN_FAIL, Boolean.toString(DEF_WARN_RATHER_THAN_FAIL));
-		//
+
 		putDefault(P_DELETE_SCAN_TARGETS, Boolean.toString(DEF_DELETE_SCAN_TARGETS));
 		putDefault(P_DELETE_PEAK_TARGETS, Boolean.toString(DEF_DELETE_PEAK_TARGETS));
-		//
+
 		putDefault(P_SHOW_ATOMS_H, Boolean.toString(DEF_SHOW_ATOMS_H));
 	}
 
@@ -122,7 +122,7 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 		 */
 		int iterationDepth = INSTANCE().getInteger(P_ISOTOPE_ITERATION_DEPTH, DEF_ISOTOPE_ITERATION_DEPTH);
 		isotopeDecider.setIterationDepth(iterationDepth);
-		//
+
 		return isotopeDecider;
 	}
 

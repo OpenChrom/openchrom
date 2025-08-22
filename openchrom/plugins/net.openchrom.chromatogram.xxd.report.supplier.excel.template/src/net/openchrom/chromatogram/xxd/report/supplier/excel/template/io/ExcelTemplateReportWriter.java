@@ -135,7 +135,7 @@ public class ExcelTemplateReportWriter {
 		 * Quantitation Reference
 		 */
 		placeholderProcessors.add(new PlaceholderProcessor("quantitation_reference", d -> d.getQuantitationReference()));
-		//
+
 		return placeholderProcessors;
 	}
 
@@ -149,7 +149,7 @@ public class ExcelTemplateReportWriter {
 				XSSFSheet sheet = workbook.createSheet("Template");
 				XSSFRow row1 = sheet.createRow(0);
 				XSSFRow row2 = sheet.createRow(1);
-				//
+
 				List<PlaceholderProcessor> placeholderProcessors = createPlaceholderProcessors();
 				for(int i = 0; i < placeholderProcessors.size(); i++) {
 					PlaceholderProcessor placeholderProcessor = placeholderProcessors.get(i);
@@ -239,7 +239,7 @@ public class ExcelTemplateReportWriter {
 				if(chromatogram != null) {
 					return function.apply(chromatogram);
 				}
-				//
+
 				return "";
 			}
 		};
@@ -256,7 +256,7 @@ public class ExcelTemplateReportWriter {
 				if(peak != null) {
 					return function.apply(peak);
 				}
-				//
+
 				return "";
 			}
 		};
@@ -273,7 +273,7 @@ public class ExcelTemplateReportWriter {
 				if(peakModel != null) {
 					return function.apply(peakModel);
 				}
-				//
+
 				return "";
 			}
 		};
@@ -290,7 +290,7 @@ public class ExcelTemplateReportWriter {
 				if(libraryInformation != null) {
 					return function.apply(libraryInformation);
 				}
-				//
+
 				return "";
 			}
 		};
@@ -307,7 +307,7 @@ public class ExcelTemplateReportWriter {
 				if(comparisonResult != null) {
 					return function.apply(comparisonResult);
 				}
-				//
+
 				return "";
 			}
 		};
@@ -324,7 +324,7 @@ public class ExcelTemplateReportWriter {
 				if(internalStandard != null) {
 					return function.apply(internalStandard);
 				}
-				//
+
 				return "";
 			}
 		};
@@ -341,7 +341,7 @@ public class ExcelTemplateReportWriter {
 				if(quantitationEntry != null) {
 					return function.apply(quantitationEntry);
 				}
-				//
+
 				return "";
 			}
 		};
@@ -360,7 +360,7 @@ public class ExcelTemplateReportWriter {
 				if(noiseCalculator != null) {
 					return Float.toString(noiseCalculator.getNoiseFactor());
 				}
-				//
+
 				return "";
 			}
 		};
@@ -377,7 +377,7 @@ public class ExcelTemplateReportWriter {
 				if(peak instanceof IChromatogramPeak chromatogramPeak) {
 					return Float.toString(chromatogramPeak.getPurity());
 				}
-				//
+
 				return "";
 			}
 		};
@@ -394,7 +394,7 @@ public class ExcelTemplateReportWriter {
 				if(peak instanceof IChromatogramPeak chromatogramPeak) {
 					return Float.toString(chromatogramPeak.getSignalToNoiseRatio());
 				}
-				//
+
 				return "";
 			}
 		};
@@ -420,7 +420,7 @@ public class ExcelTemplateReportWriter {
 		boolean success = false;
 		boolean first = true;
 		List<PlaceholderProcessor> placeholderProcessors = createPlaceholderProcessors();
-		//
+
 		for(IChromatogram chromatogram : chromatograms) {
 			if(first) {
 				success = populatePeaks(chromatogram, placeholderProcessors, sheet, row);
@@ -431,19 +431,19 @@ public class ExcelTemplateReportWriter {
 				success = populatePeaks(chromatogram, placeholderProcessors, sheetNew, row);
 			}
 		}
-		//
+
 		return success;
 	}
 
 	private boolean populatePeaks(IChromatogram chromatogram, List<PlaceholderProcessor> placeholderProcessors, Sheet sheet, Row row) {
 
 		boolean success = false;
-		//
+
 		if(printPeaks(chromatogram, placeholderProcessors, sheet, row)) {
 			deletePlaceholderRow(row, sheet);
 			success = true;
 		}
-		//
+
 		return success;
 	}
 
@@ -493,11 +493,11 @@ public class ExcelTemplateReportWriter {
 						}
 					}
 				}
-				//
+
 				success = true;
 			}
 		}
-		//
+
 		return success;
 	}
 
@@ -506,7 +506,7 @@ public class ExcelTemplateReportWriter {
 		for(PlaceholderProcessor placeholderProcessor : placeholderProcessors) {
 			placeholderProcessor.populate(cellData);
 		}
-		//
+
 		return cellData.getCellValue();
 	}
 
@@ -538,7 +538,7 @@ public class ExcelTemplateReportWriter {
 				}
 			}
 		}
-		//
+
 		FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
 		evaluator.evaluateAll();
 	}

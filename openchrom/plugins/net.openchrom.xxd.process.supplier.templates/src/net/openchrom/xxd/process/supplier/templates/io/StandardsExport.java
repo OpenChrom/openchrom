@@ -41,11 +41,11 @@ public class StandardsExport extends AbstractChromatogramExportConverter impleme
 		IProcessingInfo<File> processingInfo = new ProcessingInfo<>();
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
 		AssignerStandards assignerStandards = new AssignerStandards();
-		//
+
 		int numberTraces = PreferenceSupplier.getExportNumberTracesAssigner();
 		int deltaLeft = PreferenceSupplier.getExportDeltaLeftMillisecondsStandards();
 		int deltaRight = PreferenceSupplier.getExportDeltaRightMillisecondsStandards();
-		//
+
 		for(IPeak peak : peaks) {
 			IPeakModel peakModel = peak.getPeakModel();
 			List<IInternalStandard> internalStandards = peak.getInternalStandards();
@@ -64,9 +64,9 @@ public class StandardsExport extends AbstractChromatogramExportConverter impleme
 				}
 			}
 		}
-		//
+
 		assignerStandards.exportItems(file);
-		//
+
 		processingInfo.setProcessingResult(file);
 		processingInfo.addInfoMessage(DESCRIPTION, "The standards template has been exported successfully.");
 		return processingInfo;

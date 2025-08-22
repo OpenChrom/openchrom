@@ -41,7 +41,7 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 	private NetcdfFile chromatogram;
 	private Dimension scans;
 	private ArrayFloat.D1 valueArrayIntensity;
-	//
+
 	private int scanDelay;
 	private int scanInterval;
 
@@ -54,7 +54,7 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 	private void initializeVariables() throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
 
 		String variable;
-		//
+
 		String dimension = CDFConstants.DIMENSION_POINT_NUMBER;
 		scans = chromatogram.findDimension(dimension);
 		if(scans == null) {
@@ -64,13 +64,13 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 		if(scans.getLength() < 2) {
 			throw new NotEnoughScanDataStored();
 		}
-		//
+
 		variable = CDFConstants.VARIABLE_ACTUAL_DELAY_TIME;
 		Variable valueScanDelayTime = chromatogram.findVariable(variable);
 		if(valueScanDelayTime == null) {
 			throw new NoCDFVariableDataFound("There could be no data found for the variable: " + variable);
 		}
-		//
+
 		variable = CDFConstants.VARIABLE_ACTUAL_SAMPLING_INTERVAL;
 		Variable valueScanInterval = chromatogram.findVariable(variable);
 		if(valueScanInterval == null) {
@@ -122,13 +122,13 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 		if(scanInterval == 0) {
 			scanInterval = 200; // milliseconds
 		}
-		//
+
 		variable = CDFConstants.VARIABLE_ORDINATE_VALUES;
 		Variable valuesIntensity = chromatogram.findVariable(variable);
 		if(valuesIntensity == null) {
 			throw new NoCDFVariableDataFound("There could be no data found for the variable: " + variable);
 		}
-		//
+
 		valueArrayIntensity = (ArrayFloat.D1)valuesIntensity.read();
 	}
 

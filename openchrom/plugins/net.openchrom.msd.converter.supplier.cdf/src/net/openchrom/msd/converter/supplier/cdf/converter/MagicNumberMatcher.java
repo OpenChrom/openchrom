@@ -31,7 +31,7 @@ public class MagicNumberMatcher extends AbstractMagicNumberMatcher implements IM
 			 */
 			isValidFormat = true;
 		}
-		//
+
 		return isValidFormat;
 	}
 }

@@ -26,16 +26,16 @@ import net.openchrom.swtchart.extension.export.vectorgraphics.support.AWTUtils;
 public class PageSettings {
 
 	public static final int STYLE_FONT_STANDARD = Font.PLAIN;
-	//
+
 	public static final PageSizeOption FULL_LANDSCAPE = PageSizeOption.FULL_LANDSCAPE;
-	//
+
 	private static final int SIZE_FONT_STANDARD = 14;
 	private static final String TYPE_FONT_STANDARD = "Arial";
 	private static final float FACTOR_GRAPHICS = 20.0f;
 	private static final float FACTOR_FONT = 20.0f;
-	//
+
 	private ChartSettings chartSettings;
-	//
+
 	private double width = 0;
 	private double height = 0;
 	private double borderLeftX = 0;
@@ -44,13 +44,13 @@ public class PageSettings {
 	private double borderBottomY = 0;
 	private double intentX = 0;
 	private double intentY = 0;
-	//
+
 	private Color colorBlack = AWTUtils.convertColor(Display.getDefault().getSystemColor(SWT.COLOR_BLACK));
 	private Color colorDarkGray = AWTUtils.convertColor(Display.getDefault().getSystemColor(SWT.COLOR_DARK_GRAY));
 	private Color colorGray = AWTUtils.convertColor(Display.getDefault().getSystemColor(SWT.COLOR_GRAY));
-	//
+
 	private Font font;
-	//
+
 	private BasicStroke strokeSolid;
 	private BasicStroke strokeDash;
 	private BasicStroke strokeDot;
@@ -80,7 +80,7 @@ public class PageSettings {
 
 		BasicStroke stroke = null;
 		float width = lineWidth * getFactorGraphicsFullLandscape();
-		//
+
 		switch(lineStyle) {
 			case DASH:
 				stroke = getStrokeDash(width);
@@ -99,7 +99,7 @@ public class PageSettings {
 				stroke = getStrokeSolid(width);
 				break;
 		}
-		//
+
 		return stroke;
 	}
 
@@ -235,24 +235,24 @@ public class PageSettings {
 
 		float factorGraphics = getFactorGraphicsFullLandscape();
 		float factorFont = getFactorFontFullLandscape();
-		//
+
 		this.borderLeftX = 150 * factorGraphics;
 		this.borderRightX = 50 * factorGraphics;
 		this.borderTopY = 50 * factorGraphics;
 		this.borderBottomY = 100 * factorGraphics;
 		this.intentX = 5 * factorGraphics;
 		this.intentY = 5 * factorGraphics;
-		//
+
 		// BasicStroke.CAP_SQUARE;
 		// BasicStroke.CAP_BUTT;
 		// BasicStroke.CAP_ROUND;
-		//
+
 		// BasicStroke.JOIN_ROUND;
 		// BasicStroke.JOIN_MITER;
 		// BasicStroke.JOIN_BEVEL;
-		//
+
 		this.font = getFont(factorFont);
-		//
+
 		this.strokeSolid = getStrokeSolid(factorGraphics);
 		this.strokeDash = getStrokeDash(factorGraphics);
 		this.strokeDot = getStrokeDot(factorGraphics);

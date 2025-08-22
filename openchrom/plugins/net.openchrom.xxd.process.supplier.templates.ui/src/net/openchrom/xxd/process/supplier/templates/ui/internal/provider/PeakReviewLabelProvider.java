@@ -22,7 +22,7 @@ import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 public class PeakReviewLabelProvider extends AbstractTemplateLabelProvider {
 
 	public static final int INDEX_OPTIMIZE_RANGE = 7;
-	//
+
 	public static final String[] TITLES = { //
 			NAME, //
 			POSITION_START, //

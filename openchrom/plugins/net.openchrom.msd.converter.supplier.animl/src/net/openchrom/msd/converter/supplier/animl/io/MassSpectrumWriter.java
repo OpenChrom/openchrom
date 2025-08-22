@@ -101,7 +101,7 @@ public class MassSpectrumWriter implements IMassSpectraWriter {
 
 		JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
 		Marshaller marshaller = jaxbContext.createMarshaller();
-		//
+
 		AnIMLType anIML = new AnIMLType();
 		anIML.setVersion("0.90");
 		anIML.setSampleSet(createSampleSet(massSpectrum));
@@ -149,7 +149,7 @@ public class MassSpectrumWriter implements IMassSpectraWriter {
 		SeriesSetType seriesSet = new SeriesSetType();
 		seriesSet.setName("Spectrum");
 		seriesSet.setLength(massSpectrum.getNumberOfIons());
-		//
+
 		SeriesType massChargeSeries = new SeriesType();
 		massChargeSeries.setName("Mass/Charge");
 		massChargeSeries.setSeriesID("MASS_CHARGE");
@@ -160,7 +160,7 @@ public class MassSpectrumWriter implements IMassSpectraWriter {
 		massChargeSeries.setDependency(DependencyType.INDEPENDENT);
 		massChargeSeries.setSeriesType(ParameterTypeType.FLOAT_64);
 		massChargeSeries.setPlotScale(PlotScaleType.LINEAR);
-		//
+
 		SeriesType intensitySeries = new SeriesType();
 		intensitySeries.setName("Intensity");
 		UnitType intensityUnit = new UnitType();
@@ -170,7 +170,7 @@ public class MassSpectrumWriter implements IMassSpectraWriter {
 		intensitySeries.setDependency(DependencyType.DEPENDENT);
 		intensitySeries.setSeriesType(ParameterTypeType.FLOAT_32);
 		intensitySeries.setPlotScale(PlotScaleType.LINEAR);
-		//
+
 		if(PreferenceSupplier.getMassSpectrumSaveEncoded()) {
 			int scans = massSpectrum.getNumberOfIons();
 			double[] ions = new double[scans];
@@ -184,7 +184,7 @@ public class MassSpectrumWriter implements IMassSpectraWriter {
 			EncodedValueSetType encodedIons = new EncodedValueSetType();
 			encodedIons.setValue(BinaryReader.encodeArray(ions));
 			massChargeSeries.getEncodedValueSet().add(encodedIons);
-			//
+
 			EncodedValueSetType encodedIntensities = new EncodedValueSetType();
 			encodedIntensities.setValue(BinaryReader.encodeArray(intensities));
 			intensitySeries.getEncodedValueSet().add(encodedIntensities);

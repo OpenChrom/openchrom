@@ -39,7 +39,7 @@ public class ReviewSupport {
 		if(libraryInformation != null) {
 			return libraryInformation.getName();
 		}
-		//
+
 		return "";
 	}
 

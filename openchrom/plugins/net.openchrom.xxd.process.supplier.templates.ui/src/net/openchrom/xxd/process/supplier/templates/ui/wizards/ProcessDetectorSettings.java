@@ -36,7 +36,7 @@ public class ProcessDetectorSettings {
 		this.processingInfo = processingInfo;
 		this.chromatogram = chromatogram;
 		this.detectorSettings.addAll(peakDetectorSettings.getDetectorSettingsList());
-		//
+
 		if(PreferenceSupplier.isDetectorSettingsSort()) {
 			Collections.sort(detectorSettings, new DetectorComparator()); // SORT OK
 		}

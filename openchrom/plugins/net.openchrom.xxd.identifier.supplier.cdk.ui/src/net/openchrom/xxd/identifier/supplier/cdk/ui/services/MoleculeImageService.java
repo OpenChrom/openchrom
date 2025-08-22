@@ -77,7 +77,7 @@ public class MoleculeImageService implements IMoleculeImageService {
 		if(display != null && libraryInformation != null) {
 			image = createImage(display, libraryInformation, width, height);
 		}
-		//
+
 		return image;
 	}
 
@@ -118,7 +118,7 @@ public class MoleculeImageService implements IMoleculeImageService {
 				image = convertMoleculeToImage(display, structureConverter, name, width, height);
 			}
 		}
-		//
+
 		return image;
 	}
 
@@ -142,7 +142,7 @@ public class MoleculeImageService implements IMoleculeImageService {
 		} else {
 			point = new Point(ImageConverter.DEFAULT_WIDTH, ImageConverter.DEFAULT_HEIGHT);
 		}
-		//
+
 		return point;
 	}
 }

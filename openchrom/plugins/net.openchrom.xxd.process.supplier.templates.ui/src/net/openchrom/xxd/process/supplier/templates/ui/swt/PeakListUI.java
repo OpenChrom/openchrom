@@ -23,7 +23,7 @@ public class PeakListUI extends ExtendedTableViewer {
 
 	private static final String[] TITLES = PeakLabelProvider.TITLES;
 	private static final int[] BOUNDS = PeakLabelProvider.BOUNDS;
-	//
+
 	private PeakLabelProvider labelProvider = new PeakLabelProvider();
 	private PeakComparator tableComparator = new PeakComparator();
 

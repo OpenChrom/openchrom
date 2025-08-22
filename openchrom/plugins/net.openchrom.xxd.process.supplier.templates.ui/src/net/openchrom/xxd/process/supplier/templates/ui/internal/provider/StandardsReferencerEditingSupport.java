@@ -53,7 +53,7 @@ public class StandardsReferencerEditingSupport extends AbstractTemplateEditingSu
 				 */
 				setting.setIdentifier(value.toString());
 			}
-			//
+
 			updateTableViewer();
 		}
 	}

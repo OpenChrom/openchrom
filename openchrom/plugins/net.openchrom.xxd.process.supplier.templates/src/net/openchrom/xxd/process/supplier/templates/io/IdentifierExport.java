@@ -42,11 +42,11 @@ public class IdentifierExport extends AbstractChromatogramExportConverter implem
 		IProcessingInfo<File> processingInfo = new ProcessingInfo<>();
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
 		IdentifierSettings identifierSettings = new IdentifierSettings();
-		//
+
 		int deltaLeft = PreferenceSupplier.getExportDeltaLeftMillisecondsIdentifier();
 		int deltaRight = PreferenceSupplier.getExportDeltaRightMillisecondsIdentifier();
 		int numberTraces = PreferenceSupplier.getExportNumberTracesIdentifier();
-		//
+
 		for(IPeak peak : peaks) {
 			IPeakModel peakModel = peak.getPeakModel();
 			ILibraryInformation libraryInformation = IIdentificationTarget.getLibraryInformation(peak);
@@ -65,9 +65,9 @@ public class IdentifierExport extends AbstractChromatogramExportConverter implem
 				identifierSettings.add(setting);
 			}
 		}
-		//
+
 		identifierSettings.exportItems(file);
-		//
+
 		processingInfo.setProcessingResult(file);
 		processingInfo.addInfoMessage(DESCRIPTION, "The identifier template has been exported successfully.");
 		return processingInfo;

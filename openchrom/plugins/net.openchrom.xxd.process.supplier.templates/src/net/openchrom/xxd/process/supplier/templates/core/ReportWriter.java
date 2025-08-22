@@ -60,7 +60,7 @@ import net.openchrom.xxd.process.supplier.templates.util.TracesValidator;
 public class ReportWriter {
 
 	private static final String DELIMITER = "\t";
-	//
+
 	private static final DecimalFormat RETENTION_TIME_FORMAT = ValueFormat.getDecimalFormatEnglish("0.000");
 	private static final DecimalFormat RETENTION_INDEX_FORMAT = ValueFormat.getDecimalFormatEnglish("0");
 	private static final DecimalFormat SIGNAL_TO_NOISE_FORMAT = ValueFormat.getDecimalFormatEnglish("0.00");
@@ -75,7 +75,7 @@ public class ReportWriter {
 		traceSet.remove(0); // TIC doesn't make sense here.
 		List<Integer> traces = new ArrayList<>(traceSet);
 		Collections.sort(traces);
-		//
+
 		try (PrintWriter printWriter = new PrintWriter(new FileWriter(file, append))) {
 			printResults(chromatograms, chromatogramReportSettings, printWriter, fileExists, traces);
 			printWriter.flush();
@@ -89,7 +89,7 @@ public class ReportWriter {
 		List<String> columnsToPrint = extractColumnsToPrint(chromatogramReportSettings, traces);
 		HeaderField headerField = chromatogramReportSettings.getHeaderField();
 		String chromatogramNameMaster = "";
-		//
+
 		for(IChromatogram chromatogram : chromatograms) {
 			/*
 			 * Master
@@ -154,7 +154,7 @@ public class ReportWriter {
 	private List<String> adjustTracesColumns(List<String> columnsToPrint, List<Integer> traces) {
 
 		List<String> columnsToPrintAdjusted = new ArrayList<>();
-		//
+
 		for(String column : columnsToPrint) {
 			if(isTraceColumnSelectedAndActive(column, traces)) {
 				for(int trace : traces) {
@@ -172,7 +172,7 @@ public class ReportWriter {
 				columnsToPrintAdjusted.add(column);
 			}
 		}
-		//
+
 		return columnsToPrintAdjusted;
 	}
 
@@ -189,19 +189,19 @@ public class ReportWriter {
 				return true;
 			}
 		}
-		//
+
 		return false;
 	}
 
 	private Map<ReportSetting, List<IPeak>> printChromatogram(IChromatogram chromatogram, ChromatogramReportSettings chromatogramReportSettings, List<String> columnsToPrint, boolean fileExists, String chromatogramName, List<Integer> traces, PrintWriter printWriter) {
 
 		Map<ReportSetting, List<IPeak>> mappedResults = mapChromatogram(chromatogram, chromatogramReportSettings);
-		//
+
 		double chromatogramPeakArea = chromatogram.getPeakIntegratedArea();
 		RetentionIndexMap retentionIndexMap = new RetentionIndexMap(chromatogram);
 		printChromatogramHeader(chromatogram, chromatogramReportSettings, printWriter);
 		printResults(chromatogramReportSettings, mappedResults, columnsToPrint, fileExists, chromatogramName, traces, retentionIndexMap, chromatogramPeakArea, printWriter);
-		//
+
 		return mappedResults;
 	}
 
@@ -214,7 +214,7 @@ public class ReportWriter {
 			Map<String, String> headerData = chromatogram.getHeaderDataMap();
 			List<String> keys = new ArrayList<>(headerData.keySet());
 			Collections.sort(keys); // SORT OK
-			//
+
 			for(String key : keys) {
 				printWriter.print(key);
 				printWriter.print(": ");
@@ -252,10 +252,10 @@ public class ReportWriter {
 		List<ReportSetting> reportSettings = chromatogramReportSettings.getReportSettings();
 		String decimalFormatPattern = chromatogramReportSettings.getFormatConcentration();
 		DecimalFormat decimalFormat = decimalFormatPattern.isEmpty() ? null : ValueFormat.getDecimalFormatEnglish(decimalFormatPattern);
-		//
+
 		printResultHeader(chromatogramReportSettings, columnsToPrint, fileExists, printWriter);
 		printResultData(reportSettings, mappedResults, columnsToPrint, chromatogramName, traces, retentionIndexMap, chromatogramPeakArea, decimalFormat, printWriter);
-		//
+
 		if(chromatogramReportSettings.isPrintSectionSeparator()) {
 			printWriter.println("");
 		}
@@ -269,7 +269,7 @@ public class ReportWriter {
 				printHeader = chromatogramReportSettings.isAppendResultsHeader();
 			}
 		}
-		//
+
 		if(printHeader) {
 			printList(columnsToPrint, printWriter);
 		}
@@ -328,7 +328,7 @@ public class ReportWriter {
 				dataMap.put(ReportColumns.MEAN_SIGNAL_TO_NOISE_RATIOS_PEAKS, meanSignalToNoiseRatios);
 				dataMap.put(ReportColumns.MEDIAN_SIGNAL_TO_NOISE_RATIOS_PEAKS, medianSignalToNoiseRatios);
 				dataMap.put(ReportColumns.MAX_SIGNAL_TO_NOISE_RATIOS_PEAKS, stopSignalToNoiseRatios);
-				//
+
 				for(int trace : traces) {
 					double[] areasByTrace = extractPeakAreasByTrace(peaks, trace);
 					dataMap.put(ReportColumns.createTraceColumnMin(trace), AREA_FORMAT.format(Calculations.getMin(areasByTrace)));
@@ -336,7 +336,7 @@ public class ReportWriter {
 					dataMap.put(ReportColumns.createTraceColumnMedian(trace), AREA_FORMAT.format(Calculations.getMedian(areasByTrace)));
 					dataMap.put(ReportColumns.createTraceColumnMax(trace), AREA_FORMAT.format(Calculations.getMax(areasByTrace)));
 				}
-				//
+
 				dataMap.put(ReportColumns.SUM_AREA, AREA_FORMAT.format(Calculations.getSum(areas)));
 				dataMap.put(ReportColumns.MIN_AREA, AREA_FORMAT.format(Calculations.getMin(areas)));
 				dataMap.put(ReportColumns.MAX_AREA, AREA_FORMAT.format(Calculations.getMax(areas)));
@@ -352,7 +352,7 @@ public class ReportWriter {
 				for(String columnToPrint : columnsToPrint) {
 					items.add(dataMap.getOrDefault(columnToPrint, "--"));
 				}
-				//
+
 				printList(items, printWriter);
 			}
 		}
@@ -375,7 +375,7 @@ public class ReportWriter {
 
 		Map<ReportSetting, List<IPeak>> mappedResults = new HashMap<>();
 		RetentionIndexMap retentionIndexMap = new RetentionIndexMap(chromatogram);
-		//
+
 		for(ReportSetting reportSetting : chromatogramReportSettings.getReportSettings()) {
 			List<IPeak> matchedPeaks = extractPeaks(chromatogram, reportSetting, retentionIndexMap);
 			List<IPeak> storedPeaks = mappedResults.get(reportSetting);
@@ -386,7 +386,7 @@ public class ReportWriter {
 				mappedResults.put(reportSetting, storedPeaks);
 			}
 		}
-		//
+
 		return mappedResults;
 	}
 
@@ -401,10 +401,10 @@ public class ReportWriter {
 			startRetentionTime = chromatogram.getStartRetentionTime();
 			stopRetentionTime = chromatogram.getStopRetentionTime();
 		}
-		//
+
 		List<? extends IPeak> peaks = chromatogram.getPeaks(startRetentionTime, stopRetentionTime);
 		List<IPeak> matchedPeaks = new ArrayList<>();
-		//
+
 		if(peaks != null && !peaks.isEmpty()) {
 			switch(reportSetting.getReportStrategy()) {
 				case ALL:
@@ -442,7 +442,7 @@ public class ReportWriter {
 							largestPeak = peak;
 						}
 					}
-					//
+
 					if(largestPeak != null && largestArea > 0) {
 						matchedPeaks.add(largestPeak);
 					}
@@ -457,14 +457,14 @@ public class ReportWriter {
 							smallestPeak = peak;
 						}
 					}
-					//
+
 					if(smallestPeak != null && smallestArea > 0) {
 						matchedPeaks.add(smallestPeak);
 					}
 					break;
 			}
 		}
-		//
+
 		return matchedPeaks;
 	}
 
@@ -474,17 +474,17 @@ public class ReportWriter {
 		 * Library Information
 		 */
 		ILibraryInformation libraryInformation = identificationTarget.getLibraryInformation();
-		//
+
 		String name = reportSetting.getName();
 		if(!name.isEmpty() && libraryInformation.getName().equals(name)) {
 			return true;
 		}
-		//
+
 		String casNumber = reportSetting.getCasNumber();
 		if(!casNumber.isEmpty() && libraryInformation.getCasNumber().equals(casNumber)) {
 			return true;
 		}
-		//
+
 		return false;
 	}
 
@@ -584,7 +584,7 @@ public class ReportWriter {
 	private static double getIntegratedAreaMSD(IPeakMSD peakMSD, int trace) {
 
 		double area = 0.0d;
-		//
+
 		List<IIntegrationEntry> integrationEntries = peakMSD.getIntegrationEntries();
 		if(integrationEntries.size() > 1) {
 			/*
@@ -613,7 +613,7 @@ public class ReportWriter {
 							tracesIntensity += intensity;
 						}
 					}
-					//
+
 					if(totalIntensity > 0) {
 						double percentage = 1.0d / totalIntensity * tracesIntensity;
 						area = integratedArea * percentage;
@@ -621,14 +621,14 @@ public class ReportWriter {
 				}
 			}
 		}
-		//
+
 		return area;
 	}
 
 	private static double getIntegratedAreaWSD(IPeakWSD peakWSD, int trace) {
 
 		double area = 0.0d;
-		//
+
 		List<IIntegrationEntry> integrationEntries = peakWSD.getIntegrationEntries();
 		if(integrationEntries.size() > 1) {
 			/*
@@ -657,7 +657,7 @@ public class ReportWriter {
 							tracesIntensity += intensity;
 						}
 					}
-					//
+
 					if(totalIntensity > 0) {
 						double percentage = 1.0d / totalIntensity * tracesIntensity;
 						area = integratedArea * percentage;
@@ -665,7 +665,7 @@ public class ReportWriter {
 				}
 			}
 		}
-		//
+
 		return area;
 	}
 
@@ -674,19 +674,19 @@ public class ReportWriter {
 		if(chromatogramPeakArea > 0.0d) {
 			return (100.0d / chromatogramPeakArea) * Calculations.getSum(areas);
 		}
-		//
+
 		return 0.0d;
 	}
 
 	private String getConcentrations(List<IPeak> peaks, DecimalFormat decimalFormat) {
 
 		StringBuilder builder = new StringBuilder();
-		//
+
 		List<IQuantitationEntry> quantitationEntries = new ArrayList<>();
 		for(IPeak peak : peaks) {
 			quantitationEntries.addAll(peak.getQuantitationEntries());
 		}
-		//
+
 		Collections.sort(quantitationEntries, (q1, q2) -> q1.getName().compareTo(q2.getName()));
 		Iterator<IQuantitationEntry> iterator = quantitationEntries.iterator();
 		while(iterator.hasNext()) {
@@ -698,7 +698,7 @@ public class ReportWriter {
 				builder.append(" | ");
 			}
 		}
-		//
+
 		return builder.toString();
 	}
 

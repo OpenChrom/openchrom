@@ -38,13 +38,13 @@ import net.openchrom.xxd.process.supplier.templates.util.StandardsReferencerVali
 public class AssignerReferences extends ArrayList<AssignerReference> implements ISettings {
 
 	private static final Logger logger = Logger.getLogger(AssignerReferences.class);
-	//
+
 	public static final String DESCRIPTION = "Internal References";
 	public static final String FILE_EXTENSION = ".irt";
 	public static final String FILE_NAME = DESCRIPTION.replaceAll("\\s", "") + FILE_EXTENSION;
 	public static final String FILTER_EXTENSION = "*" + FILE_EXTENSION;
 	public static final String FILTER_NAME = DESCRIPTION + " (*" + FILE_EXTENSION + ")";
-	//
+
 	private static final long serialVersionUID = -219152470872308287L;
 	private StandardsReferencerListUtil listUtil = new StandardsReferencerListUtil();
 
@@ -119,12 +119,12 @@ public class AssignerReferences extends ArrayList<AssignerReference> implements 
 
 		boolean success = false;
 		try (PrintWriter printWriter = new PrintWriter(file)) {
-			//
+
 			List<AssignerReference> settings = new ArrayList<>(this);
 			if(PreferenceSupplier.isSortExportTemplate()) {
 				Collections.sort(settings, new ReferenceComparator()); // SORT OK
 			}
-			//
+
 			for(AssignerReference setting : settings) {
 				StringBuilder builder = new StringBuilder();
 				extractSetting(setting, builder);
@@ -135,7 +135,7 @@ public class AssignerReferences extends ArrayList<AssignerReference> implements 
 		} catch(FileNotFoundException e) {
 			logger.warn(e);
 		}
-		//
+
 		return success;
 	}
 
@@ -143,14 +143,14 @@ public class AssignerReferences extends ArrayList<AssignerReference> implements 
 
 		AssignerReference setting = null;
 		StandardsReferencerValidator validator = listUtil.getValidator();
-		//
+
 		IStatus status = validator.validate(text);
 		if(status.isOK()) {
 			setting = validator.getSetting();
 		} else {
 			logger.warn(status.getMessage());
 		}
-		//
+
 		return setting;
 	}
 
@@ -172,13 +172,13 @@ public class AssignerReferences extends ArrayList<AssignerReference> implements 
 	private void extractSetting(AssignerReference setting, StringBuilder builder) {
 
 		List<String> entries = new ArrayList<>();
-		//
+
 		entries.add(getFormattedPosition(setting.getPositionStart()));
 		entries.add(getFormattedPosition(setting.getPositionStop()));
 		entries.add(setting.getInternalStandard());
 		entries.add(setting.getIdentifier());
 		entries.add(setting.getPositionDirective().name());
-		//
+
 		compile(builder, entries);
 	}
 }

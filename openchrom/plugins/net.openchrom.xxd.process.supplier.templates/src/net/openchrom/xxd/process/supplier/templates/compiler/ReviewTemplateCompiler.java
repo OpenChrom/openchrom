@@ -32,12 +32,12 @@ public class ReviewTemplateCompiler implements ITemplateExport {
 	public boolean compilePeaks(File file, List<? extends IPeak> peaks, ReviewExportProcessSettings reviewExportProcessSettings) {
 
 		ReviewSettings reviewSettings = new ReviewSettings();
-		//
+
 		int deltaLeft = reviewExportProcessSettings.getRetentionTimeDeltaLeft();
 		int deltaRight = reviewExportProcessSettings.getRetentionTimeDeltaRight();
 		int numberTraces = reviewExportProcessSettings.getNumberTraces();
 		boolean optimizeRange = reviewExportProcessSettings.isOptimizeRange();
-		//
+
 		for(IPeak peak : peaks) {
 			IPeakModel peakModel = peak.getPeakModel();
 			ILibraryInformation libraryInformation = IIdentificationTarget.getLibraryInformation(peak);
@@ -53,7 +53,7 @@ public class ReviewTemplateCompiler implements ITemplateExport {
 				reviewSettings.add(setting);
 			}
 		}
-		//
+
 		return reviewSettings.exportItems(file);
 	}
 }

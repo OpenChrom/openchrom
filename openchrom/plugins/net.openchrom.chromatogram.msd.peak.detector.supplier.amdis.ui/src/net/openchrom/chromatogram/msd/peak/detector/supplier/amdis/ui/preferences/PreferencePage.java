@@ -84,7 +84,7 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 		if(OperatingSystemUtils.isMac()) {
 			addField(new StringFieldEditor(PreferenceSupplier.P_MAC_WINE_BINARY, "Wine binary (/Applications/Wine.app)", getFieldEditorParent()));
 		}
-		//
+
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new LabelFieldEditor("AMDIS settings.", getFieldEditorParent()));
 		addField(autodetectLowMZ = new BooleanFieldEditor(PreferenceSupplier.P_LOW_MZ_AUTO, "Autodetect low m/z:", getFieldEditorParent()));
@@ -97,7 +97,7 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 		addField(solventTailingMZ = new ExtendedIntegerFieldEditor(PreferenceSupplier.P_SOLVENT_TAILING_MZ, "Solvent tailing m/z:", getFieldEditorParent()));
 		addField(useColumnBleed = new BooleanFieldEditor(PreferenceSupplier.P_USE_COLUMN_BLEED, "Use column bleed:", getFieldEditorParent()));
 		addField(columnBleedMZ = new ExtendedIntegerFieldEditor(PreferenceSupplier.P_COLUMN_BLEED_MZ, "Column bleed m/z:", getFieldEditorParent()));
-		//
+
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new ExtendedIntegerFieldEditor(PreferenceSupplier.P_PEAK_WIDTH, "Peak width:", IOnsiteSettings.MIN_PEAK_WIDTH, IOnsiteSettings.MAX_PEAK_WIDTH, getFieldEditorParent()));
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
@@ -106,7 +106,7 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 		addField(new ComboFieldEditor(PreferenceSupplier.P_RESOLUTION, "Resolution:", Resolution.getItems(), getFieldEditorParent()));
 		addField(new ComboFieldEditor(PreferenceSupplier.P_SENSITIVITY, "Sensitivity:", Sensitivity.getItems(), getFieldEditorParent()));
 		addField(new ComboFieldEditor(PreferenceSupplier.P_SHAPE_REQUIREMENTS, "Shape Requirements:", ShapeRequirements.getItems(), getFieldEditorParent()));
-		//
+
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new LabelFieldEditor("Extra settings (to improve the result quality).", getFieldEditorParent()));
 		addField(new FloatFieldEditor(PreferenceSupplier.P_MIN_SN_RATIO, "Minimum S/N ratio (0 = add all peaks):", 0.0f, Float.MAX_VALUE, getFieldEditorParent()));
@@ -115,11 +115,11 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 		addField(new FloatFieldEditor(PreferenceSupplier.P_MIN_TAILING, "Min Tailing:", 0.0f, Float.MAX_VALUE, getFieldEditorParent()));
 		addField(new FloatFieldEditor(PreferenceSupplier.P_MAX_TAILING, "Max Tailing:", 0.0f, Float.MAX_VALUE, getFieldEditorParent()));
 		addField(new ComboFieldEditor(PreferenceSupplier.P_MODEL_PEAK_OPTION, "Model Peak Option", ModelPeakOption.getOptions(), getFieldEditorParent()));
-		//
+
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new LabelFieldEditor("Extra settings (to improve the result quality).", getFieldEditorParent()));
 		addField(new FileFieldEditor(PreferenceSupplier.P_PATH_ELU_FILE, "ELU File", getFieldEditorParent()));
-		//
+
 		for(Control control : getFieldEditorParent().getChildren()) {
 			control.addMouseListener(new MouseAdapter() {
 
@@ -130,7 +130,7 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 				}
 			});
 		}
-		//
+
 		enableDisableFieldEditors(true);
 	}
 
@@ -151,7 +151,7 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 		boolean isOmitMZ;
 		boolean isUseSolventTailing;
 		boolean isUseColumnBleed;
-		//
+
 		if(loadInitially) {
 			IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
 			isAutodetectLowMZ = preferenceStore.getBoolean(PreferenceSupplier.P_LOW_MZ_AUTO);
@@ -166,7 +166,7 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 			isUseSolventTailing = useSolventTailing.getBooleanValue();
 			isUseColumnBleed = useColumnBleed.getBooleanValue();
 		}
-		//
+
 		startMZ.setEnabled(!isAutodetectLowMZ, getFieldEditorParent());
 		stopMZ.setEnabled(!isAutodetectHighMZ, getFieldEditorParent());
 		omitedMZ.setEnabled(isOmitMZ, getFieldEditorParent());

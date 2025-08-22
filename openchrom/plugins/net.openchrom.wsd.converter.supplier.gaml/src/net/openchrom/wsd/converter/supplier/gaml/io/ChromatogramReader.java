@@ -30,19 +30,19 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader implements
 	public static IChromatogramWSDReader getReader(final File file) throws IOException {
 
 		IChromatogramWSDReader chromatogramReader = null;
-		//
+
 		final char[] charBuffer = new char[100];
 		try (FileReader fileReader = new FileReader(file)) {
 			fileReader.read(charBuffer);
 		}
-		//
+
 		final String header = new String(charBuffer);
 		if(header.contains(Reader120.VERSION)) {
 			chromatogramReader = new ChromatogramReaderVersion120();
 		} else {
 			throw new UnknownVersionException();
 		}
-		//
+
 		return chromatogramReader;
 	}
 

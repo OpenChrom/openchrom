@@ -42,12 +42,12 @@ public class PageResults {
 
 		control = new Composite(parent, SWT.NONE);
 		control.setLayout(new FillLayout());
-		//
+
 		enhancedResultsEditor = new EnhancedResultsEditor(control, SWT.NONE);
 		enhancedResultsEditor.setLayoutData(new GridData(GridData.FILL_BOTH));
 		enhancedResultsEditor.setLayout(new GridLayout(1, true));
 		enhancedResultsEditor.setBackground(Colors.WHITE);
-		//
+
 		enhancedResultsEditor.addPreviousListener(new IPreviousListener() {
 
 			@Override

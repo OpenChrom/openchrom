@@ -37,7 +37,7 @@ public class CDKMolToMoleculeConverter implements IStructureConverter {
 	public IAtomContainer generate(String input) {
 
 		IAtomContainer molecule = null;
-		//
+
 		if(input != null && !input.isEmpty()) {
 			try (MDLV2000Reader mdlReader = new MDLV2000Reader(new ByteArrayInputStream(input.getBytes()), Mode.RELAXED)) {
 				IChemFile chemFile = mdlReader.read(SilentChemObjectBuilder.getInstance().newInstance(IChemFile.class));
@@ -54,7 +54,7 @@ public class CDKMolToMoleculeConverter implements IStructureConverter {
 				logger.error(e);
 			}
 		}
-		//
+
 		return molecule;
 	}
 }

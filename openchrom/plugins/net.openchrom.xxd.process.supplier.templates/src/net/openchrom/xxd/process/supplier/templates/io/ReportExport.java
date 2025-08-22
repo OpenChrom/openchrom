@@ -42,10 +42,10 @@ public class ReportExport extends AbstractChromatogramExportConverter implements
 		IProcessingInfo<File> processingInfo = new ProcessingInfo<>();
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
 		ReportSettings reportSettings = new ReportSettings();
-		//
+
 		int deltaLeft = PreferenceSupplier.getExportDeltaLeftMillisecondsReport();
 		int deltaRight = PreferenceSupplier.getExportDeltaRightMillisecondsReport();
-		//
+
 		for(IPeak peak : peaks) {
 			IPeakModel peakModel = peak.getPeakModel();
 			ILibraryInformation libraryInformation = IIdentificationTarget.getLibraryInformation(peak);
@@ -59,9 +59,9 @@ public class ReportExport extends AbstractChromatogramExportConverter implements
 				reportSettings.add(setting);
 			}
 		}
-		//
+
 		reportSettings.exportItems(file);
-		//
+
 		processingInfo.setProcessingResult(file);
 		processingInfo.addInfoMessage(DESCRIPTION, "The report template has been exported successfully.");
 		return processingInfo;

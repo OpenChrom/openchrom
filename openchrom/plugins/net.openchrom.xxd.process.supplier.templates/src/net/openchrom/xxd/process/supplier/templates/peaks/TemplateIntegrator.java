@@ -52,7 +52,7 @@ public class TemplateIntegrator extends AbstractPeakIntegrator {
 					int stopRetentionTime = setting.getRetentionTimeStop(retentionIndexMap);
 					List<IPeak> peaksToIntegrate = new ArrayList<>();
 					for(IPeak peak : peaks) {
-						//
+
 						if(startRetentionTime == 0 && stopRetentionTime == 0) {
 							/*
 							 * Identifier is matched
@@ -74,10 +74,10 @@ public class TemplateIntegrator extends AbstractPeakIntegrator {
 							}
 						}
 					}
-					//
+
 					integratePeaks(peaksToIntegrate, setting.getIntegrator());
 				}
-				//
+
 				// IPeakIntegrationResults peakIntegrationResults = new PeakIntegrationResults();
 				// peakIntegrationResults.add(peakIntegrationResult);
 				// processingInfo.setProcessingResult(peakIntegrationResults);
@@ -148,7 +148,7 @@ public class TemplateIntegrator extends AbstractPeakIntegrator {
 				return true;
 			}
 		}
-		//
+
 		return false;
 	}
 
@@ -167,7 +167,7 @@ public class TemplateIntegrator extends AbstractPeakIntegrator {
 					integratorId = "";
 					break;
 			}
-			//
+
 			if(!"".equals(integratorId)) {
 				PeakIntegrator.integrate(peaks, integratorId, new NullProgressMonitor());
 			}

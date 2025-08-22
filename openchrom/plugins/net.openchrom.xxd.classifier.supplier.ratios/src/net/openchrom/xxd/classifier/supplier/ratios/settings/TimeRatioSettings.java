@@ -68,7 +68,7 @@ public class TimeRatioSettings extends AbstractChromatogramClassifierSettings im
 		TimeRatioListUtil util = new TimeRatioListUtil();
 		TimeRatioValidator validator = new TimeRatioValidator();
 		TimeRatios ratios = new TimeRatios();
-		//
+
 		List<String> items = util.getList(ratioSettings);
 		for(String item : items) {
 			IStatus status = validator.validate(item);
@@ -76,7 +76,7 @@ public class TimeRatioSettings extends AbstractChromatogramClassifierSettings im
 				ratios.add(validator.getSetting());
 			}
 		}
-		//
+
 		return ratios;
 	}
 }

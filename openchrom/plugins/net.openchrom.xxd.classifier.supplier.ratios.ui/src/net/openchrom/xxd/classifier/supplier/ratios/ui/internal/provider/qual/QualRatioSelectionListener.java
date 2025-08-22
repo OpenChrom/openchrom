@@ -42,7 +42,7 @@ public class QualRatioSelectionListener extends SelectionAdapter implements Sele
 				handleSelection(e.display, data);
 			}
 		} catch(Exception e1) {
-			//
+
 		}
 	}
 

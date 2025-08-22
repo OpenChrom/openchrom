@@ -79,7 +79,7 @@ public class QuantRatio extends AbstractPeakRatio {
 		if(concentration <= expectedConcentration) {
 			offset *= -1;
 		}
-		//
+
 		return 1.0d + offset;
 	}
 

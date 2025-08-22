@@ -39,7 +39,7 @@ public class PeakDetectorListUtil extends AbstractTemplateListUtil<PeakDetectorV
 		detectorSetting.setReferenceIdentifier("");
 		detectorSetting.setName("Styrene");
 		detectorSetting.setPositionDirective(PositionDirective.RETENTION_TIME_MIN);
-		//
+
 		DetectorSettings detectorSettings = new DetectorSettings();
 		return detectorSettings.extractSettingString(detectorSetting);
 	}

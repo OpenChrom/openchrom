@@ -49,7 +49,7 @@ public class PeakReviewEditingSupport extends AbstractTemplateEditingSupport {
 				}
 			}
 		}
-		//
+
 		return false;
 	}
 
@@ -85,7 +85,7 @@ public class PeakReviewEditingSupport extends AbstractTemplateEditingSupport {
 					setting.setOptimizeRange((boolean)value);
 					break;
 			}
-			//
+
 			updateTableViewer();
 		}
 	}

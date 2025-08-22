@@ -38,15 +38,15 @@ import net.openchrom.xxd.process.supplier.templates.util.ReportValidator;
 public class ReportSettings extends ArrayList<ReportSetting> implements ISettings {
 
 	private static final Logger logger = Logger.getLogger(ReportSettings.class);
-	//
+
 	public static final String DESCRIPTION = "Chromatogram Report Template";
 	public static final String FILE_EXTENSION = ".crt";
 	public static final String FILE_NAME = DESCRIPTION.replaceAll("\\s", "") + FILE_EXTENSION;
 	public static final String FILTER_EXTENSION = "*" + FILE_EXTENSION;
 	public static final String FILTER_NAME = DESCRIPTION + " (*" + FILE_EXTENSION + ")";
-	//
+
 	private static final long serialVersionUID = -5652667140827481688L;
-	//
+
 	private ReportListUtil listUtil = new ReportListUtil();
 
 	public Set<String> keySet() {
@@ -129,12 +129,12 @@ public class ReportSettings extends ArrayList<ReportSetting> implements ISetting
 
 		boolean success = false;
 		try (PrintWriter printWriter = new PrintWriter(file)) {
-			//
+
 			List<ReportSetting> settings = new ArrayList<>(this);
 			if(PreferenceSupplier.isSortExportTemplate()) {
 				Collections.sort(settings, new ReportComparator()); // SORT OK
 			}
-			//
+
 			for(ReportSetting setting : settings) {
 				StringBuilder builder = new StringBuilder();
 				extractSetting(setting, builder);
@@ -145,7 +145,7 @@ public class ReportSettings extends ArrayList<ReportSetting> implements ISetting
 		} catch(FileNotFoundException e) {
 			logger.warn(e);
 		}
-		//
+
 		return success;
 	}
 
@@ -153,14 +153,14 @@ public class ReportSettings extends ArrayList<ReportSetting> implements ISetting
 
 		ReportSetting setting = null;
 		ReportValidator validator = listUtil.getValidator();
-		//
+
 		IStatus status = validator.validate(text);
 		if(status.isOK()) {
 			setting = validator.getSetting();
 		} else {
 			logger.warn(status.getMessage());
 		}
-		//
+
 		return setting;
 	}
 
@@ -182,14 +182,14 @@ public class ReportSettings extends ArrayList<ReportSetting> implements ISetting
 	private void extractSetting(ReportSetting setting, StringBuilder builder) {
 
 		List<String> entries = new ArrayList<>();
-		//
+
 		entries.add(getFormattedPosition(setting.getPositionStart()));
 		entries.add(getFormattedPosition(setting.getPositionStop()));
 		entries.add(setting.getName());
 		entries.add(setting.getCasNumber());
 		entries.add(setting.getReportStrategy().name());
 		entries.add(setting.getPositionDirective().name());
-		//
+
 		compile(builder, entries);
 	}
 }

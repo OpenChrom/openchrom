@@ -30,7 +30,7 @@ public class Activator extends AbstractActivatorUI {
 
 	private static Activator activator;
 	private static BundleContext context;
-	//
+
 	private ServiceTracker<IDeconvolutionService, IDeconvolutionService> deconvolutionServiceTracker = null;
 	private ServiceTracker<IDeconvolutionBatchService, IDeconvolutionBatchService> deconvolutionBatchServiceTracker = null;
 	private ServiceTracker<IIdentificationService, IIdentificationService> identificationServiceTracker = null;
@@ -110,25 +110,25 @@ public class Activator extends AbstractActivatorUI {
 
 		deconvolutionServiceTracker = new ServiceTracker<>(context, IDeconvolutionService.class, null);
 		deconvolutionServiceTracker.open();
-		//
+
 		deconvolutionBatchServiceTracker = new ServiceTracker<>(context, IDeconvolutionBatchService.class, null);
 		deconvolutionBatchServiceTracker.open();
-		//
+
 		identificationServiceTracker = new ServiceTracker<>(context, IIdentificationService.class, null);
 		identificationServiceTracker.open();
-		//
+
 		alignmentServiceTracker = new ServiceTracker<>(context, IAlignmentService.class, null);
 		alignmentServiceTracker.open();
-		//
+
 		averageChromatogramServiceTracker = new ServiceTracker<>(context, IAverageChromatogramService.class, null);
 		averageChromatogramServiceTracker.open();
-		//
+
 		localMinimaScanServiceTracker = new ServiceTracker<>(context, ILocalMinimaScanService.class, null);
 		localMinimaScanServiceTracker.open();
-		//
+
 		localMaximaScanServiceTracker = new ServiceTracker<>(context, ILocalMaximaScanService.class, null);
 		localMaximaScanServiceTracker.open();
-		//
+
 		analysisSegmentServiceTracker = new ServiceTracker<>(context, IAnalysisSegmentService.class, null);
 		analysisSegmentServiceTracker.open();
 	}

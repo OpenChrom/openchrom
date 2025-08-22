@@ -72,14 +72,14 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		BaseChart baseChart = scrollableChart.getBaseChart();
 		VectorExportSettingsDialog exportSettingsDialog = new VectorExportSettingsDialog(shell, baseChart);
 		exportSettingsDialog.create();
-		//
+
 		if(exportSettingsDialog.open() == Window.OK) {
-			//
+
 			int indexAxisX = exportSettingsDialog.getIndexAxisSelectionX();
 			int indexAxisY = exportSettingsDialog.getIndexAxisSelectionY();
 			return getCommandSequence(pageSizeOption, indexAxisX, indexAxisY, scrollableChart);
 		}
-		//
+
 		return null;
 	}
 
@@ -122,7 +122,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 			drawTitle(graphics2D, pageSettings, scrollableChart);
 			drawBranding(graphics2D, pageSettings);
 		}
-		//
+
 		graphics2D.setClip(0, 0, (int)Math.round(pageSize.getWidth()), (int)Math.round(pageSize.getHeight()));
 		return graphics2D.getCommands();
 	}
@@ -157,7 +157,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		IAxisScaleConverter axisScaleConverterX = null;
 		String labelX = axisSettingsX.getLabel();
 		DecimalFormat decimalFormatX = axisSettingsX.getDecimalFormat();
-		//
+
 		if(axisSettingsX instanceof ISecondaryAxisSettings secondaryAxisSettings) {
 			axisScaleConverterX = secondaryAxisSettings.getAxisScaleConverter();
 			labelX = secondaryAxisSettings.getLabel();
@@ -245,7 +245,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		IAxisScaleConverter axisScaleConverterY = null;
 		String labelY = axisSettingsY.getLabel();
 		DecimalFormat decimalFormatY = axisSettingsY.getDecimalFormat();
-		//
+
 		if(axisSettingsY instanceof ISecondaryAxisSettings secondaryAxisSettings) {
 			axisScaleConverterY = secondaryAxisSettings.getAxisScaleConverter();
 			labelY = secondaryAxisSettings.getLabel();
@@ -317,21 +317,21 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		double xBorderRight = pageSettings.getBorderRightX();
 		double yBorderTop = pageSettings.getBorderTopY();
 		double yBorderBottom = pageSettings.getBorderBottomY();
-		//
+
 		IChartSettings chartSettings = baseChart.getChartSettings();
 		RangeRestriction raneRangeRestriction = chartSettings.getRangeRestriction();
 		double extendMaxY = raneRangeRestriction.getExtendMaxY();
-		//
+
 		IAxis axisX = baseChart.getAxisSet().getXAxis(BaseChart.ID_PRIMARY_X_AXIS);
 		IAxis axisY = baseChart.getAxisSet().getYAxis(BaseChart.ID_PRIMARY_Y_AXIS);
 		Range rangeX = axisX.getRange();
 		Range rangeY = axisY.getRange();
-		//
+
 		double xMin = rangeX.lower; // baseChart.getMinX();
 		double xMax = rangeX.upper; // baseChart.getMaxX();
 		double yMin = baseChart.getMinY(); // Watch Out: Force to have no offset
 		double yMax = rangeY.upper; // baseChart.getMaxY();
-		//
+
 		ISeries<?>[] seriesSet = baseChart.getSeriesSet().getSeries();
 		for(ISeries<?> series : seriesSet) {
 			/*
@@ -345,7 +345,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 					double[] ySeries = series.getYSeries();
 					double xDenumerator = xMax - xMin;
 					double yDenumerator = (yMax + yMax * extendMaxY) - yMin;
-					//
+
 					if(xMax > 0 && yMax > 0) {
 						/*
 						 * Factors
@@ -396,36 +396,36 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		double xBorderRight = pageSettings.getBorderRightX();
 		double yBorderTop = pageSettings.getBorderTopY();
 		double yBorderBottom = pageSettings.getBorderBottomY();
-		//
+
 		IChartSettings chartSettings = baseChart.getChartSettings();
 		RangeRestriction raneRangeRestriction = chartSettings.getRangeRestriction();
 		double extendMaxY = raneRangeRestriction.getExtendMaxY();
-		//
+
 		graphics2D.setFont(pageSettings.getFont());
 		graphics2D.setColor(pageSettings.getColorBlack());
 		graphics2D.setStroke(pageSettings.getStrokeSolid());
 		FontMetrics fontMetrics = graphics2D.getFontMetrics();
-		//
+
 		IAxis axisX = baseChart.getAxisSet().getXAxis(BaseChart.ID_PRIMARY_X_AXIS);
 		IAxis axisY = baseChart.getAxisSet().getYAxis(BaseChart.ID_PRIMARY_Y_AXIS);
 		Range rangeX = axisX.getRange();
 		Range rangeY = axisY.getRange();
-		//
+
 		double xMin = rangeX.lower; // baseChart.getMinX();
 		double xMax = rangeX.upper; // baseChart.getMaxX();
 		double yMin = baseChart.getMinY(); // Force to have no offset
 		double yMax = rangeY.upper; // baseChart.getMaxY();
-		//
+
 		double xDenumerator = xMax - xMin;
 		double yDenumerator = (yMax + yMax * extendMaxY) - yMin;
-		//
+
 		if(xMax > 0 && yMax > 0) {
 			/*
 			 * Factors
 			 */
 			double factorX = (width - xBorderLeft - xBorderRight) / xDenumerator;
 			double factorY = (height - yBorderTop - yBorderBottom) / yDenumerator;
-			//
+
 			for(ICustomSeries customSeries : baseChart.getCustomSeries()) {
 				if(customSeries.isDraw()) {
 					/*
@@ -434,14 +434,14 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 					for(IGraphicElement graphicElement : customSeries.getGraphicElements()) {
 						double x = graphicElement.getX();
 						if(x >= xMin && x <= xMax) {
-							//
+
 							graphics2D.setColor(AWTUtils.convertColor(graphicElement.getColor(), graphicElement.getAlpha()));
 							graphics2D.setStroke(pageSettings.getStrokeSolid());
-							//
+
 							double y = graphicElement.getY();
 							int x1 = getX(factorX, x, width, xMin, xBorderLeft, xBorderRight);
 							int y1 = getY(factorY, y, height, yMin, yBorderTop, yBorderBottom);
-							//
+
 							if(graphicElement instanceof ElementRectangle elementRectangle) {
 								/*
 								 * Rectangle
@@ -486,11 +486,11 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 					for(ITextElement textElement : customSeries.getTextElements()) {
 						double x = textElement.getX();
 						if(x >= xMin && x <= xMax) {
-							//
+
 							graphics2D.setFont(pageSettings.getFont());
 							graphics2D.setColor(AWTUtils.convertColor(textElement.getColor(), textElement.getAlpha()));
 							graphics2D.setStroke(pageSettings.getStrokeSolid());
-							//
+
 							double y = textElement.getY();
 							String label = textElement.getLabel();
 							int rotation = textElement.getRotation();
@@ -553,7 +553,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		 */
 		int lineWidth = lineSeriesSettings.getLineWidth();
 		LineStyle lineStyle = lineSeriesSettings.getLineStyle();
-		//
+
 		if(lineWidth > 0 && !LineStyle.NONE.equals(lineStyle)) {
 			int size = points.size();
 			if(size > 0) {
@@ -567,12 +567,12 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 					xvals[i] = (int)point.getX();
 					yvals[i] = (int)point.getY();
 				}
-				//
+
 				Color color = AWTUtils.convertColor(lineSeriesSettings.getLineColor());
 				graphics2D.setStroke(pageSettings.getStroke(lineStyle, lineWidth));
 				graphics2D.setColor(color);
 				graphics2D.drawPolyline(xvals, yvals, size);
-				//
+
 				if(lineSeriesSettings.isEnableArea()) {
 					int sizePolygon = size + 2;
 					int[] xvalsPolygon = transformPolylineToPolygon(xvals, false, minValue);
@@ -590,14 +590,14 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		int length = vals.length;
 		int size = length + 2;
 		int[] valsTransformed = new int[size];
-		//
+
 		if(length >= 2) {
 			/*
 			 * Edges
 			 */
 			int firstValue = 0;
 			int lastValue = 0;
-			//
+
 			if(zero) {
 				/*
 				 * Max, because the values are transposed to the chart
@@ -618,7 +618,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 			}
 			valsTransformed[size - 1] = lastValue;
 		}
-		//
+
 		return valsTransformed;
 	}
 
@@ -629,7 +629,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		 */
 		int symbolSize = pointSeriesSettings.getSymbolSize();
 		PlotSymbolType symbolType = pointSeriesSettings.getSymbolType();
-		//
+
 		if(symbolSize > 0 && !PlotSymbolType.NONE.equals(symbolType)) {
 			double size = (symbolSize * pageSettings.getFactorGraphicsFullLandscape());
 			graphics2D.setFont(pageSettings.getFont(symbolSize * 2.0f));
@@ -651,7 +651,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		int x;
 		int y;
 		String label = "";
-		//
+
 		switch(symbolType) {
 			case TRIANGLE:
 			case INVERTED_TRIANGLE:
@@ -713,11 +713,11 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		if(chartSettings.isTitleVisible()) {
 			double xBorderLeft = pageSettings.getBorderLeftX();
 			double yBorderTop = pageSettings.getBorderTopY();
-			//
+
 			graphics2D.setFont(pageSettings.getFont());
 			graphics2D.setColor(pageSettings.getColorDarkGray());
 			graphics2D.setStroke(pageSettings.getStrokeSolid());
-			//
+
 			String label = chartSettings.getTitle();
 			FontMetrics fontMetrics = graphics2D.getFontMetrics();
 			int heightText = fontMetrics.getHeight();
@@ -732,11 +732,11 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		double width = pageSettings.getWidth();
 		double xBorderRight = pageSettings.getBorderRightX();
 		double yBorderTop = pageSettings.getBorderTopY();
-		//
+
 		graphics2D.setFont(pageSettings.getFont());
 		graphics2D.setColor(pageSettings.getColorDarkGray());
 		graphics2D.setStroke(pageSettings.getStrokeSolid());
-		//
+
 		String label = "https://openchrom.net";
 		FontMetrics fontMetrics = graphics2D.getFontMetrics();
 		int widthText = fontMetrics.stringWidth(label);
@@ -754,7 +754,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		int y2 = y + height;
 		int x3 = (int)(x - width / 2.0d);
 		int y3 = y + height;
-		//
+
 		drawTriangle(graphics2D, x1, y1, x2, y2, x3, y3);
 	}
 
@@ -766,7 +766,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		int y2 = y;
 		int x3 = x;
 		int y3 = y + height;
-		//
+
 		drawTriangle(graphics2D, x1, y1, x2, y2, x3, y3);
 	}
 
@@ -782,7 +782,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 
 		int x1 = (int)(x + heightText / 2.0d);
 		int y1 = (int)(y + widthText / 2.0d);
-		//
+
 		AffineTransform affineTransformDefault = graphics2D.getTransform();
 		AffineTransform affineTransform = createAffineTransform(scale);
 		affineTransform.rotate(Math.toRadians(rotation), x1, y1);
@@ -795,7 +795,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 
 		int x1 = (int)(x + (heightText / 4.0d));
 		int y1 = (int)(y - (heightText / 4.0d)); // Small distance
-		//
+
 		AffineTransform affineTransformDefault = graphics2D.getTransform();
 		AffineTransform affineTransform = createAffineTransform(scale);
 		affineTransform.rotate(Math.toRadians(rotation), x1, y1);
@@ -812,7 +812,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 				return true;
 			}
 		}
-		//
+
 		return false;
 	}
 
@@ -830,11 +830,11 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 		for(IAxisSettings axisSettings : chartSettings.getSecondaryAxisSettingsListX()) {
 			axisSettingsList.add(axisSettings);
 		}
-		//
+
 		for(IAxisSettings axisSettings : chartSettings.getSecondaryAxisSettingsListY()) {
 			axisSettingsList.add(axisSettings);
 		}
-		//
+
 		return axisSettingsList;
 	}
 
@@ -847,7 +847,7 @@ public class PointLineChartCommandGenerator implements IChartCommandGenerator {
 
 		AffineTransform affineTransform = new AffineTransform();
 		affineTransform.scale(scale.getX(), scale.getY());
-		//
+
 		return affineTransform;
 	}
 }

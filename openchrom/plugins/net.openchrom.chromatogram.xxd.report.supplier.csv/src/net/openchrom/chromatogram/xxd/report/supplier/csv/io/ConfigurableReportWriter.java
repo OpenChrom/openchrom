@@ -100,7 +100,7 @@ public class ConfigurableReportWriter {
 		int peakNumber = 1;
 		List<Object> records = new ArrayList<>();
 		double totalPeakArea = chromatogram.getPeakIntegratedArea();
-		//
+
 		for(IPeak peak : chromatogram.getPeaks()) {
 			for(String reportColumn : reportColumns) {
 				if(reportColumn.equals(ReportColumns.CHROMATOGRAM_NAME)) {
@@ -135,15 +135,15 @@ public class ConfigurableReportWriter {
 				if(reportColumn.equals(ReportColumns.COMPONENTS)) {
 					records.add(peak.getSuggestedNumberOfComponents());
 				}
-				//
+
 				if(reportColumn.equals(ReportColumns.PEAK_AREA)) {
 					records.add(peak.getIntegratedArea());
 				}
-				//
+
 				if(reportColumn.equals(ReportColumns.PEAK_PERCENT_AREA)) {
 					records.add(getPeakAreaPercent(peak.getIntegratedArea(), totalPeakArea));
 				}
-				//
+
 				if(reportColumn.equals(ReportColumns.INTEGRATOR)) {
 					records.add(peak.getIntegratorDescription());
 				}

@@ -72,14 +72,14 @@ import net.openchrom.xxd.process.supplier.templates.util.ReportListUtil;
 public class TemplateReportEditor extends Composite implements IChangeListener, IExtendedPartUI {
 
 	private static final String DELETE = "Delete";
-	//
+
 	private Button buttonToolbarSearch;
 	private AtomicReference<SearchSupportUI> toolbarSearch = new AtomicReference<>();
 	private AtomicReference<ReportListUI> tableViewer = new AtomicReference<>();
-	//
+
 	private List<Button> buttons = new ArrayList<>();
 	private List<Listener> listeners = new ArrayList<>();
-	//
+
 	private ReportSettings reportSettings = new ReportSettings();
 
 	public TemplateReportEditor(Composite parent, int style) {
@@ -142,11 +142,11 @@ public class TemplateReportEditor extends Composite implements IChangeListener, 
 		gridLayout.marginWidth = 0;
 		gridLayout.marginHeight = 0;
 		setLayout(gridLayout);
-		//
+
 		createToolbarMain(this);
 		createToolbarSearch(this);
 		createTableSection(this);
-		//
+
 		initialize();
 	}
 
@@ -163,7 +163,7 @@ public class TemplateReportEditor extends Composite implements IChangeListener, 
 		gridData.horizontalAlignment = SWT.END;
 		composite.setLayoutData(gridData);
 		composite.setLayout(new GridLayout(7, false));
-		//
+
 		buttonToolbarSearch = createButtonToggleToolbar(composite, toolbarSearch, IMAGE_SEARCH, TOOLTIP_SEARCH);
 		add(createButtonAdd(composite));
 		add(createButtonEdit(composite));
@@ -190,7 +190,7 @@ public class TemplateReportEditor extends Composite implements IChangeListener, 
 				tableViewer.get().setSearchText(searchText, caseSensitive);
 			}
 		});
-		//
+
 		toolbarSearch.set(searchSupportUI);
 	}
 
@@ -198,7 +198,7 @@ public class TemplateReportEditor extends Composite implements IChangeListener, 
 
 		ReportListUI reportListUI = new ReportListUI(parent, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 		reportListUI.getTable().setLayoutData(new GridData(GridData.FILL_BOTH));
-		//
+
 		reportListUI.setUpdateListener(new IUpdateListener() {
 
 			@Override
@@ -207,13 +207,13 @@ public class TemplateReportEditor extends Composite implements IChangeListener, 
 				setViewerInput();
 			}
 		});
-		//
+
 		Shell shell = reportListUI.getTable().getShell();
 		ITableSettings tableSettings = reportListUI.getTableSettings();
 		addDeleteMenuEntry(shell, tableSettings);
 		addKeyEventProcessors(shell, tableSettings);
 		reportListUI.applySettings(tableSettings);
-		//
+
 		tableViewer.set(reportListUI);
 	}
 
@@ -239,7 +239,7 @@ public class TemplateReportEditor extends Composite implements IChangeListener, 
 				}
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -270,7 +270,7 @@ public class TemplateReportEditor extends Composite implements IChangeListener, 
 				}
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -288,7 +288,7 @@ public class TemplateReportEditor extends Composite implements IChangeListener, 
 				deleteItems(e.display.getActiveShell());
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -309,7 +309,7 @@ public class TemplateReportEditor extends Composite implements IChangeListener, 
 				}
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -338,7 +338,7 @@ public class TemplateReportEditor extends Composite implements IChangeListener, 
 				}
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -372,7 +372,7 @@ public class TemplateReportEditor extends Composite implements IChangeListener, 
 				}
 			}
 		});
-		//
+
 		return button;
 	}
 

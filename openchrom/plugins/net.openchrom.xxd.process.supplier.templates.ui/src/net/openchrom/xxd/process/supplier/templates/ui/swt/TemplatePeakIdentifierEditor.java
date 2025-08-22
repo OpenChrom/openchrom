@@ -84,16 +84,16 @@ import net.openchrom.xxd.process.supplier.templates.util.PeakIdentifierListUtil;
 public class TemplatePeakIdentifierEditor implements SettingsUIProvider.SettingsUIControl, IExtendedPartUI {
 
 	private Composite control;
-	//
+
 	private Button buttonToolbarSearch;
 	private AtomicReference<SearchSupportUI> toolbarSearch = new AtomicReference<>();
 	private Button buttonToolbarAdjust;
 	private AtomicReference<PositionAdjusterUI> toolbarAdjuster = new AtomicReference<>();
 	private AtomicReference<PeakIdentifierListUI> listControl = new AtomicReference<>();
 	private AtomicReference<InformationUI> toolbarInfo = new AtomicReference<>();
-	//
+
 	private static final String DELETE = "Delete";
-	//
+
 	private Listener listener;
 	private List<Button> buttons = new ArrayList<>();
 	private Button buttonAdd;
@@ -102,7 +102,7 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 	private Button buttonRemoveAll;
 	private Button buttonImport;
 	private Button buttonExport;
-	//
+
 	private IdentifierSettings settings = new IdentifierSettings();
 	private IProcessorPreferences<PeakIdentifierSettings> preferences;
 
@@ -112,19 +112,19 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 		if(settings != null) {
 			this.settings.load(settings.getIdentifierSettings());
 		}
-		//
+
 		Composite composite = new Composite(parent, SWT.NONE);
 		GridLayout gridLayout = new GridLayout(1, false);
 		gridLayout.marginWidth = 0;
 		gridLayout.marginHeight = 0;
 		composite.setLayout(gridLayout);
-		//
+
 		createToolbarMain(composite);
 		createSearchSection(composite);
 		createAdjustSection(composite);
 		createTableSection(composite);
 		createToolbarInfo(composite);
-		//
+
 		initialize();
 		setControl(composite);
 	}
@@ -159,13 +159,13 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 	public void addChangeListener(Listener listener) {
 
 		this.listener = listener;
-		//
+
 		Table table = listControl.get().getTable();
 		table.addListener(SWT.Selection, listener);
 		table.addListener(SWT.KeyUp, listener);
 		table.addListener(SWT.MouseUp, listener);
 		table.addListener(SWT.MouseDoubleClick, listener);
-		//
+
 		buttonAdd.addListener(SWT.KeyUp, listener);
 		buttonEdit.addListener(SWT.KeyUp, listener);
 		buttonRemove.addListener(SWT.KeyUp, listener);
@@ -214,7 +214,7 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
 		table.setLayoutData(gridData);
-		//
+
 		table.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -225,17 +225,17 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 				 */
 				List<AbstractSetting> settings = new ArrayList<>();
 				List<?> objects = peakIdentifierListUI.getStructuredSelection().toList();
-				//
+
 				for(Object object : objects) {
 					if(object instanceof AbstractSetting abstractSetting) {
 						settings.add(abstractSetting);
 					}
 				}
-				//
+
 				toolbarAdjuster.get().setInput(settings);
 			}
 		});
-		//
+
 		peakIdentifierListUI.setEditEnabled(true);
 		peakIdentifierListUI.setUpdateListener(new IUpdateListener() {
 
@@ -245,13 +245,13 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 				setInput();
 			}
 		});
-		//
+
 		Shell shell = peakIdentifierListUI.getTable().getShell();
 		ITableSettings tableSettings = peakIdentifierListUI.getTableSettings();
 		addDeleteMenuEntry(shell, tableSettings);
 		addKeyEventProcessors(shell, tableSettings);
 		peakIdentifierListUI.applySettings(tableSettings);
-		//
+
 		listControl.set(peakIdentifierListUI);
 	}
 
@@ -259,7 +259,7 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 
 		InformationUI informationUI = new InformationUI(parent, SWT.NONE);
 		informationUI.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		//
+
 		toolbarInfo.set(informationUI);
 	}
 
@@ -285,7 +285,7 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 				}
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -316,7 +316,7 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 				}
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -334,7 +334,7 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 				deleteItems(e.display.getActiveShell());
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -355,7 +355,7 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 				}
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -384,7 +384,7 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 				}
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -418,7 +418,7 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 				}
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -427,7 +427,7 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 		toolbarAdjuster.get().setInput(settings);
 		listControl.get().setInput(settings);
 		toolbarInfo.get().setText("Entries: " + settings.size());
-		//
+
 		if(listener != null) {
 			listener.handleEvent(new Event());
 		}
@@ -440,7 +440,7 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 		gridData.horizontalAlignment = SWT.END;
 		composite.setLayoutData(gridData);
 		composite.setLayout(new GridLayout(8, false));
-		//
+
 		add(buttonToolbarSearch = createButtonToggleToolbar(composite, toolbarSearch, IMAGE_SEARCH, TOOLTIP_SEARCH));
 		add(buttonToolbarAdjust = createButtonToggleToolbar(composite, toolbarAdjuster, IMAGE_ADJUST_POSITION, TOOLTIP_ADJUST_POSITION));
 		add(buttonAdd = createButtonAdd(composite));
@@ -468,7 +468,7 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 				listControl.get().setSearchText(searchText, caseSensitive);
 			}
 		});
-		//
+
 		toolbarSearch.set(searchSupportUI);
 	}
 
@@ -476,7 +476,7 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 
 		PositionAdjusterUI positionAdjusterUI = new PositionAdjusterUI(parent, SWT.NONE);
 		positionAdjusterUI.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		//
+
 		positionAdjusterUI.setUpdateListener(new IUpdateListener() {
 
 			@Override
@@ -485,7 +485,7 @@ public class TemplatePeakIdentifierEditor implements SettingsUIProvider.Settings
 				listControl.get().refresh();
 			}
 		});
-		//
+
 		toolbarAdjuster.set(positionAdjusterUI);
 	}
 

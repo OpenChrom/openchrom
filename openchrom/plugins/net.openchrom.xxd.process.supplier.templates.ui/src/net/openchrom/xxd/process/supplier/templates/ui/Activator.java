@@ -37,7 +37,7 @@ import net.openchrom.xxd.process.supplier.templates.ui.icon.Icon;
 public class Activator extends AbstractActivatorUI {
 
 	private static final Logger logger = Logger.getLogger(Activator.class);
-	//
+
 	private static Activator plugin;
 	private List<EventHandler> registeredEventHandler = new ArrayList<>();
 

@@ -30,7 +30,7 @@ public class ReportListUI extends AbstractTemplateListUI {
 
 	private static final String[] TITLES = ReportLabelProvider.TITLES;
 	private static final int[] BOUNDS = ReportLabelProvider.BOUNDS;
-	//
+
 	private ReportLabelProvider labelProvider = new ReportLabelProvider();
 	private ReportComparator tableComparator = new ReportComparator();
 	private ReportFilter listFilter = new ReportFilter();

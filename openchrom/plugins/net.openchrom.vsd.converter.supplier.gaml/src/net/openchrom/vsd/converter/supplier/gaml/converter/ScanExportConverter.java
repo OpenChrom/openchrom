@@ -29,7 +29,7 @@ public class ScanExportConverter extends AbstractScanExportConverter implements 
 
 		IProcessingInfo<File> processingInfo = new ProcessingInfo<>();
 		processingInfo.addInfoMessage("GAML", "Export is not available");
-		//
+
 		return processingInfo;
 	}
 }

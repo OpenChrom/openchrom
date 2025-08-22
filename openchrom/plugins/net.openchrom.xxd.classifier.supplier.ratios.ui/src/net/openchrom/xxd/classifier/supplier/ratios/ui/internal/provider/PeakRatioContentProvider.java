@@ -42,7 +42,7 @@ public class PeakRatioContentProvider implements IStructuredContentProvider {
 	public Object[] getElements(Object inputElement) {
 
 		IPeakRatios<IPeakRatio> peakRatios = null;
-		//
+
 		if(inputElement instanceof IMeasurementResult<?> measurementResult) {
 			Object object = measurementResult.getResult();
 			if(object instanceof IPeakRatios inputPeakRatios) {
@@ -51,7 +51,7 @@ public class PeakRatioContentProvider implements IStructuredContentProvider {
 		} else if(inputElement instanceof IPeakRatios inputPeakRatios) {
 			peakRatios = inputPeakRatios;
 		}
-		//
+
 		if(peakRatios != null) {
 			if(DisplayOption.RESULTS.equals(displayOption)) {
 				List<IPeakRatio> ratios = new ArrayList<>();
@@ -65,7 +65,7 @@ public class PeakRatioContentProvider implements IStructuredContentProvider {
 				return peakRatios.toArray();
 			}
 		}
-		//
+
 		return null;
 	}
 

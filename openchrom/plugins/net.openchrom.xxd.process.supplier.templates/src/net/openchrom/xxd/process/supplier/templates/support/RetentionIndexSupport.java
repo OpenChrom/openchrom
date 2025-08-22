@@ -34,14 +34,14 @@ public class RetentionIndexSupport {
 		if(chromatogram != null) {
 			retentionIndexMap.update(chromatogram);
 		}
-		//
+
 		return retentionIndexMap;
 	}
 
 	public static List<DetectorSetting> adjustDetectorSettings(IChromatogram chromatogram, List<DetectorSetting> settings) {
 
 		List<DetectorSetting> settingsAdjusted = new ArrayList<>();
-		//
+
 		RetentionIndexMap retentionIndexMap = new RetentionIndexMap(chromatogram);
 		for(DetectorSetting setting : settings) {
 			if(setting.getPositionDirective().equals(PositionDirective.RETENTION_INDEX)) {
@@ -60,14 +60,14 @@ public class RetentionIndexSupport {
 				settingsAdjusted.add(setting);
 			}
 		}
-		//
+
 		return settingsAdjusted;
 	}
 
 	public static List<ReviewSetting> adjustReviewSettings(IChromatogram chromatogram, List<ReviewSetting> settings) {
 
 		List<ReviewSetting> settingsAdjusted = new ArrayList<>();
-		//
+
 		RetentionIndexMap retentionIndexMap = new RetentionIndexMap(chromatogram);
 		for(ReviewSetting setting : settings) {
 			if(setting.getPositionDirective().equals(PositionDirective.RETENTION_INDEX)) {
@@ -86,7 +86,7 @@ public class RetentionIndexSupport {
 				settingsAdjusted.add(setting);
 			}
 		}
-		//
+
 		return settingsAdjusted;
 	}
 
@@ -97,7 +97,7 @@ public class RetentionIndexSupport {
 				return chromatogramPeak.getChromatogram();
 			}
 		}
-		//
+
 		return null;
 	}
 }

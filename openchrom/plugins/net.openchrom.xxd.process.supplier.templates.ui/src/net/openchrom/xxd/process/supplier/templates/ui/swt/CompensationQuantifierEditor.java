@@ -82,12 +82,12 @@ public class CompensationQuantifierEditor implements SettingsUIProvider.Settings
 	private AtomicReference<Button> buttonSearchControl = new AtomicReference<>();
 	private AtomicReference<SearchSupportUI> toolbarSearch = new AtomicReference<>();
 	private AtomicReference<CompensationQuantifierListUI> listControl = new AtomicReference<>();
-	//
+
 	private Composite control;
-	//
+
 	private static final String CATEGORY = "Compensation Quantifier";
 	private static final String DELETE = "Delete";
-	//
+
 	private Listener listener;
 	private List<Button> buttons = new ArrayList<>();
 	private Button buttonAdd;
@@ -96,7 +96,7 @@ public class CompensationQuantifierEditor implements SettingsUIProvider.Settings
 	private Button buttonRemoveAll;
 	private Button buttonImport;
 	private Button buttonExport;
-	//
+
 	private CompensationSettings settings = new CompensationSettings();
 	private IProcessorPreferences<CompensationQuantifierSettings> preferences;
 
@@ -106,7 +106,7 @@ public class CompensationQuantifierEditor implements SettingsUIProvider.Settings
 		if(settings != null) {
 			this.settings.load(settings.getCompensationSettings());
 		}
-		//
+
 		control = createControl(parent);
 	}
 
@@ -151,13 +151,13 @@ public class CompensationQuantifierEditor implements SettingsUIProvider.Settings
 	public void addChangeListener(Listener listener) {
 
 		this.listener = listener;
-		//
+
 		Table table = listControl.get().getTable();
 		table.addListener(SWT.Selection, listener);
 		table.addListener(SWT.KeyUp, listener);
 		table.addListener(SWT.MouseUp, listener);
 		table.addListener(SWT.MouseDoubleClick, listener);
-		//
+
 		buttonAdd.addListener(SWT.KeyUp, listener);
 		buttonEdit.addListener(SWT.KeyUp, listener);
 		buttonRemove.addListener(SWT.KeyUp, listener);
@@ -196,13 +196,13 @@ public class CompensationQuantifierEditor implements SettingsUIProvider.Settings
 		gridLayout.marginWidth = 0;
 		gridLayout.marginHeight = 0;
 		composite.setLayout(gridLayout);
-		//
+
 		createToolbarMain(composite);
 		createSearchSection(composite);
 		createTableSection(composite);
-		//
+
 		initialize();
-		//
+
 		return composite;
 	}
 
@@ -222,7 +222,7 @@ public class CompensationQuantifierEditor implements SettingsUIProvider.Settings
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
 		table.setLayoutData(gridData);
-		//
+
 		table.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -233,7 +233,7 @@ public class CompensationQuantifierEditor implements SettingsUIProvider.Settings
 				 */
 				List<AbstractSetting> settings = new ArrayList<>();
 				List<?> objects = compensationQuantifierListUI.getStructuredSelection().toList();
-				//
+
 				for(Object object : objects) {
 					if(object instanceof AbstractSetting setting) {
 						settings.add(setting);
@@ -241,7 +241,7 @@ public class CompensationQuantifierEditor implements SettingsUIProvider.Settings
 				}
 			}
 		});
-		//
+
 		compensationQuantifierListUI.setEditEnabled(true);
 		compensationQuantifierListUI.setUpdateListener(new IUpdateListener() {
 
@@ -251,13 +251,13 @@ public class CompensationQuantifierEditor implements SettingsUIProvider.Settings
 				setInput();
 			}
 		});
-		//
+
 		Shell shell = compensationQuantifierListUI.getTable().getShell();
 		ITableSettings tableSettings = compensationQuantifierListUI.getTableSettings();
 		addDeleteMenuEntry(shell, tableSettings);
 		addKeyEventProcessors(shell, tableSettings);
 		compensationQuantifierListUI.applySettings(tableSettings);
-		//
+
 		listControl.set(compensationQuantifierListUI);
 	}
 
@@ -283,7 +283,7 @@ public class CompensationQuantifierEditor implements SettingsUIProvider.Settings
 				}
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -314,7 +314,7 @@ public class CompensationQuantifierEditor implements SettingsUIProvider.Settings
 				}
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -332,7 +332,7 @@ public class CompensationQuantifierEditor implements SettingsUIProvider.Settings
 				deleteItems(e.display.getActiveShell());
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -353,7 +353,7 @@ public class CompensationQuantifierEditor implements SettingsUIProvider.Settings
 				}
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -382,7 +382,7 @@ public class CompensationQuantifierEditor implements SettingsUIProvider.Settings
 				}
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -416,14 +416,14 @@ public class CompensationQuantifierEditor implements SettingsUIProvider.Settings
 				}
 			}
 		});
-		//
+
 		return button;
 	}
 
 	private void setInput() {
 
 		listControl.get().setInput(settings);
-		//
+
 		if(listener != null) {
 			listener.handleEvent(new Event());
 		}
@@ -436,7 +436,7 @@ public class CompensationQuantifierEditor implements SettingsUIProvider.Settings
 		gridData.horizontalAlignment = SWT.END;
 		composite.setLayoutData(gridData);
 		composite.setLayout(new GridLayout(8, false));
-		//
+
 		add(createButtonToggleSearch(composite));
 		add(buttonAdd = createButtonAdd(composite));
 		add(buttonEdit = createButtonEdit(composite));
@@ -450,7 +450,7 @@ public class CompensationQuantifierEditor implements SettingsUIProvider.Settings
 
 		Button button = createButtonToggleToolbar(parent, toolbarSearch, IMAGE_SEARCH, TOOLTIP_SEARCH);
 		buttonSearchControl.set(button);
-		//
+
 		return button;
 	}
 
@@ -471,7 +471,7 @@ public class CompensationQuantifierEditor implements SettingsUIProvider.Settings
 				listControl.get().setSearchText(searchText, caseSensitive);
 			}
 		});
-		//
+
 		toolbarSearch.set(searchSupportUI);
 	}
 

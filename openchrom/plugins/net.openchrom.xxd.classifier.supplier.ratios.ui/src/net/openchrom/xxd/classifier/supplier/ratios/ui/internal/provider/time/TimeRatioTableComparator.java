@@ -83,7 +83,7 @@ public class TimeRatioTableComparator extends AbstractRecordTableComparator impl
 		if(e1 instanceof TimeRatio timeRatio1 && e2 instanceof TimeRatio timeRatio2) {
 			IPeak peak1 = timeRatio1.getPeak();
 			IPeak peak2 = timeRatio2.getPeak();
-			//
+
 			switch(getPropertyIndex()) {
 				case 0:
 					if(peak1 != null && peak2 != null) {

@@ -39,7 +39,7 @@ import net.openchrom.xxd.processor.supplier.tracecompare.preferences.PreferenceS
 public class DataProcessor {
 
 	public static final String PROCESSOR_FILE_EXTENSION = ".otc";
-	//
+
 	private static Map<String, Pattern> sampleMatchPatterns = new HashMap<String, Pattern>();
 
 	public String getSampleGroup(String fileName) {
@@ -58,7 +58,7 @@ public class DataProcessor {
 		if(pathDirectory.equals("") || fileExtension.equals("") || pattern.equals("")) {
 			return false;
 		}
-		//
+
 		File directory = new File(pathDirectory);
 		for(File file : directory.listFiles()) {
 			if(file.isFile()) {
@@ -70,14 +70,14 @@ public class DataProcessor {
 				}
 			}
 		}
-		//
+
 		return false;
 	}
 
 	public List<String> getMeasurementPatterns(String pathDirectory, String fileExtension) {
 
 		List<String> patterns = new ArrayList<String>();
-		//
+
 		if(!pathDirectory.equals("") && !fileExtension.equals("")) {
 			/*
 			 * Extract the patterns.
@@ -96,18 +96,18 @@ public class DataProcessor {
 					}
 				}
 			}
-			//
+
 			patterns.addAll(measurementPatterns);
 			Collections.sort(patterns);
 		}
-		//
+
 		return patterns;
 	}
 
 	public List<File> getMeasurementFiles(String pathDirectory, String fileExtension, String measurementPattern) {
 
 		List<File> measurementFiles = new ArrayList<File>();
-		//
+
 		if(!pathDirectory.equals("") && !fileExtension.equals("") && !measurementPattern.equals("")) {
 			File directory = new File(pathDirectory);
 			for(File file : directory.listFiles()) {
@@ -121,7 +121,7 @@ public class DataProcessor {
 				}
 			}
 		}
-		//
+
 		return measurementFiles;
 	}
 
@@ -160,7 +160,7 @@ public class DataProcessor {
 			pattern = Pattern.compile(filePattern);
 			sampleMatchPatterns.put(filePattern, pattern);
 		}
-		//
+
 		return pattern;
 	}
 
@@ -173,7 +173,7 @@ public class DataProcessor {
 				}
 			}
 		}
-		//
+
 		return 0;
 	}
 

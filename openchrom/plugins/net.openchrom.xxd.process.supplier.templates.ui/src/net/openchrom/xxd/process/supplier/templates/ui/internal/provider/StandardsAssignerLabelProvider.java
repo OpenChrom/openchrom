@@ -31,7 +31,7 @@ public class StandardsAssignerLabelProvider extends AbstractTemplateLabelProvide
 			COMPENSATION_FACTOR, //
 			TRACES //
 	};
-	//
+
 	public static final int[] BOUNDS = { //
 			200, //
 			100, //

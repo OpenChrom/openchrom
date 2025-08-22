@@ -46,7 +46,7 @@ public class IonCertaintiesCalculatorRunnable implements IRunnableWithProgress {
 			IChromatogramMSD isotopeChromatogram = processorData.getIsotopeChromatogram();
 			IProcessorModel processorModel = processorData.getProcessorModel();
 			IProcessorSettings processorSettings = processorModel.getProcessorSettings();
-			//
+
 			MassShiftDetector massShiftDetector = new MassShiftDetector();
 			calculatedIonCertainties = massShiftDetector.calculateIonCertainties(referenceChromatogram, isotopeChromatogram, processorSettings, monitor);
 		}

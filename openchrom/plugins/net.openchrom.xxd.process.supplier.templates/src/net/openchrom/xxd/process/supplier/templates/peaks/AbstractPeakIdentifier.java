@@ -97,7 +97,7 @@ public abstract class AbstractPeakIdentifier {
 		TracesUtil tracesUtil = new TracesUtil();
 		float limitMatchFactor = PreferenceSupplier.getLimitMatchFactorIdentifier();
 		float matchFactor = PreferenceSupplier.getMatchQualityIdentifier();
-		//
+
 		try {
 			if(startRetentionTime > 0 && startRetentionTime < stopRetentionTime) {
 				monitor.beginTask("Identify peaks", peaks.size());

@@ -26,7 +26,7 @@ public class TimeRatioValidator extends ValueParserSupport implements IValidator
 	private static final String SEPARATOR_TOKEN = AbstractRatioListUtil.SEPARATOR_TOKEN;
 	private static final String SEPARATOR_ENTRY = AbstractRatioListUtil.SEPARATOR_ENTRY;
 	private static final String ERROR_TOKEN = "The item must not contain: " + SEPARATOR_TOKEN;
-	//
+
 	private String name = "";
 	private double expectedRetentionTimeMinutes = 0.0d;
 	private double deviationWarn = 0.0d;
@@ -58,23 +58,23 @@ public class TimeRatioValidator extends ValueParserSupport implements IValidator
 						if("".equals(name)) {
 							message = "A substance name needs to be set.";
 						}
-						//
+
 						expectedRetentionTimeMinutes = parseDouble(values, 1);
 						if(expectedRetentionTimeMinutes <= 0.0d) {
 							message = "The expected retention time must be > 0.";
 						}
-						//
+
 						deviationWarn = parseDouble(values, 2);
 						deviationError = parseDouble(values, 3);
-						//
+
 						if(deviationWarn <= 0) {
 							message = "The deviation warn must be >= 0.";
 						}
-						//
+
 						if(deviationError <= 0) {
 							message = "The deviation error must be >= 0.";
 						}
-						//
+
 						if(deviationError < deviationWarn) {
 							message = "The deviation error must be > deviation warn.";
 						}
@@ -86,7 +86,7 @@ public class TimeRatioValidator extends ValueParserSupport implements IValidator
 				message = ERROR_ENTRY;
 			}
 		}
-		//
+
 		if(message != null) {
 			return ValidationStatus.error(message);
 		} else {

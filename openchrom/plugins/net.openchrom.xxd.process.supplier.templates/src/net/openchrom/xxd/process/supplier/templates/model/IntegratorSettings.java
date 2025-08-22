@@ -38,7 +38,7 @@ import net.openchrom.xxd.process.supplier.templates.util.PeakIntegratorValidator
 public class IntegratorSettings extends ArrayList<IntegratorSetting> implements ISettings {
 
 	private static final Logger logger = Logger.getLogger(IntegratorSettings.class);
-	//
+
 	private static final long serialVersionUID = -5759647615014062815L;
 	private PeakIntegratorListUtil listUtil = new PeakIntegratorListUtil();
 
@@ -113,12 +113,12 @@ public class IntegratorSettings extends ArrayList<IntegratorSetting> implements 
 
 		boolean success = false;
 		try (PrintWriter printWriter = new PrintWriter(file)) {
-			//
+
 			List<IntegratorSetting> settings = new ArrayList<>(this);
 			if(PreferenceSupplier.isSortExportTemplate()) {
 				Collections.sort(settings, new IntegratorComparator()); // SORT OK
 			}
-			//
+
 			for(IntegratorSetting setting : settings) {
 				StringBuilder builder = new StringBuilder();
 				extractSetting(setting, builder);
@@ -129,7 +129,7 @@ public class IntegratorSettings extends ArrayList<IntegratorSetting> implements 
 		} catch(FileNotFoundException e) {
 			logger.warn(e);
 		}
-		//
+
 		return success;
 	}
 
@@ -137,14 +137,14 @@ public class IntegratorSettings extends ArrayList<IntegratorSetting> implements 
 
 		IntegratorSetting setting = null;
 		PeakIntegratorValidator validator = listUtil.getValidator();
-		//
+
 		IStatus status = validator.validate(text);
 		if(status.isOK()) {
 			setting = validator.getSetting();
 		} else {
 			logger.warn(status.getMessage());
 		}
-		//
+
 		return setting;
 	}
 
@@ -166,13 +166,13 @@ public class IntegratorSettings extends ArrayList<IntegratorSetting> implements 
 	private void extractSetting(IntegratorSetting setting, StringBuilder builder) {
 
 		List<String> entries = new ArrayList<>();
-		//
+
 		entries.add(getFormattedPosition(setting.getPositionStart()));
 		entries.add(getFormattedPosition(setting.getPositionStop()));
 		entries.add(setting.getIdentifier());
 		entries.add(setting.getIntegrator());
 		entries.add(setting.getPositionDirective().name());
-		//
+
 		compile(builder, entries);
 	}
 }

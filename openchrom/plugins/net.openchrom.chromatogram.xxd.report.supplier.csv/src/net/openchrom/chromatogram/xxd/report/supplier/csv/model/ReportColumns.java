@@ -19,7 +19,7 @@ import java.util.Iterator;
 public class ReportColumns extends ArrayList<String> {
 
 	private static final long serialVersionUID = 727322817550120355L;
-	//
+
 	public static final String CHROMATOGRAM_NAME = "Chromatogram Name";
 	public static final String NUMBER_PEAKS = "Number Peaks";
 	public static final String PEAK_NUMBER = "Peak Number";
@@ -78,7 +78,7 @@ public class ReportColumns extends ArrayList<String> {
 	public static final String PEAK_WIDTH_50 = "Peak Width at 50% Height";
 	public static final String PEAK_WIDTH_85 = "Peak Width at 85% Height";
 	public static final String PEAK_RESOLUTION = "Peak Resolution";
-	//
+
 	private static final String SEPARATOR = ",";
 	private static final String SINGLE_TICK = "'";
 	private static final String DOUBLE_TICK = "\"";
@@ -86,7 +86,7 @@ public class ReportColumns extends ArrayList<String> {
 	public static ReportColumns getDefault() {
 
 		ReportColumns reportColumns = new ReportColumns();
-		//
+
 		reportColumns.add(CHROMATOGRAM_NAME);
 		reportColumns.add(NUMBER_PEAKS);
 		reportColumns.add(PEAK_NUMBER);
@@ -145,7 +145,7 @@ public class ReportColumns extends ArrayList<String> {
 		reportColumns.add(PEAK_WIDTH_50);
 		reportColumns.add(PEAK_WIDTH_85);
 		reportColumns.add(PEAK_RESOLUTION);
-		//
+
 		return reportColumns;
 	}
 

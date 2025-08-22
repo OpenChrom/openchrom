@@ -69,7 +69,7 @@ public class PeakIntegrationSettings extends AbstractPeakIntegrationSettings imp
 		PeakIntegratorListUtil util = new PeakIntegratorListUtil();
 		PeakIntegratorValidator validator = new PeakIntegratorValidator();
 		List<IntegratorSetting> settings = new ArrayList<>();
-		//
+
 		List<String> items = util.getList(integratorSettings);
 		for(String item : items) {
 			IStatus status = validator.validate(item);
@@ -77,7 +77,7 @@ public class PeakIntegrationSettings extends AbstractPeakIntegrationSettings imp
 				settings.add(validator.getSetting());
 			}
 		}
-		//
+
 		return settings;
 	}
 }

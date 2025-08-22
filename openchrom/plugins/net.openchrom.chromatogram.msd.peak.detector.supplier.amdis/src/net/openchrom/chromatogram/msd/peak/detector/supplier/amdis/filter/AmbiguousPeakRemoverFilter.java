@@ -152,7 +152,7 @@ public class AmbiguousPeakRemoverFilter extends AbstractPeakFilter<AmbiguousPeak
 	private static List<PeakGroup<IPeak>> extractPeaks(List<IPeak> candidatePeakSet, IMassSpectrumComparator comparator, double minMatchFactor) {
 
 		MatchConstraints matchConstraints = new MatchConstraints();
-		//
+
 		int size = candidatePeakSet.size();
 		if(size < 2) {
 			// nothing to do then...

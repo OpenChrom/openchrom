@@ -39,9 +39,9 @@ public abstract class AbstractTemplateLabelProvider extends AbstractChemClipseLa
 	public static final String CONCENTRATION = "Concentration";
 	public static final String CONCENTRATION_UNIT = "Concentration Unit";
 	public static final String COMPENSATION_FACTOR = "Compensation Factor";
-	//
+
 	public static final String PLACEHOLDER = "--";
-	//
+
 	protected DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.0##");
 
 	public String getFormattedPosition(double value) {

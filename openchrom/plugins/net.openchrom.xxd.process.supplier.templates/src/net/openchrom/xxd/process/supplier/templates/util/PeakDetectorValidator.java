@@ -24,7 +24,7 @@ import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSuppli
 public class PeakDetectorValidator extends AbstractTemplateValidator implements ITemplateValidator {
 
 	private static final String ERROR_ENTRY = "Please enter an item, e.g.: '" + PeakDetectorListUtil.EXAMPLE_SINGLE + "'";
-	//
+
 	private PositionDirective positionDirective = PositionDirective.RETENTION_TIME_MIN;
 	private double positionStart = 0.0d;
 	private double positionStop = 0.0d;
@@ -72,7 +72,7 @@ public class PeakDetectorValidator extends AbstractTemplateValidator implements 
 							if(peakType == null) {
 								message = PreferenceSupplier.DETECTOR_OPTIONS;
 							}
-							//
+
 							IStatus status = validateTraces(traceValues);
 							if(status.isOK()) {
 								traces = traceValues;

@@ -34,17 +34,17 @@ import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
 public class EditorProcessor extends MultiPageEditorPart {
 
 	private static final Logger logger = Logger.getLogger(EditorProcessor.class);
-	//
+
 	private File file; // This report file.
-	//
+
 	public static final int PAGE_INDEX_TRACE_COMPARISON = 0;
 	public static final int PAGE_INDEX_RESULTS = 1;
-	//
+
 	private PageTraceComparison pageTraceComparison;
 	private PageResults pageResults;
-	//
+
 	private IProcessorModel processorModel;
-	//
+
 	private boolean isDirty = false;
 
 	public EditorProcessor() {
@@ -76,7 +76,7 @@ public class EditorProcessor extends MultiPageEditorPart {
 		pageTraceComparison = new PageTraceComparison(getContainer());
 		int pageIndexCompare = addPage(pageTraceComparison.getControl());
 		setPageText(pageIndexCompare, "Trace Compare");
-		//
+
 		pageResults = new PageResults(getContainer());
 		int pageIndexResults = addPage(pageResults.getControl());
 		setPageText(pageIndexResults, "Results");

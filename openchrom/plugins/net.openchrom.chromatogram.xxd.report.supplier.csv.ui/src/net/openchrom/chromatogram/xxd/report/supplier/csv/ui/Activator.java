@@ -26,7 +26,7 @@ public class Activator extends AbstractActivatorUI {
 	 * Instance
 	 */
 	private static Activator plugin;
-	//
+
 	private DataUpdateSupport dataUpdateSupport;
 
 	/*

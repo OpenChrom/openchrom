@@ -35,26 +35,26 @@ public class PeakRatioFilter extends ViewerFilter {
 		if(searchText == null || searchText.equals("")) {
 			return true;
 		}
-		//
+
 		if(element instanceof IPeakRatio setting) {
 			String name = setting.getName();
 			String testCase = (setting instanceof TraceRatio traceRatio) ? traceRatio.getTestCase() : "";
-			//
+
 			if(!caseSensitive) {
 				searchText = searchText.toLowerCase();
 				name = name.toLowerCase();
 				testCase = testCase.toLowerCase();
 			}
-			//
+
 			if(name.contains(searchText)) {
 				return true;
 			}
-			//
+
 			if(testCase.contains(searchText)) {
 				return true;
 			}
 		}
-		//
+
 		return false;
 	}
 }

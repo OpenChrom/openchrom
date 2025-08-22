@@ -26,7 +26,7 @@ public class ProcessorWizardHandler {
 
 		Display display = Display.getDefault();
 		Shell shell = display.getActiveShell();
-		//
+
 		WizardDialog wizardDialog = new WizardDialog(shell, new WizardProcessor());
 		wizardDialog.open();
 	}

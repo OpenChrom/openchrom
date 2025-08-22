@@ -90,31 +90,31 @@ public class CompensationQuantifier extends AbstractPeakQuantifier implements IP
 		double concentration = getMeasuredConcentration(peaks, compensationSetting);
 		double expectedConcentration = compensationSetting.getExpectedConcentration();
 		boolean adjustQuantitationEntry = compensationSetting.isAdjustQuantitationEntry();
-		//
+
 		if(concentration > 0 && expectedConcentration > 0) {
 			/*
 			 * Calculate the factor and create an adjusted quantitation entry.
 			 */
 			double compensationFactor = 100.0d / concentration * expectedConcentration / 100.0d;
 			for(IPeak peak : peaks) {
-				//
+
 				List<IQuantitationEntry> quantitationEntriesAdd = new ArrayList<>();
 				List<IQuantitationEntry> quantitationEntriesDelete = (adjustQuantitationEntry) ? new ArrayList<>() : null;
-				//
+
 				String name = compensationSetting.getName();
 				String targetUnit = compensationSetting.getTargetUnit();
-				//
+
 				for(IQuantitationEntry quantitationEntry : getQuantitationEntries(peak, name, targetUnit)) {
 					quantitationEntriesAdd.add(createAdjustedQuantitationEntry(compensationSetting, compensationFactor, quantitationEntry));
 					if(adjustQuantitationEntry) {
 						quantitationEntriesDelete.add(quantitationEntry);
 					}
 				}
-				//
+
 				if(quantitationEntriesDelete != null) {
 					peak.removeQuantitationEntries(quantitationEntriesDelete);
 				}
-				//
+
 				peak.addAllQuantitationEntries(quantitationEntriesAdd);
 			}
 		}
@@ -148,7 +148,7 @@ public class CompensationQuantifier extends AbstractPeakQuantifier implements IP
 		builder.append(compensationSetting.getConcentrationUnit());
 		builder.append("]");
 		adjustedQuantitationEntry.appendDescription(builder.toString());
-		//
+
 		return adjustedQuantitationEntry;
 	}
 
@@ -181,14 +181,14 @@ public class CompensationQuantifier extends AbstractPeakQuantifier implements IP
 				return true;
 			}
 		}
-		//
+
 		return false;
 	}
 
 	private List<IQuantitationEntry> getQuantitationEntries(IPeak peak, String name, String unit) {
 
 		List<IQuantitationEntry> quantitationEntries = new ArrayList<>();
-		//
+
 		for(IQuantitationEntry quantitationEntry : peak.getQuantitationEntries()) {
 			if(quantitationEntry.getName().equals(name)) {
 				if(unit.isEmpty() || quantitationEntry.getConcentrationUnit().equals(unit)) {
@@ -196,7 +196,7 @@ public class CompensationQuantifier extends AbstractPeakQuantifier implements IP
 				}
 			}
 		}
-		//
+
 		return quantitationEntries;
 	}
 

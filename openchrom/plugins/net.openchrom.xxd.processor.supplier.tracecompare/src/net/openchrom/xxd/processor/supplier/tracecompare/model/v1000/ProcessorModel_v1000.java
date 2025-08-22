@@ -26,7 +26,7 @@ public class ProcessorModel_v1000 implements IProcessorModel {
 
 	@XmlElement(name = "Version")
 	private String version = "1.0.0.0";
-	//
+
 	@XmlElement(name = "DetectorType")
 	private String detectorType = "";
 	@XmlElement(name = "ImageDirectory")

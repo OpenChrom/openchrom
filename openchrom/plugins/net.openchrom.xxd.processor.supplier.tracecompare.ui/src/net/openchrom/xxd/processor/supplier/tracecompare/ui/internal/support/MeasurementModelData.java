@@ -48,11 +48,11 @@ public class MeasurementModelData {
 	private Map<String, Map<Integer, Map<String, ISeriesData>>> mapQualification;
 	private Map<Integer, Map<String, ISeriesData>> samplesQualification;
 	private Map<Integer, Map<String, ISeriesData>> referencesQualification;
-	//
+
 	private Map<String, Map<Integer, Map<String, ISeriesData>>> mapValidation;
 	private Map<Integer, Map<String, ISeriesData>> samplesValidation;
 	private Map<Integer, Map<String, ISeriesData>> referencesValidation;
-	//
+
 	private DataProcessorUI dataProcessorUI;
 
 	public MeasurementModelData() {
@@ -81,7 +81,7 @@ public class MeasurementModelData {
 				}
 			}
 		}
-		//
+
 		return trackModel;
 	}
 
@@ -107,7 +107,7 @@ public class MeasurementModelData {
 
 		List<File> sampleFiles = dataProcessorUI.getMeasurementFileList(processorModel, DataProcessorUI.MEASUREMENT_SAMPLE, sampleGroup);
 		List<File> referenceFiles = dataProcessorUI.getMeasurementFileList(processorModel, DataProcessorUI.MEASUREMENT_REFERENCE, referenceGroup);
-		//
+
 		if(analysisType.equals(DataProcessorUI.ANALYSIS_TYPE_VALIDATION)) {
 			return loadModelDataValidation(processorModel, sampleFiles, referenceFiles, sampleGroup, referenceGroup);
 		} else {
@@ -169,7 +169,7 @@ public class MeasurementModelData {
 		if(trackModel.getReferenceTrack() == 0) {
 			trackModel.setReferenceTrack(track);
 		}
-		//
+
 		return trackModel;
 	}
 
@@ -180,7 +180,7 @@ public class MeasurementModelData {
 			samplesQualification = dataProcessorUI.extractMeasurementsData(sampleFiles, DataProcessorUI.MEASUREMENT_SAMPLE);
 			mapQualification.put(sampleGroup, samplesQualification);
 		}
-		//
+
 		referencesQualification = mapQualification.get(referenceGroup);
 		if(referencesQualification == null) {
 			referencesQualification = dataProcessorUI.extractMeasurementsData(referenceFiles, DataProcessorUI.MEASUREMENT_REFERENCE);
@@ -198,7 +198,7 @@ public class MeasurementModelData {
 			samplesValidation = dataProcessorUI.extractMeasurementsData(sampleFiles, DataProcessorUI.MEASUREMENT_SAMPLE);
 			mapValidation.put(sampleGroup, samplesValidation);
 		}
-		//
+
 		referencesValidation = mapValidation.get(referenceGroup);
 		if(referencesValidation == null) {
 			referencesValidation = dataProcessorUI.extractMeasurementsData(referenceFiles, DataProcessorUI.MEASUREMENT_REFERENCE);

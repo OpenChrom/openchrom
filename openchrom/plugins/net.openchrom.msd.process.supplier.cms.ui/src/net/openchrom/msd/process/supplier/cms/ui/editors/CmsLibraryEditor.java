@@ -65,7 +65,7 @@ public class CmsLibraryEditor implements IChemClipseEditor {
 	public static final String CONTRIBUTION_URI = "bundleclass://net.openchrom.msd.process.supplier.cms.ui/net.openchrom.msd.process.supplier.cms.ui.editors.CmsLibraryEditor";
 	public static final String ICON_URI = "platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/massSpectrum.gif";
 	public static final String TOOLTIP = "CMS Library (Calibrated Mass Spectra)";
-	//
+
 	private static final Logger logger = Logger.getLogger(CmsLibraryEditor.class);
 	/*
 	 * Injected member in constructor
@@ -284,9 +284,9 @@ public class CmsLibraryEditor implements IChemClipseEditor {
 				}
 			}
 		});
-		//
+
 		EventDataHolder.addSubscriber(IChemClipseEvents.TOPIC_SCAN_XXD_UPDATE_SELECTION);
-		//
+
 		tabItem.setControl(cmsLibraryUI.getControl());
 	}
 

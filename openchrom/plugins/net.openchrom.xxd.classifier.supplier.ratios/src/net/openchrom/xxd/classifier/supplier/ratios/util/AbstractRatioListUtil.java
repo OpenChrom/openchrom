@@ -31,14 +31,14 @@ import org.eclipse.core.runtime.IStatus;
 public abstract class AbstractRatioListUtil<T extends IValidator<Object>> implements IRatioListUtil<T> {
 
 	private static final Logger logger = Logger.getLogger(AbstractRatioListUtil.class);
-	//
+
 	public static final String SEPARATOR_TOKEN = ";";
 	public static final String SEPARATOR_ENTRY = "|";
-	//
+
 	public static final String SEPARATOR_TRACE_ITEM = ",";
 	public static final String SEPARATOR_TRACE_RANGE = "-";
 	public static final int TRACE_ERROR = -1;
-	//
+
 	private T validator;
 
 	protected AbstractRatioListUtil(T validator) {
@@ -57,7 +57,7 @@ public abstract class AbstractRatioListUtil<T extends IValidator<Object>> implem
 
 		String lineDelimiterSpecific = OperatingSystemUtils.getLineDelimiter();
 		String lineDelimiterGeneric = "\n";
-		//
+
 		String[] decodedArray;
 		if(stringList.contains(SEPARATOR_TOKEN)) {
 			decodedArray = stringList.split(SEPARATOR_TOKEN);
@@ -100,7 +100,7 @@ public abstract class AbstractRatioListUtil<T extends IValidator<Object>> implem
 		} catch(IOException e1) {
 			logger.warn(e1);
 		}
-		//
+
 		return items;
 	}
 

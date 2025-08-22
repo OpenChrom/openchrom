@@ -27,10 +27,10 @@ public class PeakStatusComparator extends AbstractRecordTableComparator implemen
 
 		int sortOrder = 0;
 		if(e1 instanceof IPeak peak1 && e2 instanceof IPeak peak2) {
-			//
+
 			IPeakModel peakModel1 = peak1.getPeakModel();
 			IPeakModel peakModel2 = peak2.getPeakModel();
-			//
+
 			switch(getPropertyIndex()) {
 				case 0:
 					sortOrder = Integer.compare(peakModel2.getStartRetentionTime(), peakModel1.getStartRetentionTime());

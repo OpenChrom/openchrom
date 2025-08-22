@@ -28,7 +28,7 @@ public class PeakIntegratorListUI extends AbstractTemplateListUI {
 
 	private static final String[] TITLES = PeakIntegratorLabelProvider.TITLES;
 	private static final int[] BOUNDS = PeakIntegratorLabelProvider.BOUNDS;
-	//
+
 	private PeakIntegratorLabelProvider labelProvider = new PeakIntegratorLabelProvider();
 	private PeakIntegratorComparator tableComparator = new PeakIntegratorComparator();
 	private PeakIntegratorFilter listFilter = new PeakIntegratorFilter();

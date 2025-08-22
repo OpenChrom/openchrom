@@ -25,7 +25,7 @@ public class PeakIdentifierComparator extends AbstractRecordTableComparator impl
 
 		int sortOrder = 0;
 		if(e1 instanceof IdentifierSetting setting1 && e2 instanceof IdentifierSetting setting2) {
-			//
+
 			switch(getPropertyIndex()) {
 				case 0:
 					sortOrder = setting2.getName().compareTo(setting1.getName());

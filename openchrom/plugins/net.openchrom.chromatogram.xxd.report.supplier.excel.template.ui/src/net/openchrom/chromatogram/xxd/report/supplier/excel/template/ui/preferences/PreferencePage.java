@@ -40,7 +40,7 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 
 	private static final Logger logger = Logger.getLogger(PreferencePage.class);
 	private static final String TITLE = "Excel Template";
-	//
+
 	private FileFieldEditor fileFieldEditor;
 
 	public PreferencePage() {

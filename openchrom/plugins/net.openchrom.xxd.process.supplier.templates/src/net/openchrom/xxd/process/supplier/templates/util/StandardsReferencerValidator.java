@@ -21,14 +21,13 @@ import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
 public class StandardsReferencerValidator extends AbstractTemplateValidator implements ITemplateValidator {
 
 	private static final String ERROR_ENTRY = "Please enter an item, e.g.: '" + StandardsReferencerListUtil.EXAMPLE_SINGLE + "'";
-	//
+
 	private PositionDirective positionDirective = PositionDirective.RETENTION_TIME_MIN;
 	private double positionStart = 0;
 	private double positionStop = 0;
 	private String internalStandard = "";
 	private String identifier = "";
 
-	//
 	@Override
 	public IStatus validate(Object value) {
 
@@ -68,7 +67,7 @@ public class StandardsReferencerValidator extends AbstractTemplateValidator impl
 								message = "The stop position must be greater than the start position.";
 							}
 						}
-						//
+
 						if("".equals(internalStandard)) {
 							message = "The name of the internal standards needs to be set.";
 						}
@@ -80,7 +79,7 @@ public class StandardsReferencerValidator extends AbstractTemplateValidator impl
 				message = ERROR_ENTRY;
 			}
 		}
-		//
+
 		if(message != null) {
 			return ValidationStatus.error(message);
 		} else {
@@ -91,13 +90,13 @@ public class StandardsReferencerValidator extends AbstractTemplateValidator impl
 	public AssignerReference getSetting() {
 
 		AssignerReference setting = new AssignerReference();
-		//
+
 		setting.setPositionStart(positionStart);
 		setting.setPositionStop(positionStop);
 		setting.setInternalStandard(internalStandard);
 		setting.setIdentifier(identifier);
 		setting.setPositionDirective(positionDirective);
-		//
+
 		return setting;
 	}
 }

@@ -38,13 +38,13 @@ import net.openchrom.xxd.process.supplier.templates.util.StandardsAssignerValida
 public class AssignerStandards extends ArrayList<AssignerStandard> implements ISettings {
 
 	private static final Logger logger = Logger.getLogger(AssignerStandards.class);
-	//
+
 	public static final String DESCRIPTION = "Internal Standards";
 	public static final String FILE_EXTENSION = ".ist";
 	public static final String FILE_NAME = DESCRIPTION.replaceAll("\\s", "") + FILE_EXTENSION;
 	public static final String FILTER_EXTENSION = "*" + FILE_EXTENSION;
 	public static final String FILTER_NAME = DESCRIPTION + " (*" + FILE_EXTENSION + ")";
-	//
+
 	private static final long serialVersionUID = -9211939853837711565L;
 	private StandardsAssignerListUtil listUtil = new StandardsAssignerListUtil();
 
@@ -128,12 +128,12 @@ public class AssignerStandards extends ArrayList<AssignerStandard> implements IS
 
 		boolean success = false;
 		try (PrintWriter printWriter = new PrintWriter(file)) {
-			//
+
 			List<AssignerStandard> settings = new ArrayList<>(this);
 			if(PreferenceSupplier.isSortExportTemplate()) {
 				Collections.sort(settings, new StandardComparator()); // SORT OK
 			}
-			//
+
 			for(AssignerStandard setting : settings) {
 				StringBuilder builder = new StringBuilder();
 				extractSetting(setting, builder);
@@ -144,7 +144,7 @@ public class AssignerStandards extends ArrayList<AssignerStandard> implements IS
 		} catch(FileNotFoundException e) {
 			logger.warn(e);
 		}
-		//
+
 		return success;
 	}
 
@@ -152,14 +152,14 @@ public class AssignerStandards extends ArrayList<AssignerStandard> implements IS
 
 		AssignerStandard setting = null;
 		StandardsAssignerValidator validator = listUtil.getValidator();
-		//
+
 		IStatus status = validator.validate(text);
 		if(status.isOK()) {
 			setting = validator.getSetting();
 		} else {
 			logger.warn(status.getMessage());
 		}
-		//
+
 		return setting;
 	}
 
@@ -181,7 +181,7 @@ public class AssignerStandards extends ArrayList<AssignerStandard> implements IS
 	private void extractSetting(AssignerStandard setting, StringBuilder builder) {
 
 		List<String> entries = new ArrayList<>();
-		//
+
 		entries.add(getFormattedPosition(setting.getPositionStart()));
 		entries.add(getFormattedPosition(setting.getPositionStop()));
 		entries.add(setting.getName());
@@ -190,7 +190,7 @@ public class AssignerStandards extends ArrayList<AssignerStandard> implements IS
 		entries.add(Double.toString(setting.getCompensationFactor()));
 		entries.add(setting.getTracesIdentification());
 		entries.add(setting.getPositionDirective().name());
-		//
+
 		compile(builder, entries);
 	}
 }

@@ -36,12 +36,12 @@ public class TraceRatioExport extends AbstractChromatogramExportConverter implem
 
 		IProcessingInfo<File> processingInfo = new ProcessingInfo<>();
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
-		//
+
 		TraceRatioExportSettings traceRatioExportSettings = new TraceRatioExportSettings();
 		traceRatioExportSettings.setAllowedDeviationOk(PreferenceSupplier.getAllowedDeviationOk());
 		traceRatioExportSettings.setAllowedDeviationWarn(PreferenceSupplier.getAllowedDeviationWarn());
 		traceRatioExportSettings.setNumberTraces(PreferenceSupplier.getNumberTraces());
-		//
+
 		TraceRatioCompiler traceRatioCompiler = new TraceRatioCompiler();
 		if(traceRatioCompiler.compilePeaks(file, peaks, traceRatioExportSettings)) {
 			processingInfo.setProcessingResult(file);
@@ -49,7 +49,7 @@ public class TraceRatioExport extends AbstractChromatogramExportConverter implem
 		} else {
 			processingInfo.addWarnMessage(DESCRIPTION, "Something went wrong to compile the trace ratios.");
 		}
-		//
+
 		return processingInfo;
 	}
 }

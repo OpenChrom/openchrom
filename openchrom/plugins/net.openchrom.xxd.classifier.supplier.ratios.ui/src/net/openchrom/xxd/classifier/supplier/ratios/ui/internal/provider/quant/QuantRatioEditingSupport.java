@@ -23,7 +23,7 @@ import net.openchrom.xxd.classifier.supplier.ratios.ui.swt.QuantRatioListUI;
 public class QuantRatioEditingSupport extends EditingSupport {
 
 	private static final Logger logger = Logger.getLogger(QuantRatioEditingSupport.class);
-	//
+
 	private CellEditor cellEditor;
 	private QuantRatioListUI tableViewer;
 	private String column;
@@ -104,7 +104,7 @@ public class QuantRatioEditingSupport extends EditingSupport {
 					}
 					break;
 			}
-			//
+
 			tableViewer.refresh();
 			tableViewer.updateContent();
 		}

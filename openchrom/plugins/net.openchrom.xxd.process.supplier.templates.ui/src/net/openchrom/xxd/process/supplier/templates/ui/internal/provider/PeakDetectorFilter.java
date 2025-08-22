@@ -36,32 +36,32 @@ public class PeakDetectorFilter extends ViewerFilter {
 		if(searchText == null || searchText.equals("")) {
 			return true;
 		}
-		//
+
 		if(element instanceof DetectorSetting setting) {
 			PeakType detectorType = setting.getPeakType();
 			String traces = setting.getTraces();
 			String referenceIdenfifier = setting.getReferenceIdentifier();
 			String name = setting.getName();
-			//
+
 			if(!caseSensitive) {
 				searchText = searchText.toLowerCase();
 				traces = traces.toLowerCase();
 				referenceIdenfifier = referenceIdenfifier.toLowerCase();
 				name = name.toLowerCase();
 			}
-			//
+
 			if(traces.contains(searchText)) {
 				return true;
 			}
-			//
+
 			if(referenceIdenfifier.contains(searchText)) {
 				return true;
 			}
-			//
+
 			if(name.contains(searchText)) {
 				return true;
 			}
-			//
+
 			if(detectorType != null) {
 				if(caseSensitive) {
 					if(detectorType.name().contains(searchText)) {
@@ -74,7 +74,7 @@ public class PeakDetectorFilter extends ViewerFilter {
 				}
 			}
 		}
-		//
+
 		return false;
 	}
 }

@@ -34,26 +34,26 @@ public class StandardsReferencerFilter extends ViewerFilter {
 		if(searchText == null || searchText.equals("")) {
 			return true;
 		}
-		//
+
 		if(element instanceof AssignerReference setting) {
 			String name = setting.getInternalStandard();
 			String identifier = setting.getIdentifier();
-			//
+
 			if(!caseSensitive) {
 				searchText = searchText.toLowerCase();
 				name = name.toLowerCase();
 				identifier = identifier.toLowerCase();
 			}
-			//
+
 			if(name.contains(searchText)) {
 				return true;
 			}
-			//
+
 			if(identifier.contains(searchText)) {
 				return true;
 			}
 		}
-		//
+
 		return false;
 	}
 }

@@ -34,26 +34,26 @@ public class PeakIntegratorFilter extends ViewerFilter {
 		if(searchText == null || searchText.equals("")) {
 			return true;
 		}
-		//
+
 		if(element instanceof IntegratorSetting setting) {
 			String identifier = setting.getIdentifier();
 			String integrator = setting.getIntegrator();
-			//
+
 			if(!caseSensitive) {
 				searchText = searchText.toLowerCase();
 				identifier = identifier.toLowerCase();
 				integrator = integrator.toLowerCase();
 			}
-			//
+
 			if(identifier.contains(searchText)) {
 				return true;
 			}
-			//
+
 			if(integrator.contains(searchText)) {
 				return true;
 			}
 		}
-		//
+
 		return false;
 	}
 }

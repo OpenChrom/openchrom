@@ -59,7 +59,7 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 	 */
 	private static final String RETENTION_INDICES_DELIMITER = ", ";
 	private static final String SNUM = "([+-]?\\d+\\.?\\d*(?:[eE][+-]?\\d+)?)"; // matches any valid string representation of a number
-	//
+
 	private static final Pattern casNumberPattern = Pattern.compile("^CAS(?:NO|#)?:\\s*([0-9-]*)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern commentPattern = Pattern.compile("^COMMENTS?:\\s*(.*)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern databaseNamePattern = Pattern.compile("^DB(?:NO|#)?:\\s*(.*)", Pattern.CASE_INSENSITIVE);
@@ -163,7 +163,7 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 				} else if(0 == parseState) {
 					parseState = 1;
 				}
-				//
+
 				String name = fieldMatcher.group(1).trim();
 				if(!libOrScanNames.add(name)) {
 					System.out.println((new Throwable().getStackTrace()[0].getLineNumber()) + ", got duplicate NAME record " + name);
@@ -221,7 +221,7 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 				} else if(0 == parseState) {
 					parseState = 1;
 				}
-				//
+
 				String name = fieldMatcher.group(1).trim();
 				if(!libOrScanNames.add(name)) {
 					System.out.println((new Throwable().getStackTrace()[0].getLineNumber()) + ", got duplicate SCAN record " + name);

@@ -19,6 +19,6 @@ public interface ITemplateSettings {
 	String RE_TEXT = "([^;\\|]*)";
 	String RE_FLAG = "(true|false)";
 	String RE_SEPARATOR = "(\\s*\\|\\s*)";
-	//
+
 	String RE_TRACE_PATTERN = "(\\d+:\\d+)";
 }

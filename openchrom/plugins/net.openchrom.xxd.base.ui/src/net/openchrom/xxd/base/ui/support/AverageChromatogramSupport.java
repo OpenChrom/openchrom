@@ -31,7 +31,7 @@ public class AverageChromatogramSupport {
 				}
 			}
 		}
-		//
+
 		return null;
 	}
 }

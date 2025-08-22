@@ -24,7 +24,7 @@ public class QualRatioContentProvider implements IStructuredContentProvider {
 	public Object[] getElements(Object inputElement) {
 
 		QualRatios qualRatios = null;
-		//
+
 		if(inputElement instanceof IMeasurementResult<?> measurementResult) {
 			Object object = measurementResult.getResult();
 			if(object instanceof QualRatios qualRatiosResult) {
@@ -33,11 +33,11 @@ public class QualRatioContentProvider implements IStructuredContentProvider {
 		} else if(inputElement instanceof QualRatios inputQualRatios) {
 			qualRatios = inputQualRatios;
 		}
-		//
+
 		if(qualRatios != null) {
 			return qualRatios.toArray();
 		}
-		//
+
 		return null;
 	}
 

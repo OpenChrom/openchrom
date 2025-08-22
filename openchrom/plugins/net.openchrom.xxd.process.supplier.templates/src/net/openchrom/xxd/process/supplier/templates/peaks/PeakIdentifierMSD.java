@@ -34,7 +34,7 @@ public class PeakIdentifierMSD extends AbstractPeakIdentifier implements IPeakId
 		if(settings == null) {
 			settings = getSettings(PreferenceSupplier.P_PEAK_IDENTIFIER_LIST_MSD);
 		}
-		//
+
 		RetentionIndexMap retentionIndexMap = RetentionIndexSupport.getRetentionIndexMap(peaks);
 		return applyIdentifier(peaks, settings, retentionIndexMap, monitor);
 	}

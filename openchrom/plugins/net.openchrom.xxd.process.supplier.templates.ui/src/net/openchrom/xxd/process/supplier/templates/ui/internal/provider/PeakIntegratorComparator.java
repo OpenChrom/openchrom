@@ -25,7 +25,7 @@ public class PeakIntegratorComparator extends AbstractRecordTableComparator impl
 
 		int sortOrder = 0;
 		if(e1 instanceof IntegratorSetting setting1 && e2 instanceof IntegratorSetting setting2) {
-			//
+
 			switch(getPropertyIndex()) {
 				case 0:
 					sortOrder = Double.compare(setting2.getPositionStart(), setting1.getPositionStart());

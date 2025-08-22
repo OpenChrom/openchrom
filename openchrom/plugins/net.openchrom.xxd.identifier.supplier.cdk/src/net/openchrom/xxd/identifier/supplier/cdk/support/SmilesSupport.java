@@ -39,7 +39,7 @@ public class SmilesSupport {
 			} catch(InvalidSmilesException e) {
 			}
 		}
-		//
+
 		return molecule;
 	}
 }

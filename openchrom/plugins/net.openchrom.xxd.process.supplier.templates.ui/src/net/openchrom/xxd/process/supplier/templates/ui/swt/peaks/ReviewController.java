@@ -400,7 +400,7 @@ public class ReviewController {
 			int retentionTimeDeltaLeft = PreferenceSupplier.getReviewDeltaLeftMilliseconds();
 			retentionTime = reviewSetting.getStartRetentionTime() - retentionTimeDeltaLeft;
 		}
-		//
+
 		return retentionTime;
 	}
 
@@ -411,7 +411,7 @@ public class ReviewController {
 			int retentionTimeDeltaRight = PreferenceSupplier.getReviewDeltaRightMilliseconds();
 			retentionTime = reviewSetting.getStopRetentionTime() + retentionTimeDeltaRight;
 		}
-		//
+
 		return retentionTime;
 	}
 

@@ -43,12 +43,12 @@ import net.openchrom.xxd.process.supplier.templates.ui.swt.PeakListUI;
 public class ExtendedPeakDetectorUI extends Composite {
 
 	private static final String MENU_CATEGORY_PEAKS = "Peaks";
-	//
+
 	private DetectorController controller;
 	private PeakListUI peakListUI;
-	//
+
 	private List<IChromatogramPeak> peaks;
-	//
+
 	private DetectorSetting detectorSetting;
 
 	public ExtendedPeakDetectorUI(Composite parent, int style) {
@@ -72,7 +72,7 @@ public class ExtendedPeakDetectorUI extends Composite {
 				selectPeakMatch(peaks.get(0));
 			}
 		}
-		//
+
 		updateSelection(false);
 	}
 
@@ -85,7 +85,7 @@ public class ExtendedPeakDetectorUI extends Composite {
 
 		GridLayout gridLayout = new GridLayout(1, true);
 		setLayout(gridLayout);
-		//
+
 		createToolbarMain(this);
 		peakListUI = createTablePeaks(this);
 	}
@@ -97,7 +97,7 @@ public class ExtendedPeakDetectorUI extends Composite {
 		gridData.horizontalAlignment = SWT.END;
 		composite.setLayoutData(gridData);
 		composite.setLayout(new GridLayout(2, false));
-		//
+
 		createDeletePeakButton(composite);
 		createDeletePeaksButton(composite);
 	}
@@ -146,7 +146,7 @@ public class ExtendedPeakDetectorUI extends Composite {
 		PeakListUI listUI = new PeakListUI(parent, SWT.BORDER | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
 		Table table = listUI.getTable();
 		table.setLayoutData(new GridData(GridData.FILL_BOTH));
-		//
+
 		table.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -163,7 +163,7 @@ public class ExtendedPeakDetectorUI extends Composite {
 		addDeleteMenuEntry(shell, tableSettings);
 		addKeyEventProcessors(shell, tableSettings);
 		listUI.applySettings(tableSettings);
-		//
+
 		return listUI;
 	}
 

@@ -46,10 +46,10 @@ public class PositionAdjusterUI extends Composite {
 	private AtomicReference<ComboViewer> comboControl = new AtomicReference<>();
 	private AtomicReference<Text> textControl = new AtomicReference<>();
 	private AtomicReference<Button> buttonControl = new AtomicReference<>();
-	//
+
 	private List<? extends AbstractSetting> settings;
 	private IUpdateListener updateListener;
-	//
+
 	private Listener listener;
 
 	public PositionAdjusterUI(Composite parent, int style) {
@@ -61,7 +61,7 @@ public class PositionAdjusterUI extends Composite {
 	public void addChangeListener(Listener listener) {
 
 		this.listener = listener;
-		//
+
 		comboControl.get().getCombo().addListener(SWT.Selection, listener);
 		textControl.get().addListener(SWT.KeyUp, listener);
 		buttonControl.get().addListener(SWT.KeyUp, listener);
@@ -70,7 +70,7 @@ public class PositionAdjusterUI extends Composite {
 	public void setInput(List<? extends AbstractSetting> settings) {
 
 		this.settings = settings;
-		//
+
 		if(listener != null) {
 			listener.handleEvent(new Event());
 		}
@@ -84,17 +84,17 @@ public class PositionAdjusterUI extends Composite {
 	private void createControl() {
 
 		setLayout(new FillLayout());
-		//
+
 		Composite composite = new Composite(this, SWT.NONE);
 		GridLayout gridLayout = new GridLayout(3, false);
 		gridLayout.marginLeft = 0;
 		gridLayout.marginRight = 0;
 		composite.setLayout(gridLayout);
-		//
+
 		createComboViewer(composite);
 		createText(composite);
 		createButton(composite);
-		//
+
 		initialize();
 		validate();
 	}
@@ -121,7 +121,7 @@ public class PositionAdjusterUI extends Composite {
 				return null;
 			}
 		});
-		//
+
 		combo.setToolTipText("Select the position field to be updated.");
 		GridData gridData = new GridData();
 		gridData.widthHint = 250;
@@ -137,7 +137,7 @@ public class PositionAdjusterUI extends Composite {
 				}
 			}
 		});
-		//
+
 		comboControl.set(comboViewer);
 	}
 
@@ -161,7 +161,7 @@ public class PositionAdjusterUI extends Composite {
 				}
 			}
 		});
-		//
+
 		textControl.set(text);
 	}
 
@@ -179,7 +179,7 @@ public class PositionAdjusterUI extends Composite {
 				applyShift();
 			}
 		});
-		//
+
 		buttonControl.set(button);
 	}
 
@@ -195,7 +195,7 @@ public class PositionAdjusterUI extends Composite {
 		if(object instanceof PositionMarker positionMarker) {
 			return positionMarker;
 		}
-		//
+
 		return null;
 	}
 

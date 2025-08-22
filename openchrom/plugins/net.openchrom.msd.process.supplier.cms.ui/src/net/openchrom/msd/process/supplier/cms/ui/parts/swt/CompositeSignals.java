@@ -248,7 +248,7 @@ public class CompositeSignals extends Composite {
 		GridData compositeGraphGridData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		compositeGraphGridData.horizontalSpan = 2;
 		this.setLayoutData(compositeGraphGridData);
-		//
+
 		LightweightSystem lightweightSystem = new LightweightSystem(new Canvas(this, SWT.NONE));
 		xyGraphSignals = new XYGraph();
 		xyGraphSignals.setTitle("Signal");
@@ -281,7 +281,7 @@ public class CompositeSignals extends Composite {
 			spectrum = (ICalibratedVendorMassSpectrum)spectra.getMassSpectrum(1);
 			signalUnits = spectrum.getSignalUnits();
 			xyGraphSignals.getPrimaryYAxis().setTitle("Signal, " + signalUnits);
-			//
+
 			for(int i = spectra.getList().size(); i > 0;) {
 				double signalSum;
 				spectrum = (ICalibratedVendorMassSpectrum)spectra.getMassSpectrum(i);

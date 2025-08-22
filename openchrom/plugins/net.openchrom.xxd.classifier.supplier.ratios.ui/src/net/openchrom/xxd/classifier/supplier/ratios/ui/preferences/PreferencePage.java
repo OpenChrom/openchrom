@@ -41,7 +41,7 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 
 		addField(new FloatFieldEditor(PreferenceSupplier.P_ALLOWED_DEVIATION_OK, "Allowed Deviation Ok (%)", PreferenceSupplier.MIN_DEVIATION, PreferenceSupplier.MAX_DEVIATION, getFieldEditorParent()));
 		addField(new FloatFieldEditor(PreferenceSupplier.P_ALLOWED_DEVIATION_WARN, "Allowed Deviation Warn (%)", PreferenceSupplier.MIN_DEVIATION, PreferenceSupplier.MAX_DEVIATION, getFieldEditorParent()));
-		//
+
 		addField(new SpinnerFieldEditor(PreferenceSupplier.P_EXPORT_NUMBER_TRACES, "Export Number Traces", PreferenceSupplier.MIN_NUMBER_TRACES, PreferenceSupplier.MAX_NUMBER_TRACES, getFieldEditorParent()));
 	}
 

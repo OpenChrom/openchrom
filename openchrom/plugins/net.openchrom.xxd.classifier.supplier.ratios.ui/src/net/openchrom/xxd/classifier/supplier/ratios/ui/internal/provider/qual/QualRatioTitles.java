@@ -41,13 +41,13 @@ public class QualRatioTitles extends AbstractPeakRatioTitles implements ColumnDe
 	public Collection<? extends ColumnDefinition<?, ?>> getColumnDefinitions() {
 
 		List<ColumnDefinition<?, ?>> list = new ArrayList<>();
-		//
+
 		addColumnRetentionTime(list);
 		addColumnBestTarget(list);
 		addColumnLeadingTailing(list);
 		addColumnSignalToNoise(list);
 		addColumnSymmetry(list);
-		//
+
 		return list;
 	}
 

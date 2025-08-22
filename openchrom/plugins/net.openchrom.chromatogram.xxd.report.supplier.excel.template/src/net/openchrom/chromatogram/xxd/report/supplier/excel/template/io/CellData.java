@@ -28,7 +28,7 @@ public class CellData {
 	private String cellValue = "";
 	private IChromatogram chromatogram = null;
 	private int peakNumber = 0;
-	//
+
 	private IPeak peak = null;
 	private IPeakModel peakModel = null;
 	private ILibraryInformation libraryInformation = null;
@@ -121,7 +121,7 @@ public class CellData {
 		internalStandard = null;
 		quantitationEntry = null;
 		quantitationReference = "";
-		//
+
 		if(chromatogram != null) {
 			List<? extends IPeak> peaks = chromatogram.getPeaks();
 			if(peakNumber >= 0 && peakNumber < peaks.size()) {

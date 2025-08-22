@@ -45,12 +45,12 @@ public class FormulaSupport {
 		if(formulas != null) {
 			formulaNames = massToFormulaBridge.getNames(formulas);
 		}
-		//
+
 		List<Double> formulaRatings = new ArrayList<>();
 		if(formulas != null) {
 			formulaRatings = massToFormulaBridge.getRatings(ion, formulas);
 		}
-		//
+
 		List<NameAndRating> formulaNamesAndRatings = new ArrayList<>();
 		for(int i = 0; i < formulaNames.size() && i < formulaRatings.size(); i++) {
 			String formulaName = formulaNames.get(i);
@@ -58,7 +58,7 @@ public class FormulaSupport {
 			NameAndRating nameAndRating = new NameAndRating(formulaName, formulaRating);
 			formulaNamesAndRatings.add(nameAndRating);
 		}
-		//
+
 		return formulaNamesAndRatings;
 	}
 }

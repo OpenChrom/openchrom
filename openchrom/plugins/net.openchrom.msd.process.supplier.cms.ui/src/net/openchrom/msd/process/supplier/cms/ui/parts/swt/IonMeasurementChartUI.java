@@ -98,10 +98,10 @@ public class IonMeasurementChartUI extends BarChart {
 		rangeRestriction.setExtendMaxX(2.0d);
 		rangeRestriction.setExtendTypeY(RangeRestriction.ExtendType.RELATIVE);
 		rangeRestriction.setExtendMaxY(0.1d);
-		//
+
 		setPrimaryAxisSet(chartSettings);
 		applySettings(chartSettings);
-		//
+
 		addSeriesLabelMarker();
 	}
 
@@ -111,7 +111,7 @@ public class IonMeasurementChartUI extends BarChart {
 		primaryAxisSettingsX.setTitle("m/z");
 		primaryAxisSettingsX.setDecimalFormat(ValueFormat.getDecimalFormatEnglish("0"));
 		primaryAxisSettingsX.setColor(getDisplay().getSystemColor(SWT.COLOR_BLACK));
-		//
+
 		IPrimaryAxisSettings primaryAxisSettingsY = chartSettings.getPrimaryAxisSettingsY();
 		primaryAxisSettingsY.setTitle("Intensity");
 		primaryAxisSettingsY.setDecimalFormat(ValueFormat.getDecimalFormatEnglish("0.0###E00"));
@@ -135,7 +135,7 @@ public class IonMeasurementChartUI extends BarChart {
 				xSeries[x++] = ion.getIon();
 				ySeries[y++] = ion.getAbundance();
 			}
-			//
+
 			seriesData = new SeriesData(xSeries, ySeries, "Ion Measurement");
 		} else {
 			seriesData = new SeriesData(new double[]{0, 0}, new double[]{0, 0}, "No Ion Measurement");
@@ -158,7 +158,7 @@ public class IonMeasurementChartUI extends BarChart {
 				Collections.sort(barSeriesIons, barSeriesIonComparator);
 				int barSeriesSize = barSeriesIons.size();
 				int limit = 5;
-				//
+
 				for(int i = 0; i < limit; i++) {
 					if(i < barSeriesSize) {
 						BarSeriesIon barSeriesIon = barSeriesIons.get(i);
@@ -192,16 +192,16 @@ public class IonMeasurementChartUI extends BarChart {
 	private List<BarSeriesIon> getBarSeriesIonList() {
 
 		List<BarSeriesIon> barSeriesIons = new ArrayList<BarSeriesIon>();
-		//
+
 		int widthPlotArea = getBaseChart().getPlotArea().getSize().x;
 		ISeries<?>[] series = getBaseChart().getSeriesSet().getSeries();
 		for(ISeries<?> barSeries : series) {
 			if(barSeries != null) {
-				//
+
 				double[] xSeries = barSeries.getXSeries();
 				double[] ySeries = barSeries.getYSeries();
 				int size = barSeries.getXSeries().length;
-				//
+
 				for(int i = 0; i < size; i++) {
 					Point point = barSeries.getPixelCoordinates(i);
 					if(point.x >= 0 && point.x <= widthPlotArea) {

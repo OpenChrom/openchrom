@@ -39,7 +39,7 @@ public interface ITemplateExport {
 				return extractTraces(peakMSD, numberTraces);
 			}
 		}
-		//
+
 		return ""; // default
 	}
 
@@ -61,7 +61,7 @@ public interface ITemplateExport {
 						IIon ion = iterator.next();
 						builder.append(Math.round(ion.getIon()));
 						counter++;
-						//
+
 						if(iterator.hasNext() && counter <= numberTraces) {
 							builder.append(AbstractTemplateListUtil.SEPARATOR_TRACE_ITEM);
 						} else {

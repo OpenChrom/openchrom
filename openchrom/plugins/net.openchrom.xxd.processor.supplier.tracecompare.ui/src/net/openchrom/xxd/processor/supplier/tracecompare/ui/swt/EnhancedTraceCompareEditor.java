@@ -55,14 +55,14 @@ public class EnhancedTraceCompareEditor extends AbstractControllerComposite {
 	private static final Logger logger = Logger.getLogger(EnhancedTraceCompareEditor.class);
 	private static final String DESCRIPTION = "Trace Compare";
 	private static final String EVALUATE_REFERENCE = "Evaluate Reference";
-	//
+
 	private EditorProcessor editorProcessor;
-	//
+
 	private Button buttonValidate;
 	private Button buttonSettings;
 	private Button buttonNext;
 	private List<Button> buttons;
-	//
+
 	private TraceCompareEditorUI traceCompareEditorUI;
 
 	public EnhancedTraceCompareEditor(Composite parent, int style) {
@@ -123,10 +123,10 @@ public class EnhancedTraceCompareEditor extends AbstractControllerComposite {
 		Composite compositeButtons = new Composite(composite, SWT.NONE);
 		compositeButtons.setLayout(new GridLayout(1, true));
 		compositeButtons.setLayoutData(new GridData(GridData.FILL_VERTICAL));
-		//
+
 		GridData gridDataButtons = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataButtons.minimumWidth = 150;
-		//
+
 		buttons.add(buttonValidate = createValidateButton(compositeButtons, gridDataButtons));
 		buttons.add(buttonSettings = createSettingsButton(compositeButtons, gridDataButtons));
 		buttons.add(buttonNext = createNextButton(compositeButtons, gridDataButtons));
@@ -146,7 +146,7 @@ public class EnhancedTraceCompareEditor extends AbstractControllerComposite {
 
 				if(editorProcessor != null) {
 					IProcessingInfo<?> processingInfo = new ProcessingInfo<>();
-					//
+
 					IProcessorModel processorModel = editorProcessor.getProcessorModel();
 					Set<String> references = processorModel.getReferenceModels().keySet();
 					for(String reference : references) {
@@ -170,11 +170,11 @@ public class EnhancedTraceCompareEditor extends AbstractControllerComposite {
 							}
 						}
 					}
-					//
+
 					if(!processingInfo.hasWarnMessages() && !processingInfo.hasErrorMessages()) {
 						processingInfo.addInfoMessage(DESCRIPTION, "All traces have been evaluated successfully.");
 					}
-					//
+
 					ProcessingInfoPartSupport.getInstance().update(processingInfo, true);
 				}
 			}
@@ -197,7 +197,7 @@ public class EnhancedTraceCompareEditor extends AbstractControllerComposite {
 				preferencePage.setTitle("TraceCompare Preferences");
 				PreferenceManager preferenceManager = new PreferenceManager();
 				preferenceManager.addToRoot(new PreferenceNode("1", preferencePage));
-				//
+
 				PreferenceDialog preferenceDialog = new PreferenceDialog(Display.getDefault().getActiveShell(), preferenceManager);
 				preferenceDialog.create();
 				preferenceDialog.setMessage("Settings");
@@ -229,7 +229,7 @@ public class EnhancedTraceCompareEditor extends AbstractControllerComposite {
 	private Button createSaveButton(Composite parent, GridData gridData) {
 
 		Shell shell = Display.getDefault().getActiveShell();
-		//
+
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("Save");
 		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SAVE, IApplicationImage.SIZE_16x16));

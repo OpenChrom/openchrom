@@ -21,10 +21,10 @@ import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD
 public class ProcessorData {
 
 	private IProcessorModel processorModel;
-	//
+
 	private IChromatogramSelectionMSD referenceChromatogramSelection;
 	private IChromatogramSelectionMSD isotopeChromatogramSelection;
-	//
+
 	private CalculatedIonCertainties calculatedIonCertainties;
 	private Map<Integer, Integer> levelCertainty;
 

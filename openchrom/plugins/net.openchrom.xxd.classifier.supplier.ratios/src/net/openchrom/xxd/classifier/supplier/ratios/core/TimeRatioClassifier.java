@@ -63,7 +63,7 @@ public class TimeRatioClassifier extends AbstractRatioClassifier {
 	private TimeRatios calculateRatios(IChromatogram chromatogram, TimeRatioSettings classifierSettings) {
 
 		TimeRatios ratios = classifierSettings.getRatioSettingsList();
-		//
+
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
 		for(TimeRatio ratio : ratios) {
 			for(IPeak peak : peaks) {
@@ -78,7 +78,7 @@ public class TimeRatioClassifier extends AbstractRatioClassifier {
 				}
 			}
 		}
-		//
+
 		return ratios;
 	}
 }

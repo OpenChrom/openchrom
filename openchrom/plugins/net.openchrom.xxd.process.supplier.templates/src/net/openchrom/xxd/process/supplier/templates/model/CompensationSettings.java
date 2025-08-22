@@ -38,15 +38,15 @@ import net.openchrom.xxd.process.supplier.templates.util.CompensationQuantValida
 public class CompensationSettings extends ArrayList<CompensationSetting> implements ISettings {
 
 	private static final long serialVersionUID = -1566032312360942165L;
-	//
+
 	public static final String DESCRIPTION = "Peak Compensation Quantifier";
 	public static final String FILE_EXTENSION = ".pcq";
 	public static final String FILE_NAME = DESCRIPTION.replaceAll("\\s", "") + FILE_EXTENSION;
 	public static final String FILTER_EXTENSION = "*" + FILE_EXTENSION;
 	public static final String FILTER_NAME = DESCRIPTION + " (*" + FILE_EXTENSION + ")";
-	//
+
 	private static final Logger logger = Logger.getLogger(CompensationSettings.class);
-	//
+
 	private CompensationQuantListUtil listUtil = new CompensationQuantListUtil();
 
 	public Set<String> keySet() {
@@ -129,12 +129,12 @@ public class CompensationSettings extends ArrayList<CompensationSetting> impleme
 
 		boolean success = false;
 		try (PrintWriter printWriter = new PrintWriter(file)) {
-			//
+
 			List<CompensationSetting> settings = new ArrayList<>(this);
 			if(PreferenceSupplier.isSortExportTemplate()) {
 				Collections.sort(settings, new CompensationComparator()); // SORT OK
 			}
-			//
+
 			for(CompensationSetting setting : settings) {
 				StringBuilder builder = new StringBuilder();
 				extractSetting(setting, builder);
@@ -145,7 +145,7 @@ public class CompensationSettings extends ArrayList<CompensationSetting> impleme
 		} catch(FileNotFoundException e) {
 			logger.warn(e);
 		}
-		//
+
 		return success;
 	}
 
@@ -153,14 +153,14 @@ public class CompensationSettings extends ArrayList<CompensationSetting> impleme
 
 		CompensationSetting setting = null;
 		CompensationQuantValidator validator = listUtil.getValidator();
-		//
+
 		IStatus status = validator.validate(text);
 		if(status.isOK()) {
 			setting = validator.getSetting();
 		} else {
 			logger.warn(status.getMessage());
 		}
-		//
+
 		return setting;
 	}
 
@@ -182,14 +182,14 @@ public class CompensationSettings extends ArrayList<CompensationSetting> impleme
 	private void extractSetting(CompensationSetting setting, StringBuilder builder) {
 
 		List<String> entries = new ArrayList<>();
-		//
+
 		entries.add(setting.getName());
 		entries.add(setting.getInternalStandard());
 		entries.add(Double.toString(setting.getExpectedConcentration()));
 		entries.add(setting.getConcentrationUnit());
 		entries.add(Boolean.toString(setting.isAdjustQuantitationEntry()));
 		entries.add(setting.getTargetUnit());
-		//
+
 		compile(builder, entries);
 	}
 }

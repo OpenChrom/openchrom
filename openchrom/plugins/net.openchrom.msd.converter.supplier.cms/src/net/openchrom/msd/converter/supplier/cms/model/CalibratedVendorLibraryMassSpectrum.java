@@ -29,7 +29,7 @@ public class CalibratedVendorLibraryMassSpectrum extends AbstractRegularLibraryM
 	 * methods.
 	 */
 	private static final long serialVersionUID = 5981872973320440739L;
-	//
+
 	private DecimalFormat decimalFormatScaleFactor = ValueFormat.getDecimalFormatEnglish("0.0#####");
 	private List<String> comments; // this implementation preserves the order in which the comments were first read
 	private double sourcePressure;
@@ -70,7 +70,7 @@ public class CalibratedVendorLibraryMassSpectrum extends AbstractRegularLibraryM
 	 */
 	// @Override
 	// public void sortMZ() {
-	//
+
 	// List<IIon> sortedList = new ArrayList<>(getIons());
 	// Collections.sort(sortedList); // uses AbstractIon.compareTo(IIon)
 	// setIons(sortedList);

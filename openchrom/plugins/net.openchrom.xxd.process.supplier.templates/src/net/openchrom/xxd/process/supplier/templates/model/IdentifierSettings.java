@@ -38,13 +38,13 @@ import net.openchrom.xxd.process.supplier.templates.util.PeakIdentifierValidator
 public class IdentifierSettings extends ArrayList<IdentifierSetting> implements ISettings {
 
 	private static final Logger logger = Logger.getLogger(IdentifierSettings.class);
-	//
+
 	public static final String DESCRIPTION = "Peak Identifier Template";
 	public static final String FILE_EXTENSION = ".pit";
 	public static final String FILE_NAME = DESCRIPTION.replaceAll("\\s", "") + FILE_EXTENSION;
 	public static final String FILTER_EXTENSION = "*" + FILE_EXTENSION;
 	public static final String FILTER_NAME = DESCRIPTION + " (*" + FILE_EXTENSION + ")";
-	//
+
 	private static final long serialVersionUID = 260861794433108481L;
 	private PeakIdentifierListUtil listUtil = new PeakIdentifierListUtil();
 
@@ -128,12 +128,12 @@ public class IdentifierSettings extends ArrayList<IdentifierSetting> implements 
 
 		boolean success = false;
 		try (PrintWriter printWriter = new PrintWriter(file)) {
-			//
+
 			List<IdentifierSetting> settings = new ArrayList<>(this);
 			if(PreferenceSupplier.isSortExportTemplate()) {
 				Collections.sort(settings, new IdentifierComparator()); // SORT OK
 			}
-			//
+
 			for(IdentifierSetting setting : settings) {
 				StringBuilder builder = new StringBuilder();
 				extractSetting(setting, builder);
@@ -144,7 +144,7 @@ public class IdentifierSettings extends ArrayList<IdentifierSetting> implements 
 		} catch(FileNotFoundException e) {
 			logger.warn(e);
 		}
-		//
+
 		return success;
 	}
 
@@ -152,14 +152,14 @@ public class IdentifierSettings extends ArrayList<IdentifierSetting> implements 
 
 		IdentifierSetting setting = null;
 		PeakIdentifierValidator validator = listUtil.getValidator();
-		//
+
 		IStatus status = validator.validate(text);
 		if(status.isOK()) {
 			setting = validator.getSetting();
 		} else {
 			logger.warn(status.getMessage());
 		}
-		//
+
 		return setting;
 	}
 
@@ -181,7 +181,7 @@ public class IdentifierSettings extends ArrayList<IdentifierSetting> implements 
 	private void extractSetting(IdentifierSetting setting, StringBuilder builder) {
 
 		List<String> entries = new ArrayList<>();
-		//
+
 		entries.add(getFormattedPosition(setting.getPositionStart()));
 		entries.add(getFormattedPosition(setting.getPositionStop()));
 		entries.add(setting.getName());
@@ -192,7 +192,7 @@ public class IdentifierSettings extends ArrayList<IdentifierSetting> implements 
 		entries.add(setting.getTraces());
 		entries.add(getFormattedString(setting.getReferenceIdentifier()));
 		entries.add(setting.getPositionDirective().name());
-		//
+
 		compile(builder, entries);
 	}
 }

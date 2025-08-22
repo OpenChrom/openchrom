@@ -36,13 +36,13 @@ public class TimeRatios extends ArrayList<TimeRatio> implements IPeakRatios<Time
 
 	private static final Logger logger = Logger.getLogger(TimeRatios.class);
 	private static final long serialVersionUID = 3055499236651500754L;
-	//
+
 	public static final String DESCRIPTION = "Time Ratios";
 	public static final String FILE_EXTENSION = ".tir";
 	public static final String FILE_NAME = DESCRIPTION.replaceAll("\\s", "") + FILE_EXTENSION;
 	public static final String FILTER_EXTENSION = "*" + FILE_EXTENSION;
 	public static final String FILTER_NAME = DESCRIPTION + " (*" + FILE_EXTENSION + ")";
-	//
+
 	private TimeRatioListUtil listUtil = new TimeRatioListUtil();
 	private static final String SEPARATOR_TOKEN = TimeRatioListUtil.SEPARATOR_TOKEN;
 	private static final String SEPARATOR_ENTRY = TimeRatioListUtil.SEPARATOR_ENTRY;
@@ -131,14 +131,14 @@ public class TimeRatios extends ArrayList<TimeRatio> implements IPeakRatios<Time
 
 		TimeRatio setting = null;
 		TimeRatioValidator validator = listUtil.getValidator();
-		//
+
 		IStatus status = validator.validate(text);
 		if(status.isOK()) {
 			setting = validator.getSetting();
 		} else {
 			logger.warn(status.getMessage());
 		}
-		//
+
 		return setting;
 	}
 
@@ -160,7 +160,7 @@ public class TimeRatios extends ArrayList<TimeRatio> implements IPeakRatios<Time
 	private void extractSetting(TimeRatio setting, StringBuilder builder) {
 
 		DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.000");
-		//
+
 		builder.append(setting.getName());
 		builder.append(" ");
 		builder.append(SEPARATOR_ENTRY);

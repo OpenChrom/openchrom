@@ -78,12 +78,12 @@ public class QuantRatioListEditor implements SettingsUIProvider.SettingsUIContro
 	private AtomicReference<Button> buttonSearchControl = new AtomicReference<>();
 	private AtomicReference<SearchSupportUI> toolbarSearch = new AtomicReference<>();
 	private AtomicReference<QuantRatioListUI> listControl = new AtomicReference<>();
-	//
+
 	private Composite control;
-	//
+
 	private static final String CATEGORY = "Quant Ratio";
 	private static final String DELETE = "Delete";
-	//
+
 	private Listener listener;
 	private List<Button> buttons = new ArrayList<>();
 	private Button buttonAdd;
@@ -92,7 +92,7 @@ public class QuantRatioListEditor implements SettingsUIProvider.SettingsUIContro
 	private Button buttonRemoveAll;
 	private Button buttonImport;
 	private Button buttonExport;
-	//
+
 	private QuantRatios settings = new QuantRatios();
 	private IProcessorPreferences<QuantRatioSettings> preferences;
 
@@ -102,7 +102,7 @@ public class QuantRatioListEditor implements SettingsUIProvider.SettingsUIContro
 		if(settings != null) {
 			this.settings.load(settings.getRatioSettings());
 		}
-		//
+
 		control = createControl(parent);
 	}
 
@@ -147,13 +147,13 @@ public class QuantRatioListEditor implements SettingsUIProvider.SettingsUIContro
 	public void addChangeListener(Listener listener) {
 
 		this.listener = listener;
-		//
+
 		Table table = listControl.get().getTable();
 		table.addListener(SWT.Selection, listener);
 		table.addListener(SWT.KeyUp, listener);
 		table.addListener(SWT.MouseUp, listener);
 		table.addListener(SWT.MouseDoubleClick, listener);
-		//
+
 		buttonAdd.addListener(SWT.KeyUp, listener);
 		buttonEdit.addListener(SWT.KeyUp, listener);
 		buttonRemove.addListener(SWT.KeyUp, listener);
@@ -192,13 +192,13 @@ public class QuantRatioListEditor implements SettingsUIProvider.SettingsUIContro
 		gridLayout.marginWidth = 0;
 		gridLayout.marginHeight = 0;
 		composite.setLayout(gridLayout);
-		//
+
 		createToolbarMain(composite);
 		createSearchSection(composite);
 		createTableSection(composite);
-		//
+
 		initialize();
-		//
+
 		return composite;
 	}
 
@@ -218,7 +218,7 @@ public class QuantRatioListEditor implements SettingsUIProvider.SettingsUIContro
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
 		table.setLayoutData(gridData);
-		//
+
 		quantRatioListUI.setEditEnabled(true);
 		quantRatioListUI.setUpdateListener(new IUpdateListener() {
 
@@ -228,13 +228,13 @@ public class QuantRatioListEditor implements SettingsUIProvider.SettingsUIContro
 				setInput();
 			}
 		});
-		//
+
 		Shell shell = quantRatioListUI.getTable().getShell();
 		ITableSettings tableSettings = quantRatioListUI.getTableSettings();
 		addDeleteMenuEntry(shell, tableSettings);
 		addKeyEventProcessors(shell, tableSettings);
 		quantRatioListUI.applySettings(tableSettings);
-		//
+
 		listControl.set(quantRatioListUI);
 	}
 
@@ -260,7 +260,7 @@ public class QuantRatioListEditor implements SettingsUIProvider.SettingsUIContro
 				}
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -291,7 +291,7 @@ public class QuantRatioListEditor implements SettingsUIProvider.SettingsUIContro
 				}
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -309,7 +309,7 @@ public class QuantRatioListEditor implements SettingsUIProvider.SettingsUIContro
 				deleteItems(e.display.getActiveShell());
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -330,7 +330,7 @@ public class QuantRatioListEditor implements SettingsUIProvider.SettingsUIContro
 				}
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -359,7 +359,7 @@ public class QuantRatioListEditor implements SettingsUIProvider.SettingsUIContro
 				}
 			}
 		});
-		//
+
 		return button;
 	}
 
@@ -393,14 +393,14 @@ public class QuantRatioListEditor implements SettingsUIProvider.SettingsUIContro
 				}
 			}
 		});
-		//
+
 		return button;
 	}
 
 	private void setInput() {
 
 		listControl.get().setInput(settings);
-		//
+
 		if(listener != null) {
 			listener.handleEvent(new Event());
 		}
@@ -413,7 +413,7 @@ public class QuantRatioListEditor implements SettingsUIProvider.SettingsUIContro
 		gridData.horizontalAlignment = SWT.END;
 		composite.setLayoutData(gridData);
 		composite.setLayout(new GridLayout(7, false));
-		//
+
 		add(createButtonToggleSearch(composite));
 		add(buttonAdd = createButtonAdd(composite));
 		add(buttonEdit = createButtonEdit(composite));
@@ -427,7 +427,7 @@ public class QuantRatioListEditor implements SettingsUIProvider.SettingsUIContro
 
 		Button button = createButtonToggleToolbar(parent, toolbarSearch, IMAGE_SEARCH, TOOLTIP_SEARCH);
 		buttonSearchControl.set(button);
-		//
+
 		return button;
 	}
 
@@ -448,7 +448,7 @@ public class QuantRatioListEditor implements SettingsUIProvider.SettingsUIContro
 				listControl.get().setSearchText(searchText, caseSensitive);
 			}
 		});
-		//
+
 		toolbarSearch.set(searchSupportUI);
 	}
 

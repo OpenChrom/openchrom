@@ -29,7 +29,7 @@ public class PeakIdentifierListUI extends AbstractTemplateListUI {
 
 	private static final String[] TITLES = PeakIdentifierLabelProvider.TITLES;
 	private static final int[] BOUNDS = PeakIdentifierLabelProvider.BOUNDS;
-	//
+
 	private PeakIdentifierLabelProvider labelProvider = new PeakIdentifierLabelProvider();
 	private PeakIdentifierComparator tableComparator = new PeakIdentifierComparator();
 	private PeakIdentifierFilter listFilter = new PeakIdentifierFilter();

@@ -17,11 +17,11 @@ public class Mz5 {
 	public static final String CHROMATOGRAM_TIME = "ChomatogramTime"; // Don't fix the typo! https://github.com/ProteoWizard/pwiz/pull/738
 	public static final String CHROMATOGRAM_INTENSITY = "ChromatogramIntensity";
 	public static final String CHROMATOGRAM_INDEX = "ChromatogramIndex";
-	//
+
 	public static final String SPECTRUM_INDEX = "SpectrumIndex";
 	public static final String SPECTRUM_MZ = "SpectrumMZ";
 	public static final String SPECTRUM_INTENSITY = "SpectrumIntensity";
-	//
+
 	public static final String CV_REFERENCE = "CVReference";
 	public static final String CV_PARAM = "CVParam";
 

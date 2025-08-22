@@ -44,7 +44,7 @@ import net.openchrom.msd.process.supplier.cms.exceptions.NoScanIonsException;
 public class MassSpectraDecomposition {
 
 	private static final Logger logger = Logger.getLogger(MassSpectraDecomposition.class);
-	//
+
 	private DMatrixRMaj y = new DMatrixRMaj(1, 1); // unknown mass spectrum measurements matrix
 	private DMatrixRMaj x = new DMatrixRMaj(1, 1); // matrix containing computed component fractions
 	private DMatrixRMaj A = new DMatrixRMaj(1, 1); // mass spectrum library components matrix
@@ -274,7 +274,7 @@ public class MassSpectraDecomposition {
 			} catch(InvalidScanIonCountException e) {
 				logger.warn(e);
 			}
-			//
+
 			decompositionResult.setResidualSpectrum(scanResidual);
 			correlationResult = massSpectraCorrelator.correlate(scanResidual, libMassSpectra, massTol, monitor);
 			decompositionResult.setCorrelationResult(correlationResult);

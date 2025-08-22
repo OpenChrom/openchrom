@@ -43,11 +43,11 @@ public class ScanMarkerListUI extends ExtendedTableViewer {
 	private void createColumns() {
 
 		createColumns(titles, bounds);
-		//
+
 		setLabelProvider(new ScanMarkerListLabelProvider());
 		setContentProvider(new ListContentProvider());
 		setComparator(new ScanMarkerListTableComparator());
-		//
+
 		setEditingSupport();
 		getTable().addKeyListener(new KeyAdapter() {
 
@@ -71,7 +71,7 @@ public class ScanMarkerListUI extends ExtendedTableViewer {
 
 		TableViewerColumn tableViewerColumn;
 		List<TableViewerColumn> tableViewerColumns = getTableViewerColumns();
-		//
+
 		tableViewerColumn = tableViewerColumns.get(INDEX_VALIDATED);
 		tableViewerColumn.setEditingSupport(new ScanMarkerCheckBoxEditingSupport(this));
 	}

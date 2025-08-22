@@ -41,7 +41,7 @@ public class DetectorExport extends AbstractTemplateExport {
 		IProcessingInfo<File> processingInfo = new ProcessingInfo<>();
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
 		DetectorSettings detectorSettings = new DetectorSettings();
-		//
+
 		double deltaLeft = PreferenceSupplier.getExportDeltaLeftPositionDetector();
 		double deltaRight = PreferenceSupplier.getExportDeltaRightPositionDetector();
 		boolean optimizeRange = PreferenceSupplier.isExportOptimizeRangeDetector();
@@ -49,7 +49,7 @@ public class DetectorExport extends AbstractTemplateExport {
 		PositionDirective positionDirective = PreferenceSupplier.getExportPositionDirectiveDetector();
 		RetentionIndexMap retentionIndexMap = new RetentionIndexMap(chromatogram);
 		PeakType peakType = PreferenceSupplier.getExportPeakTypeDetector();
-		//
+
 		for(IPeak peak : peaks) {
 			DetectorSetting setting = new DetectorSetting();
 			setPosition(peak, retentionIndexMap, setting, positionDirective, deltaLeft, deltaRight);
@@ -57,14 +57,14 @@ public class DetectorExport extends AbstractTemplateExport {
 			setting.setTraces(extractTraces(peak, numberTraces));
 			setting.setOptimizeRange(optimizeRange);
 			setting.setReferenceIdentifier(""); // The absolute time is used, hence not needed here.
-			//
+
 			ILibraryInformation libraryInformation = IIdentificationTarget.getLibraryInformation(peak);
 			setting.setName(libraryInformation != null ? libraryInformation.getName() : "");
 			detectorSettings.add(setting);
 		}
-		//
+
 		detectorSettings.exportItems(file);
-		//
+
 		processingInfo.setProcessingResult(file);
 		processingInfo.addInfoMessage(DESCRIPTION, "The detector template has been exported successfully.");
 		return processingInfo;

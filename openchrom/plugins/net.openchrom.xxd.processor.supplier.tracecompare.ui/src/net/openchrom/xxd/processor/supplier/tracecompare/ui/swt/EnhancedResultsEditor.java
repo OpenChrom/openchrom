@@ -45,15 +45,15 @@ import net.openchrom.xxd.processor.supplier.tracecompare.ui.editors.EditorProces
 public class EnhancedResultsEditor extends AbstractControllerComposite {
 
 	private static final Logger logger = Logger.getLogger(EnhancedResultsEditor.class);
-	//
+
 	private EditorProcessor editorProcessor;
-	//
+
 	private Button buttonCalculate;
 	private Button buttonPrevious;
 	private List<Button> buttons;
-	//
+
 	private ResultsEditorUI resultsEditorUI;
-	//
+
 	private DataProcessor dataProcessor;
 
 	public EnhancedResultsEditor(Composite parent, int style) {
@@ -113,10 +113,10 @@ public class EnhancedResultsEditor extends AbstractControllerComposite {
 		Composite compositeButtons = new Composite(composite, SWT.NONE);
 		compositeButtons.setLayout(new GridLayout(1, true));
 		compositeButtons.setLayoutData(new GridData(GridData.FILL_VERTICAL));
-		//
+
 		GridData gridDataButtons = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataButtons.minimumWidth = 150;
-		//
+
 		buttons.add(buttonCalculate = createCalculateButton(compositeButtons, gridDataButtons));
 		buttons.add(buttonPrevious = createPreviousButton(compositeButtons, gridDataButtons));
 		buttons.add(createSaveButton(compositeButtons, gridDataButtons));
@@ -190,7 +190,7 @@ public class EnhancedResultsEditor extends AbstractControllerComposite {
 	private Button createSaveButton(Composite parent, GridData gridData) {
 
 		Shell shell = Display.getDefault().getActiveShell();
-		//
+
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("Save");
 		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SAVE, IApplicationImage.SIZE_16x16));

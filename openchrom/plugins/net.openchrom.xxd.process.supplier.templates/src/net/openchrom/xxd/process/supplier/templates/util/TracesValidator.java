@@ -24,7 +24,7 @@ public class TracesValidator implements IValidator<Object> {
 	private static final String SEPARATOR_TRACE_ITEM = AbstractTemplateListUtil.SEPARATOR_TRACE_ITEM;
 	private static final String SEPARATOR_TRACE_RANGE = AbstractTemplateListUtil.SEPARATOR_TRACE_RANGE;
 	private static final int TRACE_ERROR = AbstractTemplateListUtil.TRACE_ERROR;
-	//
+
 	private Set<Integer> traceSet = new HashSet<>();
 
 	@Override
@@ -32,7 +32,7 @@ public class TracesValidator implements IValidator<Object> {
 
 		traceSet.clear();
 		String message = null;
-		//
+
 		if(value == null) {
 			message = "Invalid input.";
 		} else if(value instanceof String text && !"".equals(value)) {
@@ -65,7 +65,7 @@ public class TracesValidator implements IValidator<Object> {
 					if(rangeParts.length == 2) {
 						int startTrace = getTrace(rangeParts[0]);
 						int stopTrace = getTrace(rangeParts[1]);
-						//
+
 						if(startTrace == TRACE_ERROR) {
 							message = "The start trace value is invalid: " + traceValue;
 							break exitloop;
@@ -97,7 +97,7 @@ public class TracesValidator implements IValidator<Object> {
 				}
 			}
 		}
-		//
+
 		if(message != null) {
 			return ValidationStatus.error(message);
 		} else {
@@ -120,10 +120,10 @@ public class TracesValidator implements IValidator<Object> {
 					trace = val;
 				}
 			} catch(NumberFormatException e) {
-				//
+
 			}
 		}
-		//
+
 		return trace;
 	}
 }

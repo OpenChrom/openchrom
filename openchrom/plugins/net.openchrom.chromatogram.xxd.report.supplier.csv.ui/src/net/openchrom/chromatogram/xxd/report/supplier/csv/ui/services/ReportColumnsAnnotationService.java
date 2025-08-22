@@ -37,11 +37,11 @@ public class ReportColumnsAnnotationService extends ReportColumnsSerializationSe
 		gridData.heightHint = 200;
 		gridData.widthHint = 500;
 		reportColumnEditor.setLayoutData(gridData);
-		//
+
 		if(currentSelection instanceof String text) {
 			reportColumnEditor.load(text);
 		}
-		//
+
 		return reportColumnEditor;
 	}
 

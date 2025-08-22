@@ -29,7 +29,7 @@ import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model
 public class WizardProcessor extends AbstractFileWizard implements INewWizard {
 
 	private IProcessorWizardElements wizardElements = new ProcessorWizardElements();
-	//
+
 	private PageFileSelection pageFileSelection;
 	private PageSettings pageSettings;
 
@@ -46,7 +46,7 @@ public class WizardProcessor extends AbstractFileWizard implements INewWizard {
 		 */
 		pageFileSelection = new PageFileSelection(wizardElements);
 		pageSettings = new PageSettings(wizardElements);
-		//
+
 		addPage(pageFileSelection);
 		addPage(pageSettings);
 	}
@@ -66,7 +66,7 @@ public class WizardProcessor extends AbstractFileWizard implements INewWizard {
 
 		monitor.beginTask("MassShiftDetector", IProgressMonitor.UNKNOWN);
 		final IFile file = super.prepareProject(monitor);
-		//
+
 		try {
 			IProcessorModel processorModel = wizardElements.getProcessorModel();
 			ProcessorModelWriter processorModelWriter = new ProcessorModelWriter();

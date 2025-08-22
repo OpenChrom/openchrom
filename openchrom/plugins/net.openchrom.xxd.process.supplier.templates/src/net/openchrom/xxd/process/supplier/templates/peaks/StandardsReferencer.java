@@ -93,7 +93,7 @@ public class StandardsReferencer extends AbstractPeakQuantifier implements IPeak
 		int stopRetentionTime = setting.getRetentionTimeStop(retentionIndexMap);
 		String quantitationReference = setting.getInternalStandard();
 		String identifierReference = setting.getIdentifier();
-		//
+
 		try {
 			if(isValidRetentionTimeRange(startRetentionTime, stopRetentionTime)) {
 				/*
@@ -145,7 +145,7 @@ public class StandardsReferencer extends AbstractPeakQuantifier implements IPeak
 				return true;
 			}
 		}
-		//
+
 		return false;
 	}
 

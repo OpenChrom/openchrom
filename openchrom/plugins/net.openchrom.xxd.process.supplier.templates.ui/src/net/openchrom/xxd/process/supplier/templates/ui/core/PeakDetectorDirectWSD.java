@@ -72,7 +72,7 @@ public class PeakDetectorDirectWSD extends AbstractPeakDetectorWSD implements IP
 						IPeakModel peakModel = peak.getPeakModel();
 						int startRetentionTime = peakModel.getStartRetentionTime() - offset;
 						int stopRetentionTime = peakModel.getStopRetentionTime() + offset;
-						//
+
 						DetectorSetting detectorSetting = new DetectorSetting();
 						detectorSetting.setStartRetentionTime(startRetentionTime);
 						detectorSetting.setStopRetentionTime(stopRetentionTime);
@@ -91,7 +91,7 @@ public class PeakDetectorDirectWSD extends AbstractPeakDetectorWSD implements IP
 					 */
 					int startRetentionTime = getStartRetentionTime(chromatogramSelection, offset);
 					int stopRetentionTime = getStopRetentionTime(chromatogramSelection, offset);
-					//
+
 					DetectorSetting detectorSetting = new DetectorSetting();
 					detectorSetting.setStartRetentionTime(startRetentionTime);
 					detectorSetting.setStopRetentionTime(stopRetentionTime);
@@ -109,7 +109,7 @@ public class PeakDetectorDirectWSD extends AbstractPeakDetectorWSD implements IP
 					 */
 					int startRetentionTime = chromatogram.getStartRetentionTime() + 2000;
 					int stopRetentionTime = chromatogram.getStopRetentionTime() - 2000;
-					//
+
 					DetectorSetting detectorSetting = new DetectorSetting();
 					detectorSetting.setStartRetentionTime(startRetentionTime);
 					detectorSetting.setStopRetentionTime(stopRetentionTime);
@@ -118,7 +118,7 @@ public class PeakDetectorDirectWSD extends AbstractPeakDetectorWSD implements IP
 					detectorSetting.setOptimizeRange(settingsDirect.isOptimizeRange());
 					detectorSettings.add(detectorSetting);
 				}
-				//
+
 				PeakDetectorSettings settings = new PeakDetectorSettings();
 				settings.setDetectorSettings(detectorSettings);
 				ProcessDetectorSettings processSettings = new ProcessDetectorSettings(processingInfo, chromatogram, settings);

@@ -48,7 +48,7 @@ public class QuantRatioListUI extends AbstractRatioListUI {
 
 		String[] titles = DisplayOption.SETTINGS.equals(displayOption) ? QuantRatioResultTitles.TITLES_SETTINGS : QuantRatioResultTitles.TITLES_RESULTS;
 		int[] bounds = DisplayOption.SETTINGS.equals(displayOption) ? QuantRatioResultTitles.BOUNDS_SETTINGS : QuantRatioResultTitles.BOUNDS_RESULTS;
-		//
+
 		createColumns(titles, bounds);
 		setLabelProvider(labelProvider);
 		setContentProvider(new ListContentProvider());

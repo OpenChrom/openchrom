@@ -20,7 +20,7 @@ import org.jmol.api.JmolViewer;
 public class JmolPanel extends JPanel {
 
 	private static final long serialVersionUID = -8635230667397031184L;
-	//
+
 	private JmolViewer viewer;
 
 	public JmolPanel() {

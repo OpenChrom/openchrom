@@ -30,7 +30,7 @@ import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
 public class WizardProcessor extends AbstractFileWizard {
 
 	private static final Logger logger = Logger.getLogger(WizardProcessor.class);
-	//
+
 	private IProcessorWizardElements wizardElements = new ProcessorWizardElements();
 	private PageSettingsSelection pageSettingsSelection;
 
@@ -61,7 +61,7 @@ public class WizardProcessor extends AbstractFileWizard {
 
 		monitor.beginTask("TraceCompare", IProgressMonitor.UNKNOWN);
 		final IFile file = super.prepareProject(monitor);
-		//
+
 		try {
 			File projectFile = file.getLocation().toFile();
 			String projectName = projectFile.getName();

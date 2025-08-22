@@ -34,32 +34,32 @@ public class CompensationQuantifierFilter extends ViewerFilter {
 		if(searchText == null || searchText.equals("")) {
 			return true;
 		}
-		//
+
 		if(element instanceof CompensationSetting setting) {
 			String name = setting.getName();
 			String internalStandard = setting.getInternalStandard();
 			String concentrationUnit = setting.getConcentrationUnit();
-			//
+
 			if(!caseSensitive) {
 				searchText = searchText.toLowerCase();
 				name = name.toLowerCase();
 				internalStandard = internalStandard.toLowerCase();
 				concentrationUnit = concentrationUnit.toLowerCase();
 			}
-			//
+
 			if(name.contains(searchText)) {
 				return true;
 			}
-			//
+
 			if(internalStandard.contains(searchText)) {
 				return true;
 			}
-			//
+
 			if(concentrationUnit.contains(searchText)) {
 				return true;
 			}
 		}
-		//
+
 		return false;
 	}
 }

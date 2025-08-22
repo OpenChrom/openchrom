@@ -21,7 +21,7 @@ import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
 public class PeakIdentifierValidator extends AbstractTemplateValidator implements ITemplateValidator {
 
 	private static final String ERROR_ENTRY = "Please enter an item, e.g.: '" + PeakIdentifierListUtil.EXAMPLE_SINGLE + "'";
-	//
+
 	private PositionDirective positionDirective = PositionDirective.RETENTION_TIME_MIN;
 	private double positionStart = 0;
 	private double positionStop = 0;
@@ -73,7 +73,7 @@ public class PeakIdentifierValidator extends AbstractTemplateValidator implement
 							if(name.isEmpty()) {
 								message = "A substance name needs to be set.";
 							}
-							//
+
 							IStatus status = validateTraces(traceValues);
 							if(status.isOK()) {
 								traces = traceValues;
@@ -89,7 +89,7 @@ public class PeakIdentifierValidator extends AbstractTemplateValidator implement
 				message = ERROR_ENTRY;
 			}
 		}
-		//
+
 		if(message != null) {
 			return ValidationStatus.error(message);
 		} else {
@@ -100,7 +100,7 @@ public class PeakIdentifierValidator extends AbstractTemplateValidator implement
 	public IdentifierSetting getSetting() {
 
 		IdentifierSetting setting = new IdentifierSetting();
-		//
+
 		setting.setPositionStart(positionStart);
 		setting.setPositionStop(positionStop);
 		setting.setName(name);
@@ -111,7 +111,7 @@ public class PeakIdentifierValidator extends AbstractTemplateValidator implement
 		setting.setTraces(traces);
 		setting.setReferenceIdentifier(referenceIdentifier);
 		setting.setPositionDirective(positionDirective);
-		//
+
 		return setting;
 	}
 }

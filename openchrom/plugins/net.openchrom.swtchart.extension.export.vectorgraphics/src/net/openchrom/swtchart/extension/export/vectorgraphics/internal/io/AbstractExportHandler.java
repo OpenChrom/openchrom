@@ -112,7 +112,7 @@ public abstract class AbstractExportHandler extends AbstractSeriesExportHandler 
 		 */
 		rangeRestriction.setExtendMaxY(extendMaxY);
 		scrollableChart.applySettings(chartSettings);
-		//
+
 		return commandSequene;
 	}
 
@@ -157,7 +157,7 @@ public abstract class AbstractExportHandler extends AbstractSeriesExportHandler 
 		fileDialog.setFilterExtensions(new String[]{filterExtension});
 		fileDialog.setFileName(fileName);
 		fileDialog.setFilterPath(PreferenceSupplier.getPathExport());
-		//
+
 		String pathname = fileDialog.open();
 		if(pathname != null) {
 			/*
@@ -212,7 +212,7 @@ public abstract class AbstractExportHandler extends AbstractSeriesExportHandler 
 				return commandGenerator.getCommandSequence(shell, pageSizeOption, scrollableChart);
 			}
 		}
-		//
+
 		return null;
 	}
 }

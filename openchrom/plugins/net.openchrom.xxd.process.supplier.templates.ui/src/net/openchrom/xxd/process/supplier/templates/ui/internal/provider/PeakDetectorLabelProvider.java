@@ -23,7 +23,7 @@ import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 public class PeakDetectorLabelProvider extends AbstractTemplateLabelProvider {
 
 	public static final int INDEX_OPTIMIZE_RANGE = 5;
-	//
+
 	public static final String[] TITLES = { //
 			POSITION_START, //
 			POSITION_STOP, //

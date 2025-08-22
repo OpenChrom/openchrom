@@ -48,7 +48,7 @@ public class TraceRatioListUI extends AbstractRatioListUI {
 
 		String[] titles = DisplayOption.SETTINGS.equals(displayOption) ? TraceRatioResultTitles.TITLES_SETTINGS : TraceRatioResultTitles.TITLES_RESULTS;
 		int[] bounds = DisplayOption.SETTINGS.equals(displayOption) ? TraceRatioResultTitles.BOUNDS_SETTINGS : TraceRatioResultTitles.BOUNDS_RESULTS;
-		//
+
 		createColumns(titles, bounds);
 		setLabelProvider(labelProvider);
 		setContentProvider(new ListContentProvider());

@@ -86,7 +86,7 @@ public class TraceRatioTableComparator extends AbstractRecordTableComparator imp
 		if(e1 instanceof TraceRatio traceRatio1 && e2 instanceof TraceRatio traceRatio2) {
 			IPeak peak1 = traceRatio1.getPeak();
 			IPeak peak2 = traceRatio2.getPeak();
-			//
+
 			switch(getPropertyIndex()) {
 				case 0:
 					if(peak1 != null && peak2 != null) {

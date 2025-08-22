@@ -52,7 +52,7 @@ import jakarta.xml.bind.Marshaller;
 public class MicrobeNetWriter extends AbstractMassSpectraWriter implements IMassSpectraWriter {
 
 	private static final Logger logger = Logger.getLogger(MicrobeNetWriter.class);
-	//
+
 	private double scale = 1d;
 
 	@Override
@@ -76,7 +76,7 @@ public class MicrobeNetWriter extends AbstractMassSpectraWriter implements IMass
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
 			Marshaller marshaller = jaxbContext.createMarshaller();
-			//
+
 			MspMatchResult mspMatchResult = new MspMatchResult();
 			mspMatchResult.setAnalytes(createAnalytes(scanMSD));
 			mspMatchResult.setProjectInfo(createProjectInfo(scanMSD));

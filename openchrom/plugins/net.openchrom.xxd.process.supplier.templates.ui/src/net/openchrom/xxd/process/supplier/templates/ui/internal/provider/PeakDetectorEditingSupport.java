@@ -49,7 +49,7 @@ public class PeakDetectorEditingSupport extends AbstractTemplateEditingSupport {
 				}
 			}
 		}
-		//
+
 		return false;
 	}
 
@@ -83,7 +83,7 @@ public class PeakDetectorEditingSupport extends AbstractTemplateEditingSupport {
 					setting.setName(((String)value).trim());
 					break;
 			}
-			//
+
 			updateTableViewer();
 		}
 	}

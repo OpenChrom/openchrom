@@ -37,7 +37,7 @@ public class EnhancedIsotopeHeatmapEditor extends AbstractControllerComposite {
 	private Button buttonPrevious;
 	private Button buttonNext;
 	private List<Button> buttons;
-	//
+
 	private IsotopeHeatmapUI shiftHeatmapUI;
 	private ProcessorData processorData;
 
@@ -87,7 +87,7 @@ public class EnhancedIsotopeHeatmapEditor extends AbstractControllerComposite {
 		} else {
 			processorData = null;
 		}
-		//
+
 		plotData();
 	}
 
@@ -122,10 +122,10 @@ public class EnhancedIsotopeHeatmapEditor extends AbstractControllerComposite {
 		Composite compositeButtons = new Composite(composite, SWT.NONE);
 		compositeButtons.setLayout(new GridLayout(1, true));
 		compositeButtons.setLayoutData(new GridData(GridData.FILL_VERTICAL));
-		//
+
 		GridData gridDataButtons = new GridData(GridData.FILL_HORIZONTAL);
 		gridDataButtons.minimumWidth = 150;
-		//
+
 		buttons.add(buttonCalculate = createCalculateButton(compositeButtons, gridDataButtons));
 		buttons.add(buttonPrevious = createPreviousButton(compositeButtons, gridDataButtons));
 		buttons.add(buttonNext = createNextButton(compositeButtons, gridDataButtons));

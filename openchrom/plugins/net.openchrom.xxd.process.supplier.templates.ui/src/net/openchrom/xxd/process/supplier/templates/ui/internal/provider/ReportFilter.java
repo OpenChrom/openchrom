@@ -34,26 +34,26 @@ public class ReportFilter extends ViewerFilter {
 		if(searchText == null || searchText.equals("")) {
 			return true;
 		}
-		//
+
 		if(element instanceof ReportSetting setting) {
 			String name = setting.getName();
 			String cas = setting.getCasNumber();
-			//
+
 			if(!caseSensitive) {
 				searchText = searchText.toLowerCase();
 				name = name.toLowerCase();
 				cas = cas.toLowerCase();
 			}
-			//
+
 			if(name.contains(searchText)) {
 				return true;
 			}
-			//
+
 			if(cas.contains(searchText)) {
 				return true;
 			}
 		}
-		//
+
 		return false;
 	}
 }

@@ -119,17 +119,17 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 
 		int versions = 1; // Only VWD at the moment
 		String[][] elements = new String[versions][2];
-		//
+
 		elements[0][0] = DETECTOR_WSD + " (VWD, DAD, ...)";
 		elements[0][1] = DETECTOR_WSD;
-		//
+
 		// elements[0][0] = DETECTOR_MSD + " (NominalMS, TandemMS, HighResMS)";
 		// elements[0][1] = DETECTOR_MSD;
 		// elements[1][0] = DETECTOR_CSD + " (FID, NPD, ...)";
 		// elements[1][1] = DETECTOR_CSD;
 		// elements[2][0] = DETECTOR_WSD + " (VWD, DAD, ...)";
 		// elements[2][1] = DETECTOR_WSD;
-		//
+
 		return elements;
 	}
 
@@ -137,10 +137,10 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 
 		int versions = 1; // Only DFM at the moment
 		String[][] elements = new String[versions][2];
-		//
+
 		elements[0][0] = FILE_EXTENSION_DFM;
 		elements[0][1] = FILE_EXTENSION_DFM;
-		//
+
 		return elements;
 	}
 

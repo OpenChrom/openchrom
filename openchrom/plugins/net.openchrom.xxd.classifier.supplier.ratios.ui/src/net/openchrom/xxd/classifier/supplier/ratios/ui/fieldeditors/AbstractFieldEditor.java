@@ -26,7 +26,7 @@ public abstract class AbstractFieldEditor extends FieldEditor {
 	public static final String REMOVE_ALL_TOOLTIP = "Remove All Templates";
 	public static final String IMPORT = "Import";
 	public static final String EXPORT = "Export";
-	//
+
 	public static final String IMPORT_TITLE = "Import Templates";
 	public static final String EXPORT_TITLE = "Export Templates";
 	public static final String DIALOG_TITLE = "Templates";

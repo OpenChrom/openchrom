@@ -62,7 +62,7 @@ public class CompositeLibrarySpectraUI extends Composite {
 	private static final String SHOW_SELECTED = "  *     ";
 	private static final String SHOW_NOT_SELECTED = "        ";
 	private DecimalFormat decimalFormatsScaleFactor = ValueFormat.getDecimalFormatEnglish("0.0#####");
-	//
+
 	private static IMassSpectra cmsLibSpectra;
 	private Text textCmsLibraryFilePath;
 	private Button buttonLibFileSelect;
@@ -139,21 +139,21 @@ public class CompositeLibrarySpectraUI extends Composite {
 		for(TableColumn tableColumn : tableCmsComponents.getColumns()) {
 			tableColumn.dispose();
 		}
-		//
+
 		TableColumn tableColumnScale = new TableColumn(tableCmsComponents, SWT.LEFT);
 		tableColumnScale.setText("Scale");
 		tableColumnScale.setWidth(50);
-		//
+
 		TableColumn tableColumnName = new TableColumn(tableCmsComponents, SWT.LEFT);
 		tableColumnName.setText("Component");
 		tableColumnName.setWidth(200);
-		//
+
 		tableEditor = new TableEditor(tableCmsComponents);
 		// The editor must have the same size as the cell and must not be any smaller than 50 pixels.
 		tableEditor.horizontalAlignment = SWT.LEFT;
 		tableEditor.grabHorizontal = true;
 		tableEditor.minimumWidth = 50;
-		//
+
 		tableCmsComponents.addListener(SWT.MouseDown, new Listener() {
 
 			@Override
@@ -229,7 +229,7 @@ public class CompositeLibrarySpectraUI extends Composite {
 				// A decimal floating-point string representing a finite positive
 				// number without a leading sign has at most five basic pieces:
 				// Digits . Digits ExponentPart FloatTypeSuffix
-				//
+
 				// Since this method allows integer-only strings as input
 				// in addition to strings of floating-point literals, the
 				// two sub-patterns below are simplifications of the grammar
