@@ -191,7 +191,6 @@ public class ExtendedPeakDetectorUI extends Composite {
 		});
 	}
 
-	@SuppressWarnings("rawtypes")
 	private void deletePeaks(Shell shell) {
 
 		if(detectorSetting != null) {
@@ -203,7 +202,7 @@ public class ExtendedPeakDetectorUI extends Composite {
 				 * Delete Peaks
 				 */
 				List<IChromatogramPeak> peaksToDelete = new ArrayList<>();
-				Iterator iterator = peakListUI.getStructuredSelection().iterator();
+				Iterator<?> iterator = peakListUI.getStructuredSelection().iterator();
 				while(iterator.hasNext()) {
 					Object object = iterator.next();
 					if(object instanceof IChromatogramPeak peak) {

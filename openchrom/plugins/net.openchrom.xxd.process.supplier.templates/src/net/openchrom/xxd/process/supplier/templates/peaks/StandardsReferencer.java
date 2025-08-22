@@ -34,7 +34,6 @@ import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSuppli
 import net.openchrom.xxd.process.supplier.templates.settings.StandardsReferencerSettings;
 import net.openchrom.xxd.process.supplier.templates.support.RetentionIndexSupport;
 
-@SuppressWarnings("rawtypes")
 public class StandardsReferencer extends AbstractPeakQuantifier implements IPeakQuantifier {
 
 	private static final Logger logger = Logger.getLogger(StandardsReferencer.class);
@@ -42,7 +41,7 @@ public class StandardsReferencer extends AbstractPeakQuantifier implements IPeak
 	@Override
 	public IProcessingInfo<?> quantify(List<IPeak> peaks, IPeakQuantifierSettings settings, IProgressMonitor monitor) {
 
-		IProcessingInfo processingInfo = validate(peaks, settings);
+		IProcessingInfo<?> processingInfo = validate(peaks, settings);
 		if(!processingInfo.hasErrorMessages()) {
 			if(settings instanceof StandardsReferencerSettings standardsReferencerSettings) {
 				RetentionIndexMap retentionIndexMap = RetentionIndexSupport.getRetentionIndexMap(peaks);
@@ -165,9 +164,9 @@ public class StandardsReferencer extends AbstractPeakQuantifier implements IPeak
 		}
 	}
 
-	private IProcessingInfo validate(List<IPeak> peaks, IPeakQuantifierSettings settings) {
+	private IProcessingInfo<?> validate(List<IPeak> peaks, IPeakQuantifierSettings settings) {
 
-		IProcessingInfo processingInfo = new ProcessingInfo();
+		IProcessingInfo<?> processingInfo = new ProcessingInfo<>();
 		if(peaks == null) {
 			processingInfo.addErrorMessage(StandardsReferencerSettings.DESCRIPTION, "The peaks selection must not be null.");
 		}
