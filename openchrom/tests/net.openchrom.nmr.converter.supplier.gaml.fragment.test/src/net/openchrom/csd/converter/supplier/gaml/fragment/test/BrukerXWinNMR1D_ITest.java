@@ -20,6 +20,7 @@ import java.io.File;
 import java.util.Collection;
 
 import org.eclipse.chemclipse.model.core.IComplexSignalMeasurement;
+import org.eclipse.chemclipse.nmr.model.core.ISpectrumNMR;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.Before;
@@ -37,8 +38,8 @@ public class BrukerXWinNMR1D_ITest {
 
 		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.BRUKER_XWINNMR_1D));
 		ScanImportConverter importConverter = new ScanImportConverter();
-		IProcessingInfo<Collection<IComplexSignalMeasurement<?>>> processingInfo = importConverter.convert(file, new NullProgressMonitor());
-		complexSignals = processingInfo.getProcessingResult();
+		IProcessingInfo<ISpectrumNMR> processingInfo = importConverter.convert(file, new NullProgressMonitor());
+		complexSignals = processingInfo.getProcessingResult().getComplexSignalMeasurements();
 	}
 
 	@Test
