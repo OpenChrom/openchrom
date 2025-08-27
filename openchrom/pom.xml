@@ -16,7 +16,6 @@
 	<properties>
 		<!-- versions for plugins to use -->
 		<tycho.version>4.0.13</tycho.version>
-		<checkstyle.version>3.6.0</checkstyle.version>
 		<maven-install-plugin.version>3.1.4</maven-install-plugin.version>
 		<cbi-version>1.5.2</cbi-version>
 		<!-- definition of the target to use -->
@@ -95,14 +94,6 @@
 					<excludes>
 						<exclude>**/*TestCase.java</exclude>
 					</excludes>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>${maven.groupid}</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>${checkstyle.version}</version>
-				<configuration>
-					<enableRulesSummary>false</enableRulesSummary>
 				</configuration>
 			</plugin>
 			<plugin>
