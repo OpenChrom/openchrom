@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.xxd.identifier.supplier.foodb
 Bundle-ManifestVersion: 2
 Bundle-Name: FooDB Identifier
 Bundle-SymbolicName: net.openchrom.xxd.identifier.supplier.foodb;singleton:=true
-Bundle-Version: 1.5.22.qualifier
+Bundle-Version: 1.5.23.qualifier
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.support;bundle-version="0.9.0",
