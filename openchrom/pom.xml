@@ -28,6 +28,15 @@
 		<maven.groupid>org.apache.maven.plugins</maven.groupid>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+
+	<repositories>
+		<repository>
+			<id>jre-updates</id>
+			<url>https://download.eclipse.org/justj/jres/21/updates/release/latest/</url>
+			<layout>p2</layout>
+		</repository>
+	</repositories>
+
 	<build>
 		<!-- PLUGINS -->
 		<plugins>
@@ -76,6 +85,11 @@
 							<arch>x86_64</arch>
 						</environment>
 					</environments>
+					<dependency-resolution>
+						<profileProperties>
+							<org.eclipse.justj.buildtime>true</org.eclipse.justj.buildtime>
+						</profileProperties>
+					</dependency-resolution>
 				</configuration>
 			</plugin>
 			<plugin>
