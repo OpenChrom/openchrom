@@ -12,16 +12,16 @@
  *******************************************************************************/
 package net.openchrom.csd.converter.supplier.cdf;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
 
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import net.openchrom.csd.converter.supplier.cdf.converter.ChromatogramImportConverterCSD;
 
@@ -29,7 +29,7 @@ public class AAA250PM_ITest {
 
 	private IChromatogramCSD chromatogram;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 
 		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.AAA250PM));
@@ -38,6 +38,7 @@ public class AAA250PM_ITest {
 		chromatogram = processingInfo.getProcessingResult();
 	}
 
+	@Test
 	public void testLoading() {
 
 		assertNotNull(chromatogram);
