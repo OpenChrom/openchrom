@@ -32,11 +32,6 @@ public class PagePeakReview extends FieldEditorPreferencePage implements IWorkbe
 		setDescription("");
 	}
 
-	/**
-	 * Creates the field editors. Field editors are abstractions of the common
-	 * GUI blocks needed to manipulate various types of preferences. Each field
-	 * editor knows how to save and restore itself.
-	 */
 	@Override
 	public void createFieldEditors() {
 
@@ -58,13 +53,9 @@ public class PagePeakReview extends FieldEditorPreferencePage implements IWorkbe
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_SHOW_ONLY_RELEVANT_PEAKS, "Show Only Relevant Peaks", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_IGNORE_NULL_CAS_NUMBER, "Ignore CAS# 0-00-0", getFieldEditorParent()));
 		addField(new ComboFieldEditor(PreferenceSupplier.P_REVIEW_PEAK_TYPE, "Peak Type (Default)", PreferenceSupplier.PEAK_TYPE_OPTIONS, getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_REVIEW_SORT_BY_POSITION, "Sort By Position", getFieldEditorParent()));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
-	 */
 	@Override
 	public void init(IWorkbench workbench) {
 

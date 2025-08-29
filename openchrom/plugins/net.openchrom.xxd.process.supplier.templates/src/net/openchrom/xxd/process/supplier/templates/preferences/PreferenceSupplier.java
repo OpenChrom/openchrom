@@ -277,6 +277,8 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static final boolean DEF_REVIEW_IGNORE_NULL_CAS_NUMBER = true;
 	public static final String P_REVIEW_PEAK_TYPE = "reviewPeakType";
 	public static final String DEF_REVIEW_PEAK_TYPE = PeakType.VV.name();
+	public static final String P_REVIEW_SORT_BY_POSITION = "reviewSortByPosition";
+	public static final boolean DEF_REVIEW_SORT_BY_POSITION = true;
 	/*
 	 * Named Traces
 	 */
@@ -405,6 +407,7 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 		putDefault(P_REVIEW_SHOW_ONLY_RELEVANT_PEAKS, Boolean.toString(DEF_REVIEW_SHOW_ONLY_RELEVANT_PEAKS));
 		putDefault(P_REVIEW_IGNORE_NULL_CAS_NUMBER, Boolean.toString(DEF_REVIEW_IGNORE_NULL_CAS_NUMBER));
 		putDefault(P_REVIEW_PEAK_TYPE, DEF_REVIEW_PEAK_TYPE);
+		putDefault(P_REVIEW_SORT_BY_POSITION, DEF_REVIEW_SORT_BY_POSITION);
 		/*
 		 * Named Traces
 		 */
@@ -882,6 +885,11 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 		} catch(Exception e) {
 			return PeakType.VV;
 		}
+	}
+
+	public static boolean isReviewSortByPosition() {
+
+		return INSTANCE().getBoolean(P_REVIEW_SORT_BY_POSITION, DEF_REVIEW_SORT_BY_POSITION);
 	}
 
 	public static PeakDetectorSettings getPeakDetectorSettingsCSD() {

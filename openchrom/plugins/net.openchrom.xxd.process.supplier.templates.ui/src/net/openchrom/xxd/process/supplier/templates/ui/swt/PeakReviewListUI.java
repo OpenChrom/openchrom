@@ -12,13 +12,18 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.swt;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.chemclipse.support.ui.provider.ListContentProvider;
+import org.eclipse.chemclipse.support.ui.swt.IRecordTableComparator;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.widgets.Composite;
 
+import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
+import net.openchrom.xxd.process.supplier.templates.model.ReviewSettings;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.AbstractTemplateLabelProvider;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.PeakReviewComparator;
@@ -46,6 +51,37 @@ public class PeakReviewListUI extends AbstractTemplateListUI {
 		createColumns(enableEditPositionDirective);
 	}
 
+	public void setInput(ReviewSettings reviewSettings) {
+
+		setInput(new ArrayList<>(reviewSettings));
+	}
+
+	public void setInput(List<ReviewSetting> reviewSettings) {
+
+		if(PreferenceSupplier.isReviewSettingsSort()) {
+			/*
+			 * Sort ascending by position start on demand
+			 * as the table comparator is set to active.
+			 */
+			super.setInput(reviewSettings);
+			if(PreferenceSupplier.isReviewSortByPosition()) {
+				tableComparator.setColumn(1);
+				tableComparator.setDirection(IRecordTableComparator.ASCENDING);
+				refresh();
+			}
+		} else {
+			/*
+			 * Comparator is not used, hence just sort the
+			 * table by position on demand.
+			 */
+			if(PreferenceSupplier.isReviewSortByPosition()) {
+				Collections.sort(reviewSettings, (s1, s2) -> Double.compare(s1.getPositionStart(), s2.getPositionStart()));
+			}
+			super.setInput(reviewSettings);
+		}
+
+	}
+
 	@Override
 	public void setSearchText(String searchText, boolean caseSensitive) {
 
@@ -59,7 +95,7 @@ public class PeakReviewListUI extends AbstractTemplateListUI {
 		setLabelProvider(labelProvider);
 		setContentProvider(new ListContentProvider());
 		if(PreferenceSupplier.isReviewSettingsSort()) {
-			setComparator(tableComparator); // SORT OK
+			setComparator(tableComparator);
 		}
 		setFilters(new ViewerFilter[]{listFilter});
 		setEditingSupport(enableEditPositionDirective);

@@ -54,9 +54,11 @@ public class PeakReviewComparator extends AbstractRecordTableComparator implemen
 					sortOrder = 0;
 			}
 		}
+
 		if(getDirection() == ASCENDING) {
 			sortOrder = -sortOrder;
 		}
+
 		return sortOrder;
 	}
 }
