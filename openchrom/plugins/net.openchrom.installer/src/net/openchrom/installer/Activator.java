@@ -55,8 +55,9 @@ public class Activator implements BundleActivator {
 	// Workaround for https://github.com/eclipse-platform/eclipse.platform/issues/1690
 	private void refreshWindowsCertificateStore() throws MalformedURLException, URISyntaxException {
 
-		refreshWindowsCertificateStore(new URI("https://openchrom.net").toURL());
-		refreshWindowsCertificateStore(new URI("https://lablicate.com").toURL());
+		refreshWindowsCertificateStore(new URI("https://converter.openchrom.net").toURL());
+		refreshWindowsCertificateStore(new URI("https://plugins.openchrom.net").toURL());
+		refreshWindowsCertificateStore(new URI("https://marketplace.lablicate.com").toURL());
 	}
 
 	private void refreshWindowsCertificateStore(URL url) {
