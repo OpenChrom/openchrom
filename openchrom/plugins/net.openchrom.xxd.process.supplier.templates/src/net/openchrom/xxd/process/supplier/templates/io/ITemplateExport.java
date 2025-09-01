@@ -72,6 +72,7 @@ public interface ITemplateExport {
 				}
 			}
 		}
+
 		return traces;
 	}
 }

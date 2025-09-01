@@ -12,6 +12,8 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.swt.peaks;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
@@ -23,17 +25,17 @@ import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessReviewSett
 
 public class PeakReviewControl extends Composite {
 
-	private ReviewController controller = new ReviewController(this);
+	private AtomicReference<SashForm> sashFormMain = new AtomicReference<>();
+	private AtomicReference<SashForm> sashFormDetails = new AtomicReference<>();
 
-	private SashForm sashFormMain;
-	private SashForm sashFormDetails;
+	private ReviewController controller = new ReviewController(this);
 	private boolean showComparisonUI = false;
 
 	public PeakReviewControl(Composite parent, int style) {
 
 		super(parent, style);
 		setBackgroundMode(SWT.INHERIT_DEFAULT);
-		sashFormMain = createControl();
+		createControl();
 		updateWidgets();
 	}
 
@@ -52,29 +54,29 @@ public class PeakReviewControl extends Composite {
 		 * Details
 		 */
 		if(PreferenceSupplier.isShowReviewDetails()) {
-			sashFormMain.setWeights(600, 400);
+			sashFormMain.get().setWeights(600, 400);
 		} else {
-			sashFormMain.setWeights(1000, 0);
+			sashFormMain.get().setWeights(1000, 0);
 		}
 		/*
 		 * Show Comparison
 		 */
 		if(showComparisonUI) {
-			sashFormDetails.setWeights(333, 333, 333);
+			sashFormDetails.get().setWeights(333, 333, 333);
 		} else {
-			sashFormDetails.setWeights(1000, 0, 0);
+			sashFormDetails.get().setWeights(1000, 0, 0);
 		}
 	}
 
-	private SashForm createControl() {
+	private void createControl() {
 
 		setLayout(new FillLayout());
 		SashForm sashForm = new SashForm(this, SWT.VERTICAL);
 
 		createNavigateSection(sashForm);
-		sashFormDetails = createDetailsSection(sashForm);
+		createDetailsSection(sashForm);
 
-		return sashForm;
+		sashFormMain.set(sashForm);
 	}
 
 	private SashForm createNavigateSection(Composite parent) {
@@ -97,7 +99,7 @@ public class PeakReviewControl extends Composite {
 		controller.createExtendedPeaksUI(sashForm);
 	}
 
-	private SashForm createDetailsSection(Composite parent) {
+	private void createDetailsSection(Composite parent) {
 
 		SashForm sashForm = new SashForm(parent, SWT.HORIZONTAL);
 
@@ -105,6 +107,6 @@ public class PeakReviewControl extends Composite {
 		controller.createExtendedComparisonUI(sashForm);
 		controller.createExtendedPeakTracesUI(sashForm);
 
-		return sashForm;
+		sashFormDetails.set(sashForm);
 	}
 }

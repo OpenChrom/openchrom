@@ -12,122 +12,23 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.core;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import org.eclipse.chemclipse.chromatogram.wsd.identifier.peak.IPeakIdentifierWSD;
 import org.eclipse.chemclipse.chromatogram.wsd.identifier.settings.IPeakIdentifierSettingsWSD;
-import org.eclipse.chemclipse.model.core.IChromatogram;
-import org.eclipse.chemclipse.model.core.IChromatogramPeak;
-import org.eclipse.chemclipse.model.core.IPeak;
-import org.eclipse.chemclipse.model.core.IPeakModel;
-import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
-import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.model.identifier.IPeakIdentificationResults;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
-import org.eclipse.chemclipse.processing.core.ProcessingInfo;
-import org.eclipse.chemclipse.support.literature.LiteratureReference;
-import org.eclipse.chemclipse.support.ui.workbench.DisplayUtils;
 import org.eclipse.chemclipse.wsd.model.core.IPeakWSD;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.swt.widgets.Shell;
 
-import net.openchrom.xxd.process.supplier.templates.io.ITemplateExport;
-import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
-import net.openchrom.xxd.process.supplier.templates.peaks.AbstractPeakIdentifier;
-import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
-import net.openchrom.xxd.process.supplier.templates.settings.PeakReviewSettings;
-import net.openchrom.xxd.process.supplier.templates.ui.wizards.PeakReviewSupport;
-import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessReviewSettings;
-
-public class PeakReviewDirectWSD extends AbstractPeakIdentifier implements IPeakIdentifierWSD, ITemplateExport {
-
-	private static final String DESCRIPTION = "PeakReviewWSD";
-	private boolean cancelled = false;
+public class PeakReviewDirectWSD extends AbstractPeakReview implements IPeakIdentifierWSD {
 
 	@Override
 	public IProcessingInfo<IPeakIdentificationResults> identify(List<? extends IPeakWSD> peaks, IPeakIdentifierSettingsWSD peakIdentifierSettings, IProgressMonitor monitor) {
 
-		IProcessingInfo<IPeakIdentificationResults> processingInfo = new ProcessingInfo<>();
-		if(peaks == null || peaks.isEmpty()) {
-			processingInfo.addErrorMessage(DESCRIPTION, "No peaks have been found in the current selection.");
-		} else {
-			runProcess(peaks, peakIdentifierSettings, processingInfo, monitor);
-		}
-		return processingInfo;
-	}
-
-	public boolean isCancelled() {
-
-		return cancelled;
-	}
-
-	private void runProcess(List<? extends IPeakWSD> peaks, IPeakIdentifierSettingsWSD peakIdentifierSettings, IProcessingInfo<IPeakIdentificationResults> processingInfo, IProgressMonitor monitor) {
-
 		/*
-		 * No settings: peakIdentifierSettings == null
+		 * Settings are set to null on purpose, to allow a dynamic review.
 		 */
-		IChromatogram chromatogram = getChromatogram(peaks);
-		List<ReviewSetting> reviewSettings = new ArrayList<>();
-		for(IPeak peak : peaks) {
-			if(!peak.getTargets().isEmpty()) {
-				ILibraryInformation libraryInformation = IIdentificationTarget.getLibraryInformation(peak);
-				if(libraryInformation != null) {
-					IPeakModel peakModel = peak.getPeakModel();
-					ReviewSetting reviewSetting = new ReviewSetting();
-					reviewSetting.setStartRetentionTime(peakModel.getStartRetentionTime());
-					reviewSetting.setStopRetentionTime(peakModel.getStopRetentionTime());
-					reviewSetting.setName(libraryInformation.getName());
-					reviewSetting.setCasNumber(libraryInformation.getCasNumber());
-					reviewSetting.setPeakType(PreferenceSupplier.getReviewPeakType());
-					reviewSetting.setTraces(getTraces(peak));
-					reviewSetting.setOptimizeRange(true);
-					reviewSettings.add(reviewSetting);
-				}
-			}
-		}
-		/*
-		 * Check, that at least one review setting is set.
-		 */
-		if(!reviewSettings.isEmpty()) {
-			try {
-				DisplayUtils.executeInUserInterfaceThread(new Runnable() {
-
-					@Override
-					public void run() {
-
-						PeakReviewSettings settings = new PeakReviewSettings();
-						settings.setReviewSettings(reviewSettings);
-						ProcessReviewSettings processSettings = new ProcessReviewSettings(processingInfo, chromatogram, settings);
-						Shell shell = DisplayUtils.getShell();
-						PeakReviewSupport peakReviewSupport = new PeakReviewSupport();
-						peakReviewSupport.addSettings(shell, processSettings);
-						cancelled = peakReviewSupport.isCancelled();
-					}
-				});
-			} catch(InterruptedException e) {
-				Thread.currentThread().interrupt();
-			} catch(ExecutionException e) {
-				processingInfo.addErrorMessage(DESCRIPTION, "The execution failed, see attached log file.", e);
-			}
-		}
-	}
-
-	private IChromatogram getChromatogram(List<? extends IPeakWSD> peaks) {
-
-		for(IPeakWSD peak : peaks) {
-			if(peak instanceof IChromatogramPeak chromatogramPeak) {
-				return chromatogramPeak.getChromatogram();
-			}
-		}
-
-		return null;
-	}
-
-	@Override
-	public List<LiteratureReference> getLiteratureReferences() {
-
-		return null;
+		return runProcess(peaks, null, "PeakReviewDirectWSD", monitor);
 	}
 }
