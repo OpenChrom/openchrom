@@ -24,6 +24,7 @@ import org.eclipse.chemclipse.support.ui.provider.AbstractLabelProvider;
 import org.eclipse.chemclipse.support.ui.swt.EnhancedComboViewer;
 import org.eclipse.chemclipse.support.updates.IUpdateListener;
 import org.eclipse.chemclipse.swt.ui.components.ISearchListener;
+import org.eclipse.chemclipse.swt.ui.components.InformationUI;
 import org.eclipse.chemclipse.swt.ui.components.SearchSupportUI;
 import org.eclipse.chemclipse.ux.extension.ui.swt.IExtendedPartUI;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -63,6 +64,7 @@ public class ProcessReviewUI extends Composite implements IExtendedPartUI {
 	private AtomicReference<SearchSupportUI> toolbarSearch = new AtomicReference<>();
 	private AtomicReference<Button> buttonBaseline = new AtomicReference<>();
 	private AtomicReference<PeakReviewListUI> peakReviewList = new AtomicReference<>();
+	private AtomicReference<InformationUI> toolbarInfoControl = new AtomicReference<>();
 
 	private ReviewController controller;
 	private ProcessReviewSettings processSettings;
@@ -84,6 +86,7 @@ public class ProcessReviewUI extends Composite implements IExtendedPartUI {
 		updatePeakReviewList();
 		updateComboViewerDetectorType();
 		updateComboViewerVisibility();
+		updateToolbarInfo();
 	}
 
 	public int getSelection() {
@@ -108,6 +111,7 @@ public class ProcessReviewUI extends Composite implements IExtendedPartUI {
 		createToolbarMain(this);
 		createToolbarSearch(this);
 		createTable(this);
+		createToolbarInfo(this);
 
 		initialize();
 	}
@@ -378,6 +382,14 @@ public class ProcessReviewUI extends Composite implements IExtendedPartUI {
 		peakReviewList.set(peakReviewListUI);
 	}
 
+	private void createToolbarInfo(Composite parent) {
+
+		InformationUI informationUI = new InformationUI(parent, SWT.NONE);
+		informationUI.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+		toolbarInfoControl.set(informationUI);
+	}
+
 	private void applySettings() {
 
 		if(controller != null) {
@@ -452,6 +464,15 @@ public class ProcessReviewUI extends Composite implements IExtendedPartUI {
 			}
 		} else {
 			comboViewer.setInput(null);
+		}
+	}
+
+	private void updateToolbarInfo() {
+
+		if(processSettings == null) {
+			toolbarInfoControl.get().setText("--");
+		} else {
+			toolbarInfoControl.get().setText("Review Settings: " + processSettings.getReviewSettings().size());
 		}
 	}
 
