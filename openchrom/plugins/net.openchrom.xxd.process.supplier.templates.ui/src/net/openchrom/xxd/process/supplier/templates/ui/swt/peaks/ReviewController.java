@@ -14,7 +14,6 @@ package net.openchrom.xxd.process.supplier.templates.ui.swt.peaks;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.model.core.IChromatogram;
@@ -45,7 +44,6 @@ import net.openchrom.xxd.process.supplier.templates.ui.charts.PeakDetectorChart;
 import net.openchrom.xxd.process.supplier.templates.ui.charts.PeakDetectorChartSettings;
 import net.openchrom.xxd.process.supplier.templates.ui.support.ReviewSupport;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessReviewSettings;
-import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorListUtil;
 
 public class ReviewController {
 
@@ -57,11 +55,8 @@ public class ReviewController {
 	private ExtendedTargetsUI extendedTargetsUI;
 	private ExtendedComparisonUI extendedComparisonUI;
 	private ExtendedPeakTracesUI extendedPeakTracesUI;
-
-	private PeakDetectorListUtil peakDetectorListUtil = new PeakDetectorListUtil();
 	private ProcessReviewSettings processSettings;
 	private ReviewSetting reviewSetting = null;
-
 	private PeakReviewControl peakReviewControl;
 
 	public ReviewController(PeakReviewControl peakReviewControl) {
@@ -178,7 +173,7 @@ public class ReviewController {
 						detectorRange.setChromatogram(chromatogram);
 						detectorRange.setRetentionTimeStart(startRetentionTime);
 						detectorRange.setRetentionTimeStop(stopRetentionTime);
-						detectorRange.setTraces(peakDetectorListUtil.extractTraces(reviewSetting.getTraces()));
+						detectorRange.setTraces(reviewSetting.getTraces());
 						detectorRange.setDetectorType(peakType);
 						detectorRange.setOptimizeRange(optimizeRange);
 						/*
@@ -361,9 +356,10 @@ public class ReviewController {
 				List<? extends IChromatogramPeak> chromatogramPeaks = chromatogram.getPeaks(startRetentionTime, stopRetentionTime);
 
 				if(PreferenceSupplier.isReviewShowOnlyRelevantPeaks() && isChromatogramMSD(chromatogram)) {
-					Set<Integer> traces = peakDetectorListUtil.extractTraces(reviewSetting.getTraces());
+					String traces = reviewSetting.getTraces();
+					PeakSupport peakSupport = new PeakSupport();
 					for(IPeak chromatogramPeak : chromatogramPeaks) {
-						if(PeakSupport.isPeakRelevant(chromatogramPeak, traces)) {
+						if(peakSupport.isPeakRelevant(chromatogramPeak, traces)) {
 							peaks.add(chromatogramPeak);
 						}
 					}

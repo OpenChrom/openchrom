@@ -14,7 +14,10 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.util;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -24,6 +27,7 @@ import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
+import org.eclipse.chemclipse.support.validators.TraceValidator;
 import org.eclipse.chemclipse.wsd.model.core.IScanSignalWSD;
 import org.eclipse.chemclipse.wsd.model.core.IScanWSD;
 import org.eclipse.core.runtime.IStatus;
@@ -31,6 +35,27 @@ import org.eclipse.core.runtime.IStatus;
 public class TracesUtil {
 
 	private static final Logger logger = Logger.getLogger(TracesUtil.class);
+
+	public static String getTraces(Set<Integer> traceSet) {
+
+		List<Integer> traceList = new ArrayList<>(traceSet);
+		Collections.sort(traceList);
+
+		List<String> traces = new ArrayList<>();
+		for(int trace : traceList) {
+			traces.add(Integer.toString(trace));
+		}
+
+		return String.join(" ", traces);
+	}
+
+	public static List<Integer> getTraces(String traces) {
+
+		TraceValidator traceValidator = new TraceValidator();
+		traceValidator.validate(traces);
+
+		return traceValidator.getTracesAsInteger();
+	}
 
 	/**
 	 * If traces is empty: true

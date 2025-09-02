@@ -15,7 +15,6 @@ package net.openchrom.xxd.process.supplier.templates.peaks;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.core.IPeakDetectorCSD;
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.settings.IPeakDetectorSettingsCSD;
@@ -43,11 +42,9 @@ import net.openchrom.xxd.process.supplier.templates.model.RetentionTimeRange;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
 import net.openchrom.xxd.process.supplier.templates.support.PeakSupport;
-import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorListUtil;
 
 public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorMSD, IPeakDetectorCSD, IPeakDetectorWSD {
 
-	private PeakDetectorListUtil listUtil = new PeakDetectorListUtil();
 	private PeakSupport peakSupport = new PeakSupport();
 
 	@Override
@@ -168,8 +165,10 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 		 * At least 3 scans must be available.
 		 */
 		if(deltaScan > 2) {
-			Set<Integer> traces = listUtil.extractTraces(detectorSetting.getTraces());
-			IChromatogramPeak peak = peakSupport.extractPeakByScanRange(chromatogram, startScan, stopScan, detectorSetting.isIncludeBackground(), detectorSetting.isOptimizeRange(), traces);
+			/*
+			 * Detect
+			 */
+			IChromatogramPeak peak = peakSupport.extractPeakByScanRange(chromatogram, startScan, stopScan, detectorSetting.isIncludeBackground(), detectorSetting.isOptimizeRange(), detectorSetting.getTraces());
 			if(peak != null) {
 				/*
 				 * Add an identification on demand.

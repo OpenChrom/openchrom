@@ -68,6 +68,7 @@ import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSuppli
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakTransferSettings;
 import net.openchrom.xxd.process.supplier.templates.support.PeakSupport;
+import net.openchrom.xxd.process.supplier.templates.util.TracesUtil;
 
 public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorMSD, IPeakDetectorCSD {
 
@@ -352,12 +353,10 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 		boolean includeBackground = peakSource.getPeakType().equals(PeakType.VV);
 		boolean optimizeRange = peakTransferSettings.isOptimizeRange();
 
-		Set<Integer> traces;
+		String traces = "";
 		if(chromatogramSink instanceof IChromatogramMSD && peakTransferSettings.isCheckPurity()) {
 			int numberTraces = peakTransferSettings.getNumberTraces();
 			traces = getTraces(peakSource, numberTraces);
-		} else {
-			traces = new HashSet<>();
 		}
 
 		IChromatogramPeak peakSink = peakSupport.extractPeakByRetentionTime(chromatogramSink, startRetentionTime, stopRetentionTime, includeBackground, optimizeRange, traces);
@@ -423,24 +422,27 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 		return peakSink;
 	}
 
-	private Set<Integer> getTraces(IChromatogramPeak peakSource, int numberTraces) {
+	private String getTraces(IChromatogramPeak peakSource, int numberTraces) {
 
-		Set<Integer> traces = new HashSet<>();
+		Set<Integer> traceSet = new HashSet<>();
 		if(peakSource instanceof IChromatogramPeakMSD peakMSD) {
 			if(peakMSD.getPurity() < 1.0f && numberTraces > 0) {
-				// probably a deconvoluted peak
+				/*
+				 * It is probably a deconvoluted peak.
+				 */
 				IScanMSD scanMSD = peakMSD.getExtractedMassSpectrum();
 				if(scanMSD.getIons().size() <= numberTraces) {
 					IExtractedIonSignal extractedIonSignal = peakMSD.getExtractedMassSpectrum().getExtractedIonSignal();
 					for(int ion = extractedIonSignal.getStartIon(); ion <= extractedIonSignal.getStopIon(); ion++) {
 						if(extractedIonSignal.getAbundance(ion) > 0.0f) {
-							traces.add(ion);
+							traceSet.add(ion);
 						}
 					}
 				}
 			}
 		}
-		return traces;
+
+		return TracesUtil.getTraces(traceSet);
 	}
 
 	private void adjustPeakIntensity(IChromatogramPeak peakSink, double percentageIntensity, PeakTransferSettings peakTransferSettings) {
