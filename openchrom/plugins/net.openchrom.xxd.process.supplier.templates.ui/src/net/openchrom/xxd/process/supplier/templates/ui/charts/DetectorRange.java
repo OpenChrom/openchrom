@@ -13,9 +13,6 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.charts;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.PeakType;
 
@@ -24,7 +21,7 @@ public class DetectorRange {
 	private IChromatogram chromatogram = null;
 	private int retentionTimeStart = 0;
 	private int retentionTimeStop = 0;
-	private Set<Integer> traces = new HashSet<>();
+	private String traces = "";
 	private PeakType detectorType = PeakType.VV;
 	private boolean optimizeRange = true;
 
@@ -58,12 +55,12 @@ public class DetectorRange {
 		this.retentionTimeStop = retentionTimeStop;
 	}
 
-	public Set<Integer> getTraces() {
+	public String getTraces() {
 
 		return traces;
 	}
 
-	public void setTraces(Set<Integer> traces) {
+	public void setTraces(String traces) {
 
 		this.traces = traces;
 	}

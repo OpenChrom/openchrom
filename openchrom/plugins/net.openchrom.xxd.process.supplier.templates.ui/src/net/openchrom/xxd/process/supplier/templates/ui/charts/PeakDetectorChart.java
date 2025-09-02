@@ -15,7 +15,6 @@ package net.openchrom.xxd.process.supplier.templates.ui.charts;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.chemclipse.model.baseline.IBaselineModel;
 import org.eclipse.chemclipse.model.core.IChromatogram;
@@ -51,6 +50,7 @@ import net.openchrom.xxd.process.supplier.templates.support.PeakSupport;
 import net.openchrom.xxd.process.supplier.templates.ui.swt.peaks.DeltaRangePaintListener;
 import net.openchrom.xxd.process.supplier.templates.ui.swt.peaks.IRangeUpdateListener;
 import net.openchrom.xxd.process.supplier.templates.ui.swt.peaks.ISectionUpdateListener;
+import net.openchrom.xxd.process.supplier.templates.util.TracesUtil;
 
 public class PeakDetectorChart extends ChromatogramPeakChart {
 
@@ -303,15 +303,15 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 				 * TIC/XIC
 				 */
 				boolean showTraces = false;
-				Set<Integer> traces = detectorRange.getTraces();
+				String traces = detectorRange.getTraces();
 				if(showTracesMSD(chromatogram, traces)) {
 					ChromatogramSelectionMSD chromatogramSelectionMSD = new ChromatogramSelectionMSD((IChromatogramMSD)chromatogram);
-					chromatogramSelectionMSD.getSelectedIons().add(traces);
+					chromatogramSelectionMSD.getSelectedIons().add(TracesUtil.getTraces(traces));
 					chromatogramSelection = chromatogramSelectionMSD;
 					showTraces = true;
 				} else if(showTracesWSD(chromatogram, traces)) {
 					ChromatogramSelectionWSD chromatogramSelectionWSD = new ChromatogramSelectionWSD((IChromatogramWSD)chromatogram);
-					chromatogramSelectionWSD.getSelectedWavelengths().add(traces);
+					chromatogramSelectionWSD.getSelectedWavelengths().add(TracesUtil.getTraces(traces));
 					chromatogramSelection = chromatogramSelectionWSD;
 					showTraces = true;
 				} else {
@@ -354,12 +354,12 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		return retentionTime;
 	}
 
-	private boolean showTracesMSD(IChromatogram chromatogram, Set<Integer> traces) {
+	private boolean showTracesMSD(IChromatogram chromatogram, String traces) {
 
 		return chromatogram instanceof IChromatogramMSD && !traces.isEmpty();
 	}
 
-	private boolean showTracesWSD(IChromatogram chromatogram, Set<Integer> traces) {
+	private boolean showTracesWSD(IChromatogram chromatogram, String traces) {
 
 		return chromatogram instanceof IChromatogramWSD && !traces.isEmpty();
 	}
@@ -517,7 +517,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 					/*
 					 * General Settings
 					 */
-					Set<Integer> traces = detectorRange.getTraces();
+					String traces = detectorRange.getTraces();
 					PeakType detectorType = detectorRange.getDetectorType();
 					if(PeakType.MM.equals(detectorType) || PeakType.CB.equals(detectorType)) {
 						double height = rectangle.y;

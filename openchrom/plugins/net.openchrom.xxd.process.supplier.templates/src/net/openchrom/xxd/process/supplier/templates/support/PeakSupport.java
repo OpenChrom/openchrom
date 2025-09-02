@@ -13,6 +13,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.support;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -40,6 +41,12 @@ import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.core.support.PeakBuilderMSD;
 import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
+import org.eclipse.chemclipse.support.traces.DetectorType;
+import org.eclipse.chemclipse.support.traces.ITrace;
+import org.eclipse.chemclipse.support.traces.TraceFactory;
+import org.eclipse.chemclipse.support.traces.TraceGeneric;
+import org.eclipse.chemclipse.support.traces.TraceHighResMSD;
+import org.eclipse.chemclipse.vsd.model.core.IChromatogramVSD;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramPeakWSD;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.chemclipse.wsd.model.core.IPeakWSD;
@@ -57,7 +64,7 @@ public class PeakSupport {
 
 	private static final Logger logger = Logger.getLogger(PeakSupport.class);
 
-	public static boolean isPeakRelevant(IPeak peak, Set<Integer> traces) {
+	public boolean isPeakRelevant(IPeak peak, String traces) {
 
 		boolean isPeakRelevant = false;
 		if(traces != null && peak != null) {
@@ -74,8 +81,9 @@ public class PeakSupport {
 					isPeakRelevant = true;
 					IScanMSD scanMSD = peakMSD.getPeakModel().getPeakMassSpectrum();
 					IExtractedIonSignal extractedIonSignal = scanMSD.getExtractedIonSignal();
+					Set<Integer> traceSet = getTraceSet(null, traces);
 					exitloop:
-					for(int trace : traces) {
+					for(int trace : traceSet) {
 						float abundance = extractedIonSignal.getAbundance(trace);
 						if(abundance == 0) {
 							isPeakRelevant = false;
@@ -90,8 +98,9 @@ public class PeakSupport {
 					IScan scan = peakWSD.getPeakModel().getPeakMaximum();
 					if(scan instanceof IScanWSD scanWSD) {
 						IExtractedWavelengthSignal extractedWavelengthSignal = scanWSD.getExtractedWavelengthSignal();
+						Set<Integer> traceSet = getTraceSet(null, traces);
 						exitloop:
-						for(int trace : traces) {
+						for(int trace : traceSet) {
 							float abundance = extractedWavelengthSignal.getAbundance(trace);
 							if(abundance == 0) {
 								isPeakRelevant = false;
@@ -196,23 +205,24 @@ public class PeakSupport {
 		return new RetentionTimeRange(startRetentionTime, stopRetentionTime);
 	}
 
-	public IChromatogramPeak extractPeakByRetentionTime(IChromatogram chromatogram, int startRetentionTime, int stopRetentionTime, boolean includeBackground, boolean optimizeRange, Set<Integer> traces) {
+	public IChromatogramPeak extractPeakByRetentionTime(IChromatogram chromatogram, int startRetentionTime, int stopRetentionTime, boolean includeBackground, boolean optimizeRange, String traces) {
 
 		int startScan = getStartScan(chromatogram, startRetentionTime);
 		int stopScan = getStopScan(chromatogram, stopRetentionTime);
 		return extractPeakByScanRange(chromatogram, startScan, stopScan, includeBackground, optimizeRange, traces);
 	}
 
-	public IPeak extractPeakByRetentionTime(IChromatogram chromatogram, int startRetentionTime, int stopRetentionTime, float startIntensity, float stopIntensity, Set<Integer> traces) {
+	public IPeak extractPeakByRetentionTime(IChromatogram chromatogram, int startRetentionTime, int stopRetentionTime, float startIntensity, float stopIntensity, String traces) {
 
 		int startScan = getStartScan(chromatogram, startRetentionTime);
 		int stopScan = getStopScan(chromatogram, stopRetentionTime);
 		return extractPeakByScanRange(chromatogram, startScan, stopScan, startIntensity, stopIntensity, traces);
 	}
 
-	public IChromatogramPeak extractPeakByScanRange(IChromatogram chromatogram, int startScan, int stopScan, boolean includeBackground, boolean optimizeRange, Set<Integer> traces) {
+	public IChromatogramPeak extractPeakByScanRange(IChromatogram chromatogram, int startScan, int stopScan, boolean includeBackground, boolean optimizeRange, String traces) {
 
 		IChromatogramPeak peak = null;
+
 		try {
 			if(startScan > 0 && startScan < stopScan) {
 				/*
@@ -232,7 +242,8 @@ public class PeakSupport {
 					 * Must be called with 'exclude' mode, so given ions will be 'excluded' from AbstractScan#removeIons.
 					 */
 					if(!traces.isEmpty()) {
-						peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, includeBackground, traces, MarkedTraceModus.EXCLUDE);
+						Set<Integer> traceSet = getTraceSet(chromatogram, traces);
+						peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, includeBackground, traceSet, MarkedTraceModus.EXCLUDE);
 					} else {
 						peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, includeBackground);
 					}
@@ -245,11 +256,16 @@ public class PeakSupport {
 					peak.setDetectorDescription(PeakDetectorSettings.DETECTOR_DESCRIPTION);
 				} else if(chromatogram instanceof IChromatogramWSD chromatogramWSD) {
 					if(!traces.isEmpty()) {
-						peak = PeakBuilderWSD.createPeak(chromatogramWSD, scanRange, includeBackground, traces, MarkedTraceModus.INCLUDE);
+						Set<Integer> traceSet = getTraceSet(chromatogram, traces);
+						peak = PeakBuilderWSD.createPeak(chromatogramWSD, scanRange, includeBackground, traceSet, MarkedTraceModus.INCLUDE);
 					} else {
 						peak = PeakBuilderWSD.createPeak(chromatogramWSD, scanRange, includeBackground);
 					}
 					peak.setDetectorDescription(PeakDetectorSettings.DETECTOR_DESCRIPTION);
+				} else if(chromatogram instanceof IChromatogramVSD) {
+					/*
+					 * VSD is not supported yet.
+					 */
 				}
 			}
 		} catch(PeakException e) {
@@ -258,7 +274,7 @@ public class PeakSupport {
 		return peak;
 	}
 
-	public IPeak extractPeakByScanRange(IChromatogram chromatogram, int startScan, int stopScan, float startIntensity, float stopIntensity, Set<Integer> traces) {
+	public IPeak extractPeakByScanRange(IChromatogram chromatogram, int startScan, int stopScan, float startIntensity, float stopIntensity, String traces) {
 
 		IPeak peak = null;
 
@@ -276,7 +292,8 @@ public class PeakSupport {
 						/**
 						 * Must be called with 'exclude' mode, so given ions will be 'excluded' from AbstractScan#removeIons.
 						 */
-						peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, startIntensity, stopIntensity, traces, MarkedTraceModus.EXCLUDE);
+						Set<Integer> traceSet = getTraceSet(chromatogram, traces);
+						peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, startIntensity, stopIntensity, traceSet, MarkedTraceModus.EXCLUDE);
 					} else {
 						peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, startIntensity, stopIntensity);
 					}
@@ -291,10 +308,15 @@ public class PeakSupport {
 						/**
 						 * Must be called with 'exclude' mode, so given ions will be 'excluded' from AbstractScan#removeIons.
 						 */
-						peak = PeakBuilderWSD.createPeak(chromatogramWSD, scanRange, startIntensity, stopIntensity, traces);
+						Set<Integer> traceSet = getTraceSet(chromatogram, traces);
+						peak = PeakBuilderWSD.createPeak(chromatogramWSD, scanRange, startIntensity, stopIntensity, traceSet);
 					} else {
 						peak = PeakBuilderWSD.createPeak(chromatogramWSD, scanRange, startIntensity, stopIntensity);
 					}
+				} else if(chromatogram instanceof IChromatogramVSD) {
+					/*
+					 * VSD is not supported yet.
+					 */
 				}
 			}
 		} catch(PeakException e) {
@@ -315,7 +337,7 @@ public class PeakSupport {
 		}
 	}
 
-	private IScanRange optimizeRange(IChromatogram chromatogram, int startScan, int stopScan, Set<Integer> traces) {
+	private IScanRange optimizeRange(IChromatogram chromatogram, int startScan, int stopScan, String traces) {
 
 		int scanWidth = stopScan - startScan + 1;
 		int partLength = scanWidth / 4;
@@ -359,18 +381,20 @@ public class PeakSupport {
 		return new ScanRange(startScanOptimized, stopScanOptimized);
 	}
 
-	private float getScanSignal(IChromatogram chromatogram, int scanNumber, Set<Integer> traces) {
+	private float getScanSignal(IChromatogram chromatogram, int scanNumber, String traces) {
 
 		float scanSignal = 0.0f;
 		IScan scan = chromatogram.getScan(scanNumber);
 		if(scan instanceof IScanMSD scanMSD) {
 			IExtractedIonSignal extractedIonSignal = scanMSD.getExtractedIonSignal();
-			for(int trace : traces) {
+			Set<Integer> traceSet = getTraceSet(chromatogram, traces);
+			for(int trace : traceSet) {
 				scanSignal += extractedIonSignal.getAbundance(trace);
 			}
 		} else {
 			scanSignal = scan.getTotalSignal();
 		}
+
 		return scanSignal;
 	}
 
@@ -390,5 +414,44 @@ public class PeakSupport {
 	private boolean isUseRetentionIndex(AbstractSetting setting) {
 
 		return PositionDirective.RETENTION_INDEX.equals(setting.getPositionDirective());
+	}
+
+	private Set<Integer> getTraceSet(IChromatogram chromatogram, String content) {
+
+		/*
+		 * Traces (TODO)
+		 */
+		if(chromatogram != null) {
+			DetectorType detectorType = getDetectorType(chromatogram);
+			Class<? extends ITrace> clazz = TraceFactory.getTraceType(content, detectorType);
+			if(clazz.equals(TraceHighResMSD.class)) {
+				/*
+				 * Make a decision to use high resolution traces.
+				 */
+			}
+		}
+
+		Set<Integer> traces = new HashSet<>();
+		for(ITrace trace : TraceFactory.parseTraces(content, TraceGeneric.class)) {
+			traces.add((int)Math.round(trace.getValue()));
+		}
+
+		return traces;
+	}
+
+	private DetectorType getDetectorType(IChromatogram chromatogram) {
+
+		DetectorType detectorType;
+		if(chromatogram instanceof IChromatogramMSD) {
+			detectorType = DetectorType.MSD;
+		} else if(chromatogram instanceof IChromatogramVSD) {
+			detectorType = DetectorType.VSD;
+		} else if(chromatogram instanceof IChromatogramWSD) {
+			detectorType = DetectorType.WSD;
+		} else {
+			detectorType = DetectorType.AUTO;
+		}
+
+		return detectorType;
 	}
 }

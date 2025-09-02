@@ -14,7 +14,6 @@ package net.openchrom.xxd.process.supplier.templates.ui.swt.peaks;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.model.core.IChromatogram;
@@ -48,7 +47,6 @@ import net.openchrom.xxd.process.supplier.templates.ui.charts.DetectorRange;
 import net.openchrom.xxd.process.supplier.templates.ui.charts.PeakDetectorChart;
 import net.openchrom.xxd.process.supplier.templates.ui.charts.PeakDetectorChartSettings;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessDetectorSettings;
-import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorListUtil;
 
 public class DetectorController {
 
@@ -57,11 +55,8 @@ public class DetectorController {
 	private ProcessDetectorUI processDetectorUI;
 	private ExtendedPeakDetectorUI extendedPeaksUI;
 	private PeakDetectorChart peakDetectorChart;
-
-	private PeakDetectorListUtil peakDetectorListUtil = new PeakDetectorListUtil();
 	private ProcessDetectorSettings processSettings;
 	private DetectorSetting detectorSetting;
-
 	private PeakDetectorControl peakDetectorControl;
 
 	public DetectorController(PeakDetectorControl peakDetectorControl) {
@@ -148,7 +143,7 @@ public class DetectorController {
 							detectorRange.setChromatogram(chromatogram);
 							detectorRange.setRetentionTimeStart(startRetentionTime);
 							detectorRange.setRetentionTimeStop(stopRetentionTime);
-							detectorRange.setTraces(peakDetectorListUtil.extractTraces(detectorSetting.getTraces()));
+							detectorRange.setTraces(detectorSetting.getTraces());
 							detectorRange.setDetectorType(peakType);
 							detectorRange.setOptimizeRange(optimizeRange);
 							/*
@@ -375,9 +370,10 @@ public class DetectorController {
 						List<? extends IChromatogramPeak> chromatogramPeaks = chromatogram.getPeaks(startRetentionTime, stopRetentionTime);
 
 						if(PreferenceSupplier.isDetectorShowOnlyRelevantPeaks() && isChromatogramMSD(chromatogram)) {
-							Set<Integer> traces = peakDetectorListUtil.extractTraces(detectorSetting.getTraces());
+							String traces = detectorSetting.getTraces();
+							PeakSupport peakSupport = new PeakSupport();
 							for(IChromatogramPeak chromatogramPeak : chromatogramPeaks) {
-								if(PeakSupport.isPeakRelevant(chromatogramPeak, traces)) {
+								if(peakSupport.isPeakRelevant(chromatogramPeak, traces)) {
 									PeakSupport.addPeak(chromatogram, chromatogramPeak);
 								}
 							}

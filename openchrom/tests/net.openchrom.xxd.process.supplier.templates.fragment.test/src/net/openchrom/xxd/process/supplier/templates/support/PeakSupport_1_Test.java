@@ -15,9 +15,6 @@ package net.openchrom.xxd.process.supplier.templates.support;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.eclipse.chemclipse.csd.model.core.IPeakCSD;
 import org.eclipse.chemclipse.csd.model.core.IPeakModelCSD;
 import org.eclipse.chemclipse.csd.model.core.IScanCSD;
@@ -46,20 +43,22 @@ import org.junit.Test;
 
 public class PeakSupport_1_Test {
 
+	private PeakSupport peakSupport = new PeakSupport();
+
 	@Test
 	public void test1() {
 
 		IPeakMSD peak = null;
-		Set<Integer> traces = null;
-		assertFalse(PeakSupport.isPeakRelevant(peak, traces));
+		String traces = null;
+		assertFalse(peakSupport.isPeakRelevant(peak, traces));
 	}
 
 	@Test
 	public void test2() {
 
 		IPeakMSD peak = null;
-		Set<Integer> traces = new HashSet<>();
-		assertFalse(PeakSupport.isPeakRelevant(peak, traces));
+		String traces = "";
+		assertFalse(peakSupport.isPeakRelevant(peak, traces));
 	}
 
 	@Test
@@ -67,26 +66,26 @@ public class PeakSupport_1_Test {
 
 		IScanCSD scan = new ScanCSD(100.0f);
 		IPeakCSD peak = createPeak(scan);
-		Set<Integer> traces = null;
-		assertFalse(PeakSupport.isPeakRelevant(peak, traces));
+		String traces = null;
+		assertFalse(peakSupport.isPeakRelevant(peak, traces));
 	}
 
 	@Test
 	public void test3b() {
 
 		IScanMSD scan = new ScanMSD();
-		Set<Integer> traces = null;
+		String traces = null;
 		IPeakMSD peak = createPeak(scan);
-		assertFalse(PeakSupport.isPeakRelevant(peak, traces));
+		assertFalse(peakSupport.isPeakRelevant(peak, traces));
 	}
 
 	@Test
 	public void test3c() {
 
 		IScanWSD scan = new ScanWSD();
-		Set<Integer> traces = null;
+		String traces = null;
 		IPeakWSD peak = createPeak(scan);
-		assertFalse(PeakSupport.isPeakRelevant(peak, traces));
+		assertFalse(peakSupport.isPeakRelevant(peak, traces));
 	}
 
 	@Test
@@ -94,26 +93,26 @@ public class PeakSupport_1_Test {
 
 		IScanCSD scan = new ScanCSD(100.0f);
 		IPeakCSD peak = createPeak(scan);
-		Set<Integer> traces = new HashSet<>();
-		assertTrue(PeakSupport.isPeakRelevant(peak, traces));
+		String traces = "";
+		assertTrue(peakSupport.isPeakRelevant(peak, traces));
 	}
 
 	@Test
 	public void test4b() {
 
 		IScanMSD scan = new ScanMSD();
-		Set<Integer> traces = new HashSet<>();
+		String traces = "";
 		IPeakMSD peak = createPeak(scan);
-		assertTrue(PeakSupport.isPeakRelevant(peak, traces));
+		assertTrue(peakSupport.isPeakRelevant(peak, traces));
 	}
 
 	@Test
 	public void test4c() {
 
 		IScanWSD scan = new ScanWSD();
-		Set<Integer> traces = new HashSet<>();
+		String traces = "";
 		IPeakWSD peak = createPeak(scan);
-		assertTrue(PeakSupport.isPeakRelevant(peak, traces));
+		assertTrue(peakSupport.isPeakRelevant(peak, traces));
 	}
 
 	@Test
@@ -130,9 +129,9 @@ public class PeakSupport_1_Test {
 
 		IScanMSD scan = new ScanMSD();
 		scan.addIon(new Ion(18.0d, 1000.0f));
-		Set<Integer> traces = new HashSet<>();
+		String traces = "";
 		IPeakMSD peak = createPeak(scan);
-		assertTrue(PeakSupport.isPeakRelevant(peak, traces));
+		assertTrue(peakSupport.isPeakRelevant(peak, traces));
 	}
 
 	@Test
@@ -140,9 +139,9 @@ public class PeakSupport_1_Test {
 
 		IScanWSD scan = new ScanWSD();
 		scan.addScanSignal(new ScanSignalWSD(200, 1000.0f));
-		Set<Integer> traces = new HashSet<>();
+		String traces = "";
 		IPeakWSD peak = createPeak(scan);
-		assertTrue(PeakSupport.isPeakRelevant(peak, traces));
+		assertTrue(peakSupport.isPeakRelevant(peak, traces));
 	}
 
 	@Test
@@ -150,9 +149,8 @@ public class PeakSupport_1_Test {
 
 		IScanCSD scan = new ScanCSD(100.0f);
 		IPeakCSD peak = createPeak(scan);
-		Set<Integer> traces = new HashSet<>();
-		traces.add(18);
-		assertTrue(PeakSupport.isPeakRelevant(peak, traces));
+		String traces = "18";
+		assertTrue(peakSupport.isPeakRelevant(peak, traces));
 	}
 
 	@Test
@@ -160,10 +158,9 @@ public class PeakSupport_1_Test {
 
 		IScanMSD scan = new ScanMSD();
 		scan.addIon(new Ion(18.0d, 1000.0f));
-		Set<Integer> traces = new HashSet<>();
-		traces.add(18);
+		String traces = "18";
 		IPeakMSD peak = createPeak(scan);
-		assertTrue(PeakSupport.isPeakRelevant(peak, traces));
+		assertTrue(peakSupport.isPeakRelevant(peak, traces));
 	}
 
 	@Test
@@ -171,10 +168,9 @@ public class PeakSupport_1_Test {
 
 		IScanWSD scan = new ScanWSD();
 		scan.addScanSignal(new ScanSignalWSD(200, 1000.0f));
-		Set<Integer> traces = new HashSet<>();
-		traces.add(200);
+		String traces = "200";
 		IPeakWSD peak = createPeak(scan);
-		assertTrue(PeakSupport.isPeakRelevant(peak, traces));
+		assertTrue(peakSupport.isPeakRelevant(peak, traces));
 	}
 
 	@Test
@@ -182,10 +178,8 @@ public class PeakSupport_1_Test {
 
 		IScanCSD scan = new ScanCSD(100.0f);
 		IPeakCSD peak = createPeak(scan);
-		Set<Integer> traces = new HashSet<>();
-		traces.add(18);
-		traces.add(28);
-		assertTrue(PeakSupport.isPeakRelevant(peak, traces));
+		String traces = "18, 28";
+		assertTrue(peakSupport.isPeakRelevant(peak, traces));
 	}
 
 	@Test
@@ -193,11 +187,9 @@ public class PeakSupport_1_Test {
 
 		IScanMSD scan = new ScanMSD();
 		scan.addIon(new Ion(18.0d, 1000.0f));
-		Set<Integer> traces = new HashSet<>();
-		traces.add(18);
-		traces.add(28);
+		String traces = "18, 28";
 		IPeakMSD peak = createPeak(scan);
-		assertFalse(PeakSupport.isPeakRelevant(peak, traces));
+		assertFalse(peakSupport.isPeakRelevant(peak, traces));
 	}
 
 	@Test
@@ -205,11 +197,9 @@ public class PeakSupport_1_Test {
 
 		IScanWSD scan = new ScanWSD();
 		scan.addScanSignal(new ScanSignalWSD(200, 1000.0f));
-		Set<Integer> traces = new HashSet<>();
-		traces.add(200);
-		traces.add(202);
+		String traces = "200, 202";
 		IPeakWSD peak = createPeak(scan);
-		assertFalse(PeakSupport.isPeakRelevant(peak, traces));
+		assertFalse(peakSupport.isPeakRelevant(peak, traces));
 	}
 
 	private IPeakCSD createPeak(IScanCSD scan) {
