@@ -88,7 +88,7 @@ public class TracesValidator_2_Test {
 
 		IStatus status = traceValidator.validate("18 - 45 - 200");
 		assertTrue(status.isOK());
-		assertEquals(0, traceValidator.getTracesAsInteger().size());
+		assertEquals(29, traceValidator.getTracesAsInteger().size());
 	}
 
 	@Test
