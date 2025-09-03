@@ -16,21 +16,22 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Set;
+import java.util.List;
 
+import org.eclipse.chemclipse.support.validators.TraceValidator;
 import org.eclipse.core.runtime.IStatus;
 import org.junit.Test;
 
 public class TracesValidator_4_Test {
 
-	private TracesValidator tracesValidator = new TracesValidator();
+	private TraceValidator traceValidator = new TraceValidator();
 
 	@Test
 	public void test1() {
 
-		IStatus status = tracesValidator.validate("18");
+		IStatus status = traceValidator.validate("18");
 		assertTrue(status.isOK());
-		Set<Integer> traces = tracesValidator.getTraces();
+		List<Integer> traces = traceValidator.getTracesAsInteger();
 		assertEquals(1, traces.size());
 		assertTrue(traces.contains(18));
 	}
@@ -38,9 +39,9 @@ public class TracesValidator_4_Test {
 	@Test
 	public void test2() {
 
-		IStatus status = tracesValidator.validate("18 28");
+		IStatus status = traceValidator.validate("18 28");
 		assertTrue(status.isOK());
-		Set<Integer> traces = tracesValidator.getTraces();
+		List<Integer> traces = traceValidator.getTracesAsInteger();
 		assertEquals(2, traces.size());
 		assertTrue(traces.contains(18));
 		assertTrue(traces.contains(28));
@@ -49,9 +50,9 @@ public class TracesValidator_4_Test {
 	@Test
 	public void test3() {
 
-		IStatus status = tracesValidator.validate("18 28 32");
+		IStatus status = traceValidator.validate("18 28 32");
 		assertTrue(status.isOK());
-		Set<Integer> traces = tracesValidator.getTraces();
+		List<Integer> traces = traceValidator.getTracesAsInteger();
 		assertEquals(3, traces.size());
 		assertTrue(traces.contains(18));
 		assertTrue(traces.contains(28));
@@ -61,9 +62,9 @@ public class TracesValidator_4_Test {
 	@Test
 	public void test4() {
 
-		IStatus status = tracesValidator.validate("18 - 32");
+		IStatus status = traceValidator.validate("18 - 32");
 		assertTrue(status.isOK());
-		Set<Integer> traces = tracesValidator.getTraces();
+		List<Integer> traces = traceValidator.getTracesAsInteger();
 		assertEquals(15, traces.size());
 		assertFalse(traces.contains(17));
 		assertTrue(traces.contains(18));

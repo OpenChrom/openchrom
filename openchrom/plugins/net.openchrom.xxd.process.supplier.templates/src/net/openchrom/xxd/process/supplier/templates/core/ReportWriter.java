@@ -45,6 +45,7 @@ import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
 import org.eclipse.chemclipse.numeric.statistics.Calculations;
 import org.eclipse.chemclipse.support.text.ValueFormat;
+import org.eclipse.chemclipse.support.validators.TraceValidator;
 import org.eclipse.chemclipse.wsd.model.core.IPeakWSD;
 import org.eclipse.chemclipse.wsd.model.core.IScanWSD;
 import org.eclipse.chemclipse.wsd.model.xwc.IExtractedWavelengthSignal;
@@ -55,7 +56,6 @@ import net.openchrom.xxd.process.supplier.templates.model.AbstractSetting;
 import net.openchrom.xxd.process.supplier.templates.model.ReportColumns;
 import net.openchrom.xxd.process.supplier.templates.model.ReportSetting;
 import net.openchrom.xxd.process.supplier.templates.settings.ChromatogramReportSettings;
-import net.openchrom.xxd.process.supplier.templates.util.TracesValidator;
 
 public class ReportWriter {
 
@@ -69,9 +69,9 @@ public class ReportWriter {
 	public void generate(File file, boolean append, List<IChromatogram> chromatograms, ChromatogramReportSettings chromatogramReportSettings, IProgressMonitor monitor) throws IOException {
 
 		boolean fileExists = file.exists() && file.length() > 0;
-		TracesValidator tracesValidator = new TracesValidator();
-		IStatus status = tracesValidator.validate(chromatogramReportSettings.getTraces());
-		Set<Integer> traceSet = status.isOK() ? tracesValidator.getTraces() : new HashSet<>();
+		TraceValidator traceValidator = new TraceValidator();
+		IStatus status = traceValidator.validate(chromatogramReportSettings.getTraces());
+		Set<Integer> traceSet = status.isOK() ? new HashSet<>(traceValidator.getTracesAsInteger()) : new HashSet<>();
 		traceSet.remove(0); // TIC doesn't make sense here.
 		List<Integer> traces = new ArrayList<>(traceSet);
 		Collections.sort(traces);

@@ -16,85 +16,86 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Set;
+import java.util.List;
 
+import org.eclipse.chemclipse.support.validators.TraceValidator;
 import org.eclipse.core.runtime.IStatus;
 import org.junit.Test;
 
 public class TracesValidator_2_Test {
 
-	private TracesValidator tracesValidator = new TracesValidator();
+	private TraceValidator traceValidator = new TraceValidator();
 
 	@Test
 	public void test1() {
 
-		IStatus status = tracesValidator.validate(null);
+		IStatus status = traceValidator.validate(null);
 		assertFalse(status.isOK());
-		assertEquals(0, tracesValidator.getTraces().size());
+		assertEquals(0, traceValidator.getTracesAsInteger().size());
 	}
 
 	@Test
 	public void test2() {
 
-		IStatus status = tracesValidator.validate("");
+		IStatus status = traceValidator.validate("");
 		assertTrue(status.isOK());
-		Set<Integer> traces = tracesValidator.getTraces();
+		List<Integer> traces = traceValidator.getTracesAsInteger();
 		assertEquals(0, traces.size()); // TIC
 	}
 
 	@Test
 	public void test3() {
 
-		IStatus status = tracesValidator.validate("A");
+		IStatus status = traceValidator.validate("A");
 		assertFalse(status.isOK());
-		assertEquals(0, tracesValidator.getTraces().size());
+		assertEquals(0, traceValidator.getTracesAsInteger().size());
 	}
 
 	@Test
 	public void test4() {
 
-		IStatus status = tracesValidator.validate(" ");
-		assertFalse(status.isOK());
-		assertEquals(0, tracesValidator.getTraces().size());
+		IStatus status = traceValidator.validate(" ");
+		assertTrue(status.isOK());
+		assertEquals(0, traceValidator.getTracesAsInteger().size());
 	}
 
 	@Test
 	public void test5() {
 
-		IStatus status = tracesValidator.validate("A - B");
+		IStatus status = traceValidator.validate("A - B");
 		assertFalse(status.isOK());
-		assertEquals(0, tracesValidator.getTraces().size());
+		assertEquals(0, traceValidator.getTracesAsInteger().size());
 	}
 
 	@Test
 	public void test6() {
 
-		IStatus status = tracesValidator.validate("18 - B");
+		IStatus status = traceValidator.validate("18 - B");
 		assertFalse(status.isOK());
-		assertEquals(0, tracesValidator.getTraces().size());
+		assertEquals(0, traceValidator.getTracesAsInteger().size());
 	}
 
 	@Test
 	public void test7() {
 
-		IStatus status = tracesValidator.validate("A - 18");
+		IStatus status = traceValidator.validate("A - 18");
 		assertFalse(status.isOK());
-		assertEquals(0, tracesValidator.getTraces().size());
+		assertEquals(0, traceValidator.getTracesAsInteger().size());
 	}
 
 	@Test
 	public void test8() {
 
-		IStatus status = tracesValidator.validate("18 - 45 - 200");
-		assertFalse(status.isOK());
-		assertEquals(0, tracesValidator.getTraces().size());
+		IStatus status = traceValidator.validate("18 - 45 - 200");
+		assertTrue(status.isOK());
+		assertEquals(0, traceValidator.getTracesAsInteger().size());
 	}
 
 	@Test
 	public void test9() {
 
-		IStatus status = tracesValidator.validate("32 - 18");
-		assertFalse(status.isOK());
-		assertEquals(0, tracesValidator.getTraces().size());
+		IStatus status = traceValidator.validate("32 - 18");
+		assertTrue(status.isOK());
+		assertEquals(0, traceValidator.getTracesAsInteger().size());
 	}
 }

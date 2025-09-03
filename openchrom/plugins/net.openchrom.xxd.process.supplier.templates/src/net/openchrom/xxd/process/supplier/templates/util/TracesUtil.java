@@ -122,8 +122,8 @@ public class TracesUtil {
 
 	private Set<Integer> extractTraces(String traces) {
 
-		TracesValidator tracesValidator = new TracesValidator();
-		IStatus status = tracesValidator.validate(traces);
-		return status.isOK() ? tracesValidator.getTraces() : new HashSet<>();
+		TraceValidator traceValidator = new TraceValidator();
+		IStatus status = traceValidator.validate(traces);
+		return status.isOK() ? new HashSet<>(traceValidator.getTracesAsInteger()) : new HashSet<>();
 	}
 }

@@ -12,41 +12,20 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.util;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 public class TracesValidator_1_Test {
 
-	private TracesValidator tracesValidator = new TracesValidator();
-
 	@Test
 	public void test1() {
 
-		assertEquals(-1, tracesValidator.getTrace(""));
-	}
-
-	@Test
-	public void test2() {
-
-		assertEquals(-1, tracesValidator.getTrace(null));
-	}
-
-	@Test
-	public void test3() {
-
-		assertEquals(-1, tracesValidator.getTrace("-1"));
-	}
-
-	@Test
-	public void test4() {
-
-		assertEquals(-1, tracesValidator.getTrace("0"));
-	}
-
-	@Test
-	public void test5() {
-
-		assertEquals(1, tracesValidator.getTrace("1"));
+		/**
+		 * Keep this class to explain the numbering of the other traces validator test cases.
+		 * Instead of a specific implementation, the following validator is used now:
+		 * org.eclipse.chemclipse.support.validators.TraceValidator
+		 */
+		assertTrue(true);
 	}
 }

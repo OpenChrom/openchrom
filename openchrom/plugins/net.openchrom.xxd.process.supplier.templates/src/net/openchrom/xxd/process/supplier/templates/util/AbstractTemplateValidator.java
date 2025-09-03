@@ -17,6 +17,7 @@ import java.util.Set;
 
 import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.support.util.ValueParserSupport;
+import org.eclipse.chemclipse.support.validators.TraceValidator;
 import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
@@ -25,19 +26,19 @@ import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSuppli
 
 public abstract class AbstractTemplateValidator extends ValueParserSupport implements ITemplateValidator {
 
-	private TracesValidator tracesValidator = new TracesValidator();
+	private TraceValidator traceValidator = new TraceValidator();
 
 	@Override
 	public IStatus validateTraces(String traces) {
 
-		return tracesValidator.validate(traces);
+		return traceValidator.validate(traces);
 	}
 
 	@Override
 	public Set<Integer> extractTraces(String traces) {
 
-		IStatus status = tracesValidator.validate(traces);
-		return status.isOK() ? tracesValidator.getTraces() : new HashSet<>();
+		IStatus status = traceValidator.validate(traces);
+		return status.isOK() ? new HashSet<>(traceValidator.getTracesAsInteger()) : new HashSet<>();
 	}
 
 	@Override
@@ -47,7 +48,6 @@ public abstract class AbstractTemplateValidator extends ValueParserSupport imple
 			try {
 				return PositionDirective.valueOf(value.toUpperCase());
 			} catch(RuntimeException e) {
-				// default
 			}
 		}
 
@@ -61,7 +61,6 @@ public abstract class AbstractTemplateValidator extends ValueParserSupport imple
 			try {
 				return ReportStrategy.valueOf(value.toUpperCase());
 			} catch(RuntimeException e) {
-				// default
 			}
 		}
 
@@ -78,7 +77,6 @@ public abstract class AbstractTemplateValidator extends ValueParserSupport imple
 					return peakType;
 				}
 			} catch(RuntimeException e) {
-				// default
 			}
 		}
 
