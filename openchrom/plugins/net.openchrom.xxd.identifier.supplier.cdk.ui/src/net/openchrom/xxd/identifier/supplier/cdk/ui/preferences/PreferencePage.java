@@ -39,6 +39,7 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 	 * GUI blocks needed to manipulate various types of preferences. Each field
 	 * editor knows how to save and restore itself.
 	 */
+	@Override
 	public void createFieldEditors() {
 
 		addField(new RadioGroupFieldEditor(PreferenceSupplier.P_ISOTOPE_SET, "Select an isotope set.", 1, PreferenceSupplier.getIsotopePreferenceOptions(), getFieldEditorParent()));
@@ -61,6 +62,7 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_SHOW_ATOMS_H, "Show H Atoms", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_ATOMS_COLORS, "Color Atoms", getFieldEditorParent()));
 	}
 
 	/*
@@ -68,6 +70,7 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 	 * @see
 	 * org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
 	 */
+	@Override
 	public void init(IWorkbench workbench) {
 
 	}
