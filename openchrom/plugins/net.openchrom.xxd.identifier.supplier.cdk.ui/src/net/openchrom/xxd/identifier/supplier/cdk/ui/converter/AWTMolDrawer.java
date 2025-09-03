@@ -47,7 +47,7 @@ public class AWTMolDrawer {
 		try {
 			ImageIO.write((RenderedImage)image, "PNG", new File(imageFile));
 		} catch(IOException e) {
-			logger.warn("Some IO Error occured while instantiating AWTMolDrawer object. Here is more information:\n" + e);
+			logger.warn("Some IO Error occured while instantiating AWTMolDrawer object." + e);
 		}
 	}
 }

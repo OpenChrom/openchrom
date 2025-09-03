@@ -14,26 +14,16 @@
 package net.openchrom.xxd.identifier.supplier.cdk.ui.converter;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
+import org.openscience.cdk.depict.DepictionGenerator;
+import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtomContainer;
-import org.openscience.cdk.layout.StructureDiagramGenerator;
-import org.openscience.cdk.renderer.AtomContainerRenderer;
-import org.openscience.cdk.renderer.IRenderer;
-import org.openscience.cdk.renderer.font.AWTFontManager;
-import org.openscience.cdk.renderer.generators.BasicAtomGenerator;
-import org.openscience.cdk.renderer.generators.BasicBondGenerator;
 import org.openscience.cdk.renderer.generators.BasicSceneGenerator;
-import org.openscience.cdk.renderer.generators.IGenerator;
-import org.openscience.cdk.renderer.visitor.AWTDrawVisitor;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 
 import net.openchrom.xxd.identifier.supplier.cdk.converter.CDKSmilesToMoleculeConverter;
@@ -65,7 +55,7 @@ public class ImageConverter {
 		return createImage(molecule, width, height);
 	}
 
-	public Image moleculeToImage(IAtomContainer molecule, int width, int height) {
+	public BufferedImage moleculeToImage(IAtomContainer molecule, int width, int height) {
 
 		return createImage(molecule, width, height);
 	}
@@ -74,10 +64,12 @@ public class ImageConverter {
 
 		IAtomContainer molecule = structureConverter.generate(converterInput);
 		if(molecule != null) {
-			return new org.eclipse.swt.graphics.Image(display, AwtToSwtImageBridge.convertToSWT((BufferedImage)moleculeToImage(molecule, point.x, point.y)));
-		} else {
-			return null;
+			BufferedImage image = moleculeToImage(molecule, point.x, point.y);
+			if(image != null) {
+				return new org.eclipse.swt.graphics.Image(display, AwtToSwtImageBridge.convertToSWT(image));
+			}
 		}
+		return null;
 	}
 
 	/**
@@ -88,51 +80,30 @@ public class ImageConverter {
 	 * @param height
 	 * @return Image
 	 */
-	private Image createImage(IAtomContainer molecule, int width, int height) {
+	private BufferedImage createImage(IAtomContainer molecule, int width, int height) {
 
-		Image image = null;
-		if(molecule != null) {
-			/*
-			 * Only create the image if the molecule is not null.
-			 */
-			image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-			Rectangle drawArea = new Rectangle(width, height);
-
-			if(PreferenceSupplier.isShowAtomsH()) {
-				AtomContainerManipulator.convertImplicitToExplicitHydrogens(molecule);
-			}
-
-			StructureDiagramGenerator structureDiagramGenerator = new StructureDiagramGenerator();
-			structureDiagramGenerator.setMolecule(molecule);
-			try {
-				structureDiagramGenerator.generateCoordinates();
-			} catch(Exception e) {
-				/*
-				 * It's not possible to parse the molecule => well-formed smiles?
-				 */
-				logger.warn("CANNOT INSTANTIATE COORDINATES: " + e);
-				return null;
-			}
-			/*
-			 * Use another name for the diagram molecule. Otherwise it's a bit confusing.
-			 */
-			IAtomContainer diagramMolecule = structureDiagramGenerator.getMolecule();
-			// Generators make the image elements
-			List<IGenerator<IAtomContainer>> generators = new ArrayList<>();
-			generators.add(new BasicSceneGenerator());
-			generators.add(new BasicBondGenerator());
-			generators.add(new BasicAtomGenerator());
-
-			IRenderer<IAtomContainer> renderer = new AtomContainerRenderer(generators, new AWTFontManager());
-			renderer.setup(diagramMolecule, drawArea);
-			// Paint the background
-			Graphics2D g2 = (Graphics2D)image.getGraphics();
-			g2.setColor(Color.WHITE);
-			g2.fillRect(0, 0, width, height);
-			// The paint method also needs a toolkit-specific renderer
-			renderer.paint(diagramMolecule, new AWTDrawVisitor(g2));
+		/*
+		 * Only create the image if the molecule is not null.
+		 */
+		if(molecule == null) {
+			return null;
 		}
 
-		return image;
+		if(PreferenceSupplier.isShowAtomsH()) {
+			AtomContainerManipulator.convertImplicitToExplicitHydrogens(molecule);
+		}
+
+		DepictionGenerator depictionGenerator = new DepictionGenerator() //
+				.withSize(width, height) //
+				.withMargin(0.1) //
+				.withZoom(2.0) //
+				.withParam(BasicSceneGenerator.BackgroundColor.class, Color.white);
+
+		try {
+			return depictionGenerator.depict(molecule).toImg();
+		} catch(CDKException e) {
+			logger.error(e);
+		}
+		return null;
 	}
 }

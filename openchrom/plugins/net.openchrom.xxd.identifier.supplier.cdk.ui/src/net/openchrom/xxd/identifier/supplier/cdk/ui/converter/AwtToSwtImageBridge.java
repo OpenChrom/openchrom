@@ -19,10 +19,12 @@ package net.openchrom.xxd.identifier.supplier.cdk.ui.converter;
  */
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
+import java.awt.image.ComponentColorModel;
 import java.awt.image.DirectColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.WritableRaster;
 
+import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
@@ -33,6 +35,8 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 
 public class AwtToSwtImageBridge {
+
+	private static final Logger logger = Logger.getLogger(AwtToSwtImageBridge.class);
 
 	static BufferedImage convertToAWT(ImageData data) {
 
@@ -119,6 +123,38 @@ public class AwtToSwtImageBridge {
 				}
 			}
 			return data;
+		} else if(bufferedImage.getColorModel() instanceof ComponentColorModel componentColorModel) {
+			int width = bufferedImage.getWidth();
+			int height = bufferedImage.getHeight();
+			int pixelSize = componentColorModel.getPixelSize();
+			boolean hasAlpha = componentColorModel.hasAlpha();
+
+			// Fallback to ARGB masks, assuming 8 bits per component
+			PaletteData palette = new PaletteData(0x00FF0000, 0x0000FF00, 0x000000FF);
+			ImageData data = new ImageData(width, height, pixelSize, palette);
+
+			WritableRaster raster = bufferedImage.getRaster();
+			int[] pixelComponents = new int[componentColorModel.getNumComponents()];
+
+			for(int y = 0; y < height; y++) {
+				for(int x = 0; x < width; x++) {
+					raster.getPixel(x, y, pixelComponents);
+
+					int r = pixelComponents[0];
+					int g = pixelComponents[1];
+					int b = pixelComponents[2];
+					int a = hasAlpha ? pixelComponents[3] : 0xFF;
+
+					int pixel = palette.getPixel(new RGB(r, g, b));
+					data.setPixel(x, y, pixel);
+					if(hasAlpha) {
+						data.setAlpha(x, y, a);
+					}
+				}
+			}
+			return data;
+		} else {
+			logger.warn("Unsupported color model.");
 		}
 		return null;
 	}
