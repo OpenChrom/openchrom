@@ -99,6 +99,10 @@ public class ImageConverter {
 				.withZoom(2.0) //
 				.withParam(BasicSceneGenerator.BackgroundColor.class, Color.white);
 
+		if(PreferenceSupplier.isColorAtoms()) {
+			depictionGenerator = depictionGenerator.withAtomColors();
+		}
+
 		try {
 			return depictionGenerator.depict(molecule).toImg();
 		} catch(CDKException e) {

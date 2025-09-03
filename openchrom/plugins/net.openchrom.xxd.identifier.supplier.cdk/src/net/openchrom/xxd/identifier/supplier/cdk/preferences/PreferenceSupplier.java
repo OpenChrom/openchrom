@@ -65,6 +65,9 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static final String P_SHOW_ATOMS_H = "showAtomsH";
 	public static final boolean DEF_SHOW_ATOMS_H = false;
 
+	public static final String P_ATOMS_COLORS = "atomColors";
+	public static final boolean DEF_ATOMS_COLORS = true;
+
 	public static IPreferenceSupplier INSTANCE() {
 
 		return INSTANCE(PreferenceSupplier.class);
@@ -95,6 +98,7 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 		putDefault(P_DELETE_PEAK_TARGETS, Boolean.toString(DEF_DELETE_PEAK_TARGETS));
 
 		putDefault(P_SHOW_ATOMS_H, Boolean.toString(DEF_SHOW_ATOMS_H));
+		putDefault(P_ATOMS_COLORS, Boolean.toString(DEF_ATOMS_COLORS));
 	}
 
 	public static IsotopeDecider getIsotopeDecider() {
@@ -192,5 +196,10 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static boolean isShowAtomsH() {
 
 		return INSTANCE().getBoolean(P_SHOW_ATOMS_H, DEF_SHOW_ATOMS_H);
+	}
+
+	public static boolean isColorAtoms() {
+
+		return INSTANCE().getBoolean(P_ATOMS_COLORS, DEF_ATOMS_COLORS);
 	}
 }
