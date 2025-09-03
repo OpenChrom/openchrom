@@ -125,12 +125,8 @@ public class MoleculeImageService implements IMoleculeImageService {
 	private Image convertMoleculeToImage(Display display, IStructureConverter structureConverter, String converterInput, int width, int height) {
 
 		Image image = null;
-		try {
-			Point point = calculateMoleculeImageSize(width, height);
-			image = ImageConverter.getInstance().moleculeToImage(display, structureConverter, converterInput, point);
-		} catch(Exception e) {
-			logger.warn(e);
-		}
+		Point point = calculateMoleculeImageSize(width, height);
+		image = ImageConverter.getInstance().moleculeToImage(display, structureConverter, converterInput, point);
 		return image;
 	}
 
