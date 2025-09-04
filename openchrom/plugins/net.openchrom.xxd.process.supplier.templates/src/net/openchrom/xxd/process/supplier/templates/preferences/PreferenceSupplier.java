@@ -887,6 +887,11 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 		}
 	}
 
+	public static void setReviewPeakType(PeakType peakType) {
+
+		INSTANCE().set(P_REVIEW_PEAK_TYPE, peakType.name());
+	}
+
 	public static boolean isReviewSortByPosition() {
 
 		return INSTANCE().getBoolean(P_REVIEW_SORT_BY_POSITION, DEF_REVIEW_SORT_BY_POSITION);

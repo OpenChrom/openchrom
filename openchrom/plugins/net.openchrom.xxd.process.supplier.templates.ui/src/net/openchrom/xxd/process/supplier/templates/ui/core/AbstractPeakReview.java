@@ -20,6 +20,7 @@ import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogramPeak;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
+import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.IIdentifierSettings;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
@@ -32,9 +33,11 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.widgets.Shell;
 
 import net.openchrom.xxd.process.supplier.templates.io.ITemplateExport;
+import net.openchrom.xxd.process.supplier.templates.model.DetectorType;
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 import net.openchrom.xxd.process.supplier.templates.peaks.AbstractPeakIdentifier;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
+import net.openchrom.xxd.process.supplier.templates.settings.PeakReviewDirectSettings;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakReviewSettings;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.PeakReviewSupport;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessReviewSettings;
@@ -52,6 +55,38 @@ public abstract class AbstractPeakReview extends AbstractPeakIdentifier implemen
 	public List<LiteratureReference> getLiteratureReferences() {
 
 		return null;
+	}
+
+	protected void applyPeakReviewDirectSettings(IIdentifierSettings identifierSettings) {
+
+		if(identifierSettings instanceof PeakReviewDirectSettings settings) {
+			/*
+			 * Set the detector type.
+			 */
+			DetectorType detectorType = settings.getDetectorType();
+			PeakType peakType;
+			switch(detectorType) {
+				case BB:
+					peakType = PeakType.BB;
+					break;
+				case MM:
+					peakType = PeakType.MM;
+					break;
+				case CB:
+					peakType = PeakType.CB;
+					break;
+				case VV:
+				default:
+					peakType = PeakType.VV;
+					break;
+			}
+			PreferenceSupplier.setReviewPeakType(peakType);
+			/*
+			 * Peak Review Delta
+			 */
+			PreferenceSupplier.setReviewDeltaLeftMilliseconds(settings.getReviewDeltaLeft());
+			PreferenceSupplier.setReviewDeltaRightMilliseconds(settings.getReviewDeltaRight());
+		}
 	}
 
 	protected IProcessingInfo<IPeakIdentificationResults> runProcess(List<? extends IPeak> peaks, IIdentifierSettings identifierSettings, String description, IProgressMonitor monitor) {

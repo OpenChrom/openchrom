@@ -27,8 +27,10 @@ public class PeakReviewDirectMSD extends AbstractPeakReview implements IPeakIden
 	public IProcessingInfo<IPeakIdentificationResults> identify(List<? extends IPeakMSD> peaks, IPeakIdentifierSettingsMSD peakIdentifierSettings, IProgressMonitor monitor) {
 
 		/*
-		 * Settings are set to null on purpose, to allow a dynamic review.
+		 * Settings are applied before running the process
+		 * and set to null on purpose, to allow a dynamic review.
 		 */
+		applyPeakReviewDirectSettings(peakIdentifierSettings);
 		return runProcess(peaks, null, "PeakReviewDirectMSD", monitor);
 	}
 }

@@ -217,7 +217,8 @@
             description="This peak identifier supports direct reviewing identifications."
             id="net.openchrom.xxd.process.supplier.templates.ui.peaks.identifier.msd.direct"
             identifier="net.openchrom.xxd.process.supplier.templates.ui.core.PeakReviewDirectMSD"
-            identifierName="Peak Review UI [Direct]">
+            identifierName="Peak Review UI [Direct]"
+            identifierSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakReviewDirectSettings">
       </PeakIdentificationSupplier>      
    </extension>
    <extension
@@ -233,7 +234,8 @@
             description="This peak identifier supports direct reviewing identifications."
             id="net.openchrom.xxd.process.supplier.templates.ui.peaks.identifier.csd.direct"
             identifier="net.openchrom.xxd.process.supplier.templates.ui.core.PeakReviewDirectCSD"
-            identifierName="Peak Review UI [Direct]">
+            identifierName="Peak Review UI [Direct]"
+            identifierSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakReviewDirectSettings">
       </PeakIdentificationSupplier>      
    </extension>
    <extension
@@ -249,7 +251,8 @@
             description="This peak identifier supports direct reviewing identifications."
             id="net.openchrom.xxd.process.supplier.templates.ui.peaks.identifier.wsd.direct"
             identifier="net.openchrom.xxd.process.supplier.templates.ui.core.PeakReviewDirectWSD"
-            identifierName="Peak Review UI [Direct]">
+            identifierName="Peak Review UI [Direct]"
+            identifierSettings="net.openchrom.xxd.process.supplier.templates.settings.PeakReviewDirectSettings">
       </PeakIdentificationSupplier>      
    </extension>
    <extension
