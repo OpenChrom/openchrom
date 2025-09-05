@@ -100,8 +100,8 @@ Contributors:
       <repository location="https://plugins.openchrom.net/tvoc/1.5.24/" name="TVOC" enabled="true" />
       <repository location="https://plugins.openchrom.net/chrom2quant/1.5.24/" name="Chrom2Quant" enabled="true" />
       <repository location="https://plugins.openchrom.net/combine/1.5.24/" name="Combine" enabled="true" />
-      <repository location="https://plugins.openchrom.net/drm/1.5.20" name="DRM" enabled="true" />
-      <repository location="https://plugins.openchrom.net/freebies/1.5.20" name="Freebies" enabled="true" />
+      <repository location="https://plugins.openchrom.net/drm/1.5.24" name="DRM" enabled="true" />
+      <repository location="https://plugins.openchrom.net/freebies/1.5.24" name="Freebies" enabled="true" />
    </repositories>
 
    <preferencesInfo>
