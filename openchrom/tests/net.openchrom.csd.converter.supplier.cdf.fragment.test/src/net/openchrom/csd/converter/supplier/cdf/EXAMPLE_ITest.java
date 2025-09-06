@@ -20,17 +20,17 @@ import java.io.File;
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import net.openchrom.csd.converter.supplier.cdf.converter.ChromatogramImportConverterCSD;
 
 public class EXAMPLE_ITest {
 
-	private IChromatogramCSD chromatogram;
+	private static IChromatogramCSD chromatogram;
 
-	@BeforeEach
-	public void setUp() throws Exception {
+	@BeforeAll
+	public static void setUp() {
 
 		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.EXAMPLE));
 		ChromatogramImportConverterCSD importConverter = new ChromatogramImportConverterCSD();

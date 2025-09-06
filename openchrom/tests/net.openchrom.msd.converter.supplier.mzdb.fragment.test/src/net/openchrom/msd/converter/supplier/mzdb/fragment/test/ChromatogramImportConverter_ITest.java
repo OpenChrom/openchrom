@@ -22,7 +22,7 @@ import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.support.history.IEditInformation;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import net.openchrom.msd.converter.supplier.mzdb.PathResolver;
@@ -30,10 +30,10 @@ import net.openchrom.msd.converter.supplier.mzdb.converter.ChromatogramImportCon
 
 public class ChromatogramImportConverter_ITest {
 
-	private IChromatogramMSD chromatogram;
+	private static IChromatogramMSD chromatogram;
 
-	@Before
-	public void setUp() throws Exception {
+	@BeforeClass
+	public static void setUp() throws Exception {
 
 		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.TESTFILE));
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();

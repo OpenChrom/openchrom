@@ -15,19 +15,12 @@ package net.openchrom.xxd.identifier.supplier.cdk.converter;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.openscience.cdk.interfaces.IAtomContainer;
 
 public class CDKMolToMoleculeConverter_Test {
 
-	private CDKMolToMoleculeConverter converter;
-
-	@Before
-	public void setUp() throws Exception {
-
-		converter = new CDKMolToMoleculeConverter();
-	}
+	private CDKMolToMoleculeConverter converter = new CDKMolToMoleculeConverter();
 
 	@Test
 	public void testNotNull() {

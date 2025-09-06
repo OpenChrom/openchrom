@@ -20,7 +20,7 @@ import java.io.File;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.wsd.model.core.ISpectrumWSD;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import net.openchrom.wsd.converter.supplier.gaml.PathResolver;
@@ -28,10 +28,10 @@ import net.openchrom.wsd.converter.supplier.gaml.converter.ScanImportConverter;
 
 public class Helios_ITest {
 
-	private ISpectrumWSD spectrumWSD;
+	private static ISpectrumWSD spectrumWSD;
 
-	@Before
-	public void setUp() throws Exception {
+	@BeforeClass
+	public static void setUp() throws Exception {
 
 		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.TS_HELIOS));
 		ScanImportConverter importConverter = new ScanImportConverter();

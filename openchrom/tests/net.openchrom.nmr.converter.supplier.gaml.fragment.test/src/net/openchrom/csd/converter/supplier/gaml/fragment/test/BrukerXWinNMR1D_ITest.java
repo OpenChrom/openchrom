@@ -23,7 +23,7 @@ import org.eclipse.chemclipse.model.core.IComplexSignalMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.ISpectrumNMR;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import net.openchrom.nmr.converter.supplier.gaml.PathResolver;
@@ -31,10 +31,10 @@ import net.openchrom.nmr.converter.supplier.gaml.converter.ScanImportConverter;
 
 public class BrukerXWinNMR1D_ITest {
 
-	private Collection<IComplexSignalMeasurement<?>> complexSignals;
+	private static Collection<IComplexSignalMeasurement<?>> complexSignals;
 
-	@Before
-	public void setUp() throws Exception {
+	@BeforeClass
+	public static void setUp() {
 
 		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.BRUKER_XWINNMR_1D));
 		ScanImportConverter importConverter = new ScanImportConverter();

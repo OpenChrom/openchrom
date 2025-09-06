@@ -23,17 +23,17 @@ import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import net.openchrom.msd.converter.supplier.pkf.TestPathHelper;
 
 public class MassSpectrumImportConverter_Ecoli_ITest {
 
-	private IMassSpectra massSpectra = null;
+	private static IMassSpectra massSpectra;
 
-	@Before
-	public void setUp() throws Exception {
+	@BeforeClass
+	public static void setUp() {
 
 		File file = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_ECOLI));
 		DatabaseImportConverter importConverter = new DatabaseImportConverter();

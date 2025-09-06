@@ -16,19 +16,12 @@ package net.openchrom.xxd.identifier.supplier.cdk.converter;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.openscience.cdk.interfaces.IAtomContainer;
 
 public class OPSINIupacToMoleculeConverter_Test {
 
-	private OPSINIupacToMoleculeConverter converter;
-
-	@Before
-	public void setUp() throws Exception {
-
-		converter = new OPSINIupacToMoleculeConverter();
-	}
+	private OPSINIupacToMoleculeConverter converter = new OPSINIupacToMoleculeConverter();
 
 	@Test
 	public void testNotNull() {
