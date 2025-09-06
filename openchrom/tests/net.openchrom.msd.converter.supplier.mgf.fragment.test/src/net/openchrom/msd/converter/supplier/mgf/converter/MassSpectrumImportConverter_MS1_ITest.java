@@ -21,17 +21,17 @@ import java.io.File;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import net.openchrom.msd.converter.supplier.mgf.TestPathHelper;
 
 public class MassSpectrumImportConverter_MS1_ITest {
 
-	private IMassSpectra massSpectra;
+	private static IMassSpectra massSpectra;
 
-	@Before
-	public void setUp() {
+	@BeforeClass
+	public static void setUp() {
 
 		File file = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_MS_1));
 		DatabaseImportConverter importConverter = new DatabaseImportConverter();

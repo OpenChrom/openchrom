@@ -15,22 +15,28 @@ package net.openchrom.wsd.converter.supplier.abif.io;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
+
+import org.eclipse.chemclipse.processing.core.IProcessingInfo;
+import org.eclipse.chemclipse.wsd.converter.chromatogram.ChromatogramConverterWSD;
+import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.chemclipse.wsd.model.core.IScanWSD;
-import org.junit.Before;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import net.openchrom.wsd.converter.supplier.abif.ABIF;
-import net.openchrom.wsd.converter.supplier.abif.ChromatogramReaderTestCase;
 
-public class AbiPrism3100GeneticAnalyser_ITest extends ChromatogramReaderTestCase {
+public class AbiPrism3100GeneticAnalyser_ITest {
 
-	@Override
-	@Before
-	public void setUp() throws Exception {
+	private static IChromatogramWSD chromatogram;
 
-		extensionPointId = ABIF.EXTENSION_POINT_ID;
-		pathImport = ABIF.getAbsolutePath(ABIF.TESTFILE_IMPORT_3100_AB1);
-		super.setUp();
+	@BeforeClass
+	public static void setUp() {
+
+		File fileImport = new File(ABIF.getAbsolutePath(ABIF.TESTFILE_IMPORT_3100_AB1));
+		IProcessingInfo<IChromatogramWSD> processingInfo = ChromatogramConverterWSD.getInstance().convert(fileImport, ABIF.EXTENSION_POINT_ID, new NullProgressMonitor());
+		chromatogram = processingInfo.getProcessingResult();
 	}
 
 	@Test

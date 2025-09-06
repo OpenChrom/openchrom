@@ -21,7 +21,7 @@ import java.io.File;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.vsd.model.core.ISpectrumVSD;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import net.openchrom.vsd.converter.supplier.gaml.PathResolver;
@@ -29,10 +29,10 @@ import net.openchrom.vsd.converter.supplier.gaml.converter.ScanImportConverter;
 
 public class Omnic_FTIR_ITest {
 
-	private ISpectrumVSD spectrumVSD;
+	private static ISpectrumVSD spectrumVSD;
 
-	@Before
-	public void setUp() throws Exception {
+	@BeforeClass
+	public static void setUp() {
 
 		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.TN_OMNIC_FTIR));
 		ScanImportConverter importConverter = new ScanImportConverter();

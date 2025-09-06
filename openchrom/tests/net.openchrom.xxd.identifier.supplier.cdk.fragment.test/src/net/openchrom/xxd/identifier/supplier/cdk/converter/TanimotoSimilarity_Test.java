@@ -14,10 +14,11 @@ package net.openchrom.xxd.identifier.supplier.cdk.converter;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.exception.CDKException;
+import org.openscience.cdk.exception.InvalidSmilesException;
 import org.openscience.cdk.fingerprint.CircularFingerprinter;
 import org.openscience.cdk.fingerprint.Fingerprinter;
 import org.openscience.cdk.fingerprint.IBitFingerprint;
@@ -31,13 +32,13 @@ import org.openscience.cdk.smiles.SmilesParser;
  */
 public class TanimotoSimilarity_Test {
 
-	private SmilesParser smilesParser = new SmilesParser(DefaultChemObjectBuilder.getInstance());
+	private static SmilesParser smilesParser = new SmilesParser(DefaultChemObjectBuilder.getInstance());
 
-	private IAtomContainer benzene;
-	private IAtomContainer pyridine;
+	private static IAtomContainer benzene;
+	private static IAtomContainer pyridine;
 
-	@Before
-	public void setUp() throws Exception {
+	@BeforeClass
+	public static void setUp() throws InvalidSmilesException {
 
 		benzene = smilesParser.parseSmiles("C1=CC=CC=C1");
 		pyridine = smilesParser.parseSmiles("C1=CC=NC=C1");

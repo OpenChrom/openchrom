@@ -21,25 +21,20 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.wsd.converter.chromatogram.ChromatogramConverterWSD;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import net.openchrom.wsd.converter.supplier.abif.ABIF;
 
 public class InvalidData_ITest {
 
-	protected IChromatogramWSD chromatogram;
-	protected String extensionPointId;
-	protected String pathImport;
-	protected File fileImport;
+	private static IChromatogramWSD chromatogram;
 
-	@Before
-	public void setUp() throws Exception {
+	@BeforeClass
+	public static void setUp() {
 
-		extensionPointId = ABIF.EXTENSION_POINT_ID;
-		pathImport = ABIF.getAbsolutePath(ABIF.TESTFILE_IMPORT_FAKE_AB1);
-		fileImport = new File(this.pathImport);
-		IProcessingInfo<IChromatogramWSD> processingInfo = ChromatogramConverterWSD.getInstance().convert(fileImport, extensionPointId, new NullProgressMonitor());
+		File fileImport = new File(ABIF.getAbsolutePath(ABIF.TESTFILE_IMPORT_FAKE_AB1));
+		IProcessingInfo<IChromatogramWSD> processingInfo = ChromatogramConverterWSD.getInstance().convert(fileImport, ABIF.EXTENSION_POINT_ID, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();
 	}
 
