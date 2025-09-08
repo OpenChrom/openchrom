@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.msd.converter.supplier.mgf
 Bundle-ManifestVersion: 2
 Bundle-Name: MGF implementation
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.mgf;singleton:=true
-Bundle-Version: 1.5.24.qualifier
+Bundle-Version: 1.5.25.qualifier
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.msd.converter;bundle-version="0.8.0",

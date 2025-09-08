@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.vsd.converter.supplier.gaml.fragment.test
 Bundle-ManifestVersion: 2
 Bundle-Name: GAML Vibrational Spectroscopy Test
 Bundle-SymbolicName: net.openchrom.vsd.converter.supplier.gaml.fragment.test
-Bundle-Version: 1.5.24.qualifier
+Bundle-Version: 1.5.25.qualifier
 Bundle-Vendor: OpenChrom
 Fragment-Host: net.openchrom.vsd.converter.supplier.gaml;bundle-version="1.5.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-21
