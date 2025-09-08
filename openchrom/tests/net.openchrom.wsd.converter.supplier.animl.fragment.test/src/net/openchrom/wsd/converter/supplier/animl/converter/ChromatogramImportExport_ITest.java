@@ -24,6 +24,7 @@ import org.eclipse.chemclipse.wsd.converter.chromatogram.ChromatogramConverterWS
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.chemclipse.xxd.converter.supplier.ocx.versions.VersionConstants;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -33,6 +34,7 @@ public class ChromatogramImportExport_ITest {
 
 	private static IChromatogramWSD chromatogramImport;
 	private static IChromatogramWSD chromatogram;
+	private static File fileExport;
 
 	@BeforeClass
 	public static void setUp() {
@@ -61,7 +63,7 @@ public class ChromatogramImportExport_ITest {
 		/*
 		 * Export the chromatogram.
 		 */
-		File fileExport = new File(pathExport);
+		fileExport = new File(pathExport);
 		IProcessingInfo<File> processingInfoExport = ChromatogramConverterWSD.getInstance().convert(fileExport, chromatogramImport, extensionPointExportReimport, new NullProgressMonitor());
 		fileExport = processingInfoExport.getProcessingResult();
 		for(IProcessingMessage message : processingInfoExport.getMessages()) {
@@ -76,6 +78,12 @@ public class ChromatogramImportExport_ITest {
 		for(IProcessingMessage message : processingInfo.getMessages()) {
 			System.out.println(message.getMessage());
 		}
+	}
+
+	@AfterClass
+	public static void tearDown() {
+
+		fileExport.delete();
 	}
 
 	@Test

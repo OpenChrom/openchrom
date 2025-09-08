@@ -23,7 +23,7 @@ import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.support.history.IEditInformation;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import net.openchrom.msd.converter.supplier.animl.PathResolver;
@@ -31,10 +31,10 @@ import net.openchrom.msd.converter.supplier.animl.TestPathHelper;
 
 public class StrictImport_ITest {
 
-	private IChromatogramMSD chromatogram;
+	private static IChromatogramMSD chromatogram;
 
-	@Before
-	public void setUp() throws Exception {
+	@BeforeClass
+	public static void setUp() {
 
 		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_MS_STRICT));
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
