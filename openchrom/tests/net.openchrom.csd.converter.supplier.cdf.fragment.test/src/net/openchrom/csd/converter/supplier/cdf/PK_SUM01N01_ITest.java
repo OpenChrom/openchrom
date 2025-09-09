@@ -22,15 +22,18 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import net.openchrom.csd.converter.supplier.cdf.converter.ChromatogramImportConverterCSD;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class PK_SUM01N01_ITest {
 
-	private static IChromatogramCSD chromatogram;
+	private IChromatogramCSD chromatogram;
 
 	@BeforeAll
-	public static void setUp() {
+	public void setUp() {
 
 		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.PK_SUM01N01));
 		ChromatogramImportConverterCSD importConverter = new ChromatogramImportConverterCSD();

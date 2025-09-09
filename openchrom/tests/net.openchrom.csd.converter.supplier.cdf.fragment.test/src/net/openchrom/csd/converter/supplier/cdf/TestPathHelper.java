@@ -12,6 +12,10 @@
  *******************************************************************************/
 package net.openchrom.csd.converter.supplier.cdf;
 
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
+
+@TestInstance(Lifecycle.PER_CLASS)
 public class TestPathHelper extends PathResolver {
 
 	public static final String DIONEX = "testData/Dionex/DIONEX.CDF";
