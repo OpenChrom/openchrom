@@ -12,21 +12,17 @@
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.model.time;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class TimeRatio_1_Test {
 
-	private TimeRatio peakRatio;
-
-	@Before
-	public void setUp() throws Exception {
-
-		peakRatio = new TimeRatio();
-	}
+	private TimeRatio peakRatio = new TimeRatio();
 
 	@Test
 	public void test1() {

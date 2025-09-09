@@ -12,10 +12,12 @@
  *******************************************************************************/
 package net.openchrom.xxd.identifier.supplier.cdk.converter;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.exception.InvalidSmilesException;
@@ -30,15 +32,16 @@ import org.openscience.cdk.smiles.SmilesParser;
 /**
  * T. T. Tanimoto, (1958) “An elementary mathematical theory of classification and prediction,” IBM Internal Report.
  */
+@TestInstance(Lifecycle.PER_CLASS)
 public class TanimotoSimilarity_Test {
 
-	private static SmilesParser smilesParser = new SmilesParser(DefaultChemObjectBuilder.getInstance());
+	private SmilesParser smilesParser = new SmilesParser(DefaultChemObjectBuilder.getInstance());
 
-	private static IAtomContainer benzene;
-	private static IAtomContainer pyridine;
+	private IAtomContainer benzene;
+	private IAtomContainer pyridine;
 
-	@BeforeClass
-	public static void setUp() throws InvalidSmilesException {
+	@BeforeAll
+	public void setUp() throws InvalidSmilesException {
 
 		benzene = smilesParser.parseSmiles("C1=CC=CC=C1");
 		pyridine = smilesParser.parseSmiles("C1=CC=NC=C1");

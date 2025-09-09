@@ -14,9 +14,9 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.btmsp.converter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
 
@@ -24,18 +24,21 @@ import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import net.openchrom.msd.converter.supplier.btmsp.TestPathHelper;
 import net.openchrom.msd.converter.supplier.btmsp.converter.model.IMainSpectraProjection;
 import net.openchrom.msd.converter.supplier.btmsp.converter.model.MainSpectraProjection;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class MassSpectrumImportConverter_Cattle_ITest {
 
 	private IMassSpectra massSpectra;
 
-	@Before
+	@BeforeAll
 	public void setUp() throws Exception {
 
 		File file = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_CATTLE));

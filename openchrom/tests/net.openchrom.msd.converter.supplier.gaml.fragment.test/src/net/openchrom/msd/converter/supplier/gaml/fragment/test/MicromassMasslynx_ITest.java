@@ -12,26 +12,29 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.gaml.fragment.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
 
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import net.openchrom.msd.converter.supplier.gaml.PathResolver;
 import net.openchrom.msd.converter.supplier.gaml.converter.ChromatogramImportConverter;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class MicromassMasslynx_ITest {
 
 	private IChromatogramMSD chromatogram;
 
-	@Before
-	public void setUp() throws Exception {
+	@BeforeAll
+	public void setUp() {
 
 		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.MASSLYNX));
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();

@@ -12,8 +12,8 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.mzdb.fragment.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
 
@@ -22,18 +22,21 @@ import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.support.history.IEditInformation;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import net.openchrom.msd.converter.supplier.mzdb.PathResolver;
 import net.openchrom.msd.converter.supplier.mzdb.converter.ChromatogramImportConverter;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class ChromatogramImportConverter_ITest {
 
-	private static IChromatogramMSD chromatogram;
+	private IChromatogramMSD chromatogram;
 
-	@BeforeClass
-	public static void setUp() throws Exception {
+	@BeforeAll
+	public void setUp() {
 
 		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.TESTFILE));
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();

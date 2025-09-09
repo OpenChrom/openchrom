@@ -12,25 +12,25 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cdf;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
 
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import net.openchrom.msd.converter.supplier.cdf.converter.ChromatogramImportConverter;
 
-@Ignore("NotEnoughScanDataStored") // TODO
+@Disabled("NotEnoughScanDataStored") // TODO
 public class FISONS_A_CONTINUM_ITest {
 
 	private static IChromatogramMSD chromatogram;
 
-	@BeforeClass
+	@BeforeAll
 	public static void setUp() {
 
 		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.FISONS_A_CONTINUM));

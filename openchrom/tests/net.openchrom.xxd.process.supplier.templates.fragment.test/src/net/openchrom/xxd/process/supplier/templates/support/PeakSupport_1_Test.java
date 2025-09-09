@@ -12,8 +12,8 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.support;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.eclipse.chemclipse.csd.model.core.IPeakCSD;
 import org.eclipse.chemclipse.csd.model.core.IPeakModelCSD;
@@ -39,7 +39,7 @@ import org.eclipse.chemclipse.wsd.model.core.implementation.PeakModelWSD;
 import org.eclipse.chemclipse.wsd.model.core.implementation.PeakWSD;
 import org.eclipse.chemclipse.wsd.model.core.implementation.ScanSignalWSD;
 import org.eclipse.chemclipse.wsd.model.core.implementation.ScanWSD;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class PeakSupport_1_Test {
 

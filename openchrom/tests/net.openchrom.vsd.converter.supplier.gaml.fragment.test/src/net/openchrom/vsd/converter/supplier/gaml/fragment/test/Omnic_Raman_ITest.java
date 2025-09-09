@@ -12,26 +12,29 @@
  *******************************************************************************/
 package net.openchrom.vsd.converter.supplier.gaml.fragment.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
 
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.vsd.model.core.ISpectrumVSD;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import net.openchrom.vsd.converter.supplier.gaml.PathResolver;
 import net.openchrom.vsd.converter.supplier.gaml.converter.ScanImportConverter;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class Omnic_Raman_ITest {
 
-	private static ISpectrumVSD spectrumVSD;
+	private ISpectrumVSD spectrumVSD;
 
-	@BeforeClass
-	public static void setUp() {
+	@BeforeAll
+	public void setUp() {
 
 		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.TN_OMNIC_RAMAN));
 		ScanImportConverter importConverter = new ScanImportConverter();

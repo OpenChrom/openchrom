@@ -12,23 +12,26 @@
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.List;
 
 import org.eclipse.chemclipse.chromatogram.xxd.classifier.result.ResultStatus;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import net.openchrom.xxd.classifier.supplier.ratios.model.quant.QuantRatios;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class PeakRatioResult_1_Test {
 
 	private PeakRatioResult peakRatioResult;
 
-	@Before
-	public void setUp() throws Exception {
+	@BeforeAll
+	public void setUp() {
 
 		peakRatioResult = new PeakRatioResult(ResultStatus.OK, "Test", new QuantRatios());
 	}
