@@ -23,15 +23,18 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import net.openchrom.msd.converter.supplier.mgf.TestPathHelper;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class MassSpectrumImportConverter_MS1_ITest {
 
-	private static IMassSpectra massSpectra;
+	private IMassSpectra massSpectra;
 
 	@BeforeAll
-	public static void setUp() {
+	public void setUp() {
 
 		File file = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_MS_1));
 		DatabaseImportConverter importConverter = new DatabaseImportConverter();

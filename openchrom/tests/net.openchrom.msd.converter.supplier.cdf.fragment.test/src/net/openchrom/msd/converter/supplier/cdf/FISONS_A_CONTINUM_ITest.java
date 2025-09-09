@@ -22,16 +22,19 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import net.openchrom.msd.converter.supplier.cdf.converter.ChromatogramImportConverter;
 
 @Disabled("NotEnoughScanDataStored") // TODO
+@TestInstance(Lifecycle.PER_CLASS)
 public class FISONS_A_CONTINUM_ITest {
 
-	private static IChromatogramMSD chromatogram;
+	private IChromatogramMSD chromatogram;
 
 	@BeforeAll
-	public static void setUp() {
+	public void setUp() {
 
 		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.FISONS_A_CONTINUM));
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();

@@ -35,11 +35,11 @@ import net.openchrom.msd.converter.supplier.animl.TestPathHelper;
 @TestInstance(Lifecycle.PER_CLASS)
 public class ChromatogramImportExport_ITest {
 
-	private static IChromatogramMSD chromatogram;
-	private static File fileExport;
+	private IChromatogramMSD chromatogram;
+	private File fileExport;
 
 	@BeforeAll
-	public static void setUp() {
+	public void setUp() {
 
 		/*
 		 * Import
@@ -82,7 +82,7 @@ public class ChromatogramImportExport_ITest {
 	}
 
 	@AfterAll
-	public static void tearDown() {
+	public void tearDown() {
 
 		fileExport.delete();
 	}
