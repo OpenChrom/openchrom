@@ -12,27 +12,30 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cdf.io.support;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.text.ParseException;
 import java.util.Date;
 import java.util.TimeZone;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class DateSupport_1_Test {
 
 	private TimeZone defaultTimeZone;
 
-	@Before
+	@BeforeAll
 	public void setUp() {
 
 		defaultTimeZone = TimeZone.getDefault();
 	}
 
-	@After
+	@AfterAll
 	public void tearDown() {
 
 		TimeZone.setDefault(defaultTimeZone); // restore
@@ -44,7 +47,7 @@ public class DateSupport_1_Test {
 		// 12 Nov 2008 7:41 ! CET > +0100
 		TimeZone.setDefault(TimeZone.getTimeZone("CET"));
 		Date date = new Date(1226472095160l);
-		assertEquals("12 Nov 08 7:41", "20081112074135+0100", DateSupport.getDate(date));
+		assertEquals("20081112074135+0100", DateSupport.getDate(date), "12 Nov 08 7:41");
 	}
 
 	@Test
@@ -55,7 +58,7 @@ public class DateSupport_1_Test {
 		TimeZone.setDefault(TimeZone.getTimeZone("CET"));
 		Date test = new Date(1137088020000l);
 		Date date = DateSupport.getDate(agilentDate);
-		assertEquals(agilentDate, test, date);
+		assertEquals(test, date, agilentDate);
 	}
 
 	@Test
@@ -66,7 +69,7 @@ public class DateSupport_1_Test {
 		TimeZone.setDefault(TimeZone.getTimeZone("CET"));
 		Date test = new Date(1140275880000l);
 		Date date = DateSupport.getDate(agilentDate);
-		assertEquals(agilentDate, test, date);
+		assertEquals(test, date, agilentDate);
 	}
 
 	@Test
@@ -77,7 +80,7 @@ public class DateSupport_1_Test {
 		TimeZone.setDefault(TimeZone.getTimeZone("CET"));
 		Date test = new Date(1141392360000l);
 		Date date = DateSupport.getDate(agilentDate);
-		assertEquals(agilentDate, test, date);
+		assertEquals(test, date, agilentDate);
 	}
 
 	@Test
@@ -88,7 +91,7 @@ public class DateSupport_1_Test {
 		TimeZone.setDefault(TimeZone.getTimeZone("CEST"));
 		Date test = new Date(1145274000000l);
 		Date date = DateSupport.getDate(agilentDate);
-		assertEquals(agilentDate, test, date);
+		assertEquals(test, date, agilentDate);
 	}
 
 	@Test
@@ -99,7 +102,7 @@ public class DateSupport_1_Test {
 		TimeZone.setDefault(TimeZone.getTimeZone("CEST"));
 		Date test = new Date(1148025420000l);
 		Date date = DateSupport.getDate(agilentDate);
-		assertEquals(agilentDate, test, date);
+		assertEquals(test, date, agilentDate);
 	}
 
 	@Test
@@ -110,7 +113,7 @@ public class DateSupport_1_Test {
 		TimeZone.setDefault(TimeZone.getTimeZone("CEST"));
 		Date test = new Date(1150485060000l);
 		Date date = DateSupport.getDate(agilentDate);
-		assertEquals(agilentDate, test, date);
+		assertEquals(test, date, agilentDate);
 	}
 
 	@Test
@@ -121,7 +124,7 @@ public class DateSupport_1_Test {
 		TimeZone.setDefault(TimeZone.getTimeZone("CEST"));
 		Date test = new Date(1154104980000l);
 		Date date = DateSupport.getDate(agilentDate);
-		assertEquals(agilentDate, test, date);
+		assertEquals(test, date, agilentDate);
 	}
 
 	@Test
@@ -132,7 +135,7 @@ public class DateSupport_1_Test {
 		TimeZone.setDefault(TimeZone.getTimeZone("CEST"));
 		Date test = new Date(1156257300000l);
 		Date date = DateSupport.getDate(agilentDate);
-		assertEquals(agilentDate, test, date);
+		assertEquals(test, date, agilentDate);
 	}
 
 	@Test
@@ -143,7 +146,7 @@ public class DateSupport_1_Test {
 		TimeZone.setDefault(TimeZone.getTimeZone("CEST"));
 		Date test = new Date(1157111760000l);
 		Date date = DateSupport.getDate(agilentDate);
-		assertEquals(agilentDate, test, date);
+		assertEquals(test, date, agilentDate);
 	}
 
 	@Test
@@ -154,7 +157,7 @@ public class DateSupport_1_Test {
 		TimeZone.setDefault(TimeZone.getTimeZone("CEST"));
 		Date test = new Date(1161042120000l);
 		Date date = DateSupport.getDate(agilentDate);
-		assertEquals(agilentDate, test, date);
+		assertEquals(test, date, agilentDate);
 	}
 
 	@Test
@@ -165,7 +168,7 @@ public class DateSupport_1_Test {
 		TimeZone.setDefault(TimeZone.getTimeZone("CET"));
 		Date test = new Date(1226259240000l);
 		Date date = DateSupport.getDate(agilentDate);
-		assertEquals(agilentDate, test, date);
+		assertEquals(test, date, agilentDate);
 	}
 
 	@Test
@@ -176,6 +179,6 @@ public class DateSupport_1_Test {
 		TimeZone.setDefault(TimeZone.getTimeZone("CET"));
 		Date test = new Date(1198302660000l);
 		Date date = DateSupport.getDate(agilentDate);
-		assertEquals(agilentDate, test, date);
+		assertEquals(test, date, agilentDate);
 	}
 }

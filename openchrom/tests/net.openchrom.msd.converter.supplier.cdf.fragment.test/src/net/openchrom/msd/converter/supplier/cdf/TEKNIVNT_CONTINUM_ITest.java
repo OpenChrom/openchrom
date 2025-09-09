@@ -12,26 +12,29 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cdf;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
 
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import net.openchrom.msd.converter.supplier.cdf.converter.ChromatogramImportConverter;
 
-@Ignore("Fails to load.") // TODO
+@Disabled("Fails to load.") // TODO
+@TestInstance(Lifecycle.PER_CLASS)
 public class TEKNIVNT_CONTINUM_ITest {
 
-	private static IChromatogramMSD chromatogram;
+	private IChromatogramMSD chromatogram;
 
-	@BeforeClass
-	public static void setUp() {
+	@BeforeAll
+	public void setUp() {
 
 		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.TEKNIVNT_CONTINUM));
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();

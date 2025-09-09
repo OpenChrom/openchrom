@@ -13,8 +13,8 @@
  *******************************************************************************/
 package net.openchrom.wsd.converter.supplier.animl.converter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
 
@@ -24,20 +24,23 @@ import org.eclipse.chemclipse.wsd.converter.chromatogram.ChromatogramConverterWS
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.chemclipse.xxd.converter.supplier.ocx.versions.VersionConstants;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import net.openchrom.wsd.converter.supplier.animl.TestPathHelper;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class ChromatogramImportExport_ITest {
 
-	private static IChromatogramWSD chromatogramImport;
-	private static IChromatogramWSD chromatogram;
-	private static File fileExport;
+	private IChromatogramWSD chromatogramImport;
+	private IChromatogramWSD chromatogram;
+	private File fileExport;
 
-	@BeforeClass
-	public static void setUp() {
+	@BeforeAll
+	public void setUp() {
 
 		/*
 		 * Import
@@ -80,8 +83,8 @@ public class ChromatogramImportExport_ITest {
 		}
 	}
 
-	@AfterClass
-	public static void tearDown() {
+	@AfterAll
+	public void tearDown() {
 
 		fileExport.delete();
 	}

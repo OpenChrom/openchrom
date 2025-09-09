@@ -13,8 +13,8 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.animl.converter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
 
@@ -24,18 +24,21 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.IProcessingMessage;
 import org.eclipse.chemclipse.xxd.converter.supplier.ocx.versions.VersionConstants;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import net.openchrom.msd.converter.supplier.animl.TestPathHelper;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class ChromatogramImportExport_ITest {
 
 	private static IChromatogramMSD chromatogram;
 	private static File fileExport;
 
-	@BeforeClass
+	@BeforeAll
 	public static void setUp() {
 
 		/*
@@ -78,7 +81,7 @@ public class ChromatogramImportExport_ITest {
 		}
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void tearDown() {
 
 		fileExport.delete();

@@ -12,9 +12,9 @@
  *******************************************************************************/
 package net.openchrom.csd.converter.supplier.gaml.fragment.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
 import java.util.Collection;
@@ -23,18 +23,21 @@ import org.eclipse.chemclipse.model.core.IComplexSignalMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.ISpectrumNMR;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import net.openchrom.nmr.converter.supplier.gaml.PathResolver;
 import net.openchrom.nmr.converter.supplier.gaml.converter.ScanImportConverter;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class BrukerXWinNMR1D_ITest {
 
-	private static Collection<IComplexSignalMeasurement<?>> complexSignals;
+	private Collection<IComplexSignalMeasurement<?>> complexSignals;
 
-	@BeforeClass
-	public static void setUp() {
+	@BeforeAll
+	public void setUp() {
 
 		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.BRUKER_XWINNMR_1D));
 		ScanImportConverter importConverter = new ScanImportConverter();

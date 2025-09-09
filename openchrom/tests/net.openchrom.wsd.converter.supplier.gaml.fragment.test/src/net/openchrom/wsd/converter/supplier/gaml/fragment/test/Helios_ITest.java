@@ -12,26 +12,29 @@
  *******************************************************************************/
 package net.openchrom.wsd.converter.supplier.gaml.fragment.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
 
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.wsd.model.core.ISpectrumWSD;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import net.openchrom.wsd.converter.supplier.gaml.PathResolver;
 import net.openchrom.wsd.converter.supplier.gaml.converter.ScanImportConverter;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class Helios_ITest {
 
-	private static ISpectrumWSD spectrumWSD;
+	private ISpectrumWSD spectrumWSD;
 
-	@BeforeClass
-	public static void setUp() throws Exception {
+	@BeforeAll
+	public void setUp() {
 
 		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.TS_HELIOS));
 		ScanImportConverter importConverter = new ScanImportConverter();

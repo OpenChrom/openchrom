@@ -12,9 +12,9 @@
  *******************************************************************************/
 package net.openchrom.xxd.identifier.supplier.cdk.support;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.openscience.cdk.tools.manipulator.MolecularFormulaManipulator;
 
 public class MoleculeMassCalculator_1_Test {

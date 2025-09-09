@@ -12,21 +12,17 @@
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.model.trace;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class TraceRatio_1_Test {
 
-	private TraceRatio peakRatio;
-
-	@Before
-	public void setUp() throws Exception {
-
-		peakRatio = new TraceRatio();
-	}
+	private TraceRatio peakRatio = new TraceRatio();
 
 	@Test
 	public void test1() {

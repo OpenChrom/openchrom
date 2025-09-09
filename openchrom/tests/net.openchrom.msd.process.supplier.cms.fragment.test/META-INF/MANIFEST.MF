@@ -7,5 +7,5 @@ Bundle-Version: 1.5.25.qualifier
 Bundle-Vendor: OpenChrom
 Fragment-Host: net.openchrom.msd.process.supplier.cms;bundle-version="1.5.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-21
-Require-Bundle: org.junit;bundle-version="4.12.0"
-Import-Package: net.openchrom.msd.converter.supplier.cms.io
+Import-Package: org.junit.jupiter.api;version="[5.12.0,6.0.0)"
+Require-Bundle: net.openchrom.msd.converter.supplier.cms;bundle-version="1.5.0"

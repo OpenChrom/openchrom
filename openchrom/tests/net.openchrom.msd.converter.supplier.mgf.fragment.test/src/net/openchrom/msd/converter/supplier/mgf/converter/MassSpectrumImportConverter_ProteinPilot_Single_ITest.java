@@ -12,8 +12,8 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.mgf.converter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
 
@@ -21,8 +21,8 @@ import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import net.openchrom.msd.converter.supplier.mgf.TestPathHelper;
 
@@ -30,7 +30,7 @@ public class MassSpectrumImportConverter_ProteinPilot_Single_ITest {
 
 	private static IMassSpectra massSpectra;
 
-	@BeforeClass
+	@BeforeAll
 	public static void setUp() throws Exception {
 
 		File file = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_PROTEINPILOT_SINGLE_ELEMENT));
