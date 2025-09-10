@@ -3,7 +3,7 @@
 <target name="OpenChrom" sequenceNumber="42">
 <locations>
 	<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-		<repository location="https://download.eclipse.org/releases/2025-06/"/>
+		<repository location="https://download.eclipse.org/releases/2025-09/"/>
 		<unit id="org.eclipse.equinox.sdk.feature.group"/>
 		<unit id="org.eclipse.platform.feature.group"/>
 		<unit id="org.eclipse.jdt.junit5.runtime"/>
@@ -37,7 +37,7 @@
 		<unit id="org.apache.poi.ooxml.schemas" />
 	</location>
 	<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-		<repository location="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/release/4.36.0"/>
+		<repository location="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/release/4.37.0"/>
 		<unit id="org.apache.commons.commons-csv"/>
 	</location>
 	<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
