@@ -123,6 +123,7 @@ public class ChromatogramReaderMSD extends AbstractChromatogramMSDReader impleme
 		int precision = PreferenceSupplier.getPrecision();
 		boolean forceParseNominal = PreferenceSupplier.isForceParseNominal();
 
+		monitor.beginTask("Read Scans", in.getNumberOfScans());
 		for(int i = 1; i <= in.getNumberOfScans(); i++) {
 			try {
 				massSpectrum = in.getMassSpectrum(i, precision, forceParseNominal);
@@ -130,6 +131,7 @@ public class ChromatogramReaderMSD extends AbstractChromatogramMSDReader impleme
 			} catch(NoSuchScanStored e) {
 				logger.warn(e);
 			}
+			monitor.worked(1);
 		}
 		cdfChromatogram.close();
 		return chromatogram;
@@ -153,6 +155,7 @@ public class ChromatogramReaderMSD extends AbstractChromatogramMSDReader impleme
 		VendorChromatogram chromatogram = new VendorChromatogram();
 		setChromatogramEntries(chromatogram, in, file);
 
+		monitor.beginTask("Read Scans", in.getNumberOfScans());
 		for(int i = 1; i <= in.getNumberOfScans(); i++) {
 			VendorScan massSpectrum = new VendorScan();
 			massSpectrum.setRetentionTime(in.getScanAcquisitionTime(i));
@@ -160,6 +163,7 @@ public class ChromatogramReaderMSD extends AbstractChromatogramMSDReader impleme
 			ion.setAbundance(in.getTotalSignal(i));
 			massSpectrum.addIon(ion);
 			chromatogram.addScan(massSpectrum);
+			monitor.worked(1);
 		}
 		cdfChromatogram.close();
 		return chromatogram;
