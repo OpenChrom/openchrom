@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 
+import org.eclipse.chemclipse.converter.l10n.ConverterMessages;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.msd.converter.io.AbstractChromatogramMSDReader;
@@ -123,7 +124,7 @@ public class ChromatogramReaderMSD extends AbstractChromatogramMSDReader impleme
 		int precision = PreferenceSupplier.getPrecision();
 		boolean forceParseNominal = PreferenceSupplier.isForceParseNominal();
 
-		monitor.beginTask("Read Scans", in.getNumberOfScans());
+		monitor.beginTask(ConverterMessages.importScan, in.getNumberOfScans());
 		for(int i = 1; i <= in.getNumberOfScans(); i++) {
 			try {
 				massSpectrum = in.getMassSpectrum(i, precision, forceParseNominal);
@@ -155,7 +156,7 @@ public class ChromatogramReaderMSD extends AbstractChromatogramMSDReader impleme
 		VendorChromatogram chromatogram = new VendorChromatogram();
 		setChromatogramEntries(chromatogram, in, file);
 
-		monitor.beginTask("Read Scans", in.getNumberOfScans());
+		monitor.beginTask(ConverterMessages.importScan, in.getNumberOfScans());
 		for(int i = 1; i <= in.getNumberOfScans(); i++) {
 			VendorScan massSpectrum = new VendorScan();
 			massSpectrum.setRetentionTime(in.getScanAcquisitionTime(i));
