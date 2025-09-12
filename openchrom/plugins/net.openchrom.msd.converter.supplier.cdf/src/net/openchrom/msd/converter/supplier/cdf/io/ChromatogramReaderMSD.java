@@ -154,16 +154,12 @@ public class ChromatogramReaderMSD extends AbstractChromatogramMSDReader impleme
 		setChromatogramEntries(chromatogram, in, file);
 
 		for(int i = 1; i <= in.getNumberOfScans(); i++) {
-			try {
-				VendorScan massSpectrum = new VendorScan();
-				massSpectrum.setRetentionTime(in.getScanAcquisitionTime(i));
-				VendorIon ion = new VendorIon(IIon.TIC_ION);
-				ion.setAbundance(in.getTotalSignal(i));
-				massSpectrum.addIon(ion);
-				chromatogram.addScan(massSpectrum);
-			} catch(Exception e) {
-
-			}
+			VendorScan massSpectrum = new VendorScan();
+			massSpectrum.setRetentionTime(in.getScanAcquisitionTime(i));
+			VendorIon ion = new VendorIon(IIon.TIC_ION);
+			ion.setAbundance(in.getTotalSignal(i));
+			massSpectrum.addIon(ion);
+			chromatogram.addScan(massSpectrum);
 		}
 		cdfChromatogram.close();
 		return chromatogram;
@@ -200,8 +196,8 @@ public class ChromatogramReaderMSD extends AbstractChromatogramMSDReader impleme
 			operator = in.getOperator();
 			date = in.getDate();
 			dateOfExperiment = in.getDateOfExperiment();
-		} catch(NoCDFAttributeDataFound e1) {
-			// logger.warn(e1);
+		} catch(NoCDFAttributeDataFound e) {
+			// logger.warn(e);
 		}
 		/*
 		 * Set the file name to the chromatogram.
