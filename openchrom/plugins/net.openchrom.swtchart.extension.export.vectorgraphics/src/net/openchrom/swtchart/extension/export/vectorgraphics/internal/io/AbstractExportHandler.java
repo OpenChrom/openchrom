@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtchart.export.core.AbstractSeriesExportHandler;
 import org.eclipse.swtchart.export.core.ISeriesExportConverter;
+import org.eclipse.swtchart.extensions.barcharts.BarChart;
 import org.eclipse.swtchart.extensions.core.ChartType;
 import org.eclipse.swtchart.extensions.core.IChartSettings;
 import org.eclipse.swtchart.extensions.core.RangeRestriction;
@@ -69,7 +70,7 @@ public abstract class AbstractExportHandler extends AbstractSeriesExportHandler 
 				MessageDialog.openError(shell, "Error", e.getMessage());
 			}
 		} else {
-			MessageDialog.openInformation(shell, "VectorGraphics", "Sorry, the chart type is not supported yet. Please ask for support.");
+			MessageDialog.openInformation(shell, "VectorGraphics", "Sorry, the chart type is not supported yet.");
 		}
 	}
 
@@ -190,6 +191,8 @@ public abstract class AbstractExportHandler extends AbstractSeriesExportHandler 
 		IChartCommandGenerator commandGenerator = null;
 		if(scrollableChart instanceof LineChart) {
 			commandGenerator = new PointLineChartCommandGenerator();
+		} else if(scrollableChart instanceof BarChart) {
+			commandGenerator = new BarChartCommandGenerator();
 		} else {
 			ChartType chartType = scrollableChart.getChartType();
 			switch(chartType) {
@@ -198,6 +201,8 @@ public abstract class AbstractExportHandler extends AbstractSeriesExportHandler 
 				case LINE:
 					commandGenerator = new PointLineChartCommandGenerator();
 					break;
+				case BAR:
+					commandGenerator = new BarChartCommandGenerator();
 				default:
 					break;
 			}
