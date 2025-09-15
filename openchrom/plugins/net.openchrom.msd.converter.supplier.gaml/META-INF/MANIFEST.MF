@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.msd.converter.supplier.gaml
 Bundle-ManifestVersion: 2
 Bundle-Name: GAML MS
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.gaml;singleton:=true
-Bundle-Version: 1.5.25.qualifier
+Bundle-Version: 1.5.26.qualifier
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.logging;bundle-version="0.8.0",
