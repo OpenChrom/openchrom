@@ -26,7 +26,7 @@ import org.eclipse.chemclipse.msd.model.core.AbstractIon;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IStandaloneMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.MassSpectrumType;
-import org.eclipse.chemclipse.msd.model.implementation.VendorMassSpectrum;
+import org.eclipse.chemclipse.msd.model.implementation.StandaloneMassSpectrum;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.xml.sax.SAXException;
 
@@ -64,7 +64,7 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 		try {
 			AnIMLType animl = Common.getAnIML(file);
 
-			massSpectrum = new VendorMassSpectrum();
+			massSpectrum = new StandaloneMassSpectrum();
 			massSpectrum = readSample(animl, massSpectrum);
 			massSpectrum.setFile(file);
 			massSpectrum.setIdentifier(file.getName());
