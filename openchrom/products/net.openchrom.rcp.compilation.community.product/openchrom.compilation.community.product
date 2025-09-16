@@ -102,6 +102,7 @@ Contributors:
       <repository location="https://plugins.openchrom.net/combine/1.5.26/" name="Combine" enabled="true" />
       <repository location="https://plugins.openchrom.net/drm/1.5.26/" name="DRM" enabled="true" />
       <repository location="https://plugins.openchrom.net/freebies/1.5.26/" name="Freebies" enabled="true" />
+      <repository location="https://plugins.openchrom.net/documentation/1.5.26/" name="Documentation" enabled="true" />
    </repositories>
 
    <preferencesInfo>

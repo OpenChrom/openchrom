@@ -1533,5 +1533,23 @@
          </overview>
       </pluginDescriptor>
 
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.extensions.commercial"
+            description="PDF manual"
+            groupId="com.lablicate.handbook"
+            id="com.lablicate.handbook.feature"
+            kind="extension"
+            license="Commercial License Terms"
+            name="Handbook"
+            provider="Lablicate"
+            urls="https://plugins.openchrom.net/documentation/1.5.26/,https://plugins.openchrom.net/drm/1.5.26/">
+         <icon image32="icons/32x32/OpenChrom.png">
+         </icon>
+         <overview
+               summary="Commercial product. Requires valid license."
+               url="https://lablicate.com/marketplace/extensions/handbook">
+         </overview>
+      </pluginDescriptor>
+
    </extension>
 </plugin>
