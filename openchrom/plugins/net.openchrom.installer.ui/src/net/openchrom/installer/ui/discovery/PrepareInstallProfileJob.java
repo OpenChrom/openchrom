@@ -95,6 +95,8 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 				final InstallOperation installOperation = resolve(monitor.newChild(50), installableUnits, repositoryLocations.toArray(new URI[0]));
 				checkCancelled(monitor);
 				Display.getDefault().asyncExec(() -> provisioningUI.openInstallWizard(Arrays.asList(installableUnits), installOperation, null));
+			} catch(URISyntaxException | CoreException e) {
+				Display.getDefault().asyncExec(() -> InstallErrorDialog.notifyError(DisplayUtils.getShell(), "Failed to install plugins.", e));
 			} finally {
 				monitor.done();
 			}
@@ -122,22 +124,15 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 		return installOperation;
 	}
 
-	public IInstallableUnit[] computeInstallableUnits(SubMonitor monitor) {
+	public IInstallableUnit[] computeInstallableUnits(SubMonitor monitor) throws ProvisionException, URISyntaxException {
 
-		try {
-			monitor.setWorkRemaining(100);
-			// add repository urls and load meta data
-			List<IMetadataRepository> repositories = addRepositories(monitor.newChild(50));
-			final List<IInstallableUnit> installableUnits = queryInstallableUnits(monitor.newChild(50), repositories);
-			removeOldVersions(installableUnits);
-			checkForUnavailable(installableUnits);
-			return installableUnits.toArray(new IInstallableUnit[installableUnits.size()]);
-		} catch(URISyntaxException | ProvisionException e) {
-			InstallErrorDialog.notifyError(DisplayUtils.getShell(), "Failed to install plugins.", e);
-		} finally {
-			monitor.done();
-		}
-		return new IInstallableUnit[0];
+		monitor.setWorkRemaining(100);
+		// add repository urls and load meta data
+		List<IMetadataRepository> repositories = addRepositories(monitor.newChild(50));
+		final List<IInstallableUnit> installableUnits = queryInstallableUnits(monitor.newChild(50), repositories);
+		removeOldVersions(installableUnits);
+		checkForUnavailable(installableUnits);
+		return installableUnits.toArray(new IInstallableUnit[installableUnits.size()]);
 	}
 
 	/**
