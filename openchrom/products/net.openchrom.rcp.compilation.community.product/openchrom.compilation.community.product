@@ -23,6 +23,7 @@
 -Dosgi.user.area=@user.home/.openchrom/1.5.x
 -Dorg.eclipse.update.reconcile=false
 -Dorg.eclipse.help.webapp.experimental.ui=true
+--add-opens java.base/java.lang=ALL-UNNAMED --add-modules=ALL-SYSTEM -Djava.security.manager=allow
 -Dp2.trustedAuthorities=https://converter.openchrom.net,https://plugins.openchrom.net,https://update.openchrom.net
 -XX:+UseG1GC
 -XX:+UseStringDeduplication
