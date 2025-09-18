@@ -6,6 +6,11 @@
             class="net.openchrom.installer.ui.FeatureCheck"></startup>
    </extension>
    <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="net.openchrom.installer.ui.RepositoryCleanup"></startup>
+   </extension>
+   <extension
          id="com.lablicate.installer.ui.fragment"
          point="org.eclipse.e4.workbench.model">
       <fragment
