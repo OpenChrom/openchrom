@@ -33,7 +33,7 @@ import net.openchrom.xxd.classifier.supplier.ratios.model.qual.QualRatio;
 
 public class QualRatioLabelProvider extends AbstractChemClipseLabelProvider implements ITableColorProvider {
 
-	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish();
+	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.000");
 
 	@Override
 	public Image getColumnImage(Object element, int columnIndex) {

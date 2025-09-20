@@ -30,7 +30,7 @@ import net.openchrom.xxd.classifier.supplier.ratios.ui.swt.DisplayOption;
 
 public class TraceRatioLabelProvider extends AbstractTraceRatioLabelProvider {
 
-	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish();
+	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.000");
 	private DisplayOption displayOption = DisplayOption.RESULTS;
 
 	public TraceRatioLabelProvider() {
@@ -130,7 +130,7 @@ public class TraceRatioLabelProvider extends AbstractTraceRatioLabelProvider {
 					if(Double.isNaN(traceRatio.getDeviation())) {
 						text = "n.a.";
 					} else {
-						text = decimalFormat.format(traceRatio.getDeviation());
+						text = ValueFormat.getDecimalFormatEnglish("0.00").format(traceRatio.getDeviation());
 					}
 					break;
 			}

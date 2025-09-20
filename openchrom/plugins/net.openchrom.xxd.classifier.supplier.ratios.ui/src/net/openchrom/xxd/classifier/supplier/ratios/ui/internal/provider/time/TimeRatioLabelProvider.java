@@ -30,7 +30,7 @@ import net.openchrom.xxd.classifier.supplier.ratios.ui.swt.DisplayOption;
 
 public class TimeRatioLabelProvider extends AbstractTraceRatioLabelProvider {
 
-	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish();
+	private DecimalFormat decimalFormat = ValueFormat.getDecimalFormatEnglish("0.000");
 	private DisplayOption displayOption = DisplayOption.RESULTS;
 
 	public TimeRatioLabelProvider() {
@@ -114,7 +114,7 @@ public class TimeRatioLabelProvider extends AbstractTraceRatioLabelProvider {
 					text = decimalFormat.format(timeRatio.getExpectedRetentionTimeMinutes());
 					break;
 				case 3:
-					text = decimalFormat.format(timeRatio.getDeviation());
+					text = ValueFormat.getDecimalFormatEnglish("0.00").format(timeRatio.getDeviation());
 					break;
 			}
 		}
