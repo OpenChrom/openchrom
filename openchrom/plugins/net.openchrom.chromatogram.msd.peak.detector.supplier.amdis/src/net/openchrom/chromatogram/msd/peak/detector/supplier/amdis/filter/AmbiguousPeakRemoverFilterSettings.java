@@ -12,9 +12,9 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.filter;
 
-import org.eclipse.chemclipse.chromatogram.msd.comparison.massspectrum.IMassSpectrumComparator;
-import org.eclipse.chemclipse.chromatogram.msd.comparison.massspectrum.MassSpectrumComparator;
-import org.eclipse.chemclipse.chromatogram.msd.comparison.massspectrum.MassSpectrumComparatorDynamicSettingProperty;
+import org.eclipse.chemclipse.msd.identifier.comparison.IMassSpectrumComparator;
+import org.eclipse.chemclipse.msd.identifier.comparison.MassSpectrumComparator;
+import org.eclipse.chemclipse.msd.identifier.comparison.MassSpectrumComparatorDynamicSettingProperty;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.support.settings.ComboSettingsProperty;
 import org.eclipse.chemclipse.support.settings.DoubleSettingsProperty;
