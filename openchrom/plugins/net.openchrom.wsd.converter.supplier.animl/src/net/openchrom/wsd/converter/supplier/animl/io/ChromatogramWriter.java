@@ -227,7 +227,7 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 			int[] retentionTimes = new int[scans];
 			float[] abundance = new float[scans];
 			for(int i = 1; i <= scans; i++) {
-				IScanWSD scan = chromatogram.getSupplierScan(i);
+				IScanWSD scan = chromatogram.getScan(i);
 				retentionTimes[i - 1] = scan.getRetentionTime();
 				IScanSignalWSD signal = scan.getScanSignal(0);
 				abundance[i - 1] = signal.getAbsorbance();
@@ -243,7 +243,7 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 			IndividualValueSetType retentionTimes = new IndividualValueSetType();
 			IndividualValueSetType intensities = new IndividualValueSetType();
 			for(int i = 1; i <= scans; i++) {
-				IScanWSD scan = chromatogram.getSupplierScan(i);
+				IScanWSD scan = chromatogram.getScan(i);
 				IScanSignalWSD signal = scan.getScanSignal(0);
 				retentionTimes.getI().add(scan.getRetentionTime());
 				intensities.getF().add(signal.getAbsorbance());
@@ -286,7 +286,7 @@ public class ChromatogramWriter extends AbstractChromatogramWSDWriter {
 		CategoryType category = new CategoryType();
 		category.setName("Extraction Parameters");
 		ParameterType lowerBounds = new ParameterType();
-		IScanWSD firstScan = chromatogram.getSupplierScan(1);
+		IScanWSD firstScan = chromatogram.getScan(1);
 		List<IScanSignalWSD> signals = firstScan.getScanSignals();
 		double[] wavelengths = signals.stream().mapToDouble(s -> s.getWavelength()).toArray();
 		lowerBounds.setName("Lower Bound");

@@ -24,7 +24,7 @@ public class ScanSupport implements IScanSupport {
 	private double[] minIon;
 
 	public ScanSupport(IChromatogramMSD chromatogram) {
-		IScanMSD massSpectrum;
+
 		int numberOfScans = chromatogram.getNumberOfScans();
 		counter = 0;
 		/*
@@ -37,7 +37,7 @@ public class ScanSupport implements IScanSupport {
 		minIon = new double[numberOfScans];
 		maxIon = new double[numberOfScans];
 		for(int i = 1; i <= chromatogram.getNumberOfScans(); i++) {
-			massSpectrum = chromatogram.getSupplierScan(i);
+			IScanMSD massSpectrum = chromatogram.getScan(i);
 			addNumberOfIons(i, massSpectrum.getNumberOfIons());
 			if(massSpectrum.getNumberOfIons() > 0) {
 				addMinIon(i, massSpectrum.getLowestIon().getIon());

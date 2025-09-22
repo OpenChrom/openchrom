@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import org.eclipse.chemclipse.msd.model.core.AbstractIon;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IIon;
-import org.eclipse.chemclipse.msd.model.core.IRegularMassSpectrum;
+import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 
 import ucar.ma2.ArrayChar;
 import ucar.ma2.ArrayDouble;
@@ -230,7 +230,6 @@ public class DimensionSupport implements IDimensionSupport {
 	@Override
 	public void addVariableScanValues() {
 
-		IRegularMassSpectrum scan;
 		String varNameMassValues = CDFConstants.VARIABLE_MASS_VALUES;
 		ArrayList<Dimension> dimensionMassValues = new ArrayList<>();
 		dimensionMassValues.add(numberOfScanIons);
@@ -253,7 +252,7 @@ public class DimensionSupport implements IDimensionSupport {
 		int counter = 0;
 		// float retentionTime = 0.0f;
 		for(int i = 0; i < numberOfScans.getLength(); i++) {
-			scan = chromatogram.getSupplierScan(i + 1);
+			IScanMSD scan = chromatogram.getScan(i + 1);
 			// retentionTime = scan.getRetentionTime() / (1000.0f * 60.0f);
 			for(IIon ion : scan.getIons()) {
 				valuesIons.set(counter, ion.getIon());
