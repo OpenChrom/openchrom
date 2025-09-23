@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: net.openchrom.chromatogram.xxd.report.supplier.excel.template.fragment.test
+Bundle-ManifestVersion: 2
+Bundle-Name: Excel Template Report Test
+Bundle-SymbolicName: net.openchrom.chromatogram.xxd.report.supplier.excel.template.fragment.test
+Bundle-Version: 1.5.26.qualifier
+Bundle-Vendor: OpenChrom
+Fragment-Host: net.openchrom.chromatogram.xxd.report.supplier.excel.template;bundle-version="1.5.0"
+Import-Package: org.junit.jupiter.api;version="5.12.2"
+Bundle-RequiredExecutionEnvironment: JavaSE-21
