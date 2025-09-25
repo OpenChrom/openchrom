@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.msd.converter.supplier.btmsp
 Bundle-ManifestVersion: 2
 Bundle-Name: BTMSP implementation
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.btmsp;singleton:=true
-Bundle-Version: 1.5.26.qualifier
+Bundle-Version: 1.5.27.qualifier
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.msd.converter;bundle-version="0.8.0",
