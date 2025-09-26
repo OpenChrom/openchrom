@@ -96,10 +96,6 @@
          version="0.0.0"/>
 
    <includes
-         id="org.eclipse.chemclipse.assets.feature"
-         version="0.0.0"/>
-
-   <includes
          id="org.eclipse.chemclipse.rcp.compilation.community.feature"
          version="0.0.0"/>
 
