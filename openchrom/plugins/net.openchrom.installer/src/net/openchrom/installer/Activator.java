@@ -58,6 +58,7 @@ public class Activator implements BundleActivator {
 		refreshWindowsCertificateStore(new URI("https://converter.openchrom.net").toURL());
 		refreshWindowsCertificateStore(new URI("https://plugins.openchrom.net").toURL());
 		refreshWindowsCertificateStore(new URI("https://marketplace.lablicate.com").toURL());
+		refreshWindowsCertificateStore(new URI("https://account.lablicate.com").toURL());
 	}
 
 	private void refreshWindowsCertificateStore(URL url) {
