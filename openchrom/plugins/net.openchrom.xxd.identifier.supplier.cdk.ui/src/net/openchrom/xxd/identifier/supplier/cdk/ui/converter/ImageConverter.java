@@ -36,6 +36,9 @@ public class ImageConverter {
 
 	public static final int DEFAULT_WIDTH = 400;
 	public static final int DEFAULT_HEIGHT = 400;
+
+	private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
+
 	/**
 	 * Generate Molecule out of MDL MOL chemical table files, SMILES strings or InChI using OPSIN and render.
 	 **/
@@ -97,7 +100,7 @@ public class ImageConverter {
 				.withSize(width, height) //
 				.withMargin(0.1) //
 				.withZoom(2.0) //
-				.withParam(BasicSceneGenerator.BackgroundColor.class, Color.white);
+				.withBackgroundColor(TRANSPARENT); //
 
 		if(PreferenceSupplier.isColorAtoms()) {
 			depictionGenerator = depictionGenerator.withAtomColors();
