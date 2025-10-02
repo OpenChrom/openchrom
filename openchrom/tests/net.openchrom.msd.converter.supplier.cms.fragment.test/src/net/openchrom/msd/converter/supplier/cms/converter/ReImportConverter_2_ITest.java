@@ -23,6 +23,7 @@ import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -37,6 +38,7 @@ import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpect
 public class ReImportConverter_2_ITest {
 
 	private IMassSpectra massSpectra1, massSpectra2;
+	private File exportFile;
 
 	@BeforeAll
 	public void setUp() throws Exception {
@@ -56,13 +58,12 @@ public class ReImportConverter_2_ITest {
 					// float offsetValue = ((ICalibratedVendorMassSpectrum)spectrum).getSignalOffset();
 					((ICalibratedVendorMassSpectrum)spectrum).subtractSignalOffset();
 				}
-				;
 			}
 		}
 		/*
 		 * Export
 		 */
-		File exportFile = new File(PathResolver.getAbsolutePath(TestPathHelper.TESTFILE_DIR_EXPORT) + File.separator + TestPathHelper.TESTFILE_MASS_SPECTRA_2);
+		exportFile = new File(PathResolver.getAbsolutePath(TestPathHelper.TESTFILE_DIR_EXPORT) + File.separator + TestPathHelper.TESTFILE_MASS_SPECTRA_2);
 		exportConverter.convert(exportFile, massSpectra1, false, new NullProgressMonitor());
 		/*
 		 * Re-Import
@@ -70,10 +71,15 @@ public class ReImportConverter_2_ITest {
 		File reImportFile = new File(PathResolver.getAbsolutePath(TestPathHelper.TESTFILE_DIR_EXPORT) + File.separator + TestPathHelper.TESTFILE_MASS_SPECTRA_2);
 		IProcessingInfo<IMassSpectra> processingInfoReImport = importConverter.convert(reImportFile, new NullProgressMonitor());
 		massSpectra2 = processingInfoReImport.getProcessingResult();
+	}
+
+	@AfterAll
+	public void tearDown() {
+
 		/*
 		 * Delete the export file.
 		 */
-		// exportFile.delete();
+		exportFile.delete();
 	}
 
 	@Test
