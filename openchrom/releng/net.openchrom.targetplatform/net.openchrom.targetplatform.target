@@ -107,20 +107,20 @@
 			<dependency>
 				<groupId>edu.ucar</groupId>
 				<artifactId>cdm-core</artifactId>
-				<version>5.8.0</version>
+				<version>5.9.1</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>edu.ucar</groupId>
 				<artifactId>udunits</artifactId>
-				<version>5.8.0</version>
+				<version>5.9.1</version>
 				<type>jar</type>
 			</dependency>
 		</dependencies>
 		<repositories>
 			<repository>
 				<id>Unidata All</id>
-				<url>https://mirror.openchrom.net/ucar/unidata-all</url>
+				<url>https://artifacts.unidata.ucar.edu/repository/unidata-all/</url>
 			</repository>
 		</repositories>
 	</location>
