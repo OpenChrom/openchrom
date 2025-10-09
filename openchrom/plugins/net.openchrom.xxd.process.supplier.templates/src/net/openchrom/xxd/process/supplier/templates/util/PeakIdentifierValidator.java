@@ -29,9 +29,9 @@ public class PeakIdentifierValidator extends AbstractTemplateValidator implement
 	private String casNumber = "";
 	private String comments = "";
 	private String contributor = "";
-	private String reference = "";
-	private String traces = "";
 	private String referenceIdentifier = "";
+	private String traces = "";
+	private String positionRelativePeakName = "";
 
 	@Override
 	public IStatus validate(Object value) {
@@ -61,14 +61,14 @@ public class PeakIdentifierValidator extends AbstractTemplateValidator implement
 						casNumber = parseString(values, 3);
 						comments = parseString(values, 4);
 						contributor = parseString(values, 5);
-						reference = parseString(values, 6);
+						referenceIdentifier = parseString(values, 6);
 						String traceValues = parseString(values, 7);
-						referenceIdentifier = parseString(values, 8, "");
+						positionRelativePeakName = parseString(values, 8, "");
 						positionDirective = parsePositionDirective(parseString(values, 9));
 						/*
 						 * Validations
 						 */
-						message = validateRetentionTime(referenceIdentifier, positionStart, positionStop);
+						message = validateRetentionTime(positionRelativePeakName, positionStart, positionStop);
 						if(message == null) {
 							if(name.isEmpty()) {
 								message = "A substance name needs to be set.";
@@ -107,9 +107,9 @@ public class PeakIdentifierValidator extends AbstractTemplateValidator implement
 		setting.setCasNumber(casNumber);
 		setting.setComments(comments);
 		setting.setContributor(contributor);
-		setting.setReference(reference);
-		setting.setTraces(traces);
 		setting.setReferenceIdentifier(referenceIdentifier);
+		setting.setTraces(traces);
+		setting.setPositionRelativePeakName(positionRelativePeakName);
 		setting.setPositionDirective(positionDirective);
 
 		return setting;

@@ -65,8 +65,8 @@ public class IdentifierSetting_2_Test {
 	@Test
 	public void test7() {
 
-		setting.setReference("REF-7");
-		assertEquals("REF-7", setting.getReference());
+		setting.setReferenceIdentifier("REF-7");
+		assertEquals("REF-7", setting.getReferenceIdentifier());
 	}
 
 	@Test
@@ -79,8 +79,8 @@ public class IdentifierSetting_2_Test {
 	@Test
 	public void test9() {
 
-		setting.setReferenceIdentifier("Styrene");
-		assertEquals("Styrene", setting.getReferenceIdentifier());
+		setting.setPositionRelativePeakName("Styrene");
+		assertEquals("Styrene", setting.getPositionRelativePeakName());
 	}
 
 	@Test
