@@ -29,9 +29,9 @@ public class PeakIdentifierLabelProvider extends AbstractTemplateLabelProvider {
 			CAS_NUMBER, //
 			COMMENTS, //
 			CONTRIBUTOR, //
-			REFERENCE, //
+			REFERENCE_IDENTIFIER, //
 			TRACES, //
-			REFERENCE_IDENTIFIER //
+			POSITION_RELATIVE_PEAK_NAME //
 	};
 	public static final int[] BOUNDS = { //
 			200, //
@@ -83,13 +83,13 @@ public class PeakIdentifierLabelProvider extends AbstractTemplateLabelProvider {
 					text = setting.getContributor();
 					break;
 				case 7:
-					text = setting.getReference();
+					text = setting.getReferenceIdentifier();
 					break;
 				case 8:
 					text = setting.getTraces();
 					break;
 				case 9:
-					text = setting.getReferenceIdentifier();
+					text = setting.getPositionRelativePeakName();
 					break;
 				default:
 					text = "n.v.";

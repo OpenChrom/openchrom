@@ -40,9 +40,10 @@ public class PeakIdentifierFilter extends ViewerFilter {
 			String cas = setting.getCasNumber();
 			String comments = setting.getComments();
 			String contributor = setting.getContributor();
-			String reference = setting.getReference();
+			String reference = setting.getReferenceIdentifier();
 			String traces = setting.getTraces();
 			String referenceIdentifier = setting.getReferenceIdentifier();
+			String positionReferencePeakName = setting.getPositionRelativePeakName();
 
 			if(!caseSensitive) {
 				searchText = searchText.toLowerCase();
@@ -53,6 +54,7 @@ public class PeakIdentifierFilter extends ViewerFilter {
 				reference = reference.toLowerCase();
 				traces = traces.toLowerCase();
 				referenceIdentifier = referenceIdentifier.toLowerCase();
+				positionReferencePeakName = positionReferencePeakName.toLowerCase();
 			}
 
 			if(name.contains(searchText)) {
@@ -80,6 +82,10 @@ public class PeakIdentifierFilter extends ViewerFilter {
 			}
 
 			if(referenceIdentifier.contains(searchText)) {
+				return true;
+			}
+
+			if(positionReferencePeakName.contains(searchText)) {
 				return true;
 			}
 		}

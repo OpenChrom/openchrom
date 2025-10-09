@@ -42,7 +42,7 @@ public class PeakDetectorEditingSupport extends AbstractTemplateEditingSupport {
 						return setting.getTraces();
 					case AbstractTemplateLabelProvider.OPTIMIZE_RANGE:
 						return setting.isOptimizeRange();
-					case AbstractTemplateLabelProvider.REFERENCE_IDENTIFIER:
+					case AbstractTemplateLabelProvider.POSITION_RELATIVE_PEAK_NAME:
 						return setting.getReferenceIdentifier();
 					case AbstractTemplateLabelProvider.NAME:
 						return setting.getName();
@@ -75,7 +75,7 @@ public class PeakDetectorEditingSupport extends AbstractTemplateEditingSupport {
 				case AbstractTemplateLabelProvider.OPTIMIZE_RANGE:
 					setting.setOptimizeRange((boolean)value);
 					break;
-				case AbstractTemplateLabelProvider.REFERENCE_IDENTIFIER:
+				case AbstractTemplateLabelProvider.POSITION_RELATIVE_PEAK_NAME:
 					String referenceIdentifier = ((String)value).trim();
 					setting.setReferenceIdentifier(referenceIdentifier);
 					break;

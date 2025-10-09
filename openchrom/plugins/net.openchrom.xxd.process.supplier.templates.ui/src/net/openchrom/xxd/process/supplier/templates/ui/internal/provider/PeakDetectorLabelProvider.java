@@ -31,7 +31,7 @@ public class PeakDetectorLabelProvider extends AbstractTemplateLabelProvider {
 			PEAK_TYPE, //
 			TRACES, //
 			OPTIMIZE_RANGE, //
-			REFERENCE_IDENTIFIER, //
+			POSITION_RELATIVE_PEAK_NAME, //
 			NAME //
 	};
 	public static final int[] BOUNDS = { //

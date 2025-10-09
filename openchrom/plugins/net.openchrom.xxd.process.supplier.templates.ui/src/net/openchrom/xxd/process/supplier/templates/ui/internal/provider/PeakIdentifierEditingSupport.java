@@ -44,12 +44,12 @@ public class PeakIdentifierEditingSupport extends AbstractTemplateEditingSupport
 						return setting.getComments();
 					case AbstractTemplateLabelProvider.CONTRIBUTOR:
 						return setting.getContributor();
-					case AbstractTemplateLabelProvider.REFERENCE:
-						return setting.getReference();
-					case AbstractTemplateLabelProvider.TRACES:
-						return setting.getTraces();
 					case AbstractTemplateLabelProvider.REFERENCE_IDENTIFIER:
 						return setting.getReferenceIdentifier();
+					case AbstractTemplateLabelProvider.TRACES:
+						return setting.getTraces();
+					case AbstractTemplateLabelProvider.POSITION_RELATIVE_PEAK_NAME:
+						return setting.getPositionRelativePeakName();
 				}
 			}
 		}
@@ -74,8 +74,8 @@ public class PeakIdentifierEditingSupport extends AbstractTemplateEditingSupport
 				case AbstractTemplateLabelProvider.CONTRIBUTOR:
 					setting.setContributor(((String)value).trim());
 					break;
-				case AbstractTemplateLabelProvider.REFERENCE:
-					setting.setReference(((String)value).trim());
+				case AbstractTemplateLabelProvider.REFERENCE_IDENTIFIER:
+					setting.setReferenceIdentifier(((String)value).trim());
 					break;
 				case AbstractTemplateLabelProvider.TRACES:
 					String traces = ((String)value).trim();
@@ -85,8 +85,8 @@ public class PeakIdentifierEditingSupport extends AbstractTemplateEditingSupport
 						setting.setTraces(traces);
 					}
 					break;
-				case AbstractTemplateLabelProvider.REFERENCE_IDENTIFIER:
-					setting.setReferenceIdentifier(((String)value).trim());
+				case AbstractTemplateLabelProvider.POSITION_RELATIVE_PEAK_NAME:
+					setting.setPositionRelativePeakName(((String)value).trim());
 					break;
 			}
 

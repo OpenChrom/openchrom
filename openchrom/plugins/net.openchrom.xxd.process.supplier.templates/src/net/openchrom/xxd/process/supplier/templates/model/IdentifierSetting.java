@@ -20,9 +20,13 @@ public class IdentifierSetting extends AbstractSetting {
 	private String casNumber = "";
 	private String comments = "";
 	private String contributor = "";
-	private String reference = "";
+	private String referenceIdentifier = ""; // ILibraryInformation->ReferenceIdentifier
 	private String traces = "";
-	private String referenceIdentifier = ""; // Used for relative retention time
+	/*
+	 * Used for a retention time or index relative
+	 * to a peak with the given identification.
+	 */
+	private String positionRelativePeakName = "";
 
 	public void copyFrom(IdentifierSetting setting) {
 
@@ -34,9 +38,9 @@ public class IdentifierSetting extends AbstractSetting {
 			setCasNumber(setting.getCasNumber());
 			setComments(setting.getComments());
 			setContributor(setting.getContributor());
-			setReference(setting.getReference());
-			setTraces(setting.getTraces());
 			setReferenceIdentifier(setting.getReferenceIdentifier());
+			setTraces(setting.getTraces());
+			setPositionRelativePeakName(setting.getPositionRelativePeakName());
 		}
 	}
 
@@ -80,14 +84,14 @@ public class IdentifierSetting extends AbstractSetting {
 		this.contributor = contributor;
 	}
 
-	public String getReference() {
+	public String getReferenceIdentifier() {
 
-		return reference;
+		return referenceIdentifier;
 	}
 
-	public void setReference(String reference) {
+	public void setReferenceIdentifier(String referenceIdentifier) {
 
-		this.reference = reference;
+		this.referenceIdentifier = referenceIdentifier;
 	}
 
 	public String getTraces() {
@@ -100,14 +104,14 @@ public class IdentifierSetting extends AbstractSetting {
 		this.traces = traces;
 	}
 
-	public String getReferenceIdentifier() {
+	public String getPositionRelativePeakName() {
 
-		return referenceIdentifier;
+		return positionRelativePeakName;
 	}
 
-	public void setReferenceIdentifier(String referenceIdentifier) {
+	public void setPositionRelativePeakName(String positionRelativePeakName) {
 
-		this.referenceIdentifier = referenceIdentifier;
+		this.positionRelativePeakName = positionRelativePeakName;
 	}
 
 	@Override

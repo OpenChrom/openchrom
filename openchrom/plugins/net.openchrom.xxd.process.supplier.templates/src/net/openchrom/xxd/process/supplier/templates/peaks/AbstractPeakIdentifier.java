@@ -91,7 +91,7 @@ public abstract class AbstractPeakIdentifier {
 	private void identifyPeak(List<? extends IPeak> peaks, IdentifierSetting identifierSetting, RetentionIndexMap retentionIndexMap, IProgressMonitor monitor) {
 
 		PeakSupport retentionTimeSupport = new PeakSupport();
-		IRetentionTimeRange retentionTimeRange = retentionTimeSupport.getRetentionTimeRange(peaks, identifierSetting, identifierSetting.getReferenceIdentifier(), retentionIndexMap);
+		IRetentionTimeRange retentionTimeRange = retentionTimeSupport.getRetentionTimeRange(peaks, identifierSetting, identifierSetting.getPositionRelativePeakName(), retentionIndexMap);
 		int startRetentionTime = retentionTimeRange.getStartRetentionTime();
 		int stopRetentionTime = retentionTimeRange.getStopRetentionTime();
 		TracesUtil tracesUtil = new TracesUtil();
@@ -113,7 +113,7 @@ public abstract class AbstractPeakIdentifier {
 								libraryInformation.setCasNumber(identifierSetting.getCasNumber());
 								libraryInformation.setComments(identifierSetting.getComments());
 								libraryInformation.setContributor(identifierSetting.getContributor());
-								libraryInformation.setReferenceIdentifier(identifierSetting.getReference());
+								libraryInformation.setReferenceIdentifier(identifierSetting.getReferenceIdentifier());
 								IComparisonResult comparisonResult = new ComparisonResult(matchFactor, matchFactor, matchFactor, matchFactor);
 								IIdentificationTarget identificationTarget = new IdentificationTarget(libraryInformation, comparisonResult);
 								identificationTarget.setIdentifier(PeakIdentifierSettings.IDENTIFIER_DESCRIPTION); // $NON-NLS-N$

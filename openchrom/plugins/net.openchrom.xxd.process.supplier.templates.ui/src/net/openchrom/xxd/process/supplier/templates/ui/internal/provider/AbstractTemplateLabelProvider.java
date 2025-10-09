@@ -23,7 +23,7 @@ public abstract class AbstractTemplateLabelProvider extends AbstractChemClipseLa
 	public static final String POSITION_START = "Position Start";
 	public static final String POSITION_STOP = "Position Stop";
 	public static final String POSITION_DIRECTIVE = "Position Directive";
-	public static final String REFERENCE_IDENTIFIER = "Reference Identifier";
+	public static final String POSITION_RELATIVE_PEAK_NAME = "Position Relative (Peak Name)";
 	public static final String TRACES = "Traces";
 	public static final String NAME = "Name";
 	public static final String PEAK_TYPE = "Peak Type";
@@ -31,7 +31,7 @@ public abstract class AbstractTemplateLabelProvider extends AbstractChemClipseLa
 	public static final String CAS_NUMBER = "CAS";
 	public static final String COMMENTS = "Comments";
 	public static final String CONTRIBUTOR = "Contributor";
-	public static final String REFERENCE = "Reference";
+	public static final String REFERENCE_IDENTIFIER = "Reference Identifier";
 	public static final String IDENTIFIER = "Identifier";
 	public static final String INTEGRATOR = "Integrator";
 	public static final String REPORT_STRATEGY = "Strategy";

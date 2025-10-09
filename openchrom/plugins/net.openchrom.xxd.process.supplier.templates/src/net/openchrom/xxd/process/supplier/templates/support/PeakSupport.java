@@ -139,7 +139,7 @@ public class PeakSupport {
 		return stopScan;
 	}
 
-	public RetentionTimeRange getRetentionTimeRange(List<? extends IPeak> peaks, AbstractSetting setting, String referenceIdentifier, RetentionIndexMap retentionIndexMap) {
+	public RetentionTimeRange getRetentionTimeRange(List<? extends IPeak> peaks, AbstractSetting setting, String positionRelativePeakName, RetentionIndexMap retentionIndexMap) {
 
 		/*
 		 * Retention Time (milliseconds)
@@ -147,11 +147,11 @@ public class PeakSupport {
 		int startRetentionTime = 0;
 		int stopRetentionTime = 0;
 
-		if(!referenceIdentifier.isEmpty()) {
+		if(!positionRelativePeakName.isEmpty()) {
 			/*
 			 * Position via Reference
 			 */
-			IPeak peak = getReferencePeak(peaks, referenceIdentifier);
+			IPeak peak = getReferencePeak(peaks, positionRelativePeakName);
 			if(peak != null) {
 				/*
 				 * If a reference identifier is set, the retention time range
@@ -439,12 +439,12 @@ public class PeakSupport {
 		return scanSignal;
 	}
 
-	private IPeak getReferencePeak(List<? extends IPeak> peaks, String referenceIdentifier) {
+	private IPeak getReferencePeak(List<? extends IPeak> peaks, String name) {
 
 		for(IPeak peak : peaks) {
 			ILibraryInformation libraryInformation = IIdentificationTarget.getLibraryInformation(peak);
 			if(libraryInformation != null) {
-				if(referenceIdentifier.equals(libraryInformation.getName())) {
+				if(name.equals(libraryInformation.getName())) {
 					return peak;
 				}
 			}

@@ -188,9 +188,9 @@ public class IdentifierSettings extends ArrayList<IdentifierSetting> implements 
 		entries.add(setting.getCasNumber());
 		entries.add(getFormattedString(setting.getComments()));
 		entries.add(getFormattedString(setting.getContributor()));
-		entries.add(getFormattedString(setting.getReference()));
-		entries.add(setting.getTraces());
 		entries.add(getFormattedString(setting.getReferenceIdentifier()));
+		entries.add(setting.getTraces());
+		entries.add(getFormattedString(setting.getPositionRelativePeakName()));
 		entries.add(setting.getPositionDirective().name());
 
 		compile(builder, entries);
