@@ -260,7 +260,7 @@ public class PeakSupport {
 				if(chromatogram instanceof IChromatogramMSD chromatogramMSD) {
 					peak = extractChromatogramPeakMSD(chromatogramMSD, scanRange, traces, intensityRange, includeBackground);
 				} else if(chromatogram instanceof IChromatogramCSD chromatogramCSD) {
-					peak = PeakBuilderCSD.createPeak(chromatogramCSD, scanRange, includeBackground);
+					peak = extractChromatogramPeakCSD(chromatogramCSD, scanRange, intensityRange, includeBackground);
 				} else if(chromatogram instanceof IChromatogramWSD chromatogramWSD) {
 					peak = extractChromatogramPeakWSD(chromatogramWSD, scanRange, traces, intensityRange, includeBackground);
 				} else if(chromatogram instanceof IChromatogramVSD) {
@@ -275,6 +275,18 @@ public class PeakSupport {
 		if(peak != null) {
 			peak.setDetectorDescription(PeakDetectorSettings.DETECTOR_DESCRIPTION);
 		}
+		return peak;
+	}
+
+	private IChromatogramPeak extractChromatogramPeakCSD(IChromatogramCSD chromatogram, IScanRange scanRange, IntensityRange intensityRange, boolean includeBackground) {
+
+		IChromatogramPeak peak = null;
+		if(intensityRange != null) {
+			peak = PeakBuilderCSD.createPeak(chromatogram, scanRange, intensityRange.getStartIntensity(), intensityRange.getStopIntensity());
+		} else {
+			peak = PeakBuilderCSD.createPeak(chromatogram, scanRange, includeBackground);
+		}
+
 		return peak;
 	}
 
