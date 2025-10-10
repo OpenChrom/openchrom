@@ -47,7 +47,7 @@
 			<dependency>
 				<groupId>us.hebi.matlab.mat</groupId>
 				<artifactId>mfl-core</artifactId>
-				<version>0.5.8</version>
+				<version>0.5.15</version>
 				<type>jar</type>
 			</dependency>
 		</dependencies>
