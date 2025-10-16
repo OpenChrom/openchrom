@@ -6,7 +6,7 @@
    <aboutInfo>
       <image path="/net.openchrom.rcp.compilation.community.ui/icons/about_250x330.png"/>
       <text>
-         OpenChrom (McLafferty) - the open source software for chromatography and spectrometry
+         %aboutPlaceholder
       </text>
    </aboutInfo>
 

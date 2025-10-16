@@ -27,6 +27,11 @@
 		<tycho.groupid>org.eclipse.tycho</tycho.groupid>
 		<maven.groupid>org.apache.maven.plugins</maven.groupid>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!-- about dialog -->
+		<maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
+		<buildTimestamp>${maven.build.timestamp}</buildTimestamp>
+		<buildId>${buildTimestamp}</buildId>
+		<releaseName>1.5.28</releaseName>
 	</properties>
 
 	<repositories>
@@ -161,12 +166,12 @@
 				<version>${tycho.version}</version>
 				<configuration>
 					<additionalFileSets>
-					<fileSet>
-						<directory>${project.build.directory}</directory>
-						<includes>
-							<include>about.mappings</include>
-						</includes>
-					</fileSet>
+						<fileSet>
+							<directory>${project.build.directory}</directory>
+							<includes>
+								<include>about.mappings</include>
+							</includes>
+						</fileSet>
 					</additionalFileSets>
 				</configuration>
 			</plugin>

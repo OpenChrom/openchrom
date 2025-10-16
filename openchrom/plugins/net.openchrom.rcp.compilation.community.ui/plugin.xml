@@ -12,7 +12,7 @@
          </property>
          <property
                name="aboutText"
-               value="OpenChrom (McLafferty) - the open source software for chromatography and spectrometry">
+               value="%aboutPlaceholder">
          </property>
          <property
                name="aboutImage"
