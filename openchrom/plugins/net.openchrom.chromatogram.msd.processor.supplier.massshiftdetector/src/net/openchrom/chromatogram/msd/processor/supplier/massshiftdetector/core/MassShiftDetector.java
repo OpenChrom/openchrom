@@ -352,7 +352,7 @@ public class MassShiftDetector {
 		IExtractedIonSignals extractedIonSignals = extractedIonSignalExtractor.getExtractedIonSignals(startScan, stopScan);
 		if(processorSettings.isNormalizeData()) {
 			for(IExtractedIonSignal extractedIonSignal : extractedIonSignals.getExtractedIonSignals()) {
-				extractedIonSignal.normalize(NORMALIZATION_BASE);
+				extractedIonSignal.normalizeIntensity(NORMALIZATION_BASE);
 			}
 		}
 		return extractedIonSignals;
