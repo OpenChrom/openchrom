@@ -70,7 +70,8 @@ public class FeatureCheck implements IStartup {
 			"net.openchrom.msd.converter.supplier.shimadzu.lcd", //
 			"net.openchrom.xxd.converter.supplier.dataapex", //
 			"net.openchrom.msd.converter.supplier.leco.peg", //
-			"net.openchrom.msd.converter.supplier.leco.smp", //
+			"net.openchrom.msd.converter.supplier.leco.smp.1d", //
+			"net.openchrom.msd.converter.supplier.leco.smp.2d", //
 			"net.openchrom.csd.converter.supplier.ezchrom", //
 			"net.openchrom.wsd.converter.supplier.camag", //
 			"net.openchrom.csd.converter.supplier.moduvision", //
