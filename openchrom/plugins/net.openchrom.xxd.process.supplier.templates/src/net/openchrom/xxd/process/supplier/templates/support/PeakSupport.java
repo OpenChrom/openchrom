@@ -43,6 +43,7 @@ import org.eclipse.chemclipse.msd.model.core.IChromatogramPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.core.support.PeakBuilderMSD;
+import org.eclipse.chemclipse.msd.model.implementation.ChromatogramPeakMSD;
 import org.eclipse.chemclipse.msd.model.support.HighResolutionSupport;
 import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
 import org.eclipse.chemclipse.support.traces.DetectorType;
@@ -374,6 +375,16 @@ public class PeakSupport {
 			} else {
 				peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, includeBackground, traceSet, MarkedTraceModus.EXCLUDE);
 			}
+			/*
+			 * Remove the reference chromatogram / free memory
+			 */
+			if(peak != null) {
+				if(peak instanceof ChromatogramPeakMSD peakMSD) {
+					peakMSD.setChromatogram(chromatogram);
+				}
+			}
+			chromatogram.getReferencedChromatograms().remove(chromatogramMSD);
+			chromatogramMSD = null;
 		}
 
 		return peak;
