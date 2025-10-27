@@ -8,3 +8,4 @@ Bundle-Vendor: ChemClipse
 Fragment-Host: net.openchrom.xxd.identifier.supplier.cdk;bundle-version="0.8.0"
 Import-Package: org.junit.jupiter.api;version="5.12.2"
 Bundle-RequiredExecutionEnvironment: JavaSE-21
+Require-Bundle: net.openchrom.xxd.identifier.supplier.cdk.ui
