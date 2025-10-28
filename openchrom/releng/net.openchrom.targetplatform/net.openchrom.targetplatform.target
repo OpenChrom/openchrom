@@ -102,7 +102,7 @@
 			</dependency>
 		</dependencies>
 	</location>
-	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" label="edu.ucar" missingManifest="generate" type="Maven">
+	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" label="edu.ucar:unidata" missingManifest="generate" type="Maven">
 		<dependencies>
 			<dependency>
 				<groupId>edu.ucar</groupId>
@@ -120,7 +120,7 @@
 		<repositories>
 			<repository>
 				<id>Unidata All</id>
-				<url>https://artifacts.unidata.ucar.edu/repository/unidata-all/</url>
+				<url>https://artifacts.unidata.ucar.edu/repository/unidata-releases/</url>
 			</repository>
 		</repositories>
 	</location>
