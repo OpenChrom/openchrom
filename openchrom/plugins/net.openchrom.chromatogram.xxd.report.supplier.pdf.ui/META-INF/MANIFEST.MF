@@ -28,7 +28,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.swtchart;bundle-version="1.1.0",
  org.eclipse.swtchart.extensions;bundle-version="1.1.0",
  org.eclipse.swtchart.export;bundle-version="1.1.0",
- net.openchrom.swtchart.extension.export.vectorgraphics;bundle-version="1.5.1",
+ net.openchrom.swtchart.extension.export.vectorgraphics;bundle-version="1.5.31",
  org.eclipse.chemclipse.rcp.ui.icons;bundle-version="0.9.0",
  org.eclipse.chemclipse.xxd.process.ui;bundle-version="0.9.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-21
