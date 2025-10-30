@@ -19,6 +19,7 @@
       <vmArgs>-Dapplication.name=OpenChrom
 -Dapplication.version=1.5.x
 -Dosgi.nl=en_US
+-Declipse.log.level=WARNING
 -Dosgi.instance.area=@user.home/OpenChrom/1.5.x
 -Dosgi.user.area=@user.home/.openchrom/1.5.x
 -Dorg.eclipse.update.reconcile=false
