@@ -120,6 +120,12 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 		if(!reader.exists(Mz5.SPECTRUM_INDEX) || !reader.exists(Mz5.SPECTRUM_MZ) || !reader.exists(Mz5.SPECTRUM_INTENSITY)) {
 			return;
 		}
+
+		int scanStartTimeReference = getScanStartTimeReference(cvReferences);
+		int spectrumTitleReferenceID = getSpectrumTitleReference(cvReferences);
+		int massSpectrumLevelReferenceID = getMassSpectrumLevelReference(cvReferences);
+		int selectedIonRefID = getSelectedIonReference(cvReferences);
+
 		int[] spectrumIndex = reader.readIntArray(Mz5.SPECTRUM_INDEX);
 		int[] retentionTimes = new int[spectrumIndex.length];
 		String[] spectrumTitles = new String[spectrumIndex.length];
@@ -127,18 +133,18 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 		double[] selectedIon = new double[spectrumIndex.length];
 		int p = 0;
 		for(CVParam cvParam : cvParams) {
-			if(cvParam.cvRefID == getScanStartTimeReference(cvReferences)) {
+			if(scanStartTimeReference >= 0 && cvParam.cvRefID == scanStartTimeReference) {
 				CVReference unit = cvReferences[cvParam.uRefID];
 				retentionTimes[p] = Math.round(Float.parseFloat(cvParam.value) * getTimeMultiplicator(unit));
 				p++;
 			}
-			if(cvParam.cvRefID == getSpectrumTitleReference(cvReferences)) {
+			if(spectrumTitleReferenceID >= 0 && cvParam.cvRefID == spectrumTitleReferenceID) {
 				spectrumTitles[p] = cvParam.value;
 			}
-			if(cvParam.cvRefID == getMassSpectrumLevelReference(cvReferences)) {
+			if(massSpectrumLevelReferenceID >= 0 && cvParam.cvRefID == massSpectrumLevelReferenceID) {
 				msLevels[p] = Short.parseShort(cvParam.value);
 			}
-			if(cvParam.cvRefID == getSelectedIonReference(cvReferences)) {
+			if(selectedIonRefID >= 0 && cvParam.cvRefID == selectedIonRefID) {
 				selectedIon[p] = Double.parseDouble(cvParam.value);
 			}
 		}
@@ -180,7 +186,8 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 
 		int timeMultiplicator = 1; // miliseconds
 		for(CVParam cvParam : cvParams) {
-			if(cvParam.cvRefID == getTimeArrayReference(cvReferences)) {
+			int timeArrayRefID = getTimeArrayReference(cvReferences);
+			if(timeArrayRefID >= 0 && cvParam.cvRefID == timeArrayRefID) {
 				CVReference unit = cvReferences[cvParam.uRefID];
 				timeMultiplicator = getTimeMultiplicator(unit);
 			}
@@ -190,7 +197,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 
 	private int getMassSpectrumLevelReference(CVReference[] cvReferences) {
 
-		int msLevelReference = 0;
+		int msLevelReference = -1;
 		for(int c = 0; c < cvReferences.length; c++) {
 			if(cvReferences[c].accession == 1000511 && cvReferences[c].name.equals("ms level")) {
 				msLevelReference = c;
@@ -201,7 +208,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 
 	private int getSpectrumTitleReference(CVReference[] cvReferences) {
 
-		int spectrumTitleReference = 0;
+		int spectrumTitleReference = -1;
 		for(int c = 0; c < cvReferences.length; c++) {
 			if(cvReferences[c].accession == 1000796 && cvReferences[c].name.equals("spectrum title")) {
 				spectrumTitleReference = c;
@@ -212,7 +219,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 
 	private int getScanStartTimeReference(CVReference[] cvReferences) {
 
-		int scanStartTime = 0;
+		int scanStartTime = -1;
 		for(int c = 0; c < cvReferences.length; c++) {
 			if(cvReferences[c].accession == 1000016 && cvReferences[c].name.equals("scan start time")) {
 				scanStartTime = c;
@@ -223,7 +230,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 
 	private int getTimeArrayReference(CVReference[] cvReferences) {
 
-		int scanStartTime = 0;
+		int scanStartTime = -1;
 		for(int c = 0; c < cvReferences.length; c++) {
 			if(cvReferences[c].accession == 1000595 && cvReferences[c].name.equals("time array")) {
 				scanStartTime = c;
@@ -258,7 +265,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 
 	private int getSelectedIonReference(CVReference[] cvReferences) {
 
-		int selectedIonRef = 0;
+		int selectedIonRef = -1;
 		for(int c = 0; c < cvReferences.length; c++) {
 			if(cvReferences[c].accession == 1000744 && cvReferences[c].name.equals("selected ion m/z")) {
 				selectedIonRef = c;
