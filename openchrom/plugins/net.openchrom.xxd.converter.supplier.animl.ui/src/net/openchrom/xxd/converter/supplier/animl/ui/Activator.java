@@ -12,6 +12,9 @@
  *******************************************************************************/
 package net.openchrom.xxd.converter.supplier.animl.ui;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.chemclipse.support.ui.activator.AbstractActivatorUI;
 import org.osgi.framework.BundleContext;
 
@@ -19,6 +22,7 @@ import net.openchrom.xxd.converter.supplier.animl.preferences.PreferenceSupplier
 
 public class Activator extends AbstractActivatorUI {
 
+	public static String ICON_IMAGE = "icon";
 	/*
 	 * Instance
 	 */
@@ -34,6 +38,7 @@ public class Activator extends AbstractActivatorUI {
 		super.start(context);
 		plugin = this;
 		initializePreferenceStore(PreferenceSupplier.INSTANCE());
+		initializeImageRegistry(getImageHashMap());
 	}
 
 	/*
@@ -55,5 +60,12 @@ public class Activator extends AbstractActivatorUI {
 	public static AbstractActivatorUI getDefault() {
 
 		return plugin;
+	}
+
+	private Map<String, String> getImageHashMap() {
+
+		Map<String, String> imageHashMap = new HashMap<>();
+		imageHashMap.put(ICON_IMAGE, "icons/16x16/parrot.png"); // $NON-NLS-1$
+		return imageHashMap;
 	}
 }

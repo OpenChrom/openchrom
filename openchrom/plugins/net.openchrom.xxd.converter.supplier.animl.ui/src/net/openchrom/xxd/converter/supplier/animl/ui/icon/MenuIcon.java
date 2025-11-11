@@ -12,17 +12,16 @@
  *******************************************************************************/
 package net.openchrom.xxd.converter.supplier.animl.ui.icon;
 
-import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
-import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
-import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.chemclipse.xxd.process.ui.menu.IMenuIcon;
 import org.eclipse.swt.graphics.Image;
+
+import net.openchrom.xxd.converter.supplier.animl.ui.Activator;
 
 public class MenuIcon implements IMenuIcon {
 
 	@Override
 	public Image getImage() {
 
-		return ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_XML_FILE, IApplicationImageProvider.SIZE_16x16);
+		return Activator.getDefault().getImage(Activator.ICON_IMAGE);
 	}
 }
