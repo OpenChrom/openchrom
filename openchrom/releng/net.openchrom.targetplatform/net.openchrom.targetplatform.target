@@ -38,7 +38,7 @@
 		<unit id="org.apache.xmlbeans"/>
 	</location>
 	<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-		<repository location="https://download.eclipse.org/nebula/updates/release/3.1.1/"/>
+		<repository location="https://download.eclipse.org/nebula/updates/release/3.2.0/"/>
 		<unit id="org.eclipse.nebula.feature.feature.group"/>
 		<unit id="org.eclipse.nebula.widgets.richtext.feature.feature.group"/>
 	</location>
@@ -102,7 +102,7 @@
 			</dependency>
 		</dependencies>
 	</location>
-	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" label="edu.ucar:unidata" missingManifest="generate" type="Maven">
+	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" label="edu.ucar" missingManifest="generate" type="Maven">
 		<dependencies>
 			<dependency>
 				<groupId>edu.ucar</groupId>
@@ -119,8 +119,8 @@
 		</dependencies>
 		<repositories>
 			<repository>
-				<id>Unidata Releases</id>
-				<url>https://mirror.openchrom.net/ucar/unidata-releases/</url>
+				<id>Unidata All</id>
+				<url>https://artifacts.unidata.ucar.edu/repository/unidata-all/</url>
 			</repository>
 		</repositories>
 	</location>
