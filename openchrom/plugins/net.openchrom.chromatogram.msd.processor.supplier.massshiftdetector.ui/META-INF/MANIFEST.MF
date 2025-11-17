@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.chromatogram.msd.processor.supplier.massshi
 Bundle-ManifestVersion: 2
 Bundle-Name: Mass Shift Detector (UI)
 Bundle-SymbolicName: net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui;singleton:=true
-Bundle-Version: 1.5.32.qualifier
+Bundle-Version: 1.5.33.qualifier
 Bundle-Activator: net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.ui,
