@@ -13,6 +13,7 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.mzmlb.internal.io;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
 
@@ -24,27 +25,47 @@ import net.openchrom.msd.converter.supplier.mzmlb.model.IVendorIon;
 import net.openchrom.msd.converter.supplier.mzmlb.model.IVendorScanProxy;
 import net.openchrom.msd.converter.supplier.mzmlb.model.VendorIon;
 
+import ch.systemsx.cisd.hdf5.HDF5Factory;
 import ch.systemsx.cisd.hdf5.IHDF5SimpleReader;
 
 public class ReaderProxy implements IReaderProxy {
 
-	@Override
-	public void readMassSpectrum(IHDF5SimpleReader reader, IScanMarker scanMarker, IVendorScanProxy massSpectrum, IProgressMonitor monitor) throws IOException {
+	private double[] mzs = null;
+	private float[] intensities = null;
 
-		double[] mzs = null;
-		String mzDataset = scanMarker.getMassesDataset();
-		if(mzDataset.contains("float64")) {
-			mzs = reader.readDoubleArray(mzDataset);
-		} else if(mzDataset.contains("float32")) {
-			mzs = floatsToDoubles(reader.readFloatArray(mzDataset));
+	private File file;
+
+	public ReaderProxy(File file) {
+
+		this.file = file;
+	}
+
+	public void setMzDataset(String mzDataset) {
+
+		try (IHDF5SimpleReader reader = HDF5Factory.openForReading(file)) {
+			if(mzDataset.contains("float64")) {
+				mzs = reader.readDoubleArray(mzDataset);
+			} else if(mzDataset.contains("float32")) {
+				mzs = floatsToDoubles(reader.readFloatArray(mzDataset));
+			}
 		}
-		float[] intensities = null;
-		String intensityDataset = scanMarker.getIntensitiesDataset();
-		if(intensityDataset.contains("float64")) {
-			intensities = doublesToFloats(reader.readDoubleArray(intensityDataset));
-		} else if(intensityDataset.contains("float32")) {
-			intensities = reader.readFloatArray(intensityDataset);
+	}
+
+	public void setIntensityDataset(String intensityDataset) {
+
+		try (IHDF5SimpleReader reader = HDF5Factory.openForReading(file)) {
+
+			if(intensityDataset.contains("float64")) {
+				intensities = doublesToFloats(reader.readDoubleArray(intensityDataset));
+			} else if(intensityDataset.contains("float32")) {
+				intensities = reader.readFloatArray(intensityDataset);
+			}
 		}
+	}
+
+	@Override
+	public void readMassSpectrum(IScanMarker scanMarker, IVendorScanProxy massSpectrum, IProgressMonitor monitor) throws IOException {
+
 		for(int i = scanMarker.getOffset(); i < scanMarker.getOffset() + scanMarker.getLength(); i++) {
 			float abundance = Array.getFloat(intensities, i);
 			double mz = Array.getDouble(mzs, i);

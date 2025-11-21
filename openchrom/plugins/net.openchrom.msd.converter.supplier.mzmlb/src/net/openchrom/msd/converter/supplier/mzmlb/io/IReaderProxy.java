@@ -19,9 +19,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import net.openchrom.msd.converter.supplier.mzmlb.io.support.IScanMarker;
 import net.openchrom.msd.converter.supplier.mzmlb.model.IVendorScanProxy;
 
-import ch.systemsx.cisd.hdf5.IHDF5SimpleReader;
-
 public interface IReaderProxy {
 
-	void readMassSpectrum(IHDF5SimpleReader reader, IScanMarker scanMarker, IVendorScanProxy massSpectrum, IProgressMonitor monitor) throws IOException;
+	void readMassSpectrum(IScanMarker scanMarker, IVendorScanProxy massSpectrum, IProgressMonitor monitor) throws IOException;
 }

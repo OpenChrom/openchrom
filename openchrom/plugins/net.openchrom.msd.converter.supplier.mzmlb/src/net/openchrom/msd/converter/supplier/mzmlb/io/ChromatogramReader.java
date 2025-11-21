@@ -39,6 +39,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import net.openchrom.msd.converter.supplier.mzmlb.internal.io.ReaderProxy;
 import net.openchrom.msd.converter.supplier.mzmlb.io.support.IScanMarker;
 import net.openchrom.msd.converter.supplier.mzmlb.io.support.ScanMarker;
 import net.openchrom.msd.converter.supplier.mzmlb.model.IVendorChromatogram;
@@ -67,27 +68,37 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 	public IChromatogramMSD read(File file, IProgressMonitor monitor) throws IOException {
 
 		IVendorChromatogram chromatogram = null;
+
 		try (IHDF5SimpleReader reader = HDF5Factory.openForReading(file)) {
 			byte[] xml = reader.readAsByteArray("mzML");
+
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			documentBuilderFactory.setNamespaceAware(true);
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+
 			InputStream inputStream = new ByteArrayInputStream(xml);
 			Document document = documentBuilder.parse(inputStream);
 			NodeList topNode = document.getElementsByTagName("mzML");
+
 			JAXBContext jaxbContext = JAXBContext.newInstance(MzMLType.class);
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 			MzMLType mzML = (MzMLType)unmarshaller.unmarshal(topNode.item(0));
-			RunType run = mzML.getRun();
+
 			chromatogram = new VendorChromatogram();
 			chromatogram.setFile(file);
+
+			RunType run = mzML.getRun();
 			SpectrumListType spectrumList = run.getSpectrumList();
+
+			String intensityDataset = null;
+			String mzDataset = null;
+
+			ReaderProxy scanReaderProxy = new ReaderProxy(file);
+
 			for(SpectrumType spectrum : spectrumList.getSpectrum()) {
 				float abundance = 0.0f;
 				int retentionTime = 0;
 				short msLevel = 0;
-				String intensityDataset = null;
-				String mzDataset = null;
 				int length = 0;
 				int offset = 0;
 				for(CVParamType cvParamSpectrum : spectrum.getCvParam()) {
@@ -133,15 +144,21 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 						}
 					}
 				}
-				IScanMarker scanMarker = new ScanMarker(mzDataset, intensityDataset, length, offset);
-				IVendorScanProxy scanProxy = new VendorScanProxy(file, scanMarker);
+
+				IScanMarker scanMarker = new ScanMarker(length, offset);
+
+				IVendorScanProxy scanProxy = new VendorScanProxy(scanMarker, scanReaderProxy);
 				scanProxy.setScanNumber(spectrum.getIndex().intValue());
 				scanProxy.setIdentifier(spectrum.getId());
 				scanProxy.setRetentionTime(retentionTime);
 				scanProxy.setMassSpectrometer(msLevel);
 				scanProxy.setTotalSignal(abundance);
+
 				chromatogram.addScan(scanProxy);
 			}
+
+			scanReaderProxy.setMzDataset(mzDataset);
+			scanReaderProxy.setIntensityDataset(intensityDataset);
 		} catch(HDF5LibraryException e) {
 			logger.error(e);
 		} catch(ParserConfigurationException e) {
