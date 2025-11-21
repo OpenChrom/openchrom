@@ -14,8 +14,7 @@ package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.w
 
 import java.util.Date;
 
-import jakarta.xml.bind.JAXBException;
-
+import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.support.ui.wizards.AbstractFileWizard;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -26,7 +25,11 @@ import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.core.
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.io.ProcessorModelWriter;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IProcessorModel;
 
+import jakarta.xml.bind.JAXBException;
+
 public class WizardProcessor extends AbstractFileWizard implements INewWizard {
+
+	private static final Logger logger = Logger.getLogger(WizardProcessor.class);
 
 	private IProcessorWizardElements wizardElements = new ProcessorWizardElements();
 
@@ -34,6 +37,7 @@ public class WizardProcessor extends AbstractFileWizard implements INewWizard {
 	private PageSettings pageSettings;
 
 	public WizardProcessor() {
+
 		super("MassShiftDetector" + new Date().getTime(), MassShiftDetector.PROCESSOR_FILE_EXTENSION);
 	}
 
@@ -72,7 +76,7 @@ public class WizardProcessor extends AbstractFileWizard implements INewWizard {
 			ProcessorModelWriter processorModelWriter = new ProcessorModelWriter();
 			processorModelWriter.write(file.getLocation().toFile(), processorModel, monitor);
 		} catch(JAXBException e) {
-			System.out.println(e);
+			logger.error(e);
 		}
 		/*
 		 * Refresh
