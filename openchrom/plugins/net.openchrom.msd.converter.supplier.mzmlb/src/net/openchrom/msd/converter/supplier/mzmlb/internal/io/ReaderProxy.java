@@ -70,7 +70,7 @@ public class ReaderProxy implements IReaderProxy {
 			float abundance = Array.getFloat(intensities, i);
 			double mz = Array.getDouble(mzs, i);
 			IVendorIon ion = new VendorIon(mz, abundance);
-			massSpectrum.addIon(ion);
+			massSpectrum.addIon(ion, false);
 		}
 	}
 
