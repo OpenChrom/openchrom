@@ -12,43 +12,19 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.mzmlb.io.support;
 
+import net.openchrom.msd.converter.supplier.mzmlb.io.IReaderProxy;
+
 public class ScanMarker implements IScanMarker {
 
-	private String massesDataset;
-	private String intensitiesDataset;
 	private int length;
 	private int offset;
 
-	public ScanMarker(String massesDataset, String intensitiesDataset, int length, int offset) {
+	private IReaderProxy readerProxy;
 
-		this.massesDataset = massesDataset;
-		this.intensitiesDataset = intensitiesDataset;
+	public ScanMarker(int length, int offset) {
+
 		this.length = length;
 		this.offset = offset;
-	}
-
-	@Override
-	public String getIntensitiesDataset() {
-
-		return intensitiesDataset;
-	}
-
-	@Override
-	public void setIntensitiesDataset(String intensitiesDataset) {
-
-		this.intensitiesDataset = intensitiesDataset;
-	}
-
-	@Override
-	public String getMassesDataset() {
-
-		return massesDataset;
-	}
-
-	@Override
-	public void setMassesDataset(String massesDataset) {
-
-		this.massesDataset = massesDataset;
 	}
 
 	@Override

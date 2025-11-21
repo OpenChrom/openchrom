@@ -14,14 +14,6 @@ package net.openchrom.msd.converter.supplier.mzmlb.io.support;
 
 public interface IScanMarker {
 
-	String getMassesDataset();
-
-	void setMassesDataset(String massesDataset);
-
-	String getIntensitiesDataset();
-
-	void setIntensitiesDataset(String intensityDataset);
-
 	int getLength();
 
 	void setLength(int length);
