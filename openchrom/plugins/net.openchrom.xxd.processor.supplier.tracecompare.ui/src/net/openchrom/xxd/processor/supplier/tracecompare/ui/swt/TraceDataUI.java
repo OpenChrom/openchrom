@@ -19,20 +19,21 @@ import java.util.Locale;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swtchart.IAxis.Position;
+import org.eclipse.swtchart.LineStyle;
 import org.eclipse.swtchart.extensions.axisconverter.PercentageConverter;
 import org.eclipse.swtchart.extensions.core.IChartSettings;
 import org.eclipse.swtchart.extensions.core.IPrimaryAxisSettings;
 import org.eclipse.swtchart.extensions.core.ISecondaryAxisSettings;
 import org.eclipse.swtchart.extensions.core.SecondaryAxisSettings;
 import org.eclipse.swtchart.extensions.linecharts.LineChart;
-import org.eclipse.swtchart.IAxis.Position;
-import org.eclipse.swtchart.LineStyle;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.ui.converter.MillisecondsToMillimeterConverter;
 
 public class TraceDataUI extends LineChart {
 
 	public TraceDataUI(Composite parent, int style) {
+
 		super(parent, style);
 		createControl();
 	}
@@ -44,41 +45,37 @@ public class TraceDataUI extends LineChart {
 
 	private void configureChart() {
 
-		try {
-			IChartSettings chartSettings = getChartSettings();
+		IChartSettings chartSettings = getChartSettings();
 
-			IPrimaryAxisSettings primaryAxisSettingsX = chartSettings.getPrimaryAxisSettingsX();
-			primaryAxisSettingsX.setTitle("Time [ms]");
-			primaryAxisSettingsX.setDecimalFormat(new DecimalFormat(("0.0##"), new DecimalFormatSymbols(Locale.ENGLISH)));
-			primaryAxisSettingsX.setColor(Display.getDefault().getSystemColor(SWT.COLOR_BLACK));
-			primaryAxisSettingsX.setPosition(Position.Secondary);
-			primaryAxisSettingsX.setGridLineStyle(LineStyle.NONE);
-			primaryAxisSettingsX.setVisible(false);
+		IPrimaryAxisSettings primaryAxisSettingsX = chartSettings.getPrimaryAxisSettingsX();
+		primaryAxisSettingsX.setTitle("Time [ms]");
+		primaryAxisSettingsX.setDecimalFormat(new DecimalFormat(("0.0##"), new DecimalFormatSymbols(Locale.ENGLISH)));
+		primaryAxisSettingsX.setColor(Display.getDefault().getSystemColor(SWT.COLOR_BLACK));
+		primaryAxisSettingsX.setPosition(Position.Secondary);
+		primaryAxisSettingsX.setGridLineStyle(LineStyle.NONE);
+		primaryAxisSettingsX.setVisible(false);
 
-			IPrimaryAxisSettings primaryAxisSettingsY = chartSettings.getPrimaryAxisSettingsY();
-			primaryAxisSettingsY.setTitle("Intensity [counts]");
-			primaryAxisSettingsY.setDecimalFormat(new DecimalFormat(("0.0#E0"), new DecimalFormatSymbols(Locale.ENGLISH)));
-			primaryAxisSettingsY.setColor(Display.getDefault().getSystemColor(SWT.COLOR_BLACK));
-			primaryAxisSettingsY.setGridLineStyle(LineStyle.NONE);
-			primaryAxisSettingsY.setVisible(false);
+		IPrimaryAxisSettings primaryAxisSettingsY = chartSettings.getPrimaryAxisSettingsY();
+		primaryAxisSettingsY.setTitle("Intensity [counts]");
+		primaryAxisSettingsY.setDecimalFormat(new DecimalFormat(("0.0#E0"), new DecimalFormatSymbols(Locale.ENGLISH)));
+		primaryAxisSettingsY.setColor(Display.getDefault().getSystemColor(SWT.COLOR_BLACK));
+		primaryAxisSettingsY.setGridLineStyle(LineStyle.NONE);
+		primaryAxisSettingsY.setVisible(false);
 
-			ISecondaryAxisSettings secondaryAxisSettingsX = new SecondaryAxisSettings("Distance [mm]", "mm", new MillisecondsToMillimeterConverter());
-			secondaryAxisSettingsX.setPosition(Position.Primary);
-			secondaryAxisSettingsX.setDecimalFormat(new DecimalFormat(("0.00"), new DecimalFormatSymbols(Locale.ENGLISH)));
-			secondaryAxisSettingsX.setColor(Display.getDefault().getSystemColor(SWT.COLOR_BLACK));
-			secondaryAxisSettingsX.setVisible(true);
-			chartSettings.getSecondaryAxisSettingsListX().add(secondaryAxisSettingsX);
+		ISecondaryAxisSettings secondaryAxisSettingsX = new SecondaryAxisSettings("Distance [mm]", "mm", new MillisecondsToMillimeterConverter());
+		secondaryAxisSettingsX.setPosition(Position.Primary);
+		secondaryAxisSettingsX.setDecimalFormat(new DecimalFormat(("0.00"), new DecimalFormatSymbols(Locale.ENGLISH)));
+		secondaryAxisSettingsX.setColor(Display.getDefault().getSystemColor(SWT.COLOR_BLACK));
+		secondaryAxisSettingsX.setVisible(true);
+		chartSettings.getSecondaryAxisSettingsListX().add(secondaryAxisSettingsX);
 
-			ISecondaryAxisSettings secondaryAxisSettingsY = new SecondaryAxisSettings("Int [%]", "Relative Intensity [%]", new PercentageConverter(SWT.VERTICAL, true));
-			secondaryAxisSettingsY.setPosition(Position.Secondary);
-			secondaryAxisSettingsY.setDecimalFormat(new DecimalFormat(("0.00"), new DecimalFormatSymbols(Locale.ENGLISH)));
-			secondaryAxisSettingsY.setColor(Display.getDefault().getSystemColor(SWT.COLOR_BLACK));
-			secondaryAxisSettingsY.setVisible(false);
-			chartSettings.getSecondaryAxisSettingsListY().add(secondaryAxisSettingsY);
+		ISecondaryAxisSettings secondaryAxisSettingsY = new SecondaryAxisSettings("Int [%]", "Relative Intensity [%]", new PercentageConverter(SWT.VERTICAL, true));
+		secondaryAxisSettingsY.setPosition(Position.Secondary);
+		secondaryAxisSettingsY.setDecimalFormat(new DecimalFormat(("0.00"), new DecimalFormatSymbols(Locale.ENGLISH)));
+		secondaryAxisSettingsY.setColor(Display.getDefault().getSystemColor(SWT.COLOR_BLACK));
+		secondaryAxisSettingsY.setVisible(false);
+		chartSettings.getSecondaryAxisSettingsListY().add(secondaryAxisSettingsY);
 
-			applySettings(chartSettings);
-		} catch(Exception e) {
-			System.out.println(e);
-		}
+		applySettings(chartSettings);
 	}
 }
