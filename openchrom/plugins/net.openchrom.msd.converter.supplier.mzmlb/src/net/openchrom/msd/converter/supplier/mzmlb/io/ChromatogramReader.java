@@ -26,6 +26,7 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.msd.converter.io.IChromatogramMSDReader;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
+import org.eclipse.chemclipse.msd.model.core.Polarity;
 import org.eclipse.chemclipse.xxd.converter.supplier.mzml.io.XmlReader110;
 import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.BinaryDataArrayType;
 import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.CVParamType;
@@ -101,12 +102,18 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 				short msLevel = 0;
 				int length = 0;
 				int offset = 0;
+				Polarity polarity = Polarity.NONE;
 				for(CVParamType cvParamSpectrum : spectrum.getCvParam()) {
 					if(cvParamSpectrum.getAccession().equals("MS:1000285") && cvParamSpectrum.getName().equals("total ion current")) {
 						abundance = Float.parseFloat(cvParamSpectrum.getValue());
 					}
 					if(cvParamSpectrum.getAccession().equals("MS:1000511") && cvParamSpectrum.getName().equals("ms level")) {
 						msLevel = Short.parseShort(cvParamSpectrum.getValue());
+					}
+					if(cvParamSpectrum.getAccession().equals("MS:1000129") && cvParamSpectrum.getName().equals("negative scan")) {
+						polarity = Polarity.NEGATIVE;
+					} else if(cvParamSpectrum.getAccession().equals("MS:1000130") && cvParamSpectrum.getName().equals("positive scan")) {
+						polarity = Polarity.POSITIVE;
 					}
 					for(ScanType scan : spectrum.getScanList().getScan()) {
 						for(CVParamType cvParamScan : scan.getCvParam()) {
@@ -153,6 +160,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 				scanProxy.setRetentionTime(retentionTime);
 				scanProxy.setMassSpectrometer(msLevel);
 				scanProxy.setTotalSignal(abundance);
+				scanProxy.setPolarity(polarity);
 
 				chromatogram.addScan(scanProxy);
 			}
