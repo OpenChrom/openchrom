@@ -17,12 +17,6 @@ public class ScanMarker implements IScanMarker {
 	private int length;
 	private int offset;
 
-	public ScanMarker(int length, int offset) {
-
-		this.length = length;
-		this.offset = offset;
-	}
-
 	@Override
 	public int getLength() {
 

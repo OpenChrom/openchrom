@@ -34,11 +34,15 @@ public class VendorScanProxy extends AbstractRegularMassSpectrumProxy implements
 	private IScanMarker scanMarker;
 	private IReaderProxy readerProxy;
 
-	public VendorScanProxy(IScanMarker scanMarker, IReaderProxy readerProxy, IProgressMonitor monitor) {
+	public VendorScanProxy(IReaderProxy readerProxy, IProgressMonitor monitor) {
 
 		super(monitor);
-		this.scanMarker = scanMarker;
 		this.readerProxy = readerProxy;
+	}
+
+	public void setScanMarker(IScanMarker scanMarker) {
+
+		this.scanMarker = scanMarker;
 	}
 
 	@Override

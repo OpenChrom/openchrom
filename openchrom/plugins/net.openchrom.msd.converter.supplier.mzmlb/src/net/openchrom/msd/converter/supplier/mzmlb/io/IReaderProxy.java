@@ -21,5 +21,9 @@ import net.openchrom.msd.converter.supplier.mzmlb.model.IVendorScanProxy;
 
 public interface IReaderProxy {
 
+	void setMzDataset(String mzDataset);
+
+	void setIntensityDataset(String intensityDataset);
+
 	void readMassSpectrum(IScanMarker scanMarker, IVendorScanProxy massSpectrum, IProgressMonitor monitor) throws IOException;
 }

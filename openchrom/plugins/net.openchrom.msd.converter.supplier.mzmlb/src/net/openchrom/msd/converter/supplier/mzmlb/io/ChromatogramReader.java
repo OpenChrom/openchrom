@@ -22,6 +22,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.chemclipse.converter.io.AbstractChromatogramReader;
+import org.eclipse.chemclipse.converter.l10n.ConverterMessages;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.msd.converter.io.IChromatogramMSDReader;
@@ -90,83 +91,22 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 
 			RunType run = mzML.getRun();
 			SpectrumListType spectrumList = run.getSpectrumList();
+			IReaderProxy readerProxy = new ReaderProxy(file);
 
-			String intensityDataset = null;
-			String mzDataset = null;
-
-			ReaderProxy scanReaderProxy = new ReaderProxy(file);
-
+			monitor.beginTask(ConverterMessages.readScans, spectrumList.getCount().intValue());
 			for(SpectrumType spectrum : spectrumList.getSpectrum()) {
-				float abundance = 0.0f;
-				int retentionTime = 0;
-				short msLevel = 0;
-				int length = 0;
-				int offset = 0;
-				Polarity polarity = Polarity.NONE;
-				for(CVParamType cvParamSpectrum : spectrum.getCvParam()) {
-					if(cvParamSpectrum.getAccession().equals("MS:1000285") && cvParamSpectrum.getName().equals("total ion current")) {
-						abundance = Float.parseFloat(cvParamSpectrum.getValue());
-					}
-					if(cvParamSpectrum.getAccession().equals("MS:1000511") && cvParamSpectrum.getName().equals("ms level")) {
-						msLevel = Short.parseShort(cvParamSpectrum.getValue());
-					}
-					if(cvParamSpectrum.getAccession().equals("MS:1000129") && cvParamSpectrum.getName().equals("negative scan")) {
-						polarity = Polarity.NEGATIVE;
-					} else if(cvParamSpectrum.getAccession().equals("MS:1000130") && cvParamSpectrum.getName().equals("positive scan")) {
-						polarity = Polarity.POSITIVE;
-					}
-					for(ScanType scan : spectrum.getScanList().getScan()) {
-						for(CVParamType cvParamScan : scan.getCvParam()) {
-							if(cvParamScan.getAccession().equals("MS:1000016") && cvParamScan.getName().equals("scan start time")) {
-								float multiplicator = XmlReader110.getTimeMultiplicator(cvParamScan);
-								retentionTime = Math.round(Float.parseFloat(cvParamScan.getValue()) * multiplicator);
-							}
-						}
-					}
-					for(BinaryDataArrayType binaryDataArray : spectrum.getBinaryDataArrayList().getBinaryDataArray()) {
-						String dataSet = "";
-						boolean mzs = false;
-						boolean intensities = false;
-						for(CVParamType cvParamBinary : binaryDataArray.getCvParam()) {
-							if(cvParamBinary.getAccession().equals("MS:1002841") && cvParamBinary.getName().equals("external HDF5 dataset")) {
-								dataSet = cvParamBinary.getValue();
-							}
-							if(cvParamBinary.getAccession().equals("MS:1002842") && cvParamBinary.getName().equals("external offset")) {
-								offset = Integer.parseInt(cvParamBinary.getValue());
-							}
-							if(cvParamBinary.getAccession().equals("MS:1002843") && cvParamBinary.getName().equals("external array length")) {
-								length = Integer.parseInt(cvParamBinary.getValue());
-							}
-							if(cvParamBinary.getAccession().equals("MS:1000514") && cvParamBinary.getName().equals("m/z array")) {
-								mzs = true;
-							}
-							if(cvParamBinary.getAccession().equals("MS:1000515") && cvParamBinary.getName().equals("intensity array")) {
-								intensities = true;
-							}
-						}
-						if(mzs) {
-							mzDataset = dataSet;
-						} else if(intensities) {
-							intensityDataset = dataSet;
-						}
-					}
-				}
-
-				IScanMarker scanMarker = new ScanMarker(length, offset);
-
-				IVendorScanProxy scanProxy = new VendorScanProxy(scanMarker, scanReaderProxy, monitor);
+				IVendorScanProxy scanProxy = new VendorScanProxy(readerProxy, monitor);
 				scanProxy.setScanNumber(spectrum.getIndex().intValue());
 				scanProxy.setIdentifier(spectrum.getId());
-				scanProxy.setRetentionTime(retentionTime);
-				scanProxy.setMassSpectrometer(msLevel);
-				scanProxy.setTotalSignal(abundance);
-				scanProxy.setPolarity(polarity);
 
+				readSpectrumParameters(spectrum, scanProxy);
+				readScan(spectrum, scanProxy);
+
+				IScanMarker scanMarker = readBinaryData(spectrum, scanProxy, readerProxy);
+				scanProxy.setScanMarker(scanMarker);
 				chromatogram.addScan(scanProxy);
+				monitor.worked(1);
 			}
-
-			scanReaderProxy.setMzDataset(mzDataset);
-			scanReaderProxy.setIntensityDataset(intensityDataset);
 		} catch(HDF5LibraryException e) {
 			logger.error(e);
 		} catch(ParserConfigurationException e) {
@@ -178,5 +118,68 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 		}
 		monitor.done();
 		return chromatogram;
+	}
+
+	private void readSpectrumParameters(SpectrumType spectrum, IVendorScanProxy scanProxy) {
+
+		for(CVParamType cvParamSpectrum : spectrum.getCvParam()) {
+			if(cvParamSpectrum.getAccession().equals("MS:1000285") && cvParamSpectrum.getName().equals("total ion current")) {
+				scanProxy.setTotalSignal(Float.parseFloat(cvParamSpectrum.getValue()));
+			}
+			if(cvParamSpectrum.getAccession().equals("MS:1000511") && cvParamSpectrum.getName().equals("ms level")) {
+				scanProxy.setMassSpectrometer(Short.parseShort(cvParamSpectrum.getValue()));
+			}
+			if(cvParamSpectrum.getAccession().equals("MS:1000129") && cvParamSpectrum.getName().equals("negative scan")) {
+				scanProxy.setPolarity(Polarity.NEGATIVE);
+			} else if(cvParamSpectrum.getAccession().equals("MS:1000130") && cvParamSpectrum.getName().equals("positive scan")) {
+				scanProxy.setPolarity(Polarity.POSITIVE);
+			}
+		}
+	}
+
+	private void readScan(SpectrumType spectrum, IVendorScanProxy scanProxy) {
+
+		for(ScanType scan : spectrum.getScanList().getScan()) {
+			for(CVParamType cvParamScan : scan.getCvParam()) {
+				if(cvParamScan.getAccession().equals("MS:1000016") && cvParamScan.getName().equals("scan start time")) {
+					float multiplicator = XmlReader110.getTimeMultiplicator(cvParamScan);
+					int retentionTime = Math.round(Float.parseFloat(cvParamScan.getValue()) * multiplicator);
+					scanProxy.setRetentionTime(retentionTime);
+				}
+			}
+		}
+	}
+
+	private IScanMarker readBinaryData(SpectrumType spectrum, IVendorScanProxy scanProxy, IReaderProxy scanReaderProxy) {
+
+		IScanMarker scanMarker = new ScanMarker();
+		for(BinaryDataArrayType binaryDataArray : spectrum.getBinaryDataArrayList().getBinaryDataArray()) {
+			String dataSet = "";
+			boolean isMz = false;
+			boolean isIntensity = false;
+			for(CVParamType cvParamBinary : binaryDataArray.getCvParam()) {
+				if(cvParamBinary.getAccession().equals("MS:1002841") && cvParamBinary.getName().equals("external HDF5 dataset")) {
+					dataSet = cvParamBinary.getValue();
+				}
+				if(cvParamBinary.getAccession().equals("MS:1002842") && cvParamBinary.getName().equals("external offset")) {
+					scanMarker.setOffset(Integer.parseInt(cvParamBinary.getValue()));
+				}
+				if(cvParamBinary.getAccession().equals("MS:1002843") && cvParamBinary.getName().equals("external array length")) {
+					scanMarker.setLength(Integer.parseInt(cvParamBinary.getValue()));
+				}
+				if(cvParamBinary.getAccession().equals("MS:1000514") && cvParamBinary.getName().equals("m/z array")) {
+					isMz = true;
+				}
+				if(cvParamBinary.getAccession().equals("MS:1000515") && cvParamBinary.getName().equals("intensity array")) {
+					isIntensity = true;
+				}
+			}
+			if(isMz) {
+				scanReaderProxy.setMzDataset(dataSet);
+			} else if(isIntensity) {
+				scanReaderProxy.setIntensityDataset(dataSet);
+			}
+		}
+		return scanMarker;
 	}
 }

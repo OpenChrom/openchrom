@@ -8,11 +8,15 @@
  * SPDX-License-Identifier: EPL-2.0
  * 
  * Contributors:
- * Philip Wenig - initial API and implementation
+ * Matthias Mailänder - initial API and implementation
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.mzmlb.model;
 
 import org.eclipse.chemclipse.msd.model.core.IMassSpectrumProxy;
 
+import net.openchrom.msd.converter.supplier.mzmlb.io.support.IScanMarker;
+
 public interface IVendorScanProxy extends IVendorScan, IMassSpectrumProxy {
+
+	void setScanMarker(IScanMarker scanMarker);
 }

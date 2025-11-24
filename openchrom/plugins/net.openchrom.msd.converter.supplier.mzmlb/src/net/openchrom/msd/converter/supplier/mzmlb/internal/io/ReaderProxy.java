@@ -35,36 +35,48 @@ public class ReaderProxy implements IReaderProxy {
 
 	private File file;
 
+	private String mzDataset;
+	private String intensityDataset;
+
 	public ReaderProxy(File file) {
 
 		this.file = file;
 	}
 
+	@Override
 	public void setMzDataset(String mzDataset) {
 
-		try (IHDF5SimpleReader reader = HDF5Factory.openForReading(file)) {
-			if(mzDataset.contains("float64")) {
-				mzs = reader.readDoubleArray(mzDataset);
-			} else if(mzDataset.contains("float32")) {
-				mzs = floatsToDoubles(reader.readFloatArray(mzDataset));
-			}
-		}
+		this.mzDataset = mzDataset;
 	}
 
+	@Override
 	public void setIntensityDataset(String intensityDataset) {
 
-		try (IHDF5SimpleReader reader = HDF5Factory.openForReading(file)) {
-
-			if(intensityDataset.contains("float64")) {
-				intensities = doublesToFloats(reader.readDoubleArray(intensityDataset));
-			} else if(intensityDataset.contains("float32")) {
-				intensities = reader.readFloatArray(intensityDataset);
-			}
-		}
+		this.intensityDataset = intensityDataset;
 	}
 
 	@Override
 	public void readMassSpectrum(IScanMarker scanMarker, IVendorScanProxy massSpectrum, IProgressMonitor monitor) throws IOException {
+
+		if(mzs == null) {
+			try (IHDF5SimpleReader reader = HDF5Factory.openForReading(file)) {
+				if(mzDataset.contains("float64")) {
+					mzs = reader.readDoubleArray(mzDataset);
+				} else if(mzDataset.contains("float32")) {
+					mzs = floatsToDoubles(reader.readFloatArray(mzDataset));
+				}
+			}
+		}
+
+		if(intensities == null) {
+			try (IHDF5SimpleReader reader = HDF5Factory.openForReading(file)) {
+				if(intensityDataset.contains("float64")) {
+					intensities = doublesToFloats(reader.readDoubleArray(intensityDataset));
+				} else if(intensityDataset.contains("float32")) {
+					intensities = reader.readFloatArray(intensityDataset);
+				}
+			}
+		}
 
 		for(int i = scanMarker.getOffset(); i < scanMarker.getOffset() + scanMarker.getLength(); i++) {
 			float abundance = Array.getFloat(intensities, i);
