@@ -12,14 +12,10 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.mzmlb.io.support;
 
-import net.openchrom.msd.converter.supplier.mzmlb.io.IReaderProxy;
-
 public class ScanMarker implements IScanMarker {
 
 	private int length;
 	private int offset;
-
-	private IReaderProxy readerProxy;
 
 	public ScanMarker(int length, int offset) {
 
