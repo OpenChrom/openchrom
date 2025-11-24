@@ -71,7 +71,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 			CVReference[] cvReferences = reader.readCompoundArray(Mz5.CV_REFERENCE, CVReference.class);
 			readDate(cvReferences, cvParams, chromatogram);
 			readTIC(reader, cvReferences, cvParams, chromatogram);
-			readScanProxies(reader, cvReferences, cvParams, chromatogram);
+			readScanProxies(reader, cvReferences, cvParams, chromatogram, monitor);
 		}
 		return chromatogram;
 	}
@@ -115,7 +115,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 		}
 	}
 
-	private void readScanProxies(IHDF5SimpleReader reader, CVReference[] cvReferences, CVParam[] cvParams, IVendorChromatogram chromatogram) {
+	private void readScanProxies(IHDF5SimpleReader reader, CVReference[] cvReferences, CVParam[] cvParams, IVendorChromatogram chromatogram, IProgressMonitor monitor) {
 
 		if(!reader.exists(Mz5.SPECTRUM_INDEX) || !reader.exists(Mz5.SPECTRUM_MZ) || !reader.exists(Mz5.SPECTRUM_INTENSITY)) {
 			return;
@@ -156,7 +156,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 			for(int i = 0; i < spectrumIndex.length; i++) {
 				int offset = spectrumIndex[i];
 				IScanMarker scanMarker = new ScanMarker(start, offset);
-				IVendorScanProxy scanProxy = new VendorScanProxy(mzs, spectrumIntensity, scanMarker);
+				IVendorScanProxy scanProxy = new VendorScanProxy(mzs, spectrumIntensity, scanMarker, monitor);
 				scanProxy.setScanNumber(i);
 				scanProxy.setIdentifier(spectrumTitles[i]);
 				scanProxy.setRetentionTime(retentionTimes[i]);

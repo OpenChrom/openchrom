@@ -17,7 +17,7 @@ import java.io.IOException;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.model.core.AbstractRegularMassSpectrumProxy;
 import org.eclipse.chemclipse.msd.model.core.IIon;
-import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.mz5.internal.io.ProxyReader;
 import net.openchrom.msd.converter.supplier.mz5.io.support.IScanMarker;
@@ -35,19 +35,20 @@ public class VendorScanProxy extends AbstractRegularMassSpectrumProxy implements
 	private float[] spectrumIntensity;
 	private IScanMarker scanMarker;
 
-	public VendorScanProxy(double[] mzs, float[] spectrumIntensity, IScanMarker scanMarker) {
+	public VendorScanProxy(double[] mzs, float[] spectrumIntensity, IScanMarker scanMarker, IProgressMonitor monitor) {
 
+		super(monitor);
 		this.mzs = mzs;
 		this.spectrumIntensity = spectrumIntensity;
 		this.scanMarker = scanMarker;
 	}
 
 	@Override
-	public void importIons() {
+	public void importIons(IProgressMonitor monitor) {
 
 		try {
 			ProxyReader scanProxyReader = new ProxyReader();
-			scanProxyReader.readMassSpectrum(mzs, spectrumIntensity, scanMarker, this, new NullProgressMonitor());
+			scanProxyReader.readMassSpectrum(mzs, spectrumIntensity, scanMarker, this, monitor);
 		} catch(IOException e) {
 			logger.warn(e);
 		}
