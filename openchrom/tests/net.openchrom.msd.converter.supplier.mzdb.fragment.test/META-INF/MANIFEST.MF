@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.msd.converter.supplier.mzdb.fragment.test
 Bundle-ManifestVersion: 2
 Bundle-Name: mzDB Test
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.mzdb.fragment.test
-Bundle-Version: 1.5.33.qualifier
+Bundle-Version: 1.5.34.qualifier
 Bundle-Vendor: OpenChrom
 Fragment-Host: net.openchrom.msd.converter.supplier.mzdb;bundle-version="1.5.31"
 Import-Package: org.junit.jupiter.api;version="[5.12.0,6.0.0)"
