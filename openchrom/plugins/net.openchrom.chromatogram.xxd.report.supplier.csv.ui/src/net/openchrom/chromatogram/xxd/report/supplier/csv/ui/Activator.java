@@ -39,8 +39,6 @@ public class Activator extends AbstractActivatorUI {
 		super.start(context);
 		plugin = this;
 		initializePreferenceStore(PreferenceSupplier.INSTANCE());
-		dataUpdateSupport = new DataUpdateSupport(getEventBroker());
-		initialize(dataUpdateSupport);
 	}
 
 	/*
@@ -66,6 +64,10 @@ public class Activator extends AbstractActivatorUI {
 
 	public DataUpdateSupport getDataUpdateSupport() {
 
+		if(dataUpdateSupport == null) {
+			dataUpdateSupport = new DataUpdateSupport(getEventBroker());
+			initialize(dataUpdateSupport);
+		}
 		return dataUpdateSupport;
 	}
 
