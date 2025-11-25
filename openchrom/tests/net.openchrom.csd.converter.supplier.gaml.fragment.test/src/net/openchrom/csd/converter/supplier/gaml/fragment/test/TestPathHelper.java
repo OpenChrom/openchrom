@@ -19,4 +19,5 @@ public class TestPathHelper extends PathResolver {
 	public static final String TURBOCHROM_GC = "testData/files/import/PE_Turbochrom_GC.gaml";
 	public static final String TURBOCHROM_LC = "testData/files/import/PE_Turbochrom_LC.gaml";
 	public static final String MULTICHROM = "testData/files/import/TLS_Multichrom.gaml";
+	public static final String ATLAS = "testData/files/import/TLS_Atlas.gaml";
 }
