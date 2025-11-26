@@ -17,4 +17,5 @@ import net.openchrom.wsd.converter.supplier.gaml.PathResolver;
 public class TestPathHelper extends PathResolver {
 
 	public static final String TS_HELIOS = "testData/files/import/TS_Helios.gaml";
+	public static final String MASSLYNX = "testData/files/import/Micromass_Masslynx.gaml";
 }
