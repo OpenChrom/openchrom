@@ -14,7 +14,6 @@
 package net.openchrom.vsd.converter.supplier.gaml.converter;
 
 import java.io.File;
-import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -22,42 +21,51 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.eclipse.chemclipse.converter.core.AbstractFileContentMatcher;
 import org.eclipse.chemclipse.converter.core.IFileContentMatcher;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import net.openchrom.xxd.converter.supplier.gaml.io.Reader;
-import net.openchrom.xxd.converter.supplier.gaml.v120.model.GAML;
-import net.openchrom.xxd.converter.supplier.gaml.v120.model.ObjectFactory;
-import net.openchrom.xxd.converter.supplier.gaml.v120.model.Technique;
-import net.openchrom.xxd.converter.supplier.gaml.v120.model.Trace;
-
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.Unmarshaller;
 
 public class FileContentMatcher extends AbstractFileContentMatcher implements IFileContentMatcher {
 
 	@Override
 	public boolean checkFileFormat(File file) {
 
-		boolean isValidFormat = false;
 		try {
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			Document document = documentBuilder.parse(file);
-			NodeList nodeList = document.getElementsByTagName(Reader.NODE_GAML);
 
-			JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
-			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-			GAML gaml = (GAML)unmarshaller.unmarshal(nodeList.item(0));
-			List<Trace> traces = gaml.getExperiment().get(0).getTrace();
-			Technique technique = traces.get(0).getTechnique();
-			if(technique == Technique.IR || technique == Technique.NIR) {
-				isValidFormat = true;
-			} else if(technique == Technique.RAMAN) {
-				isValidFormat = true;
+			NodeList root = document.getElementsByTagName(Reader.NODE_GAML);
+			if(root.getLength() != 1) {
+				return false;
 			}
-		} catch(Exception e) {
+
+			NodeList experimentsList = document.getElementsByTagName("experiment");
+			for(int e = 0; e < experimentsList.getLength(); e++) {
+				Element experimentElement = (Element)experimentsList.item(e);
+
+				NodeList traceList = experimentElement.getElementsByTagName("trace");
+				for(int t = 0; t < traceList.getLength(); t++) {
+					Element traceElement = (Element)traceList.item(t);
+					String technique = traceElement.getAttribute("technique");
+					if(technique == null) {
+						continue;
+					}
+					if("IR".equalsIgnoreCase(technique.trim())) {
+						return true;
+					}
+					if("NIR".equalsIgnoreCase(technique.trim())) {
+						return true;
+					}
+					if("RAMAN".equalsIgnoreCase(technique.trim())) {
+						return true;
+					}
+				}
+			}
+		} catch(Exception ex) {
 			// fail silently
 		}
-		return isValidFormat;
+		return false;
 	}
 }

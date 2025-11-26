@@ -20,47 +20,52 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.eclipse.chemclipse.converter.core.AbstractFileContentMatcher;
 import org.eclipse.chemclipse.converter.core.IFileContentMatcher;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import net.openchrom.xxd.converter.supplier.gaml.io.Reader;
-import net.openchrom.xxd.converter.supplier.gaml.v120.model.GAML;
-import net.openchrom.xxd.converter.supplier.gaml.v120.model.ObjectFactory;
-import net.openchrom.xxd.converter.supplier.gaml.v120.model.Technique;
-import net.openchrom.xxd.converter.supplier.gaml.v120.model.Trace;
-
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.Unmarshaller;
 
 public class FileContentMatcher extends AbstractFileContentMatcher implements IFileContentMatcher {
 
 	@Override
 	public boolean checkFileFormat(File file) {
 
-		boolean isValidFormat = false;
 		try {
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			Document document = documentBuilder.parse(file);
-			NodeList nodeList = document.getElementsByTagName(Reader.NODE_GAML);
 
-			JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
-			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-			GAML gaml = (GAML)unmarshaller.unmarshal(nodeList.item(0));
-			boolean chromatography = false;
-			boolean msdetector = false;
-			for(Trace trace : gaml.getExperiment().get(0).getTrace()) {
-				if(trace.getTechnique() == Technique.CHROM) {
-					chromatography = true;
-				} else if(trace.getTechnique() == Technique.MS) {
-					msdetector = true;
+			NodeList root = document.getElementsByTagName(Reader.NODE_GAML);
+			if(root.getLength() != 1) {
+				return false;
+			}
+
+			NodeList experimentsList = document.getElementsByTagName("experiment");
+			for(int e = 0; e < experimentsList.getLength(); e++) {
+				Element experimentElement = (Element)experimentsList.item(e);
+				NodeList traceList = experimentElement.getElementsByTagName("trace");
+
+				boolean chromatography = false;
+				boolean msd = false;
+
+				for(int t = 0; t < traceList.getLength(); t++) {
+					Element traceElement = (Element)traceList.item(t);
+					String technique = traceElement.getAttribute("technique");
+					if(technique == null) {
+						continue;
+					}
+					if("CHROM".equalsIgnoreCase(technique.trim())) {
+						chromatography = true;
+					} else if("MS".equalsIgnoreCase(technique.trim())) {
+						msd = true;
+					}
 				}
+
+				return chromatography && msd;
 			}
-			if(chromatography && msdetector) {
-				isValidFormat = true;
-			}
-		} catch(Exception e) {
+		} catch(Exception ex) {
 			// fail silently
 		}
-		return isValidFormat;
+		return false;
 	}
 }
