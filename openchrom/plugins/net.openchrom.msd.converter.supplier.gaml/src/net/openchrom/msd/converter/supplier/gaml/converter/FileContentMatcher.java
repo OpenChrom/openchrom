@@ -61,7 +61,9 @@ public class FileContentMatcher extends AbstractFileContentMatcher implements IF
 					}
 				}
 
-				return chromatography && msd;
+				if(chromatography && msd) {
+					return true;
+				}
 			}
 		} catch(Exception ex) {
 			// fail silently
