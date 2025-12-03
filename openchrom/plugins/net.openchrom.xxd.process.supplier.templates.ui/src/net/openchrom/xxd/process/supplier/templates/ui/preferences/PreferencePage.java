@@ -34,11 +34,6 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 		setDescription("");
 	}
 
-	/**
-	 * Creates the field editors. Field editors are abstractions of the common
-	 * GUI blocks needed to manipulate various types of preferences. Each field
-	 * editor knows how to save and restore itself.
-	 */
 	@Override
 	public void createFieldEditors() {
 
@@ -56,7 +51,8 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new LabelFieldEditor("Detector", getFieldEditorParent()));
-		addField(new BooleanFieldEditor(PreferenceSupplier.P_AUTO_ADJUST_DETECTOR_RANGE, "Auto Adjust Detector Range (experimental)", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_AUTO_ADJUST_SCAN_RANGE, "Auto Adjust Scan Range (Experimental)", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceSupplier.P_AUTO_ADJUST_DETECTOR_RANGE, "Auto Adjust Detector Range (Experimental)", getFieldEditorParent()));
 
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_SORT_IMPORT_TEMPLATE, "Sort Import Template", getFieldEditorParent()));

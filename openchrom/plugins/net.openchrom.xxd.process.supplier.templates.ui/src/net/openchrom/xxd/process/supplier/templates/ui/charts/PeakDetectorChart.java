@@ -62,7 +62,6 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 	private int xStop;
 	private int yStop;
 
-	private PeakSupport peakSupport = new PeakSupport();
 	private DetectorRange detectorRange;
 	private IChromatogramSelection chromatogramSelection = null;
 
@@ -543,12 +542,14 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 								startIntensity = baselineModel.getBackgroundAbundance(startRetentionTime);
 								stopIntensity = baselineModel.getBackgroundAbundance(stopRetentionTime);
 							}
+							PeakSupport peakSupport = new PeakSupport();
 							peak = peakSupport.extractPeakByRetentionTime(chromatogram, startRetentionTime, stopRetentionTime, startIntensity, stopIntensity, traces);
 						}
 					} else {
 						/*
 						 * VV, BB
 						 */
+						PeakSupport peakSupport = new PeakSupport();
 						boolean includeBackground = detectorRange.isIncludeBackground();
 						boolean optimizeRange = detectorRange.isOptimizeRange();
 						peak = peakSupport.extractPeakByRetentionTime(chromatogram, startRetentionTime, stopRetentionTime, includeBackground, optimizeRange, traces);

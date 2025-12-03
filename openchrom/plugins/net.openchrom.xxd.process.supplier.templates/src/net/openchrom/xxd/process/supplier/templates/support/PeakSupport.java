@@ -13,15 +13,33 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.support;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.chemclipse.chromatogram.csd.peak.detector.supplier.firstderivative.core.PeakDetectorCSD;
+import org.eclipse.chemclipse.chromatogram.csd.peak.detector.supplier.firstderivative.settings.PeakDetectorSettingsCSD;
 import org.eclipse.chemclipse.chromatogram.msd.filter.supplier.xpass.filter.XPassFilter;
+import org.eclipse.chemclipse.chromatogram.peak.detector.model.Threshold;
+import org.eclipse.chemclipse.chromatogram.xxd.edit.supplier.snip.core.BaselineDetector;
+import org.eclipse.chemclipse.chromatogram.xxd.edit.supplier.snip.settings.BaselineDetectorSettings;
+import org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.savitzkygolay.core.ChromatogramFilterCSD;
+import org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.savitzkygolay.settings.ChromatogramFilterSettings;
+import org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.scan.core.FilterScanDensity;
+import org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.scan.settings.FilterSettingsScanDensity;
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.csd.model.core.IChromatogramPeakCSD;
 import org.eclipse.chemclipse.csd.model.core.IPeakCSD;
+import org.eclipse.chemclipse.csd.model.core.IScanCSD;
+import org.eclipse.chemclipse.csd.model.core.selection.ChromatogramSelectionCSD;
+import org.eclipse.chemclipse.csd.model.core.selection.IChromatogramSelectionCSD;
 import org.eclipse.chemclipse.csd.model.core.support.PeakBuilderCSD;
+import org.eclipse.chemclipse.csd.model.implementation.ChromatogramCSD;
+import org.eclipse.chemclipse.csd.model.implementation.ScanCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogramPeak;
@@ -33,6 +51,7 @@ import org.eclipse.chemclipse.model.core.support.HeaderField;
 import org.eclipse.chemclipse.model.exceptions.PeakException;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
+import org.eclipse.chemclipse.model.support.ChromatogramSupport;
 import org.eclipse.chemclipse.model.support.IScanRange;
 import org.eclipse.chemclipse.model.support.RetentionIndexMap;
 import org.eclipse.chemclipse.model.support.RetentionIndexMath;
@@ -46,6 +65,7 @@ import org.eclipse.chemclipse.msd.model.core.support.PeakBuilderMSD;
 import org.eclipse.chemclipse.msd.model.implementation.ChromatogramPeakMSD;
 import org.eclipse.chemclipse.msd.model.support.HighResolutionSupport;
 import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
+import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.support.traces.DetectorType;
 import org.eclipse.chemclipse.support.traces.ITrace;
 import org.eclipse.chemclipse.support.traces.TraceFactory;
@@ -59,6 +79,7 @@ import org.eclipse.chemclipse.wsd.model.core.IPeakWSD;
 import org.eclipse.chemclipse.wsd.model.core.IScanWSD;
 import org.eclipse.chemclipse.wsd.model.core.support.PeakBuilderWSD;
 import org.eclipse.chemclipse.wsd.model.xwc.IExtractedWavelengthSignal;
+import org.eclipse.core.runtime.NullProgressMonitor;
 
 import net.openchrom.xxd.process.supplier.templates.model.AbstractSetting;
 import net.openchrom.xxd.process.supplier.templates.model.DefaultSetting;
@@ -70,6 +91,58 @@ import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSetting
 public class PeakSupport {
 
 	private static final Logger logger = Logger.getLogger(PeakSupport.class);
+	private Map<Integer, Map<String, List<IPeak>>> chromatogramPeakMap = new HashMap<>();
+
+	private boolean autoAdjustScanRange = false;
+
+	public PeakSupport() {
+
+		this(false);
+	}
+
+	public PeakSupport(boolean autoAdjustScanRange) {
+
+		this.autoAdjustScanRange = autoAdjustScanRange;
+	}
+
+	public static int getStartScan(IChromatogram chromatogram, int retentionTime) {
+
+		int startScan = chromatogram.getScanNumber(retentionTime);
+		if(startScan <= 0) {
+			startScan = 1;
+		}
+		return startScan;
+	}
+
+	public static int getStopScan(IChromatogram chromatogram, int retentionTime) {
+
+		int stopScan = chromatogram.getScanNumber(retentionTime);
+		if(stopScan > chromatogram.getNumberOfScans()) {
+			stopScan = chromatogram.getNumberOfScans();
+		}
+		return stopScan;
+	}
+
+	public static void addPeak(IChromatogram chromatogram, IPeak peak) {
+
+		if(chromatogram instanceof IChromatogramMSD chromatogramMSD && peak instanceof IChromatogramPeakMSD peakMSD) {
+			chromatogramMSD.getPeaks().add(peakMSD);
+		} else if(chromatogram instanceof IChromatogramCSD chromatogramCSD && peak instanceof IChromatogramPeakCSD peakCSD) {
+			chromatogramCSD.getPeaks().add(peakCSD);
+		} else if(chromatogram instanceof IChromatogramWSD chromatogramWSD && peak instanceof IChromatogramPeakWSD peakWSD) {
+			chromatogramWSD.getPeaks().add(peakWSD);
+		} else if(chromatogram instanceof IChromatogramVSD) {
+		}
+	}
+
+	/**
+	 * Clears the peak list chromatogram
+	 * optimization cache.
+	 */
+	public void clearCache() {
+
+		chromatogramPeakMap.clear();
+	}
 
 	public boolean isPeakRelevant(IPeak peak, String traces) {
 
@@ -120,24 +193,6 @@ public class PeakSupport {
 		}
 
 		return isPeakRelevant;
-	}
-
-	public static int getStartScan(IChromatogram chromatogram, int retentionTime) {
-
-		int startScan = chromatogram.getScanNumber(retentionTime);
-		if(startScan <= 0) {
-			startScan = 1;
-		}
-		return startScan;
-	}
-
-	public static int getStopScan(IChromatogram chromatogram, int retentionTime) {
-
-		int stopScan = chromatogram.getScanNumber(retentionTime);
-		if(stopScan > chromatogram.getNumberOfScans()) {
-			stopScan = chromatogram.getNumberOfScans();
-		}
-		return stopScan;
 	}
 
 	public RetentionTimeRange getRetentionTimeRange(List<? extends IPeak> peaks, AbstractSetting setting, String positionRelativePeakName, RetentionIndexMap retentionIndexMap) {
@@ -256,7 +311,13 @@ public class PeakSupport {
 		if(startScan > 0 && startScan < stopScan) {
 			try {
 				/*
-				 * Try to create a peak.
+				 * Try to optimize the used scan range by using the first derivative detector.
+				 */
+				if(autoAdjustScanRange) {
+					scanRange = getScanRangeOptimizedByPeakDetector(chromatogram, scanRange, traces);
+				}
+				/*
+				 * Template
 				 */
 				if(chromatogram instanceof IChromatogramMSD chromatogramMSD) {
 					peak = extractChromatogramPeakMSD(chromatogramMSD, scanRange, traces, intensityRange, includeBackground);
@@ -277,6 +338,199 @@ public class PeakSupport {
 			peak.setDetectorDescription(PeakDetectorSettings.DETECTOR_DESCRIPTION);
 		}
 		return peak;
+	}
+
+	/*
+	 * Probably extract this into a separate process method.
+	 */
+	private IScanRange getScanRangeOptimizedByPeakDetector(IChromatogram chromatogram, IScanRange scanRange, String traces) {
+
+		List<IPeak> chromatogramPeaks = null;
+		/*
+		 * Try to get the cached version.
+		 */
+		int hashCode = chromatogram.hashCode();
+		Map<String, List<IPeak>> tracesPeakMap = chromatogramPeakMap.get(hashCode);
+		if(tracesPeakMap != null) {
+			chromatogramPeaks = tracesPeakMap.get(traces);
+		}
+		/*
+		 * If not cached yet, create a new copy.
+		 */
+		if(chromatogramPeaks == null) {
+			IChromatogramCSD chromatogramCopy = null;
+			if(chromatogram instanceof IChromatogramMSD chromatogramMSD) {
+				chromatogramCopy = new ChromatogramCSD();
+				if(traces.isEmpty()) {
+					for(IScan scan : chromatogramMSD.getScans()) {
+						IScanCSD scanCopy = new ScanCSD(scan.getTotalSignal());
+						scanCopy.setRetentionTime(scan.getRetentionTime());
+						chromatogramCopy.addScan(scanCopy);
+					}
+				} else {
+					DetectorType detectorType = DetectorType.MSD;
+					Class<? extends ITrace> clazz = TraceFactory.getTraceType(traces, detectorType);
+					if(clazz.equals(TraceHighResMSD.class)) {
+						/*
+						 * TODO HighResMS
+						 */
+					} else if(clazz.equals(TraceTandemMSD.class)) {
+						/*
+						 * TODO TandemMS
+						 */
+					} else {
+						Set<Integer> ions = getTraceSet(traces);
+						for(IScan scan : chromatogramMSD.getScans()) {
+							if(scan instanceof IScanMSD scanMSD) {
+								IExtractedIonSignal extractedIonSignal = scanMSD.getExtractedIonSignal();
+								float totalSignal = 0;
+								for(int ion : ions) {
+									totalSignal += extractedIonSignal.getAbundance(ion);
+								}
+								IScanCSD scanCopy = new ScanCSD(totalSignal);
+								scanCopy.setRetentionTime(scan.getRetentionTime());
+								chromatogramCopy.addScan(scanCopy);
+							}
+						}
+					}
+				}
+			} else if(chromatogram instanceof IChromatogramCSD chromatogramCSD) {
+				chromatogramCopy = new ChromatogramCSD();
+				for(IScan scan : chromatogramCSD.getScans()) {
+					IScanCSD scanCopy = new ScanCSD(scan.getTotalSignal());
+					scanCopy.setRetentionTime(scan.getRetentionTime());
+					chromatogramCopy.addScan(scanCopy);
+				}
+			} else if(chromatogram instanceof IChromatogramWSD) {
+			} else if(chromatogram instanceof IChromatogramVSD) {
+			}
+			/*
+			 * Process and cache chromatogram
+			 */
+			if(chromatogramCopy != null) {
+				/*
+				 * Settings
+				 */
+				ChromatogramSupport.calculateScanIntervalAndDelay(chromatogramCopy);
+				IChromatogramSelectionCSD chromatogramSelectionCSD = new ChromatogramSelectionCSD(chromatogramCopy);
+				/*
+				 * Zero Set
+				 */
+				org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.zeroset.core.ChromatogramFilterCSD zeroSetFilter = new org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.zeroset.core.ChromatogramFilterCSD();
+				zeroSetFilter.applyFilter(chromatogramSelectionCSD, new NullProgressMonitor());
+				/*
+				 * Scan Density
+				 */
+				FilterScanDensity filterScanDensity = new FilterScanDensity();
+				FilterSettingsScanDensity filterSettingsScanDensity = new FilterSettingsScanDensity();
+				filterSettingsScanDensity.setScansPerSecond(5);
+				filterSettingsScanDensity.setProcessReferencedChromatograms(false);
+				filterSettingsScanDensity.setMergeScans(false);
+				filterScanDensity.applyFilter(chromatogramSelectionCSD, filterSettingsScanDensity, new NullProgressMonitor());
+				/*
+				 * Savitzgy-Golay
+				 */
+				ChromatogramFilterCSD savitzgyGolayFilter = new ChromatogramFilterCSD();
+				ChromatogramFilterSettings savitzgyGolaySettings = new ChromatogramFilterSettings();
+				for(int i = 0; i <= 4; i++) {
+					savitzgyGolaySettings.setOrder(2);
+					savitzgyGolaySettings.setWidth(5 + (i * 2));
+					savitzgyGolayFilter.applyFilter(chromatogramSelectionCSD, savitzgyGolaySettings, new NullProgressMonitor());
+				}
+				/*
+				 * Baseline (SNIP)
+				 */
+				BaselineDetector baselineDetector = new BaselineDetector();
+				BaselineDetectorSettings baselineDetectorSettings = new BaselineDetectorSettings();
+				baselineDetectorSettings.setIterations(175);
+				baselineDetectorSettings.setWindowSize(25);
+				baselineDetectorSettings.setSpecificTraces("");
+				baselineDetector.setBaseline(chromatogramSelectionCSD, baselineDetectorSettings, new NullProgressMonitor());
+				/*
+				 * Baseline Subtract
+				 */
+				org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.baselinesubtract.core.ChromatogramFilter baselineSubtractFilter = new org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.baselinesubtract.core.ChromatogramFilter();
+				baselineSubtractFilter.applyFilter(chromatogramSelectionCSD, new NullProgressMonitor());
+				/*
+				 * Remove Negative/Empty Scans
+				 */
+				List<IScan> scansValid = new ArrayList<>();
+				for(IScan scan : chromatogramCopy.getScans()) {
+					if(scan.getTotalSignal() > 0) {
+						scansValid.add(scan);
+					}
+				}
+				chromatogramCopy.replaceAllScans(scansValid);
+				chromatogramSelectionCSD.reset();
+				/*
+				 * Peak Detector First Derivative
+				 */
+				PeakDetectorCSD peakDetectorCSD = new PeakDetectorCSD();
+				PeakDetectorSettingsCSD peakDetectorSettingsCSD = new PeakDetectorSettingsCSD();
+				peakDetectorSettingsCSD.setDetectorType(org.eclipse.chemclipse.chromatogram.xxd.peak.detector.supplier.firstderivative.model.DetectorType.CB);
+				peakDetectorSettingsCSD.setMinimumSignalToNoiseRatio(0);
+				peakDetectorSettingsCSD.setMovingAverageWindowSize(3);
+				peakDetectorSettingsCSD.setOptimizeBaseline(false);
+				peakDetectorSettingsCSD.setThreshold(Threshold.OFF);
+				peakDetectorSettingsCSD.setUseNoiseSegments(true);
+				IProcessingInfo<?> processingInfo = peakDetectorCSD.detect(chromatogramSelectionCSD, peakDetectorSettingsCSD, new NullProgressMonitor());
+				if(!processingInfo.hasErrorMessages()) {
+					/*
+					 * Map the peaks
+					 */
+					if(tracesPeakMap == null) {
+						autoClearCache();
+						tracesPeakMap = new HashMap<>();
+						chromatogramPeakMap.put(hashCode, tracesPeakMap);
+					}
+					List<IPeak> peaks = new ArrayList<>();
+					for(IPeak peak : chromatogramCopy.getPeaks()) {
+						if(peak instanceof IChromatogramPeak chromatogramPeak) {
+							chromatogramPeak.setChromatogram(null);
+						}
+						peaks.add(peak);
+					}
+					tracesPeakMap.put(traces, peaks);
+					chromatogramCopy = null;
+				}
+			}
+		}
+
+		if(chromatogramPeaks != null) {
+			/*
+			 * Collect the peaks in range.
+			 */
+			int retentionTimeStart = chromatogram.getScan(scanRange.getStartScan()).getRetentionTime();
+			int retentionTimeStop = chromatogram.getScan(scanRange.getStopScan()).getRetentionTime();
+			List<IPeak> peaksInFocus = new ArrayList<>();
+			for(IPeak peak : chromatogramPeaks) {
+				IPeakModel peakModel = peak.getPeakModel();
+				IScan scan = peakModel.getPeakMaximum();
+				int retentionTime = scan.getRetentionTime();
+				if(retentionTime >= retentionTimeStart && retentionTime <= retentionTimeStop) {
+					peaksInFocus.add(peak);
+				}
+			}
+			/*
+			 * Optimize Range by using the largest peak.
+			 */
+			if(!peaksInFocus.isEmpty()) {
+				Collections.sort(peaksInFocus, (p1, p2) -> Float.compare(p2.getPeakModel().getPeakMaximum().getTotalSignal(), p1.getPeakModel().getPeakMaximum().getTotalSignal()));
+				IPeak peak = peaksInFocus.get(0);
+				IPeakModel peakModel = peak.getPeakModel();
+				int startScan = chromatogram.getScanNumber(peakModel.getStartRetentionTime());
+				startScan = startScan < scanRange.getStartScan() ? scanRange.getStartScan() : startScan;
+				int stopScan = chromatogram.getScanNumber(peakModel.getStopRetentionTime());
+				stopScan = stopScan > scanRange.getStopScan() ? scanRange.getStopScan() : stopScan;
+				if(startScan > 0 && startScan < stopScan) {
+					if(stopScan - startScan >= 2) {
+						scanRange = new ScanRange(startScan, stopScan);
+					}
+				}
+			}
+		}
+
+		return scanRange;
 	}
 
 	private IChromatogramPeak extractChromatogramPeakCSD(IChromatogramCSD chromatogram, IScanRange scanRange, IntensityRange intensityRange, boolean includeBackground) {
@@ -390,17 +644,6 @@ public class PeakSupport {
 		return peak;
 	}
 
-	public static void addPeak(IChromatogram chromatogram, IPeak peak) {
-
-		if(chromatogram instanceof IChromatogramMSD chromatogramMSD && peak instanceof IChromatogramPeakMSD peakMSD) {
-			chromatogramMSD.getPeaks().add(peakMSD);
-		} else if(chromatogram instanceof IChromatogramCSD chromatogramCSD && peak instanceof IChromatogramPeakCSD peakCSD) {
-			chromatogramCSD.getPeaks().add(peakCSD);
-		} else if(chromatogram instanceof IChromatogramWSD chromatogramWSD && peak instanceof IChromatogramPeakWSD peakWSD) {
-			chromatogramWSD.getPeaks().add(peakWSD);
-		}
-	}
-
 	private IScanRange optimizeRange(IChromatogram chromatogram, int startScan, int stopScan, String traces) {
 
 		int scanWidth = stopScan - startScan + 1;
@@ -478,6 +721,19 @@ public class PeakSupport {
 	private boolean isUseRetentionIndex(AbstractSetting setting) {
 
 		return PositionDirective.RETENTION_INDEX.equals(setting.getPositionDirective());
+	}
+
+	private void autoClearCache() {
+
+		/*
+		 * Cache at a maximum 10 chromatogram
+		 * peak lists to enable a balance of
+		 * performance improvements and saving
+		 * memory.
+		 */
+		if(chromatogramPeakMap.size() > 10) {
+			clearCache();
+		}
 	}
 
 	private Set<Integer> getTraceSet(String content) {

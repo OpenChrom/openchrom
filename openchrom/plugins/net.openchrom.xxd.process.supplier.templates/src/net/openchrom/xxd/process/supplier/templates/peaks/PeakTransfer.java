@@ -349,7 +349,6 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 	private void transfer(IChromatogramPeak peakSource, int startRetentionTime, int stopRetentionTime, double percentageIntensity, IChromatogram chromatogramSink, PeakTransferSettings peakTransferSettings) {
 
 		PeakSupport peakSupport = new PeakSupport();
-
 		boolean includeBackground = peakSource.getPeakType().equals(PeakType.VV);
 		boolean optimizeRange = peakTransferSettings.isOptimizeRange();
 

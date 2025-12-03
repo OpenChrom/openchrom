@@ -45,7 +45,7 @@ import net.openchrom.xxd.process.supplier.templates.support.PeakSupport;
 
 public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorMSD, IPeakDetectorCSD, IPeakDetectorWSD {
 
-	private PeakSupport peakSupport = new PeakSupport();
+	private PeakSupport peakSupport = new PeakSupport(PreferenceSupplier.isAutoAdjustScanRange());
 
 	@Override
 	public IProcessingInfo<?> detect(IChromatogramSelectionMSD chromatogramSelection, IPeakDetectorSettingsMSD settings, IProgressMonitor monitor) {

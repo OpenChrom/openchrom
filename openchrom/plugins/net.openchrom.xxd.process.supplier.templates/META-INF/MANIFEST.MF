@@ -32,7 +32,19 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.chromatogram.wsd.identifier;bundle-version="0.9.0",
  org.eclipse.chemclipse.chromatogram.filter;bundle-version="0.9.0",
  org.eclipse.chemclipse.vsd.model;bundle-version="0.9.0",
- org.eclipse.chemclipse.chromatogram.msd.filter.supplier.xpass;bundle-version="0.9.0"
+ org.eclipse.chemclipse.chromatogram.msd.filter.supplier.xpass;bundle-version="0.9.0",
+ org.eclipse.chemclipse.chromatogram.csd.peak.detector.supplier.firstderivative;bundle-version="0.9.0",
+ org.eclipse.chemclipse.chromatogram.xxd.classifier;bundle-version="0.9.0",
+ org.eclipse.chemclipse.chromatogram.xxd.calculator;bundle-version="0.9.0",
+ org.eclipse.chemclipse.chromatogram.xxd.peak.detector.supplier.firstderivative;bundle-version="0.9.0",
+ org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.scan;bundle-version="0.9.0",
+ org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.savitzkygolay;bundle-version="0.9.0",
+ org.eclipse.chemclipse.xxd.filter;bundle-version="0.9.0",
+ org.eclipse.chemclipse.chromatogram.csd.filter;bundle-version="0.9.0",
+ org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.zeroset;bundle-version="0.9.0",
+ org.eclipse.chemclipse.chromatogram.xxd.edit.supplier.snip;bundle-version="0.9.0",
+ org.eclipse.chemclipse.chromatogram.xxd.baseline.detector;bundle-version="0.9.0",
+ org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.baselinesubtract;bundle-version="0.9.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.xxd.process.supplier.templates.chromatogram,

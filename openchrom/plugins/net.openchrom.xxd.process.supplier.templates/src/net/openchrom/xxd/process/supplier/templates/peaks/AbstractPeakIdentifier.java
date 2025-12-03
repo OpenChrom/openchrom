@@ -90,8 +90,8 @@ public abstract class AbstractPeakIdentifier {
 
 	private void identifyPeak(List<? extends IPeak> peaks, IdentifierSetting identifierSetting, RetentionIndexMap retentionIndexMap, IProgressMonitor monitor) {
 
-		PeakSupport retentionTimeSupport = new PeakSupport();
-		IRetentionTimeRange retentionTimeRange = retentionTimeSupport.getRetentionTimeRange(peaks, identifierSetting, identifierSetting.getPositionRelativePeakName(), retentionIndexMap);
+		PeakSupport peakSupport = new PeakSupport();
+		IRetentionTimeRange retentionTimeRange = peakSupport.getRetentionTimeRange(peaks, identifierSetting, identifierSetting.getPositionRelativePeakName(), retentionIndexMap);
 		int startRetentionTime = retentionTimeRange.getStartRetentionTime();
 		int stopRetentionTime = retentionTimeRange.getStopRetentionTime();
 		TracesUtil tracesUtil = new TracesUtil();

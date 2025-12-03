@@ -126,6 +126,11 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static final String DEF_EXPORT_POSITION_DIRECTIVE_DETECTOR = PositionDirective.RETENTION_TIME_MIN.name();
 	public static final String P_EXPORT_PEAK_TYPE_DETECTOR = "exportPeakTypeDetector";
 	public static final String DEF_EXPORT_PEAK_TYPE_DETECTOR = PeakType.VV.name();
+	/*
+	 * Adjust
+	 */
+	public static final String P_AUTO_ADJUST_SCAN_RANGE = "autoAdjustScanRange";
+	public static final boolean DEF_AUTO_ADJUST_SCAN_RANGE = false;
 	public static final String P_AUTO_ADJUST_DETECTOR_RANGE = "autoAdjustDetectorRange";
 	public static final boolean DEF_AUTO_ADJUST_DETECTOR_RANGE = false;
 	/*
@@ -331,6 +336,8 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 		putDefault(P_EXPORT_DELTA_RIGHT_POSITION_DETECTOR, Double.toString(DEF_EXPORT_DELTA_RIGHT_POSITION_DETECTOR));
 		putDefault(P_EXPORT_POSITION_DIRECTIVE_DETECTOR, DEF_EXPORT_POSITION_DIRECTIVE_DETECTOR);
 		putDefault(P_EXPORT_PEAK_TYPE_DETECTOR, DEF_EXPORT_PEAK_TYPE_DETECTOR);
+
+		putDefault(P_AUTO_ADJUST_SCAN_RANGE, DEF_AUTO_ADJUST_SCAN_RANGE);
 		putDefault(P_AUTO_ADJUST_DETECTOR_RANGE, DEF_AUTO_ADJUST_DETECTOR_RANGE);
 
 		putDefault(P_EXPORT_NUMBER_TRACES_IDENTIFIER, Integer.toString(DEF_EXPORT_NUMBER_TRACES_IDENTIFIER));
@@ -531,6 +538,11 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static void setExportPeakTypeDetector(PeakType peakType) {
 
 		INSTANCE().put(P_EXPORT_PEAK_TYPE_DETECTOR, peakType.name());
+	}
+
+	public static boolean isAutoAdjustScanRange() {
+
+		return INSTANCE().getBoolean(P_AUTO_ADJUST_SCAN_RANGE, DEF_AUTO_ADJUST_SCAN_RANGE);
 	}
 
 	public static boolean isAutoAdjustDetectorRange() {
