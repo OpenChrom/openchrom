@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.csd.converter.supplier.animl
 Bundle-ManifestVersion: 2
 Bundle-Name: AniML
 Bundle-SymbolicName: net.openchrom.csd.converter.supplier.animl;singleton:=true
-Bundle-Version: 1.5.34.qualifier
+Bundle-Version: 1.5.35.qualifier
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.logging;bundle-version="0.8.0",

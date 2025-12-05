@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.msd.converter.supplier.cdf.feature"
       label="NetCDF MSD (*.cdf)"
-      version="1.5.34.qualifier"
+      version="1.5.35.qualifier"
       provider-name="OpenChrom" plugin="net.openchrom.feature.branding"
       license-feature="org.eclipse.license" license-feature-version="2.0.2.qualifier">
 

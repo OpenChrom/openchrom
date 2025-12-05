@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.feature"
       label="AMDIS Peak Detector"
-      version="1.5.34.qualifier"
+      version="1.5.35.qualifier"
       provider-name="OpenChrom"
       plugin="net.openchrom.feature.branding"
       license-feature="org.eclipse.license"
@@ -25,7 +25,7 @@
    </url>
 
    <requires>
-      <import feature="org.eclipse.chemclipse.msd.converter.supplier.amdis.feature" version="1.5.34.qualifier"/>
+      <import feature="org.eclipse.chemclipse.msd.converter.supplier.amdis.feature" version="1.5.35.qualifier"/>
    </requires>
 
    <plugin

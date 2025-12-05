@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.xxd.identifier.supplier.cdk.fragment.test
 Bundle-ManifestVersion: 2
 Bundle-Name: CDK Test
 Bundle-SymbolicName: net.openchrom.xxd.identifier.supplier.cdk.fragment.test
-Bundle-Version: 1.5.34.qualifier
+Bundle-Version: 1.5.35.qualifier
 Bundle-Vendor: ChemClipse
 Fragment-Host: net.openchrom.xxd.identifier.supplier.cdk;bundle-version="0.8.0"
 Import-Package: org.junit.jupiter.api;version="5.12.2"
