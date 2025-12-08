@@ -17,7 +17,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -33,6 +32,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.equinox.p2.core.ProvisionException;
+import org.eclipse.equinox.p2.engine.IProfile;
+import org.eclipse.equinox.p2.engine.IProfileRegistry;
 import org.eclipse.equinox.p2.metadata.IInstallableUnit;
 import org.eclipse.equinox.p2.metadata.Version;
 import org.eclipse.equinox.p2.operations.InstallOperation;
@@ -90,11 +91,13 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 		try {
 			SubMonitor monitor = SubMonitor.convert(progressMonitor, "configuring", 100);
 			try {
-				final IInstallableUnit[] installableUnits = computeInstallableUnits(monitor.newChild(50));
+				List<IInstallableUnit> installableUnits = computeInstallableUnits(monitor.newChild(50));
 				checkCancelled(monitor);
-				final InstallOperation installOperation = resolve(monitor.newChild(50), installableUnits, repositoryLocations.toArray(new URI[0]));
-				checkCancelled(monitor);
-				Display.getDefault().asyncExec(() -> provisioningUI.openInstallWizard(Arrays.asList(installableUnits), installOperation, null));
+				if(!installableUnits.isEmpty()) {
+					final InstallOperation installOperation = resolve(monitor.newChild(50), installableUnits, repositoryLocations.toArray(new URI[0]));
+					checkCancelled(monitor);
+					Display.getDefault().asyncExec(() -> provisioningUI.openInstallWizard(installableUnits, installOperation, null));
+				}
 			} catch(URISyntaxException | CoreException e) {
 				Display.getDefault().asyncExec(() -> InstallErrorDialog.notifyError(DisplayUtils.getShell(), "Failed to install plugins.", e));
 			} finally {
@@ -114,9 +117,9 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 		}
 	}
 
-	private InstallOperation resolve(IProgressMonitor monitor, final IInstallableUnit[] ius, URI[] repositories) throws CoreException {
+	private InstallOperation resolve(IProgressMonitor monitor, List<IInstallableUnit> ius, URI[] repositories) throws CoreException {
 
-		final InstallOperation installOperation = provisioningUI.getInstallOperation(Arrays.asList(ius), repositories);
+		final InstallOperation installOperation = provisioningUI.getInstallOperation(ius, repositories);
 		IStatus operationStatus = installOperation.resolveModal(SubMonitor.convert(monitor, installableConnectors.size()));
 		if(operationStatus.getSeverity() > IStatus.WARNING) {
 			throw new CoreException(operationStatus);
@@ -124,7 +127,7 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 		return installOperation;
 	}
 
-	public IInstallableUnit[] computeInstallableUnits(SubMonitor monitor) throws ProvisionException, URISyntaxException {
+	private List<IInstallableUnit> computeInstallableUnits(SubMonitor monitor) throws ProvisionException, URISyntaxException {
 
 		monitor.setWorkRemaining(100);
 		// add repository urls and load meta data
@@ -132,7 +135,8 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 		final List<IInstallableUnit> installableUnits = queryInstallableUnits(monitor.newChild(50), repositories);
 		removeOldVersions(installableUnits);
 		checkForUnavailable(installableUnits);
-		return installableUnits.toArray(new IInstallableUnit[installableUnits.size()]);
+		removeInstalled(installableUnits);
+		return installableUnits;
 	}
 
 	/**
@@ -205,6 +209,30 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Filters IUs that are already installed
+	 */
+	private void removeInstalled(final List<IInstallableUnit> installableUnits) {
+
+		ProvisioningUI ui = ProvisioningUI.getDefaultUI();
+
+		ProvisioningSession session = ui.getSession();
+
+		IProfileRegistry registry = (IProfileRegistry)session.getProvisioningAgent().getService(IProfileRegistry.class);
+
+		String profileId = ui.getProfileId();
+		IProfile profile = registry.getProfile(profileId);
+		Set<IInstallableUnit> toRemove = new HashSet<>();
+		for(IInstallableUnit unit : installableUnits) {
+			IQueryResult<?> result = profile.query(QueryUtil.createIUQuery(unit.getId()), null);
+
+			if(!result.isEmpty()) {
+				toRemove.add(unit);
+			}
+		}
+		installableUnits.removeAll(toRemove);
 	}
 
 	/**
