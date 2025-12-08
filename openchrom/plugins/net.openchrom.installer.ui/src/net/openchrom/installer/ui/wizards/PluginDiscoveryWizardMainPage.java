@@ -40,14 +40,18 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.equinox.p2.engine.IProfile;
+import org.eclipse.equinox.p2.engine.IProfileRegistry;
+import org.eclipse.equinox.p2.operations.ProvisioningSession;
+import org.eclipse.equinox.p2.query.IQueryResult;
+import org.eclipse.equinox.p2.query.QueryUtil;
+import org.eclipse.equinox.p2.ui.ProvisioningUI;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.JFaceResources;
-import org.eclipse.jface.viewers.DecorationOverlayIcon;
-import org.eclipse.jface.viewers.IDecoration;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -112,6 +116,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 
 	private static final String DISCOVERY_PROPERTIES_FILE = "discovery.properties";
 	private static final String URL_DISCOVERY_PROPERTY = "url";
+	private static final String P2_FEATURE_GROUP_SUFFIX = ".feature.group";
 	private static final Logger logger = Logger.getLogger(PluginDiscoveryWizardMainPage.class);
 	private final List<PluginDescriptor> installableConnectors = new ArrayList<>();
 	private PluginDiscovery discovery;
@@ -130,6 +135,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 	private Cursor handCursor;
 	private Color colorDisabled;
 	private ScrolledComposite bodyScrolledComposite;
+	private IProfile profile;
 
 	public PluginDiscoveryWizardMainPage() {
 
@@ -170,7 +176,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 					Composite textFilterContainer = new Composite(filterContainer, SWT.NULL);
 					GridDataFactory.fillDefaults().grab(true, false).applyTo(textFilterContainer);
 					GridLayoutFactory.fillDefaults().numColumns(2).applyTo(textFilterContainer);
-					filterText = new Text(textFilterContainer, SWT.SINGLE | SWT.BORDER | SWT.SEARCH | SWT.ICON_SEARCH |SWT.ICON_CANCEL);
+					filterText = new Text(textFilterContainer, SWT.SINGLE | SWT.BORDER | SWT.SEARCH | SWT.ICON_SEARCH | SWT.ICON_CANCEL);
 					filterText.addModifyListener(e -> filterTextChanged());
 					GridDataFactory.fillDefaults().grab(true, false).span(2, 1).applyTo(filterText);
 				}
@@ -293,6 +299,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 	}
 
 	private void clearDisposables() {
+
 		for(Resource resource : disposables) {
 			resource.dispose();
 		}
@@ -412,7 +419,6 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 		private final Composite pluginContainer;
 		private final Display display;
 		private Image iconImage;
-		private Image warningIconImage;
 
 		public PluginDescriptorItemUI(DiscoveryPlugin plugin, Composite categoryChildrenContainer, Color background) {
 
@@ -505,9 +511,11 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 				@Override
 				public void mouseUp(MouseEvent e) {
 
-					boolean selected = !checkbox.getSelection();
-					if(maybeModifySelection(selected)) {
-						checkbox.setSelection(selected);
+					if(checkbox.getEnabled()) {
+						boolean selected = !checkbox.getSelection();
+						if(maybeModifySelection(selected)) {
+							checkbox.setSelection(selected);
+						}
 					}
 				}
 			};
@@ -527,31 +535,27 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 
 		public void updateAvailability() {
 
-			boolean enabled = true;
-			checkbox.setEnabled(enabled);
-			nameLabel.setEnabled(enabled);
-			providerLabel.setEnabled(enabled);
-			description.setEnabled(enabled);
-			Color foreground;
-			if(enabled) {
-				foreground = pluginContainer.getForeground();
-			} else {
-				foreground = colorDisabled;
-			}
-			nameLabel.setForeground(foreground);
-			description.setForeground(foreground);
+			boolean isInstalled = isInstalled(plugin.getInstallableUnits().get(0));
+			checkbox.setSelection(isInstalled);
+			checkbox.setEnabled(!isInstalled);
 			if(iconImage != null) {
-				boolean unavailable = !enabled;
-				if(unavailable) {
-					if(warningIconImage == null) {
-						warningIconImage = new DecorationOverlayIcon(iconImage, ApplicationImageFactory.getInstance().getImageDescriptor(IApplicationImage.IMAGE_WARN, IApplicationImageProvider.SIZE_16x16), IDecoration.TOP_LEFT).createImage();
-						disposables.add(warningIconImage);
-					}
-					iconLabel.setImage(warningIconImage);
-				} else if(warningIconImage != null) {
-					iconLabel.setImage(iconImage);
-				}
+				iconLabel.setImage(iconImage);
 			}
+		}
+
+		/**
+		 * Checks whether the given uid is already installed.
+		 */
+		private boolean isInstalled(String uid) {
+
+			if(!uid.endsWith(P2_FEATURE_GROUP_SUFFIX)) {
+				uid += P2_FEATURE_GROUP_SUFFIX;
+			}
+
+			IProfile profile = getP2Profile();
+			IQueryResult<?> result = profile.query(QueryUtil.createIUQuery(uid), null);
+			return !result.isEmpty();
+
 		}
 
 		@Override
@@ -567,6 +571,21 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 				updateAvailability();
 			}
 		}
+	}
+
+	private IProfile getP2Profile() {
+
+		if(profile == null) {
+			ProvisioningUI ui = ProvisioningUI.getDefaultUI();
+
+			ProvisioningSession session = ui.getSession();
+
+			IProfileRegistry registry = (IProfileRegistry)session.getProvisioningAgent().getService(IProfileRegistry.class);
+
+			String profileId = ui.getProfileId();
+			profile = registry.getProfile(profileId);
+		}
+		return profile;
 	}
 
 	private void createDiscoveryContents(Composite container) {
@@ -880,7 +899,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 					// retrieve discovery url from properties file and call remote discovery strategy
 					URL discoveryFileUrl = FileLocator.find(Activator.getDefault().getBundle(), new Path(PluginDiscoveryWizardMainPage.DISCOVERY_PROPERTIES_FILE), null);
 					if(discoveryFileUrl != null) {
-						try (InputStream in = discoveryFileUrl.openStream()){
+						try (InputStream in = discoveryFileUrl.openStream()) {
 							Properties props = new Properties();
 							props.load(in);
 							String discoveryUrl = props.getProperty(PluginDiscoveryWizardMainPage.URL_DISCOVERY_PROPERTY);
