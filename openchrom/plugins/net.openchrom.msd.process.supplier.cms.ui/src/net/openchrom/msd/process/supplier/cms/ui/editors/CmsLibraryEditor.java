@@ -25,7 +25,6 @@ import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.swt.ui.support.DatabaseFileSupport;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
-import org.eclipse.chemclipse.processing.core.exceptions.TypeCastException;
 import org.eclipse.chemclipse.support.events.IChemClipseEvents;
 import org.eclipse.chemclipse.support.events.IPerspectiveAndViewIds;
 import org.eclipse.chemclipse.support.updates.IUpdateListener;
@@ -170,16 +169,12 @@ public class CmsLibraryEditor implements IChemClipseEditor {
 				 */
 				monitor.subTask("Save Mass Spectra");
 				IProcessingInfo<?> processingInfo = DatabaseConverter.convert(massSpectrumFile, massSpectra, false, converterId, monitor);
-				try {
-					/*
-					 * If no failures have occurred, set the dirty status to
-					 * false.
-					 */
-					processingInfo.getProcessingResult();
-					dirtyable.setDirty(false);
-				} catch(TypeCastException e) {
-					logger.warn(e);
-				}
+				/*
+				 * If no failures have occurred, set the dirty status to
+				 * false.
+				 */
+				processingInfo.getProcessingResult();
+				dirtyable.setDirty(false);
 			} else {
 				throw new NoMassSpectrumConverterAvailableException();
 			}
