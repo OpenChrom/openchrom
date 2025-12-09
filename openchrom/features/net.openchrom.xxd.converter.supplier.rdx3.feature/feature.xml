@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.xxd.converter.supplier.rdx3.feature"
       label="RDX3 Converter"
-      version="1.5.35.qualifier"
+      version="1.5.36.qualifier"
       provider-name="OpenChrom"
       plugin="net.openchrom.feature.branding"
       license-feature="org.eclipse.license"

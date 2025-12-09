@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.xxd.classifier.supplier.ratios.feature"
       label="Ratio Calculator"
-      version="1.5.35.qualifier"
+      version="1.5.36.qualifier"
       provider-name="OpenChrom" plugin="net.openchrom.feature.branding"
       license-feature="org.eclipse.license" license-feature-version="2.0.2.qualifier">
 
