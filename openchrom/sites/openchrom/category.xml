@@ -8,8 +8,8 @@
          Update site for the OpenChrom platform.
       </description>
    </category-def>
-   <repository-reference location="https://download.eclipse.org/releases/2025-09/" enabled="true" />
-   <repository-reference location="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/release/4.37.0" enabled="true" />
-   <repository-reference location="https://download.eclipse.org/nebula/updates/release/3.1.1/" enabled="true" />
+   <repository-reference location="https://download.eclipse.org/releases/2025-12/" enabled="true" />
+   <repository-reference location="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/release/4.38.0" enabled="true" />
+   <repository-reference location="https://download.eclipse.org/nebula/updates/release/3.2.0/" enabled="true" />
    <repository-reference location="https://bundles.openchrom.net/3rdparty" enabled="true" />
 </site>
