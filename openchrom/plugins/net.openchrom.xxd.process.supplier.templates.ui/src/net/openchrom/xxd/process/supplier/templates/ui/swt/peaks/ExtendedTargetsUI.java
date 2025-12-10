@@ -33,6 +33,7 @@ import org.eclipse.chemclipse.support.ui.menu.ITableMenuEntry;
 import org.eclipse.chemclipse.support.ui.swt.ExtendedTableViewer;
 import org.eclipse.chemclipse.support.ui.swt.ITableSettings;
 import org.eclipse.chemclipse.support.ui.updates.IUpdateListenerUI;
+import org.eclipse.chemclipse.support.updates.IUpdateListener;
 import org.eclipse.chemclipse.swt.ui.components.ISearchListener;
 import org.eclipse.chemclipse.swt.ui.components.SearchSupportUI;
 import org.eclipse.chemclipse.swt.ui.services.IScanIdentifierService;
@@ -249,6 +250,16 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 
 				updateButtons();
 				fireUpdate(false);
+			}
+		});
+
+		targetListUI.setUpdateListener(new IUpdateListener() {
+
+			@Override
+			public void update() {
+
+				updateInput();
+				fireUpdate(true);
 			}
 		});
 		/*
