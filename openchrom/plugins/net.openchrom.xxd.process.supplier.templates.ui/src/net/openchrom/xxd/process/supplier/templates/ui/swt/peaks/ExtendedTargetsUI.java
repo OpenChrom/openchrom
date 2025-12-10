@@ -482,8 +482,8 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 			Iterator<?> iterator = targetListControl.get().getStructuredSelection().iterator();
 			while(iterator.hasNext()) {
 				Object object = iterator.next();
-				if(object instanceof IIdentificationTarget) {
-					deleteTarget((ITarget)object);
+				if(object instanceof ITarget target) {
+					deleteTarget(target);
 				}
 			}
 
@@ -494,8 +494,7 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 
 	private void deleteTarget(ITarget target) {
 
-		if(peak instanceof ITargetSupplier) {
-			ITargetSupplier targetSupplier = peak;
+		if(peak instanceof ITargetSupplier targetSupplier) {
 			targetSupplier.getTargets().remove(target);
 		}
 	}
