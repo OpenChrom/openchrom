@@ -25,6 +25,7 @@ import java.util.Set;
 
 import org.apache.commons.csv.CSVPrinter;
 import org.eclipse.chemclipse.model.comparator.IdentificationTargetComparator;
+import org.eclipse.chemclipse.model.comparator.PeakRetentionTimeComparator;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.core.IChromatogramPeak;
@@ -42,6 +43,8 @@ import net.openchrom.chromatogram.xxd.report.supplier.csv.model.ReportColumns;
 import net.openchrom.chromatogram.xxd.report.supplier.csv.settings.ChromatogramReportSettings;
 
 public class ConfigurableReportWriter {
+
+	private PeakRetentionTimeComparator peakComparator = new PeakRetentionTimeComparator(SortOrder.ASC);
 
 	public void generate(File file, boolean append, List<IChromatogram> chromatograms, ChromatogramReportSettings reportSettings) throws IOException {
 
@@ -101,7 +104,10 @@ public class ConfigurableReportWriter {
 		List<Object> records = new ArrayList<>();
 		double totalPeakArea = chromatogram.getPeakIntegratedArea();
 
-		for(IPeak peak : chromatogram.getPeaks()) {
+		List<IPeak> peaks = new ArrayList<>(chromatogram.getPeaks());
+		Collections.sort(peaks, peakComparator);
+
+		for(IPeak peak : peaks) {
 			for(String reportColumn : reportColumns) {
 				if(reportColumn.equals(ReportColumns.CHROMATOGRAM_NAME)) {
 					records.add(chromatogram.getName());
