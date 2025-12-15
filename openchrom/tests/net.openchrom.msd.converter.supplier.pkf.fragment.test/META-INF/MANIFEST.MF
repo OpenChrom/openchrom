@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.msd.converter.supplier.pkf.fragment.test
 Bundle-ManifestVersion: 2
 Bundle-Name: MicrobeMS peak list file Test
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.pkf.fragment.test
-Bundle-Version: 1.5.36.qualifier
+Bundle-Version: 1.5.37.qualifier
 Bundle-Vendor: OpenChrom
 Fragment-Host: net.openchrom.msd.converter.supplier.pkf;bundle-version="1.5.31"
 Import-Package: org.junit.jupiter.api;version="5.12.2"
