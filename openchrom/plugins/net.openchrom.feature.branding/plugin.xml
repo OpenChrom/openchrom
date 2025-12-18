@@ -33,5 +33,9 @@
          point="org.eclipse.equinox.p2.engine.pgp">
          <trustedKeys path="trustedkeys/oomph.asc"/>
    </extension>
+   <extension id="net.openchrom.feature.branding.pgpkeys"
+         point="org.eclipse.equinox.p2.engine.pgp">
+         <trustedKeys path="trustedkeys/platform.asc"/>
+   </extension>
 
 </plugin>
