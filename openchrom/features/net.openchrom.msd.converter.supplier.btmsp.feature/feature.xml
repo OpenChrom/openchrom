@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.msd.converter.supplier.btmsp.feature"
       label="BTMSP Converter"
-      version="1.5.37.qualifier"
+      version="1.5.38.qualifier"
       provider-name="OpenChrom"
       plugin="net.openchrom.feature.branding"
       license-feature="org.eclipse.license"

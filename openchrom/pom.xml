@@ -10,7 +10,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.openchrom</groupId>
 	<artifactId>master</artifactId>
-	<version>1.5.37-SNAPSHOT</version>
+	<version>1.5.38-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<properties>
@@ -31,7 +31,7 @@
 		<maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
 		<buildTimestamp>${maven.build.timestamp}</buildTimestamp>
 		<buildId>${buildTimestamp}</buildId>
-		<releaseName>1.5.37</releaseName>
+		<releaseName>1.5.38</releaseName>
 	</properties>
 
 	<repositories>
