@@ -27,6 +27,7 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.xxd.classifier.supplier.ratios.model.IPeakRatios;
+import net.openchrom.xxd.classifier.supplier.ratios.util.AbstractRatioListUtil;
 import net.openchrom.xxd.classifier.supplier.ratios.util.quant.QuantRatioListUtil;
 import net.openchrom.xxd.classifier.supplier.ratios.util.quant.QuantRatioValidator;
 
@@ -42,8 +43,8 @@ public class QuantRatios extends ArrayList<QuantRatio> implements IPeakRatios<Qu
 	public static final String FILTER_NAME = DESCRIPTION + " (*" + FILE_EXTENSION + ")";
 
 	private QuantRatioListUtil listUtil = new QuantRatioListUtil();
-	private static final String SEPARATOR_TOKEN = QuantRatioListUtil.SEPARATOR_TOKEN;
-	private static final String SEPARATOR_ENTRY = QuantRatioListUtil.SEPARATOR_ENTRY;
+	private static final String SEPARATOR_TOKEN = AbstractRatioListUtil.SEPARATOR_TOKEN;
+	private static final String SEPARATOR_ENTRY = AbstractRatioListUtil.SEPARATOR_ENTRY;
 
 	public void load(String items) {
 

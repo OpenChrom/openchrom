@@ -44,14 +44,14 @@ public class ChromatogramImportExport_ITest {
 		/*
 		 * Import
 		 */
-		String pathImport = TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_CHROMATOGRAM_2);
+		String pathImport = PathResolver.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_CHROMATOGRAM_2);
 		String extensionPointImport = VersionConstants.CONVERTER_ID_CHROMATOGRAM;
 		/*
 		 * Export/Reimport
 		 */
 		File directory = new File(TestPathHelper.DIRECTORY_EXPORT_TEST);
 		directory.mkdir();
-		String pathExport = TestPathHelper.getAbsolutePath(TestPathHelper.DIRECTORY_EXPORT_TEST) + File.separator + "Test.cdf";
+		String pathExport = PathResolver.getAbsolutePath(TestPathHelper.DIRECTORY_EXPORT_TEST) + File.separator + "Test.cdf";
 		String extensionPointExportReimport = "net.openchrom.msd.converter.supplier.cdf";
 		/*
 		 * Import the chromatogram.

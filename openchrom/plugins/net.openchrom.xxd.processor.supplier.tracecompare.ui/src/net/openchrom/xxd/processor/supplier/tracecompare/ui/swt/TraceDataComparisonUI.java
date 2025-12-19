@@ -20,6 +20,7 @@ import java.util.Map;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.chemclipse.support.ui.swt.EnhancedCombo;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.core.resources.IFile;
@@ -56,7 +57,7 @@ import org.eclipse.swtchart.extensions.core.BaseChart;
 import org.eclipse.swtchart.extensions.core.IChartSettings;
 import org.eclipse.swtchart.extensions.core.ISeriesData;
 import org.eclipse.swtchart.extensions.core.ISeriesModificationListener;
-import org.eclipse.swtchart.extensions.linecharts.LineChart;
+import org.eclipse.swtchart.extensions.linecharts.ICompressionSupport;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.ITrackModel;
@@ -179,7 +180,7 @@ public class TraceDataComparisonUI extends Composite {
 		Map<Integer, Map<String, ISeriesData>> measurementsData = measurementModelData.getMeasurementData(analysisType, type);
 		if(measurementsData != null) {
 			String wavelengthSelection = comboWavelengths.getText();
-			traceDataUI.addSeriesData(dataProcessorUI.getLineSeriesDataList(measurementsData, wavelengthSelection, track), LineChart.MEDIUM_COMPRESSION);
+			traceDataUI.addSeriesData(dataProcessorUI.getLineSeriesDataList(measurementsData, wavelengthSelection, track), ICompressionSupport.MEDIUM_COMPRESSION);
 			updateChartTitle();
 		}
 	}
@@ -216,7 +217,7 @@ public class TraceDataComparisonUI extends Composite {
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		button.setToolTipText("Select the previous track.");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_PREVIOUS_YELLOW, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_PREVIOUS_YELLOW, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -306,7 +307,7 @@ public class TraceDataComparisonUI extends Composite {
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		button.setToolTipText("Select the next track.");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_NEXT_YELLOW, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_NEXT_YELLOW, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -379,7 +380,7 @@ public class TraceDataComparisonUI extends Composite {
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		button.setToolTipText("Show/Hide Comments");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EDIT_DEFAULT, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EDIT_DEFAULT, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -389,9 +390,9 @@ public class TraceDataComparisonUI extends Composite {
 				showComments(isVisible);
 
 				if(isVisible) {
-					button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_COLLAPSE_ALL, IApplicationImage.SIZE_16x16));
+					button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_COLLAPSE_ALL, IApplicationImageProvider.SIZE_16x16));
 				} else {
-					button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EDIT_DEFAULT, IApplicationImage.SIZE_16x16));
+					button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EDIT_DEFAULT, IApplicationImageProvider.SIZE_16x16));
 				}
 
 				editorProcessor.setDirty(true);
@@ -404,7 +405,7 @@ public class TraceDataComparisonUI extends Composite {
 		buttonCreateSnapshot = new Button(parent, SWT.PUSH);
 		buttonCreateSnapshot.setText("");
 		buttonCreateSnapshot.setToolTipText("Create a snapshot.");
-		buttonCreateSnapshot.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CREATE_SNAPSHOT, IApplicationImage.SIZE_16x16));
+		buttonCreateSnapshot.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CREATE_SNAPSHOT, IApplicationImageProvider.SIZE_16x16));
 		buttonCreateSnapshot.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -446,7 +447,7 @@ public class TraceDataComparisonUI extends Composite {
 		buttonIsMatched = new Button(parent, SWT.PUSH);
 		buttonIsMatched.setText("");
 		buttonIsMatched.setToolTipText("Flag as matched");
-		buttonIsMatched.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DESELECTED, IApplicationImage.SIZE_16x16));
+		buttonIsMatched.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DESELECTED, IApplicationImageProvider.SIZE_16x16));
 		buttonIsMatched.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -467,7 +468,7 @@ public class TraceDataComparisonUI extends Composite {
 		buttonIsSkipped = new Button(parent, SWT.PUSH);
 		buttonIsSkipped.setText("");
 		buttonIsSkipped.setToolTipText("Flag as skipped.");
-		buttonIsSkipped.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SKIP, IApplicationImage.SIZE_16x16));
+		buttonIsSkipped.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SKIP, IApplicationImageProvider.SIZE_16x16));
 		buttonIsSkipped.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -485,7 +486,7 @@ public class TraceDataComparisonUI extends Composite {
 		buttonIsEvaluated = new Button(parent, SWT.PUSH);
 		buttonIsEvaluated.setText("");
 		buttonIsEvaluated.setToolTipText("Flag as evaluated.");
-		buttonIsEvaluated.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EVALUATE, IApplicationImage.SIZE_16x16));
+		buttonIsEvaluated.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EVALUATE, IApplicationImageProvider.SIZE_16x16));
 		buttonIsEvaluated.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -502,7 +503,7 @@ public class TraceDataComparisonUI extends Composite {
 
 		Button button = new Button(parent, SWT.PUSH);
 		button.setToolTipText("Toggle the chart legend");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_TAG, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_TAG, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -518,7 +519,7 @@ public class TraceDataComparisonUI extends Composite {
 		Button button = new Button(parent, SWT.PUSH);
 		button.setToolTipText("Open the Settings");
 		button.setText("");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CONFIGURE, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CONFIGURE, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -549,7 +550,7 @@ public class TraceDataComparisonUI extends Composite {
 		Button button = new Button(parent, SWT.PUSH);
 		button.setToolTipText("Reset the chart");
 		button.setText("");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_RESET, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_RESET, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -716,11 +717,11 @@ public class TraceDataComparisonUI extends Composite {
 	private void setButtonIcons() {
 
 		String imageMatched = (trackModel.isMatched()) ? IApplicationImage.IMAGE_SELECTED : IApplicationImage.IMAGE_DESELECTED;
-		buttonIsMatched.setImage(ApplicationImageFactory.getInstance().getImage(imageMatched, IApplicationImage.SIZE_16x16));
+		buttonIsMatched.setImage(ApplicationImageFactory.getInstance().getImage(imageMatched, IApplicationImageProvider.SIZE_16x16));
 		String imageSkipped = (trackModel.isSkipped()) ? IApplicationImage.IMAGE_SKIPPED : IApplicationImage.IMAGE_SKIP;
-		buttonIsSkipped.setImage(ApplicationImageFactory.getInstance().getImage(imageSkipped, IApplicationImage.SIZE_16x16));
+		buttonIsSkipped.setImage(ApplicationImageFactory.getInstance().getImage(imageSkipped, IApplicationImageProvider.SIZE_16x16));
 		String imageEvaluated = (trackModel.isEvaluated()) ? IApplicationImage.IMAGE_EVALUATED : IApplicationImage.IMAGE_EVALUATE;
-		buttonIsEvaluated.setImage(ApplicationImageFactory.getInstance().getImage(imageEvaluated, IApplicationImage.SIZE_16x16));
+		buttonIsEvaluated.setImage(ApplicationImageFactory.getInstance().getImage(imageEvaluated, IApplicationImageProvider.SIZE_16x16));
 	}
 
 	private void enableWidgets(boolean enabled) {
@@ -741,7 +742,7 @@ public class TraceDataComparisonUI extends Composite {
 		if(trackModel != null) {
 			trackModel.setMatched(isMatched);
 			String imageMatched = (trackModel.isMatched()) ? IApplicationImage.IMAGE_SELECTED : IApplicationImage.IMAGE_DESELECTED;
-			buttonIsMatched.setImage(ApplicationImageFactory.getInstance().getImage(imageMatched, IApplicationImage.SIZE_16x16));
+			buttonIsMatched.setImage(ApplicationImageFactory.getInstance().getImage(imageMatched, IApplicationImageProvider.SIZE_16x16));
 			editorProcessor.setDirty(true);
 		}
 	}
@@ -751,7 +752,7 @@ public class TraceDataComparisonUI extends Composite {
 		if(trackModel != null) {
 			trackModel.setSkipped(isSkipped);
 			String imageSkipped = (trackModel.isSkipped()) ? IApplicationImage.IMAGE_SKIPPED : IApplicationImage.IMAGE_SKIP;
-			buttonIsSkipped.setImage(ApplicationImageFactory.getInstance().getImage(imageSkipped, IApplicationImage.SIZE_16x16));
+			buttonIsSkipped.setImage(ApplicationImageFactory.getInstance().getImage(imageSkipped, IApplicationImageProvider.SIZE_16x16));
 
 			if(isSkipped) {
 				setEvaluated(false);
@@ -767,7 +768,7 @@ public class TraceDataComparisonUI extends Composite {
 		if(trackModel != null) {
 			trackModel.setEvaluated(isEvaluated);
 			String imageEvaluated = (trackModel.isEvaluated()) ? IApplicationImage.IMAGE_EVALUATED : IApplicationImage.IMAGE_EVALUATE;
-			buttonIsEvaluated.setImage(ApplicationImageFactory.getInstance().getImage(imageEvaluated, IApplicationImage.SIZE_16x16));
+			buttonIsEvaluated.setImage(ApplicationImageFactory.getInstance().getImage(imageEvaluated, IApplicationImageProvider.SIZE_16x16));
 
 			if(isEvaluated) {
 				setSkipped(false);

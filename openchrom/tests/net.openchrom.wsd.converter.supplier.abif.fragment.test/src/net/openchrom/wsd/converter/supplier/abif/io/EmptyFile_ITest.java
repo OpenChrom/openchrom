@@ -27,6 +27,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import net.openchrom.wsd.converter.supplier.abif.ABIF;
+import net.openchrom.wsd.converter.supplier.abif.PathResolver;
 
 @TestInstance(Lifecycle.PER_CLASS)
 public class EmptyFile_ITest {
@@ -36,7 +37,7 @@ public class EmptyFile_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File fileImport = new File(ABIF.getAbsolutePath(ABIF.TESTFILE_IMPORT_EMPTY_AB1));
+		File fileImport = new File(PathResolver.getAbsolutePath(ABIF.TESTFILE_IMPORT_EMPTY_AB1));
 		IProcessingInfo<IChromatogramWSD> processingInfo = ChromatogramConverterWSD.getInstance().convert(fileImport, ABIF.EXTENSION_POINT_ID, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();
 	}

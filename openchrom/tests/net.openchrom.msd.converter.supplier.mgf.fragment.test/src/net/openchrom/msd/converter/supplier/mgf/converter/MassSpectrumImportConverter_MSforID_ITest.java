@@ -25,6 +25,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
+import net.openchrom.msd.converter.supplier.mgf.PathResolver;
 import net.openchrom.msd.converter.supplier.mgf.TestPathHelper;
 
 @TestInstance(Lifecycle.PER_CLASS)
@@ -35,7 +36,7 @@ public class MassSpectrumImportConverter_MSforID_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_MSFORID_TESTMIX));
+		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_MSFORID_TESTMIX));
 		DatabaseImportConverter importConverter = new DatabaseImportConverter();
 		IProcessingInfo<IMassSpectra> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		massSpectra = processingInfo.getProcessingResult();

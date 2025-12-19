@@ -18,6 +18,7 @@ import java.util.List;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
@@ -168,7 +169,7 @@ public class ResultsEditorUI extends Composite {
 
 		Button buttonSearch = new Button(parent, SWT.PUSH);
 		buttonSearch.setText("Suchen");
-		buttonSearch.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImage.SIZE_16x16));
+		buttonSearch.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SEARCH, IApplicationImageProvider.SIZE_16x16));
 		buttonSearch.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -180,7 +181,7 @@ public class ResultsEditorUI extends Composite {
 
 		Button buttonExpandAll = new Button(parent, SWT.PUSH);
 		buttonExpandAll.setText("");
-		buttonExpandAll.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EXPAND_ALL, IApplicationImage.SIZE_16x16));
+		buttonExpandAll.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EXPAND_ALL, IApplicationImageProvider.SIZE_16x16));
 		buttonExpandAll.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -192,7 +193,7 @@ public class ResultsEditorUI extends Composite {
 
 		Button buttonCollapseAll = new Button(parent, SWT.PUSH);
 		buttonCollapseAll.setText("");
-		buttonCollapseAll.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_COLLAPSE_ALL, IApplicationImage.SIZE_16x16));
+		buttonCollapseAll.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_COLLAPSE_ALL, IApplicationImageProvider.SIZE_16x16));
 		buttonCollapseAll.addSelectionListener(new SelectionAdapter() {
 
 			@Override

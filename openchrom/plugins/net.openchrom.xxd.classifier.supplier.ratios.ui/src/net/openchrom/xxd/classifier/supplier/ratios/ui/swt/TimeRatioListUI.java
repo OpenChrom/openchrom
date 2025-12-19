@@ -18,6 +18,7 @@ import org.eclipse.chemclipse.support.ui.provider.ListContentProvider;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.widgets.Composite;
 
+import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.AbstractPeakRatioTitles;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time.TimeRatioEditingSupport;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time.TimeRatioLabelProvider;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.time.TimeRatioResultTitles;
@@ -63,7 +64,7 @@ public class TimeRatioListUI extends AbstractRatioListUI {
 		for(int i = 0; i < tableViewerColumns.size(); i++) {
 			TableViewerColumn tableViewerColumn = tableViewerColumns.get(i);
 			String label = tableViewerColumn.getColumn().getText();
-			if(!label.equals(TimeRatioResultTitles.NAME)) {
+			if(!label.equals(AbstractPeakRatioTitles.NAME)) {
 				tableViewerColumn.setEditingSupport(new TimeRatioEditingSupport(this, label));
 			}
 		}

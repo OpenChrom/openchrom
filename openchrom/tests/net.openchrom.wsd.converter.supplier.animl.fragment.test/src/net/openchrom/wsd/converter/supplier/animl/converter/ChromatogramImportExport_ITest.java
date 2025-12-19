@@ -30,6 +30,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
+import net.openchrom.wsd.converter.supplier.animl.PathResolver;
 import net.openchrom.wsd.converter.supplier.animl.TestPathHelper;
 
 @TestInstance(Lifecycle.PER_CLASS)
@@ -45,14 +46,14 @@ public class ChromatogramImportExport_ITest {
 		/*
 		 * Import
 		 */
-		String pathImport = TestPathHelper.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_DEMO);
+		String pathImport = PathResolver.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_DEMO);
 		String extensionPointImport = VersionConstants.CONVERTER_ID_CHROMATOGRAM;
 		/*
 		 * Export/Reimport
 		 */
 		File directory = new File(TestPathHelper.DIRECTORY_EXPORT_TEST);
 		directory.mkdir();
-		String pathExport = TestPathHelper.getAbsolutePath(TestPathHelper.DIRECTORY_EXPORT_TEST) + File.separator + "Test.animl";
+		String pathExport = PathResolver.getAbsolutePath(TestPathHelper.DIRECTORY_EXPORT_TEST) + File.separator + "Test.animl";
 		String extensionPointExportReimport = "net.openchrom.wsd.converter.supplier.animl.chromatogram";
 		/*
 		 * Import the chromatogram.

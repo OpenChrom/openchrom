@@ -12,7 +12,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.model.time;
 
-import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 
 import net.openchrom.xxd.classifier.supplier.ratios.model.AbstractPeakRatio;
 
@@ -37,7 +37,7 @@ public class TimeRatio extends AbstractPeakRatio {
 
 	public double getExpectedRetentionTimeMinutes() {
 
-		return expectedRetentionTime / IChromatogram.MINUTE_CORRELATION_FACTOR;
+		return expectedRetentionTime / IChromatogramOverview.MINUTE_CORRELATION_FACTOR;
 	}
 
 	public void setExpectedRetentionTime(int expectedRetentionTime) {
@@ -47,7 +47,7 @@ public class TimeRatio extends AbstractPeakRatio {
 
 	public void setExpectedRetentionTimeMinutes(double expectedRetentionTimeMinutes) {
 
-		this.expectedRetentionTime = (int)(expectedRetentionTimeMinutes * IChromatogram.MINUTE_CORRELATION_FACTOR);
+		this.expectedRetentionTime = (int)(expectedRetentionTimeMinutes * IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 	}
 
 	@Override

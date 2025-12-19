@@ -29,6 +29,7 @@ import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.xxd.classifier.supplier.ratios.model.IPeakRatios;
+import net.openchrom.xxd.classifier.supplier.ratios.util.AbstractRatioListUtil;
 import net.openchrom.xxd.classifier.supplier.ratios.util.time.TimeRatioListUtil;
 import net.openchrom.xxd.classifier.supplier.ratios.util.time.TimeRatioValidator;
 
@@ -44,8 +45,8 @@ public class TimeRatios extends ArrayList<TimeRatio> implements IPeakRatios<Time
 	public static final String FILTER_NAME = DESCRIPTION + " (*" + FILE_EXTENSION + ")";
 
 	private TimeRatioListUtil listUtil = new TimeRatioListUtil();
-	private static final String SEPARATOR_TOKEN = TimeRatioListUtil.SEPARATOR_TOKEN;
-	private static final String SEPARATOR_ENTRY = TimeRatioListUtil.SEPARATOR_ENTRY;
+	private static final String SEPARATOR_TOKEN = AbstractRatioListUtil.SEPARATOR_TOKEN;
+	private static final String SEPARATOR_ENTRY = AbstractRatioListUtil.SEPARATOR_ENTRY;
 
 	public void load(String items) {
 

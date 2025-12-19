@@ -28,6 +28,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import net.openchrom.wsd.converter.supplier.abif.ABIF;
+import net.openchrom.wsd.converter.supplier.abif.PathResolver;
 
 @TestInstance(Lifecycle.PER_CLASS)
 public class AbiPrism3100GeneticAnalyser_ITest {
@@ -37,7 +38,7 @@ public class AbiPrism3100GeneticAnalyser_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File fileImport = new File(ABIF.getAbsolutePath(ABIF.TESTFILE_IMPORT_3100_AB1));
+		File fileImport = new File(PathResolver.getAbsolutePath(ABIF.TESTFILE_IMPORT_3100_AB1));
 		IProcessingInfo<IChromatogramWSD> processingInfo = ChromatogramConverterWSD.getInstance().convert(fileImport, ABIF.EXTENSION_POINT_ID, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();
 	}
@@ -45,7 +46,7 @@ public class AbiPrism3100GeneticAnalyser_ITest {
 	@Test
 	public void testWavelengths() {
 
-		IScanWSD scan = (IScanWSD)chromatogram.getScan(1);
+		IScanWSD scan = chromatogram.getScan(1);
 		assertEquals(540.0f, scan.getScanSignal(0).getWavelength(), 0);
 	}
 }

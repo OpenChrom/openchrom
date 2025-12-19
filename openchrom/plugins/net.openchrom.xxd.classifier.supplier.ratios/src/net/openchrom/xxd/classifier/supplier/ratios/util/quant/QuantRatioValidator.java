@@ -18,12 +18,13 @@ import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.xxd.classifier.supplier.ratios.model.quant.QuantRatio;
+import net.openchrom.xxd.classifier.supplier.ratios.util.AbstractRatioListUtil;
 
 public class QuantRatioValidator extends ValueParserSupport implements IValidator<Object> {
 
 	private static final String ERROR_ENTRY = "Please enter an item, e.g.: '" + QuantRatioListUtil.EXAMPLE_SINGLE + "'";
-	private static final String SEPARATOR_TOKEN = QuantRatioListUtil.SEPARATOR_TOKEN;
-	private static final String SEPARATOR_ENTRY = QuantRatioListUtil.SEPARATOR_ENTRY;
+	private static final String SEPARATOR_TOKEN = AbstractRatioListUtil.SEPARATOR_TOKEN;
+	private static final String SEPARATOR_ENTRY = AbstractRatioListUtil.SEPARATOR_ENTRY;
 	private static final String ERROR_TOKEN = "The item must not contain: " + SEPARATOR_TOKEN;
 
 	private String name = "";

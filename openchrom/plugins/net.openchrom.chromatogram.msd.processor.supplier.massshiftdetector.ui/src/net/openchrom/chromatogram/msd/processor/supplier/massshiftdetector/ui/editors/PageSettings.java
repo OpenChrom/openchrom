@@ -28,6 +28,7 @@ import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.chemclipse.processing.ui.support.ProcessingInfoPartSupport;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.chemclipse.support.ui.editors.AbstractExtendedEditorPage;
 import org.eclipse.chemclipse.support.ui.editors.IExtendedEditorPage;
 import org.eclipse.chemclipse.support.ui.swt.EnhancedCombo;
@@ -469,7 +470,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 
 		Display display = Display.getDefault();
 		ImageHyperlink imageHyperlink = getFormToolkit().createImageHyperlink(client, SWT.NONE);
-		imageHyperlink.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CHECK, IApplicationImage.SIZE_16x16));
+		imageHyperlink.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CHECK, IApplicationImageProvider.SIZE_16x16));
 		imageHyperlink.setText(text);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalIndent = HORIZONTAL_INDENT;
@@ -513,7 +514,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 	private ImageHyperlink createReferenceChromatogramHyperlink(Composite client, String text) {
 
 		ImageHyperlink imageHyperlink = getFormToolkit().createImageHyperlink(client, SWT.NONE);
-		imageHyperlink.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImage.SIZE_16x16));
+		imageHyperlink.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImageProvider.SIZE_16x16));
 		imageHyperlink.setText(text);
 		imageHyperlink.setEnabled(false); // Default disabled
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
@@ -542,7 +543,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 	private ImageHyperlink createIsotopeChromatogramHyperlink(Composite client, String text) {
 
 		ImageHyperlink imageHyperlink = getFormToolkit().createImageHyperlink(client, SWT.NONE);
-		imageHyperlink.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImage.SIZE_16x16));
+		imageHyperlink.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImageProvider.SIZE_16x16));
 		imageHyperlink.setText(text);
 		imageHyperlink.setEnabled(false); // Default disabled
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
@@ -574,7 +575,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 		Shell shell = display.getActiveShell();
 
 		ImageHyperlink imageHyperlink = getFormToolkit().createImageHyperlink(client, SWT.NONE);
-		imageHyperlink.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EXECUTE, IApplicationImage.SIZE_16x16));
+		imageHyperlink.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EXECUTE, IApplicationImageProvider.SIZE_16x16));
 		imageHyperlink.setText(text);
 		imageHyperlink.setEnabled(false); // Default disabled
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);

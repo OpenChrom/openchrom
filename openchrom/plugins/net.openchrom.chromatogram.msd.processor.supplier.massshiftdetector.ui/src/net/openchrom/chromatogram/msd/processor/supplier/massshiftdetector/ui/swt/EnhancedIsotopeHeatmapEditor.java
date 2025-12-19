@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.chemclipse.support.ui.listener.AbstractControllerComposite;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -136,7 +137,7 @@ public class EnhancedIsotopeHeatmapEditor extends AbstractControllerComposite {
 		Shell shell = Display.getDefault().getActiveShell();
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("Calculate");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CALCULATE, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CALCULATE, IApplicationImageProvider.SIZE_16x16));
 		button.setLayoutData(gridData);
 		button.addSelectionListener(new SelectionAdapter() {
 
@@ -162,7 +163,7 @@ public class EnhancedIsotopeHeatmapEditor extends AbstractControllerComposite {
 
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("Next");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ARROW_FORWARD, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ARROW_FORWARD, IApplicationImageProvider.SIZE_16x16));
 		button.setLayoutData(gridData);
 		button.setEnabled(false);
 		button.addSelectionListener(new SelectionAdapter() {
@@ -180,7 +181,7 @@ public class EnhancedIsotopeHeatmapEditor extends AbstractControllerComposite {
 
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("Previous");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ARROW_BACKWARD, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ARROW_BACKWARD, IApplicationImageProvider.SIZE_16x16));
 		button.setLayoutData(gridData);
 		button.addSelectionListener(new SelectionAdapter() {
 

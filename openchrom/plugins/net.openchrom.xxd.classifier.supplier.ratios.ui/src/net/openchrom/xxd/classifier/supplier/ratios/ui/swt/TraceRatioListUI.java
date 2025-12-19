@@ -19,6 +19,7 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.widgets.Composite;
 
+import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.AbstractPeakRatioTitles;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.TraceRatioEditingSupport;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.TraceRatioLabelProvider;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace.TraceRatioResultTitles;
@@ -64,7 +65,7 @@ public class TraceRatioListUI extends AbstractRatioListUI {
 		for(int i = 0; i < tableViewerColumns.size(); i++) {
 			TableViewerColumn tableViewerColumn = tableViewerColumns.get(i);
 			String label = tableViewerColumn.getColumn().getText();
-			if(!label.equals(TraceRatioResultTitles.NAME)) {
+			if(!label.equals(AbstractPeakRatioTitles.NAME)) {
 				tableViewerColumn.setEditingSupport(new TraceRatioEditingSupport(this, label));
 			}
 		}

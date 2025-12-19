@@ -21,6 +21,7 @@ import java.util.List;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.chemclipse.support.text.ValueFormat;
 import org.eclipse.chemclipse.support.ui.listener.AbstractControllerComposite;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -57,6 +58,7 @@ public class EnhancedResultsEditor extends AbstractControllerComposite {
 	private DataProcessor dataProcessor;
 
 	public EnhancedResultsEditor(Composite parent, int style) {
+
 		super(parent, style);
 		buttons = new ArrayList<Button>();
 		dataProcessor = new DataProcessor();
@@ -126,7 +128,7 @@ public class EnhancedResultsEditor extends AbstractControllerComposite {
 
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("Calculate");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CALCULATE, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CALCULATE, IApplicationImageProvider.SIZE_16x16));
 		button.setLayoutData(gridData);
 		button.addSelectionListener(new SelectionAdapter() {
 
@@ -174,7 +176,7 @@ public class EnhancedResultsEditor extends AbstractControllerComposite {
 
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("Previous");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ARROW_BACKWARD, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ARROW_BACKWARD, IApplicationImageProvider.SIZE_16x16));
 		button.setLayoutData(gridData);
 		button.addSelectionListener(new SelectionAdapter() {
 
@@ -193,7 +195,7 @@ public class EnhancedResultsEditor extends AbstractControllerComposite {
 
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("Save");
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SAVE, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SAVE, IApplicationImageProvider.SIZE_16x16));
 		button.setLayoutData(gridData);
 		button.addSelectionListener(new SelectionAdapter() {
 

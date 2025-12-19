@@ -19,6 +19,7 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.widgets.Composite;
 
+import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.AbstractPeakRatioTitles;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.quant.QuantRatioEditingSupport;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.quant.QuantRatioLabelProvider;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.quant.QuantRatioResultTitles;
@@ -64,7 +65,7 @@ public class QuantRatioListUI extends AbstractRatioListUI {
 		for(int i = 0; i < tableViewerColumns.size(); i++) {
 			TableViewerColumn tableViewerColumn = tableViewerColumns.get(i);
 			String label = tableViewerColumn.getColumn().getText();
-			if(!label.equals(QuantRatioResultTitles.NAME)) {
+			if(!label.equals(AbstractPeakRatioTitles.NAME)) {
 				tableViewerColumn.setEditingSupport(new QuantRatioEditingSupport(this, label));
 			}
 		}

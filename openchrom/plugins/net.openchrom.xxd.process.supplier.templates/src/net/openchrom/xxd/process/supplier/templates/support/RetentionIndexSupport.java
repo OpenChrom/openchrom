@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.core.IChromatogramPeak;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.support.RetentionIndexMap;
@@ -52,8 +53,8 @@ public class RetentionIndexSupport {
 				double positionStop = retentionIndexMap.getRetentionTime((int)Math.round(setting.getPositionStop()));
 				if(positionStart != RetentionIndexMath.RETENTION_TIME_MISSING && positionStop != RetentionIndexMath.RETENTION_TIME_MISSING) {
 					setting.setPositionDirective(PositionDirective.RETENTION_TIME_MIN);
-					setting.setPositionStart(positionStart / IChromatogram.MINUTE_CORRELATION_FACTOR);
-					setting.setPositionStop(positionStop / IChromatogram.MINUTE_CORRELATION_FACTOR);
+					setting.setPositionStart(positionStart / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
+					setting.setPositionStop(positionStop / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 					settingsAdjusted.add(setting);
 				}
 			} else {
@@ -78,8 +79,8 @@ public class RetentionIndexSupport {
 				double positionStop = retentionIndexMap.getRetentionTime((int)Math.round(setting.getPositionStop()));
 				if(positionStart != RetentionIndexMath.RETENTION_TIME_MISSING && positionStop != RetentionIndexMath.RETENTION_TIME_MISSING) {
 					setting.setPositionDirective(PositionDirective.RETENTION_TIME_MIN);
-					setting.setPositionStart(positionStart / IChromatogram.MINUTE_CORRELATION_FACTOR);
-					setting.setPositionStop(positionStop / IChromatogram.MINUTE_CORRELATION_FACTOR);
+					setting.setPositionStart(positionStart / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
+					setting.setPositionStop(positionStop / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 					settingsAdjusted.add(setting);
 				}
 			} else {

@@ -261,7 +261,7 @@ public class TemplatePeakIntegrationEditor implements SettingsUIProvider.Setting
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		button.setToolTipText(ADD_TOOLTIP);
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -287,7 +287,7 @@ public class TemplatePeakIntegrationEditor implements SettingsUIProvider.Setting
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("");
 		button.setToolTipText(EDIT_TOOLTIP);
-		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EDIT, IApplicationImage.SIZE_16x16));
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EDIT, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
 			@Override

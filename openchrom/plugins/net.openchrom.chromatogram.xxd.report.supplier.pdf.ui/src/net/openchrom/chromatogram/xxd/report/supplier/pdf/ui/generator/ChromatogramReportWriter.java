@@ -36,7 +36,6 @@ import org.apache.pdfbox.pdmodel.graphics.form.PDFormXObject;
 import org.apache.pdfbox.util.Matrix;
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.model.core.AbstractChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.core.IPeak;
@@ -303,7 +302,7 @@ public class ChromatogramReportWriter {
 		for(IPeak peak : peaks) {
 			IPeakModel peakModel = peak.getPeakModel();
 			String identification = getBestIdentification(peak.getTargets(), peakModel.getPeakMaximum().getRetentionIndex());
-			String retentionTime = decimalFormatRetentionTime.format(peakModel.getRetentionTimeAtPeakMaximum() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
+			String retentionTime = decimalFormatRetentionTime.format(peakModel.getRetentionTimeAtPeakMaximum() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 			for(IQuantitationEntry quantitationEntry : peak.getQuantitationEntries()) {
 				List<String> row = new ArrayList<>();
 				row.add("P" + i);

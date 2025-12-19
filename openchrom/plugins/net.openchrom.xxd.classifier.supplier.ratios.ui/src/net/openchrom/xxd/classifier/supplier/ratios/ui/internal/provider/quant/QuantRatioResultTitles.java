@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 
-import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.support.ui.swt.columns.ColumnDefinition;
 import org.eclipse.chemclipse.support.ui.swt.columns.ColumnDefinitionProvider;
@@ -108,7 +108,7 @@ public class QuantRatioResultTitles extends AbstractPeakRatioTitles implements C
 
 				IPeak peak = ratio.getPeak();
 				if(peak != null) {
-					return peak.getPeakModel().getRetentionTimeAtPeakMaximum() / IChromatogram.MINUTE_CORRELATION_FACTOR;
+					return peak.getPeakModel().getRetentionTimeAtPeakMaximum() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR;
 				} else {
 					return null;
 				}

@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
+import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.chemclipse.ux.extension.ui.methods.IChangeListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
@@ -236,7 +237,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 
 		ToolItem toolItem = new ToolItem(toolBar, SWT.PUSH);
 		toolItem.setToolTipText("Add Column");
-		toolItem.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ARROW_FORWARD, IApplicationImage.SIZE_16x16));
+		toolItem.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ARROW_FORWARD, IApplicationImageProvider.SIZE_16x16));
 
 		toolItem.addSelectionListener(new SelectionAdapter() {
 
@@ -254,7 +255,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 
 		ToolItem toolItem = new ToolItem(toolBar, SWT.PUSH);
 		toolItem.setToolTipText("Remove Column");
-		toolItem.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ARROW_BACKWARD, IApplicationImage.SIZE_16x16));
+		toolItem.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ARROW_BACKWARD, IApplicationImageProvider.SIZE_16x16));
 
 		toolItem.addSelectionListener(new SelectionAdapter() {
 
@@ -272,7 +273,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 
 		ToolItem toolItem = new ToolItem(toolBar, SWT.PUSH);
 		toolItem.setToolTipText("Clear Columns");
-		toolItem.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CLEAR, IApplicationImage.SIZE_16x16));
+		toolItem.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CLEAR, IApplicationImageProvider.SIZE_16x16));
 
 		toolItem.addSelectionListener(new SelectionAdapter() {
 
@@ -291,7 +292,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 
 		ToolItem toolItem = new ToolItem(toolBar, SWT.PUSH);
 		toolItem.setToolTipText("Move Column Up");
-		toolItem.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ARROW_UP_2, IApplicationImage.SIZE_16x16));
+		toolItem.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ARROW_UP_2, IApplicationImageProvider.SIZE_16x16));
 
 		toolItem.addSelectionListener(new SelectionAdapter() {
 
@@ -309,7 +310,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 
 		ToolItem toolItem = new ToolItem(toolBar, SWT.PUSH);
 		toolItem.setToolTipText("Move Column Down");
-		toolItem.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ARROW_DOWN_2, IApplicationImage.SIZE_16x16));
+		toolItem.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ARROW_DOWN_2, IApplicationImageProvider.SIZE_16x16));
 
 		toolItem.addSelectionListener(new SelectionAdapter() {
 

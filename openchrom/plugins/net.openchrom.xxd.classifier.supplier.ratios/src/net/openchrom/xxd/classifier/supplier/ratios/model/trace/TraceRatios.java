@@ -27,6 +27,7 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.xxd.classifier.supplier.ratios.model.IPeakRatios;
+import net.openchrom.xxd.classifier.supplier.ratios.util.AbstractRatioListUtil;
 import net.openchrom.xxd.classifier.supplier.ratios.util.trace.TraceRatioListUtil;
 import net.openchrom.xxd.classifier.supplier.ratios.util.trace.TraceRatioValidator;
 
@@ -42,8 +43,8 @@ public class TraceRatios extends ArrayList<TraceRatio> implements IPeakRatios<Tr
 	public static final String FILTER_NAME = DESCRIPTION + " (*" + FILE_EXTENSION + ")";
 
 	private TraceRatioListUtil listUtil = new TraceRatioListUtil();
-	private static final String SEPARATOR_TOKEN = TraceRatioListUtil.SEPARATOR_TOKEN;
-	private static final String SEPARATOR_ENTRY = TraceRatioListUtil.SEPARATOR_ENTRY;
+	private static final String SEPARATOR_TOKEN = AbstractRatioListUtil.SEPARATOR_TOKEN;
+	private static final String SEPARATOR_ENTRY = AbstractRatioListUtil.SEPARATOR_ENTRY;
 
 	public void load(String items) {
 
