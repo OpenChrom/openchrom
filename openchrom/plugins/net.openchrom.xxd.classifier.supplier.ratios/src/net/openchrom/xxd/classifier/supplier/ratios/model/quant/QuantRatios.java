@@ -89,8 +89,7 @@ public class QuantRatios extends ArrayList<QuantRatio> implements IPeakRatios<Qu
 
 	public void importItems(File file) {
 
-		try {
-			BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+		try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
 			String line;
 			while((line = bufferedReader.readLine()) != null) {
 				QuantRatio setting = extract(line);
@@ -98,7 +97,6 @@ public class QuantRatios extends ArrayList<QuantRatio> implements IPeakRatios<Qu
 					add(setting);
 				}
 			}
-			bufferedReader.close();
 		} catch(FileNotFoundException e) {
 			logger.warn(e);
 		} catch(IOException e) {

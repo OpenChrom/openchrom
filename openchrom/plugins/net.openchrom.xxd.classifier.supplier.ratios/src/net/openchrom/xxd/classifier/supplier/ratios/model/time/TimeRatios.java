@@ -91,8 +91,7 @@ public class TimeRatios extends ArrayList<TimeRatio> implements IPeakRatios<Time
 
 	public void importItems(File file) {
 
-		try {
-			BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+		try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
 			String line;
 			while((line = bufferedReader.readLine()) != null) {
 				TimeRatio setting = extract(line);
@@ -100,7 +99,6 @@ public class TimeRatios extends ArrayList<TimeRatio> implements IPeakRatios<Time
 					add(setting);
 				}
 			}
-			bufferedReader.close();
 		} catch(FileNotFoundException e) {
 			logger.warn(e);
 		} catch(IOException e) {
