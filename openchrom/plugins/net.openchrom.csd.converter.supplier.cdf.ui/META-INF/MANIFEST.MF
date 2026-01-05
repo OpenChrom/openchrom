@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Automatic-Module-Name: net.openchrom.csd.converter.supplier.cdf.ui
 Bundle-ManifestVersion: 2
-Bundle-Name: CDF (CSD) UI
+Bundle-Name: NetCDF FID UI
 Bundle-SymbolicName: net.openchrom.csd.converter.supplier.cdf.ui;singleton:=true
 Bundle-Version: 1.6.0.qualifier
 Bundle-Activator: net.openchrom.csd.converter.supplier.cdf.ui.Activator
