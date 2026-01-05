@@ -5,7 +5,7 @@
          point="org.eclipse.core.runtime.products">
       <product
             application="org.eclipse.chemclipse.rcp.app.ui.org.eclipse.chemclipse.rcp.application"
-            name="OpenChrom (McLafferty)">
+            name="OpenChrom (Hillenkamp)">
          <property
                name="windowImages"
                value="icons/logo_16x16.png,icons/logo_32x32.png,icons/logo_48x48.png,icons/logo_64x64.png,icons/logo_128x128.png">
@@ -20,7 +20,7 @@
          </property>
          <property
                name="appName"
-               value="OpenChrom (McLafferty)">
+               value="OpenChrom (Hillenkamp)">
          </property>
          <property
                name="applicationXMI"
@@ -33,7 +33,7 @@
       <splashHandler
             class="net.openchrom.rcp.compilation.community.ui.splash.EnhancedSplashHandler"
             id="net.openchrom.rcp.compilation.community.ui.splash.enhancedSplashHandler">
-      </splashHandler>         
+      </splashHandler>
       <splashHandlerProductBinding
             productId="net.openchrom.rcp.compilation.community.ui.product"
             splashId="net.openchrom.rcp.compilation.community.ui.splash.enhancedSplashHandler">
