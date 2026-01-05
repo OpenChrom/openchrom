@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="net.openchrom.msd.converter.supplier.cdf.feature"
-      label="NetCDF MSD (*.cdf)"
+      id="net.openchrom.wsd.converter.supplier.cdf.feature"
+      label="NetCDF DAD (*.cdf)"
       version="1.6.0.qualifier"
       provider-name="OpenChrom" plugin="net.openchrom.feature.branding"
       license-feature="org.eclipse.license" license-feature-version="2.0.2.qualifier">
@@ -10,8 +10,8 @@
       This is a netCDF chromatogram converter.
    </description>
 
-   <copyright url="http://www.lablicate.com">
-      Copyright (c) 2013, 2025 Lablicate GmbH.
+   <copyright url="https://www.lablicate.com">
+      Copyright (c) 2026 Lablicate GmbH.
    </copyright>
 
    <license url="%licenseURL">
@@ -23,14 +23,7 @@
    </url>
 
    <plugin
-         id="net.openchrom.msd.converter.supplier.cdf"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="net.openchrom.msd.converter.supplier.cdf.ui"
+         id="net.openchrom.wsd.converter.supplier.cdf"
          download-size="0"
          install-size="0"
          version="0.0.0"

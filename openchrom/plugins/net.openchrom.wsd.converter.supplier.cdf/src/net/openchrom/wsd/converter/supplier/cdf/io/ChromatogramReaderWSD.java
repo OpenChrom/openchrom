@@ -1,0 +1,186 @@
+/*******************************************************************************
+ * Copyright (c) 2014, 2026 Lablicate GmbH.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ * 
+ * Contributors:
+ * Philip Wenig - initial API and implementation
+ *******************************************************************************/
+package net.openchrom.wsd.converter.supplier.cdf.io;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.Date;
+
+import org.eclipse.chemclipse.converter.l10n.ConverterMessages;
+import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.model.core.IChromatogramOverview;
+import org.eclipse.chemclipse.wsd.converter.io.AbstractChromatogramWSDReader;
+import org.eclipse.chemclipse.wsd.converter.io.IChromatogramWSDReader;
+import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
+import org.eclipse.core.runtime.IProgressMonitor;
+
+import net.openchrom.wsd.converter.supplier.cdf.exceptions.NoCDFAttributeDataFound;
+import net.openchrom.wsd.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
+import net.openchrom.wsd.converter.supplier.cdf.exceptions.NotEnoughScanDataStored;
+import net.openchrom.wsd.converter.supplier.cdf.io.support.CDFChromtogramArrayReader;
+import net.openchrom.wsd.converter.supplier.cdf.io.support.DateSupport;
+import net.openchrom.wsd.converter.supplier.cdf.io.support.IAbstractCDFChromatogramArrayReader;
+import net.openchrom.wsd.converter.supplier.cdf.model.VendorChromatogramWSD;
+import net.openchrom.wsd.converter.supplier.cdf.model.VendorScan;
+
+import ucar.nc2.NetcdfFile;
+import ucar.nc2.NetcdfFiles;
+
+public class ChromatogramReaderWSD extends AbstractChromatogramWSDReader implements IChromatogramWSDReader {
+
+	private static final Logger logger = Logger.getLogger(ChromatogramReaderWSD.class);
+
+	@Override
+	public IChromatogramWSD read(File file, IProgressMonitor monitor) throws IOException {
+
+		return readFile(file, monitor);
+	}
+
+	@Override
+	public IChromatogramOverview readOverview(File file, IProgressMonitor monitor) throws IOException {
+
+		return readFile(file, monitor);
+	}
+
+	private IChromatogramWSD readFile(File file, IProgressMonitor monitor) throws IOException {
+
+		VendorChromatogramWSD chromatogram;
+		if(!isValidFileFormat(file)) {
+			return null;
+		}
+		// If it is a valid file, try to read it.
+		try {
+			monitor.subTask(ConverterMessages.importChromatogram);
+			chromatogram = readChromatogram(file, monitor);
+		} catch(IOException e) {
+			logger.error(e);
+			return null;
+		} catch(NoCDFVariableDataFound e) {
+			logger.error(e);
+			return null;
+		} catch(NotEnoughScanDataStored e) {
+			logger.error(e);
+			return null;
+		}
+		return chromatogram;
+	}
+
+	/**
+	 * Check whether the chromatogram file can be parsed or not.<br/>
+	 * Returns true if the chromatogram can be parsed and false if not.
+	 * 
+	 * @return boolean
+	 */
+	private boolean isValidFileFormat(File file) {
+
+		if(file == null) {
+			return false;
+		}
+		String check = "CDF";
+		byte[] data = new byte[3];
+		try (FileInputStream is = new FileInputStream(file)) {
+			is.read(data);
+		} catch(FileNotFoundException e) {
+			logger.warn(e);
+		} catch(IOException e) {
+			logger.warn(e);
+		}
+		String test = new String(data).trim();
+		return test.equals(check);
+	}
+
+	/**
+	 * Reads the chromatogram.
+	 * 
+	 * @param file
+	 * @return CDFChromatogram
+	 * @throws IOException
+	 * @throws NoCDFVariableDataFound
+	 * @throws NotEnoughScanDataStored
+	 * @throws IonLimitExceededException
+	 * @throws AbundanceLimitExceededException
+	 */
+	private VendorChromatogramWSD readChromatogram(File file, IProgressMonitor monitor) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
+
+		monitor.subTask(ConverterMessages.importChromatogram);
+		NetcdfFile cdfChromatogram = NetcdfFiles.open(file.getAbsolutePath());
+		CDFChromtogramArrayReader in = new CDFChromtogramArrayReader(cdfChromatogram);
+		VendorChromatogramWSD chromatogram = new VendorChromatogramWSD();
+		setChromatogramEntries(chromatogram, in, file);
+		monitor.subTask(ConverterMessages.importScan);
+		int retentionTime = in.getScanDelay();
+		int scans = in.getNumberOfScans();
+		for(int i = 0; i < scans; i++) {
+			VendorScan scan = new VendorScan(in.getIntensity(i));
+			scan.setRetentionTime(retentionTime);
+			retentionTime += in.getScanInterval();
+			chromatogram.addScan(scan);
+		}
+		/*
+		 * Peak Table
+		 */
+		in.readPeakTable(chromatogram);
+		cdfChromatogram.close();
+
+		return chromatogram;
+	}
+
+	/**
+	 * Sets entries like operator, miscellaneous info, scan delay ... to the
+	 * chromatogram.
+	 * 
+	 * @param chromatogram
+	 * @param in
+	 * @param file
+	 */
+	private void setChromatogramEntries(VendorChromatogramWSD chromatogram, IAbstractCDFChromatogramArrayReader in, File file) {
+
+		/*
+		 * Scan delay must be not negative.
+		 */
+		int scanDelay = in.getScanDelay();
+		scanDelay = (scanDelay < 0) ? 0 : scanDelay;
+		chromatogram.setScanDelay(scanDelay);
+		chromatogram.setScanInterval(in.getScanInterval());
+		/*
+		 * Extension
+		 */
+		chromatogram.setConverterId("net.openchrom.wsd.converter.supplier.cdf");
+		String operator = "";
+		String date = "";
+		try {
+			operator = in.getOperator();
+			date = in.getDate();
+		} catch(NoCDFAttributeDataFound e) {
+			logger.warn(e);
+		}
+		/*
+		 * Set the file name to the chromatogram.
+		 */
+		chromatogram.setFile(file);
+		/*
+		 * File creation date.
+		 */
+		Date creationDate;
+		try {
+			creationDate = DateSupport.getDate(date);
+		} catch(ParseException e) {
+			creationDate = new Date();
+		}
+		chromatogram.setDate(creationDate);
+		chromatogram.setOperator(operator);
+	}
+}

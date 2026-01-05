@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2026 Lablicate GmbH.
+ * Copyright (c) 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -8,9 +8,9 @@
  * SPDX-License-Identifier: EPL-2.0
  * 
  * Contributors:
- * Philip Wenig - initial API and implementation
+ * Matthias Mailänder - initial API and implementation
  *******************************************************************************/
-package net.openchrom.csd.converter.supplier.cdf.converter;
+package net.openchrom.wsd.converter.supplier.cdf.converter;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,11 +37,8 @@ public class FileContentMatcher extends AbstractFileContentMatcher implements IF
 			Attribute type = netcdfFile.findGlobalAttribute("separation_experiment_type");
 			if(type != null && type.isString()) {
 				if(type.getStringValue().equalsIgnoreCase("Liquid Chromatography") //
-						&& type.getStringValue().contains("Liquid Chromatography")) {
-					return false;
-				}
-				if(type.getStringValue().equalsIgnoreCase("Gas Chromatography") //
-						|| type.getStringValue().equals("gas_chromatography")) {
+						|| type.getStringValue().contains("Liquid Chromatography")) // "Normal Phase Liquid Chromoatgraphy"
+				{
 					if(netcdfFile.findVariable("mass_values") == null) {
 						return true;
 					}
@@ -49,13 +46,18 @@ public class FileContentMatcher extends AbstractFileContentMatcher implements IF
 			}
 
 			Attribute detectorName = netcdfFile.findGlobalAttribute("detector_name");
-			if(detectorName != null && detectorName.isString() && detectorName.getStringValue().equals("flame ionization")) {
-				return true;
+			if(detectorName != null && detectorName.isString()) {
+				if(detectorName.getStringValue().equals("PDA") || detectorName.getStringValue().contains("DAD") //
+						|| detectorName.getStringValue().contains("UV-Vis")) {
+					return true;
+				}
 			}
 
-			// If no mass values are stored, assume that it is a FID file as a fallback.
-			if(netcdfFile.findVariable("mass_values") == null) {
-				return true;
+			Attribute detectorUnit = netcdfFile.findGlobalAttribute("detector_unit");
+			if(detectorUnit != null && detectorUnit.isString()) {
+				if(detectorUnit.getStringValue().equals("mAU") || detectorUnit.getStringValue().equals("AU") || detectorUnit.getStringValue().equals("A.U.")) {
+					return true;
+				}
 			}
 		} catch(IOException e) {
 			logger.warn(e);

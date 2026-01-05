@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Automatic-Module-Name: net.openchrom.msd.converter.supplier.cdf
 Bundle-ManifestVersion: 2
-Bundle-Name: CDF (MSD)
+Bundle-Name: NetCDF MSD
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.cdf;singleton:=true
 Bundle-Version: 1.6.0.qualifier
 Require-Bundle: org.eclipse.core.runtime,
