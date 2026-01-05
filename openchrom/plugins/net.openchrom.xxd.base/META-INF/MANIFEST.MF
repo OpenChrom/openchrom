@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.xxd.base
 Bundle-ManifestVersion: 2
 Bundle-Name: OpenChrom Base
 Bundle-SymbolicName: net.openchrom.xxd.base
-Bundle-Version: 1.5.38.qualifier
+Bundle-Version: 1.6.0.qualifier
 Export-Package: net.openchrom.xxd.base.model
 Bundle-Vendor: Lablicate GmbH
 Require-Bundle: org.eclipse.core.runtime,

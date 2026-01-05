@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.wsd.converter.supplier.abif.feature"
       label="ABIF Converter"
-      version="1.5.38.qualifier"
+      version="1.6.0.qualifier"
       provider-name="OpenChrom" plugin="net.openchrom.feature.branding"
       license-feature="org.eclipse.license" license-feature-version="2.0.2.qualifier">
 

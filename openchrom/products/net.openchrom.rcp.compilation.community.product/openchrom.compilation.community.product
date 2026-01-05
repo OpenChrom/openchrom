@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="OpenChrom (McLafferty)" uid="net.openchrom.rcp.compilation.community.product.id" id="net.openchrom.rcp.compilation.community.ui.product" application="org.eclipse.chemclipse.rcp.app.ui.org.eclipse.chemclipse.rcp.application" version="1.5.38.qualifier" type="features" includeLaunchers="true" autoIncludeRequirements="true">
+<product name="OpenChrom (McLafferty)" uid="net.openchrom.rcp.compilation.community.product.id" id="net.openchrom.rcp.compilation.community.ui.product" application="org.eclipse.chemclipse.rcp.app.ui.org.eclipse.chemclipse.rcp.application" version="1.6.0.qualifier" type="features" includeLaunchers="true" autoIncludeRequirements="true">
 
    <aboutInfo>
       <image path="/net.openchrom.rcp.compilation.community.ui/icons/about_250x330.png"/>
@@ -83,24 +83,24 @@ Contributors:
    </configurations>
 
    <repositories>
-      <repository location="https://converter.openchrom.net/1.5.38/" name="Converter" enabled="true" />
-      <repository location="https://plugins.openchrom.net/xident/1.5.38/" name="ChromIdent" enabled="true" />
-      <repository location="https://plugins.openchrom.net/mcrar/1.5.38/" name="MCR-AR" enabled="true" />
-      <repository location="https://plugins.openchrom.net/quantitation/1.5.38/" name="Quantitation" enabled="true" />
-      <repository location="https://plugins.openchrom.net/nist/1.5.38/" name="NIST" enabled="true" />
-      <repository location="https://plugins.openchrom.net/powertools/1.5.38/" name="PowerTools" enabled="true" />
-      <repository location="https://plugins.openchrom.net/pbm/1.5.38/" name="PBM" enabled="true" />
-      <repository location="https://plugins.openchrom.net/rrf/1.5.38/" name="RRF" enabled="true" />
-      <repository location="https://plugins.openchrom.net/allotrope/1.5.38/" name="Allotrope" enabled="true" />
-      <repository location="https://plugins.openchrom.net/ambientair/1.5.38/" name="Ambient Air" enabled="true" />
-      <repository location="https://plugins.openchrom.net/findingsdb/1.5.38/" name="Findings DB" enabled="true" />
-      <repository location="https://plugins.openchrom.net/chrominspector/1.5.38/" name="ChromInspector" enabled="true" />
-      <repository location="https://plugins.openchrom.net/tvoc/1.5.38/" name="TVOC" enabled="true" />
-      <repository location="https://plugins.openchrom.net/chrom2quant/1.5.38/" name="Chrom2Quant" enabled="true" />
-      <repository location="https://plugins.openchrom.net/combine/1.5.38/" name="Combine" enabled="true" />
-      <repository location="https://plugins.openchrom.net/drm/1.5.38/" name="DRM" enabled="true" />
-      <repository location="https://plugins.openchrom.net/freebies/1.5.38/" name="Freebies" enabled="true" />
-      <repository location="https://plugins.openchrom.net/documentation/1.5.38/" name="Documentation" enabled="true" />
+      <repository location="https://converter.openchrom.net/1.6.0/" name="Converter" enabled="true" />
+      <repository location="https://plugins.openchrom.net/xident/1.6.0/" name="ChromIdent" enabled="true" />
+      <repository location="https://plugins.openchrom.net/mcrar/1.6.0/" name="MCR-AR" enabled="true" />
+      <repository location="https://plugins.openchrom.net/quantitation/1.6.0/" name="Quantitation" enabled="true" />
+      <repository location="https://plugins.openchrom.net/nist/1.6.0/" name="NIST" enabled="true" />
+      <repository location="https://plugins.openchrom.net/powertools/1.6.0/" name="PowerTools" enabled="true" />
+      <repository location="https://plugins.openchrom.net/pbm/1.6.0/" name="PBM" enabled="true" />
+      <repository location="https://plugins.openchrom.net/rrf/1.6.0/" name="RRF" enabled="true" />
+      <repository location="https://plugins.openchrom.net/allotrope/1.6.0/" name="Allotrope" enabled="true" />
+      <repository location="https://plugins.openchrom.net/ambientair/1.6.0/" name="Ambient Air" enabled="true" />
+      <repository location="https://plugins.openchrom.net/findingsdb/1.6.0/" name="Findings DB" enabled="true" />
+      <repository location="https://plugins.openchrom.net/chrominspector/1.6.0/" name="ChromInspector" enabled="true" />
+      <repository location="https://plugins.openchrom.net/tvoc/1.6.0/" name="TVOC" enabled="true" />
+      <repository location="https://plugins.openchrom.net/chrom2quant/1.6.0/" name="Chrom2Quant" enabled="true" />
+      <repository location="https://plugins.openchrom.net/combine/1.6.0/" name="Combine" enabled="true" />
+      <repository location="https://plugins.openchrom.net/drm/1.6.0/" name="DRM" enabled="true" />
+      <repository location="https://plugins.openchrom.net/freebies/1.6.0/" name="Freebies" enabled="true" />
+      <repository location="https://plugins.openchrom.net/documentation/1.6.0/" name="Documentation" enabled="true" />
    </repositories>
 
    <preferencesInfo>
