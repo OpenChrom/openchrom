@@ -21,8 +21,8 @@
 -Dosgi.nl=en_US
 -Declipse.log.level=WARNING
 -Declipse.platform.mergeTrust=true
--Dosgi.instance.area=@user.home/OpenChrom/1.5.x
--Dosgi.user.area=@user.home/.openchrom/1.5.x
+-Dosgi.instance.area=@user.home/OpenChrom
+-Dosgi.user.area=@user.home/.openchrom
 -Dorg.eclipse.update.reconcile=false
 -Dorg.eclipse.help.webapp.experimental.ui=true
 -Dp2.trustedAuthorities=https://converter.openchrom.net,https://plugins.openchrom.net,https://update.openchrom.net,https://plugins.lablicate.com
