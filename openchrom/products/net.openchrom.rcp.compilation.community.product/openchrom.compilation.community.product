@@ -17,7 +17,7 @@
       <programArgs>-clearPersistedState
       </programArgs>
       <vmArgs>-Dapplication.name=OpenChrom
--Dapplication.version=1.6
+-Dapplication.version=1.6.0
 -Dosgi.nl=en_US
 -Declipse.log.level=WARNING
 -Declipse.platform.mergeTrust=true
