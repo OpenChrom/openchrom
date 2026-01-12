@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.wsd.converter.supplier.gaml.fragment.test
 Bundle-ManifestVersion: 2
 Bundle-Name: GAML UV/Vis Test
 Bundle-SymbolicName: net.openchrom.wsd.converter.supplier.gaml.fragment.test
-Bundle-Version: 1.6.0.qualifier
+Bundle-Version: 1.6.1.qualifier
 Bundle-Vendor: OpenChrom
 Fragment-Host: net.openchrom.wsd.converter.supplier.gaml;bundle-version="1.5.31"
 Import-Package: org.junit.jupiter.api;version="5.12.2"

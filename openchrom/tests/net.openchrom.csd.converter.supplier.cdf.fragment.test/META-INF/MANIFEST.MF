@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.csd.converter.supplier.cdf.fragment.test
 Bundle-ManifestVersion: 2
 Bundle-Name: CDF (CSD) Tests
 Bundle-SymbolicName: net.openchrom.csd.converter.supplier.cdf.fragment.test
-Bundle-Version: 1.6.0.qualifier
+Bundle-Version: 1.6.1.qualifier
 Fragment-Host: net.openchrom.csd.converter.supplier.cdf;bundle-version="1.5.31"
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Require-Bundle: junit-jupiter-api;bundle-version="5.12.2"
