@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2025 Lablicate GmbH.
+ * Copyright (c) 2020, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -47,7 +47,7 @@ public class ReviewSupport {
 
 		boolean status = false;
 		if(peak != null) {
-			status = peak.getClassifier().contains(ReviewSetting.CLASSIFIER_REVIEW_OK);
+			status = peak.getClassifiers().contains(ReviewSetting.CLASSIFIER_REVIEW_OK);
 		}
 		return status;
 	}

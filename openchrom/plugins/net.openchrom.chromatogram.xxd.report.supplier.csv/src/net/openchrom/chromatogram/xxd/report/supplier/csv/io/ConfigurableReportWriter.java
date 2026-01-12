@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Lablicate GmbH.
+ * Copyright (c) 2022, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -163,7 +163,7 @@ public class ConfigurableReportWriter {
 					records.add(peak.getQuantifierDescription());
 				}
 				if(reportColumn.equals(ReportColumns.CLASSIFIER)) {
-					records.add(peak.getClassifier());
+					records.add(peak.getClassifiers());
 				}
 				IPeakModel peakModel = peak.getPeakModel();
 				if(reportColumn.equals(ReportColumns.RETENTION_TIME)) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Lablicate GmbH.
+ * Copyright (c) 2021, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -221,7 +221,7 @@ public class Common {
 					if(target.isPresent()) {
 						ILibraryInformation libraryInformation = target.get().getLibraryInformation();
 						ids.getS().add(libraryInformation.getName());
-						Optional<String> classifier = libraryInformation.getClassifier().stream().findFirst();
+						Optional<String> classifier = libraryInformation.getClassifiers().stream().findFirst();
 						if(classifier.isPresent()) {
 							groups.getS().add(classifier.get());
 						}
