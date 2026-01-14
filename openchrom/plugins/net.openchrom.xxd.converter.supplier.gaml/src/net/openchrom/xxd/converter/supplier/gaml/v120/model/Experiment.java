@@ -15,12 +15,13 @@ package net.openchrom.xxd.converter.supplier.gaml.v120.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.datatype.XMLGregorianCalendar;
+
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlType;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {"collectdate", "parameter", "trace"})
@@ -46,7 +47,7 @@ public class Experiment {
 	public List<Parameter> getParameter() {
 
 		if(parameter == null) {
-			parameter = new ArrayList<Parameter>();
+			parameter = new ArrayList<>();
 		}
 		return this.parameter;
 	}
@@ -54,7 +55,7 @@ public class Experiment {
 	public List<Trace> getTrace() {
 
 		if(trace == null) {
-			trace = new ArrayList<Trace>();
+			trace = new ArrayList<>();
 		}
 		return this.trace;
 	}

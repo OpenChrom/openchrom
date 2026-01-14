@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Lablicate GmbH.
+ * Copyright (c) 2021, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -39,7 +39,7 @@ public class Trace {
 	public List<Parameter> getParameter() {
 
 		if(parameter == null) {
-			parameter = new ArrayList<Parameter>();
+			parameter = new ArrayList<>();
 		}
 		return this.parameter;
 	}
@@ -47,7 +47,7 @@ public class Trace {
 	public List<Coordinates> getCoordinates() {
 
 		if(coordinates == null) {
-			coordinates = new ArrayList<Coordinates>();
+			coordinates = new ArrayList<>();
 		}
 		return this.coordinates;
 	}
@@ -55,7 +55,7 @@ public class Trace {
 	public List<Xdata> getXdata() {
 
 		if(xdata == null) {
-			xdata = new ArrayList<Xdata>();
+			xdata = new ArrayList<>();
 		}
 		return this.xdata;
 	}

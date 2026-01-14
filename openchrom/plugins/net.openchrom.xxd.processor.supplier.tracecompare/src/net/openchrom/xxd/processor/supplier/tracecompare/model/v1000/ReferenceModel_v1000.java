@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Lablicate GmbH.
+ * Copyright (c) 2017, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -15,10 +15,10 @@ package net.openchrom.xxd.processor.supplier.tracecompare.model.v1000;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.openchrom.xxd.processor.supplier.tracecompare.model.IReferenceModel;
+
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlTransient;
-
-import net.openchrom.xxd.processor.supplier.tracecompare.model.IReferenceModel;
 
 public class ReferenceModel_v1000 implements IReferenceModel {
 
@@ -27,7 +27,7 @@ public class ReferenceModel_v1000 implements IReferenceModel {
 	@XmlElement(name = "ReferencePath")
 	private String referencePath = "";
 	@XmlElement(name = "SampleModels", type = SampleModel_v1000.class)
-	private Map<String, SampleModel_v1000> sampleModels = new HashMap<String, SampleModel_v1000>();
+	private Map<String, SampleModel_v1000> sampleModels = new HashMap<>();
 
 	@Override
 	@XmlTransient

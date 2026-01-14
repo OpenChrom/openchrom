@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Lablicate GmbH.
+ * Copyright (c) 2017, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -15,14 +15,14 @@ package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.mode
 import java.util.ArrayList;
 import java.util.List;
 
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IProcessorModel;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IProcessorSettings;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IScanMarker;
+
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlElementWrapper;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlTransient;
-
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IProcessorModel;
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IProcessorSettings;
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IScanMarker;
 
 @XmlRootElement(name = "MassShiftDetector")
 public class ProcessorModel_v1000 implements IProcessorModel {
@@ -42,7 +42,7 @@ public class ProcessorModel_v1000 implements IProcessorModel {
 	private String description = "";
 	@XmlElementWrapper(name = "ScanMarkers")
 	@XmlElement(name = "ScanMarker", type = ScanMarker_v1000.class)
-	private List<IScanMarker> scanMarker = new ArrayList<IScanMarker>();
+	private List<IScanMarker> scanMarker = new ArrayList<>();
 
 	@Override
 	@XmlTransient

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Lablicate GmbH.
+ * Copyright (c) 2021, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -53,7 +53,7 @@ public class GAML {
 	public List<Parameter> getParameter() {
 
 		if(parameter == null) {
-			parameter = new ArrayList<Parameter>();
+			parameter = new ArrayList<>();
 		}
 		return this.parameter;
 	}
@@ -61,7 +61,7 @@ public class GAML {
 	public List<Experiment> getExperiment() {
 
 		if(experiment == null) {
-			experiment = new ArrayList<Experiment>();
+			experiment = new ArrayList<>();
 		}
 		return this.experiment;
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2025 Walter Whitlock, Philip Wenig.
+ * Copyright (c) 2016, 2026 Walter Whitlock, Philip Wenig.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -58,7 +58,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 		/*
 		 * Initialize the values.
 		 */
-		ionMeasurements = new ArrayList<IIonMeasurement>(100);
+		ionMeasurements = new ArrayList<>(100);
 	}
 
 	/**
@@ -416,7 +416,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	@Override
 	public void createNewIonMeasurementList() {
 
-		ionMeasurements = new ArrayList<IIonMeasurement>(200);
+		ionMeasurements = new ArrayList<>(200);
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Lablicate GmbH.
+ * Copyright (c) 2017, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -15,12 +15,12 @@ package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.mode
 import java.util.HashSet;
 import java.util.Set;
 
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IMassShift;
+import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IScanMarker;
+
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlElementWrapper;
 import jakarta.xml.bind.annotation.XmlTransient;
-
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IMassShift;
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IScanMarker;
 
 public class ScanMarker_v1000 implements IScanMarker {
 
@@ -37,12 +37,14 @@ public class ScanMarker_v1000 implements IScanMarker {
 	private boolean validated;
 
 	public ScanMarker_v1000() {
-		this.massShifts = new HashSet<IMassShift>();
+
+		this.massShifts = new HashSet<>();
 	}
 
 	public ScanMarker_v1000(int scan) {
+
 		this.scanNumber = scan;
-		this.massShifts = new HashSet<IMassShift>();
+		this.massShifts = new HashSet<>();
 	}
 
 	@Override

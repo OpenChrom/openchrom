@@ -51,7 +51,7 @@ public class DecompositionDataset {
 		libIonsUsed = -1;
 		scanIonsUsed = -1;
 		libCompsUsed = -1;
-		compNameSet = new ConcurrentSkipListSet<String>(String.CASE_INSENSITIVE_ORDER);
+		compNameSet = new ConcurrentSkipListSet<>(String.CASE_INSENSITIVE_ORDER);
 		matched = false;
 		scanRef = null;
 	}

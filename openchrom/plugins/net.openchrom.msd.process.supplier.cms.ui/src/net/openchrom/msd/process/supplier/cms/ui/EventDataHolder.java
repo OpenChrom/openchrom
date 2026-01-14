@@ -28,7 +28,7 @@ public class EventDataHolder {
 	private static IEventBroker eventBroker;
 
 	static {
-		eventDataMap = new ConcurrentHashMap<String, Object>();
+		eventDataMap = new ConcurrentHashMap<>();
 		eventBroker = PlatformUI.getWorkbench().getService(IEventBroker.class);
 	}
 

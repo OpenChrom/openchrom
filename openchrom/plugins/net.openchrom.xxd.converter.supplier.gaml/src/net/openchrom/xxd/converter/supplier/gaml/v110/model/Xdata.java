@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Lablicate GmbH.
+ * Copyright (c) 2021, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -51,7 +51,7 @@ public class Xdata {
 	public List<Link> getLink() {
 
 		if(link == null) {
-			link = new ArrayList<Link>();
+			link = new ArrayList<>();
 		}
 		return this.link;
 	}
@@ -59,7 +59,7 @@ public class Xdata {
 	public List<Parameter> getParameter() {
 
 		if(parameter == null) {
-			parameter = new ArrayList<Parameter>();
+			parameter = new ArrayList<>();
 		}
 		return this.parameter;
 	}
@@ -77,7 +77,7 @@ public class Xdata {
 	public List<AltXdata> getAltXdata() {
 
 		if(altXdata == null) {
-			altXdata = new ArrayList<AltXdata>();
+			altXdata = new ArrayList<>();
 		}
 		return this.altXdata;
 	}
@@ -85,7 +85,7 @@ public class Xdata {
 	public List<Ydata> getYdata() {
 
 		if(ydata == null) {
-			ydata = new ArrayList<Ydata>();
+			ydata = new ArrayList<>();
 		}
 		return this.ydata;
 	}

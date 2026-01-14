@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Lablicate GmbH.
+ * Copyright (c) 2021, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -12,11 +12,12 @@
  *******************************************************************************/
 package net.openchrom.xxd.converter.supplier.gaml.v100.model;
 
+import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.namespace.QName;
+
 import jakarta.xml.bind.JAXBElement;
 import jakarta.xml.bind.annotation.XmlElementDecl;
 import jakarta.xml.bind.annotation.XmlRegistry;
-import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.namespace.QName;
 
 @XmlRegistry
 public class ObjectFactory {
@@ -115,6 +116,6 @@ public class ObjectFactory {
 	@XmlElementDecl(namespace = "", name = "collectdate")
 	public JAXBElement<XMLGregorianCalendar> createCollectdate(XMLGregorianCalendar value) {
 
-		return new JAXBElement<XMLGregorianCalendar>(_Collectdate_QNAME, XMLGregorianCalendar.class, null, value);
+		return new JAXBElement<>(_Collectdate_QNAME, XMLGregorianCalendar.class, null, value);
 	}
 }

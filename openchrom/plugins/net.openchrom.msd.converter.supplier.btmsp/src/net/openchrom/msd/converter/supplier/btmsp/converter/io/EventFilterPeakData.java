@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2025 Matthias Mailänder.
+ * Copyright (c) 2020, 2026 Matthias Mailänder.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -24,7 +24,7 @@ public class EventFilterPeakData implements EventFilter {
 
 	public EventFilterPeakData() {
 
-		acceptedElements = new ArrayList<String>();
+		acceptedElements = new ArrayList<>();
 		// TODO: actually follow this hierarchy
 		acceptedElements.add("mainSpectrumPeaklist");
 		acceptedElements.add("peaks");

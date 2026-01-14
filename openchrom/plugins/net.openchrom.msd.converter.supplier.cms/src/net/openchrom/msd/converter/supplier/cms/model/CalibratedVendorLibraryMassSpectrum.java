@@ -51,7 +51,7 @@ public class CalibratedVendorLibraryMassSpectrum extends AbstractRegularLibraryM
 		 * Initialize the values.
 		 */
 		this.getLibraryInformation().setMolWeight(-1d);
-		comments = new ArrayList<String>();
+		comments = new ArrayList<>();
 		this.sourcePressure = -1d;
 		this.sourcePressureUnits = "";
 		this.signalUnits = "";

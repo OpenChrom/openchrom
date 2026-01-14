@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Lablicate GmbH.
+ * Copyright (c) 2017, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -615,7 +615,7 @@ public class PageSettings extends AbstractExtendedEditorPage implements IExtende
 
 	private IProcessingInfo<?> validateSettings() {
 
-		IProcessingInfo<?> processingInfo = new ProcessingInfo<Void>();
+		IProcessingInfo<?> processingInfo = new ProcessingInfo<>();
 		ProcessorData processorData = editorProcessor.getProcessorData();
 		IProcessorModel processorModel = processorData.getProcessorModel();
 		IProcessorSettings processorSettings = processorModel.getProcessorSettings();

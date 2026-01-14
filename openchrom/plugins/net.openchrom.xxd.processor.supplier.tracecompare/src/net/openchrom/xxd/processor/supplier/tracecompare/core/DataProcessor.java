@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Lablicate GmbH.
+ * Copyright (c) 2017, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -40,7 +40,7 @@ public class DataProcessor {
 
 	public static final String PROCESSOR_FILE_EXTENSION = ".otc";
 
-	private static Map<String, Pattern> sampleMatchPatterns = new HashMap<String, Pattern>();
+	private static Map<String, Pattern> sampleMatchPatterns = new HashMap<>();
 
 	public String getSampleGroup(String fileName) {
 
@@ -76,13 +76,13 @@ public class DataProcessor {
 
 	public List<String> getMeasurementPatterns(String pathDirectory, String fileExtension) {
 
-		List<String> patterns = new ArrayList<String>();
+		List<String> patterns = new ArrayList<>();
 
 		if(!pathDirectory.equals("") && !fileExtension.equals("")) {
 			/*
 			 * Extract the patterns.
 			 */
-			Set<String> measurementPatterns = new HashSet<String>();
+			Set<String> measurementPatterns = new HashSet<>();
 			Pattern pattern = getPattern();
 			File directory = new File(pathDirectory);
 			for(File file : directory.listFiles()) {
@@ -106,7 +106,7 @@ public class DataProcessor {
 
 	public List<File> getMeasurementFiles(String pathDirectory, String fileExtension, String measurementPattern) {
 
-		List<File> measurementFiles = new ArrayList<File>();
+		List<File> measurementFiles = new ArrayList<>();
 
 		if(!pathDirectory.equals("") && !fileExtension.equals("") && !measurementPattern.equals("")) {
 			File directory = new File(pathDirectory);
@@ -127,7 +127,7 @@ public class DataProcessor {
 
 	public List<TrackStatistics> getTrackStatistics(IProcessorModel processorModel) {
 
-		List<TrackStatistics> trackStatistics = new ArrayList<TrackStatistics>();
+		List<TrackStatistics> trackStatistics = new ArrayList<>();
 		if(processorModel != null) {
 			for(IReferenceModel referenceModel : processorModel.getReferenceModels().values()) {
 				trackStatistics.add(getTrackStatistics(referenceModel));

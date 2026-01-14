@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2025 Lablicate GmbH.
+ * Copyright (c) 2016, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -105,7 +105,7 @@ public class MassShiftDetector {
 			calculatedIonCertainties.getShiftLevelStartIonMap().put(shiftLevel, startIon);
 			calculatedIonCertainties.getShiftLevelStopIonMap().put(shiftLevel, stopIon);
 
-			Map<Integer, Map<Integer, Double>> ionSignalCertainties = new HashMap<Integer, Map<Integer, Double>>();
+			Map<Integer, Map<Integer, Double>> ionSignalCertainties = new HashMap<>();
 			calculatedIonCertainties.getMap().put(shiftLevel, ionSignalCertainties);
 			/*
 			 * Make the difference calculation.
@@ -154,7 +154,7 @@ public class MassShiftDetector {
 		IChromatogramMSD referenceChromatogram = processorData.getReferenceChromatogram();
 		IChromatogramMSD isotopeChromatogram = processorData.getIsotopeChromatogram();
 
-		Map<Integer, IScanMarker> scanMarkerMap = new HashMap<Integer, IScanMarker>();
+		Map<Integer, IScanMarker> scanMarkerMap = new HashMap<>();
 
 		for(Map.Entry<Integer, Map<Integer, Map<Integer, Double>>> massShiftEntry : calculatedIonCertainties.getMap().entrySet()) {
 
@@ -199,7 +199,7 @@ public class MassShiftDetector {
 		/*
 		 * Extract and sort the list.
 		 */
-		List<IScanMarker> scanMarkerList = new ArrayList<IScanMarker>(scanMarkerMap.values());
+		List<IScanMarker> scanMarkerList = new ArrayList<>(scanMarkerMap.values());
 		Collections.sort(scanMarkerList, new ScanMarkerComparator());
 		return scanMarkerList;
 	}
@@ -217,7 +217,7 @@ public class MassShiftDetector {
 
 	private Map<Integer, Double> calculateIonSignalCertainty(IProcessorSettings processorSettings, IExtractedIonSignal referenceIonSignal, IExtractedIonSignal isotopeIonSignal, int scan, int shiftLevel, int startIon, int stopIon, IProgressMonitor monitor) {
 
-		Map<Integer, Double> ionSignalCertainties = new HashMap<Integer, Double>();
+		Map<Integer, Double> ionSignalCertainties = new HashMap<>();
 		/*
 		 * Select the threshold strategy.
 		 */
@@ -264,7 +264,7 @@ public class MassShiftDetector {
 		/*
 		 * Extract the peaks on demand.
 		 */
-		SortedSet<Integer> sortedScanNumbers = new TreeSet<Integer>();
+		SortedSet<Integer> sortedScanNumbers = new TreeSet<>();
 		if(processorSettings.isUsePeaks()) {
 			/*
 			 * Reference
@@ -280,12 +280,12 @@ public class MassShiftDetector {
 			}
 		}
 
-		return new ArrayList<Integer>(sortedScanNumbers);
+		return new ArrayList<>(sortedScanNumbers);
 	}
 
 	private List<Integer> extractPeakScanNumbers(IChromatogramMSD chromatogram) {
 
-		List<Integer> peakScanNumbers = new ArrayList<Integer>();
+		List<Integer> peakScanNumbers = new ArrayList<>();
 
 		for(IChromatogramPeakMSD peakMSD : chromatogram.getPeaks()) {
 			peakScanNumbers.add(peakMSD.getScanMax());

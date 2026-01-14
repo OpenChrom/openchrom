@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Walter Whitlock, Philip Wenig.
+ * Copyright (c) 2017, 2026 Walter Whitlock, Philip Wenig.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -22,7 +22,7 @@ public class CorrelationResults {
 
 	CorrelationResults(String nameString) {
 
-		results = new ArrayList<CorrelationResult>();
+		results = new ArrayList<>();
 		name = nameString;
 	}
 

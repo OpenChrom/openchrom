@@ -62,7 +62,7 @@ public class DataProcessorUI extends DataProcessor {
 		/*
 		 * Colors
 		 */
-		colorMap = new HashMap<String, Color>();
+		colorMap = new HashMap<>();
 		reloadColors();
 	}
 
@@ -81,7 +81,7 @@ public class DataProcessorUI extends DataProcessor {
 
 	public String[] getWavelengthItems() {
 
-		List<String> wavelenghts = new ArrayList<String>();
+		List<String> wavelenghts = new ArrayList<>();
 		wavelenghts.add(DataProcessorUI.SHOW_ALL_WAVELENGTHS);
 		wavelenghts.add("190");
 		wavelenghts.add("200");
@@ -96,7 +96,7 @@ public class DataProcessorUI extends DataProcessor {
 
 	public Map<Integer, Map<String, ISeriesData>> extractMeasurementsData(List<File> measurementFiles, String type) {
 
-		Map<Integer, Map<String, ISeriesData>> measurementsData = new HashMap<Integer, Map<String, ISeriesData>>();
+		Map<Integer, Map<String, ISeriesData>> measurementsData = new HashMap<>();
 
 		MeasurementImportRunnable runnable = new MeasurementImportRunnable(measurementFiles);
 		ProgressMonitorDialog monitor = new ProgressMonitorDialog(Display.getDefault().getActiveShell());
@@ -137,7 +137,7 @@ public class DataProcessorUI extends DataProcessor {
 
 		Map<String, ISeriesData> wavelengthData = measurementsData.get(index);
 		if(wavelengthData == null) {
-			wavelengthData = new HashMap<String, ISeriesData>();
+			wavelengthData = new HashMap<>();
 			measurementsData.put(index, wavelengthData);
 		}
 		wavelengthData.put(wavelength, seriesData);
@@ -222,7 +222,7 @@ public class DataProcessorUI extends DataProcessor {
 
 	public List<ILineSeriesData> getLineSeriesDataList(Map<Integer, Map<String, ISeriesData>> measurementsData, String wavelengthSelection, int track) {
 
-		List<ILineSeriesData> lineSeriesDataList = new ArrayList<ILineSeriesData>();
+		List<ILineSeriesData> lineSeriesDataList = new ArrayList<>();
 		boolean addEmptySeriesData = true;
 
 		if(measurementsData != null) {
@@ -256,7 +256,7 @@ public class DataProcessorUI extends DataProcessor {
 
 	public List<File> getMeasurementFileList(IProcessorModel processorModel, String meausurementType, String groupSelection) {
 
-		List<File> referenceFiles = new ArrayList<File>();
+		List<File> referenceFiles = new ArrayList<>();
 		if(processorModel != null) {
 			/*
 			 * Get the file list

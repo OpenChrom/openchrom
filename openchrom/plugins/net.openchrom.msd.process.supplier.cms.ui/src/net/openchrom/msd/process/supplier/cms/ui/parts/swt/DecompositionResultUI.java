@@ -87,7 +87,7 @@ public class DecompositionResultUI extends Composite {
 	public DecompositionResultUI(Composite parent, int style) {
 
 		super(parent, style);
-		resultsListener = new ArrayList<IDecompositionResultsListener>();
+		resultsListener = new ArrayList<>();
 		initialize();
 	}
 

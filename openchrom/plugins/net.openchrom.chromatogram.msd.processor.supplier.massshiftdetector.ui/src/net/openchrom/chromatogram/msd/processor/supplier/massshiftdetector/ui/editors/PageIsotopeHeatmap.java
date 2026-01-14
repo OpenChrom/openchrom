@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Lablicate GmbH.
+ * Copyright (c) 2017, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -28,7 +28,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IScanMarker;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.ProcessorData;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.runnables.IonCertaintiesCalculatorRunnable;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.swt.EnhancedIsotopeHeatmapEditor;
@@ -43,6 +42,7 @@ public class PageIsotopeHeatmap {
 	private EnhancedIsotopeHeatmapEditor enhancedIsotopeHeatmapEditor;
 
 	public PageIsotopeHeatmap(Composite container) {
+
 		initialize(container);
 	}
 
@@ -103,7 +103,7 @@ public class PageIsotopeHeatmap {
 					}
 
 					processorData.setCacluatedIonCertainties(runnable.getCalculatedIonCertainties());
-					processorData.getProcessorModel().setScanMarker(new ArrayList<IScanMarker>());
+					processorData.getProcessorModel().setScanMarker(new ArrayList<>());
 				}
 				enhancedIsotopeHeatmapEditor.setInput(processorData);
 			}

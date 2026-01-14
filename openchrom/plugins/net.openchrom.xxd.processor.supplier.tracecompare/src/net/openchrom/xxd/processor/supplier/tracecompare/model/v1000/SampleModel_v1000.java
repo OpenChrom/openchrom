@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Lablicate GmbH.
+ * Copyright (c) 2017, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -15,10 +15,10 @@ package net.openchrom.xxd.processor.supplier.tracecompare.model.v1000;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.openchrom.xxd.processor.supplier.tracecompare.model.ISampleModel;
+
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlTransient;
-
-import net.openchrom.xxd.processor.supplier.tracecompare.model.ISampleModel;
 
 public class SampleModel_v1000 implements ISampleModel {
 
@@ -27,7 +27,7 @@ public class SampleModel_v1000 implements ISampleModel {
 	@XmlElement(name = "SamplePath")
 	private String samplePath = "";
 	@XmlElement(name = "TrackModels", type = TrackModel_v1000.class)
-	private Map<Integer, TrackModel_v1000> trackModels = new HashMap<Integer, TrackModel_v1000>();
+	private Map<Integer, TrackModel_v1000> trackModels = new HashMap<>();
 
 	@Override
 	@XmlTransient

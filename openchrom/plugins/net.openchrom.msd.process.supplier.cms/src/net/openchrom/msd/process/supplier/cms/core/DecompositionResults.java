@@ -27,7 +27,7 @@ public class DecompositionResults {
 
 	DecompositionResults(String nameString) {
 
-		decompositionResults = new ArrayList<DecompositionResult>();
+		decompositionResults = new ArrayList<>();
 		name = nameString;
 		isCalibrated = true;
 		hasETimes = true;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Lablicate GmbH.
+ * Copyright (c) 2017, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -45,7 +45,7 @@ public class EnhancedIsotopeHeatmapEditor extends AbstractControllerComposite {
 	public EnhancedIsotopeHeatmapEditor(Composite parent, int style) {
 
 		super(parent, style);
-		buttons = new ArrayList<Button>();
+		buttons = new ArrayList<>();
 		createControl();
 	}
 

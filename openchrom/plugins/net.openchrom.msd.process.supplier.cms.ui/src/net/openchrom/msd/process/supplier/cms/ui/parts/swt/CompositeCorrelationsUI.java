@@ -106,7 +106,7 @@ public class CompositeCorrelationsUI extends Composite {
 
 		LightweightSystem lightweightSystem = new LightweightSystem(new Canvas(compositeGraph, SWT.NONE));
 		xyGraphCorrelation = new XYGraph();
-		traceCorrelationsMap = new TreeMap<String, Trace>();
+		traceCorrelationsMap = new TreeMap<>();
 		xyGraphCorrelation.setTitle("Correlation");
 		xyGraphCorrelation.getPrimaryXAxis().setAutoScale(true);
 		xyGraphCorrelation.getPrimaryXAxis().setShowMajorGrid(true);
@@ -161,8 +161,8 @@ public class CompositeCorrelationsUI extends Composite {
 			xyGraphCorrelationNumberOfPoints = results.getDecompositionResultsList().size();
 
 			double[] xDataTraceCorrelation = new double[xyGraphCorrelationNumberOfPoints];
-			TreeMap<String, ArrayList<Double>> yDataLookupMap = new TreeMap<String, ArrayList<Double>>();
-			ConcurrentSkipListSet<String> topNamesList = new ConcurrentSkipListSet<String>();
+			TreeMap<String, ArrayList<Double>> yDataLookupMap = new TreeMap<>();
+			ConcurrentSkipListSet<String> topNamesList = new ConcurrentSkipListSet<>();
 
 			String libraryName;
 			CorrelationResult correlationResult;
@@ -182,7 +182,7 @@ public class CompositeCorrelationsUI extends Composite {
 				for(int j = 0; j < correlationResult.getResultsCount(); j++) {
 					libraryName = correlationResult.getCorrelationLibName(j);
 					if(null == yDataLookupMap.get(libraryName)) {
-						yDataLookupMap.put(libraryName, new ArrayList<Double>());
+						yDataLookupMap.put(libraryName, new ArrayList<>());
 					}
 					yDataLookupMap.get(libraryName).add(i, correlationResult.getCorrelationValue(j));
 				}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2025 Lablicate GmbH.
+ * Copyright (c) 2020, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -165,7 +165,7 @@ public class ModelPeakDemo {
 	private static void redrawChartGaussian() {
 
 		chartGaussian.deleteSeries();
-		List<ILineSeriesData> lineSeriesDataList = new ArrayList<ILineSeriesData>();
+		List<ILineSeriesData> lineSeriesDataList = new ArrayList<>();
 		double sigmaFront = parseDouble(textSigmaFront);
 		double sigmaBack = parseDouble(textSigmaBack);
 		ISeriesData seriesData = getPeakSeriesGaussian(sigmaFront, sigmaBack);
@@ -181,7 +181,7 @@ public class ModelPeakDemo {
 	private static void redrawChartDistribution() {
 
 		chartDistribution.deleteSeries();
-		List<ILineSeriesData> lineSeriesDataList = new ArrayList<ILineSeriesData>();
+		List<ILineSeriesData> lineSeriesDataList = new ArrayList<>();
 		double shape = parseDouble(textShape);
 		double scale = parseDouble(textScale);
 		ISeriesData seriesData = getPeakSeriesDistribution(shape, scale);

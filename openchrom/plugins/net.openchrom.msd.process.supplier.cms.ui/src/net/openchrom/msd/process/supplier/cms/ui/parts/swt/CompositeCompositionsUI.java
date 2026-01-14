@@ -66,7 +66,7 @@ public class CompositeCompositionsUI extends Composite {
 			double minDist, testDist, testXvalue, testYvalue;
 			// double closestXvalue, closestYvalue;
 			boolean initialized = false;
-			List<Trace> traceList = new ArrayList<Trace>();
+			List<Trace> traceList = new ArrayList<>();
 			traceList = xyGraphComposition.getPlotArea().getTraceList();
 			traceName = "no name";
 			minDist = 0.0;
@@ -343,7 +343,7 @@ public class CompositeCompositionsUI extends Composite {
 		LightweightSystem lightweightSystem = new LightweightSystem(new Canvas(compositeGraph, SWT.NONE));
 		xyGraphComposition = new XYGraph();
 		toolbarArmedXYGraph = new ToolbarArmedXYGraph(xyGraphComposition);
-		traceCompositionsMap = new TreeMap<String, Trace>();
+		traceCompositionsMap = new TreeMap<>();
 		xyGraphComposition.setTitle("Composition");
 		xyGraphComposition.getPrimaryXAxis().setAutoScale(true);
 		xyGraphComposition.getPrimaryXAxis().setShowMajorGrid(true);
@@ -488,7 +488,7 @@ public class CompositeCompositionsUI extends Composite {
 				xyGraphComposition.getPrimaryYAxis().setTitle("Library Contribution, uncalibrated");
 			}
 			xyGraphComposition.getPrimaryYAxis().setLogScale(usingOffsetLogScale);
-			lookup = new TreeMap<String, ArrayList<Double>>();
+			lookup = new TreeMap<>();
 			xyGraphCompositionNumberOfPoints = results.getDecompositionResultsList().size();
 			xDataTraceComposition = new double[xyGraphCompositionNumberOfPoints];
 			String componentName;
@@ -498,7 +498,7 @@ public class CompositeCompositionsUI extends Composite {
 				for(int j = 0; j < result.getNumberOfComponents(); j++) {
 					componentName = result.getLibCompName(j);
 					if(null == lookup.get(componentName)) {
-						lookup.put(componentName, new ArrayList<Double>());
+						lookup.put(componentName, new ArrayList<>());
 					}
 					if(results.isCalibrated() && !(Yunits.LF == yUnits)) {
 						if(Yunits.PP == yUnits) {

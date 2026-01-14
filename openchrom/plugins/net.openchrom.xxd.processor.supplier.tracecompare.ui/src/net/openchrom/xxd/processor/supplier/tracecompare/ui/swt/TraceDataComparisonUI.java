@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Lablicate GmbH.
+ * Copyright (c) 2017, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -803,7 +803,7 @@ public class TraceDataComparisonUI extends Composite {
 		 * Remove and set the items.
 		 */
 		combo.removeAll();
-		List<String> tracks = new ArrayList<String>();
+		List<String> tracks = new ArrayList<>();
 		for(int i = 1; i <= numberTracks; i++) {
 			tracks.add("Track " + i);
 		}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Lablicate GmbH.
+ * Copyright (c) 2017, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -56,9 +56,10 @@ public class MeasurementModelData {
 	private DataProcessorUI dataProcessorUI;
 
 	public MeasurementModelData() {
+
 		dataProcessorUI = new DataProcessorUI();
-		mapQualification = new HashMap<String, Map<Integer, Map<String, ISeriesData>>>();
-		mapValidation = new HashMap<String, Map<Integer, Map<String, ISeriesData>>>();
+		mapQualification = new HashMap<>();
+		mapValidation = new HashMap<>();
 	}
 
 	public ITrackModel loadTrackModel(IProcessorModel processorModel, int track, String analysisType, String sampleGroup, String referenceGroup) {

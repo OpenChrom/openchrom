@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Lablicate GmbH.
+ * Copyright (c) 2017, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -15,11 +15,11 @@ package net.openchrom.xxd.processor.supplier.tracecompare.model.v1000;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
+
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlTransient;
-
-import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
 
 @XmlRootElement(name = "TraceCompare")
 public class ProcessorModel_v1000 implements IProcessorModel {
@@ -40,7 +40,7 @@ public class ProcessorModel_v1000 implements IProcessorModel {
 	@XmlElement(name = "GeneralNotes")
 	private String generalNotes = "";
 	@XmlElement(name = "ReferenceModels", type = ReferenceModel_v1000.class)
-	private Map<String, ReferenceModel_v1000> referenceModels = new HashMap<String, ReferenceModel_v1000>();
+	private Map<String, ReferenceModel_v1000> referenceModels = new HashMap<>();
 
 	@Override
 	@XmlTransient

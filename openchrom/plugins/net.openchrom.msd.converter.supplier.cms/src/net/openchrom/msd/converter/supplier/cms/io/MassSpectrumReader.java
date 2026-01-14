@@ -90,7 +90,7 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 	@Override
 	public IMassSpectra read(File file, IProgressMonitor monitor) throws IOException {
 
-		libOrScanNames = new HashSet<String>();
+		libOrScanNames = new HashSet<>();
 		IMassSpectra massSpectra = parseFile(file);
 		massSpectra.setConverterId(CONVERTER_ID);
 		massSpectra.setName(file.getName());
@@ -168,7 +168,7 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 					continue; // while
 				}
 				massSpectrum = new CalibratedVendorLibraryMassSpectrum();
-				tempIIonList = new ArrayList<IIon>();
+				tempIIonList = new ArrayList<>();
 				tempIIonMeasurementList = null;
 				rescaleValue = 0;
 				massSpectrum.getLibraryInformation().setName(name);
@@ -226,7 +226,7 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 					continue; // while
 				}
 				massSpectrum = new CalibratedVendorMassSpectrum();
-				tempIIonMeasurementList = new ArrayList<IIonMeasurement>();
+				tempIIonMeasurementList = new ArrayList<>();
 				tempIIonList = null;
 				rescaleValue = 0;
 				((ICalibratedVendorMassSpectrum)massSpectrum).setScanName(name);
@@ -301,7 +301,7 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 				else if((fieldMatcher = commentPattern.matcher(line)).lookingAt()) { // found COMMENT record
 					List<String> comments = massSpectrum.getComments();
 					if(null == comments) {
-						comments = new ArrayList<String>();
+						comments = new ArrayList<>();
 						comments.add(fieldMatcher.group(1).trim());
 						massSpectrum.setComments(comments);
 					} else {
@@ -328,7 +328,7 @@ public class MassSpectrumReader extends AbstractMassSpectraReader implements IMa
 					else if((fieldMatcher = synonymPattern.matcher(line)).lookingAt()) { // found SYNONYM record
 						Set<String> synonyms = massSpectrum.getLibraryInformation().getSynonyms();
 						if(null == synonyms) {
-							synonyms = new HashSet<String>();
+							synonyms = new HashSet<>();
 							synonyms.add(fieldMatcher.group(1).trim());
 							massSpectrum.getLibraryInformation().setSynonyms(synonyms);
 						} else {

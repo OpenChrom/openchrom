@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Lablicate GmbH.
+ * Copyright (c) 2021, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -39,7 +39,7 @@ public class Ydata {
 	public List<Parameter> getParameter() {
 
 		if(parameter == null) {
-			parameter = new ArrayList<Parameter>();
+			parameter = new ArrayList<>();
 		}
 		return this.parameter;
 	}
@@ -57,7 +57,7 @@ public class Ydata {
 	public List<Peaktable> getPeaktable() {
 
 		if(peaktable == null) {
-			peaktable = new ArrayList<Peaktable>();
+			peaktable = new ArrayList<>();
 		}
 		return this.peaktable;
 	}

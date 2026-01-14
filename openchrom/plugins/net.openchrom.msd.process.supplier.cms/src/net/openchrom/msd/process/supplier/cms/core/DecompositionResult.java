@@ -44,9 +44,9 @@ public class DecompositionResult {
 		this.sourcePressureUnits = sourcePressureUnits;
 		this.eTimeS = eTimeS;
 		this.signalUnits = sigUnits;
-		libraryComponents = new ArrayList<ICalibratedVendorLibraryMassSpectrum>();
-		xComp = new ArrayList<Double>();
-		isQuantitative = new ArrayList<Boolean>(); // it is possible to have a mix of quantitative and non-quantitative component results
+		libraryComponents = new ArrayList<>();
+		xComp = new ArrayList<>();
+		isQuantitative = new ArrayList<>(); // it is possible to have a mix of quantitative and non-quantitative component results
 		isCalibrated = true;
 		residualSpectrum = null;
 		correlationResult = null;
