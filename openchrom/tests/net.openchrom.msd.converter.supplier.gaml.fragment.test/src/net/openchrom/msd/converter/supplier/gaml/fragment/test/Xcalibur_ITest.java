@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Lablicate GmbH.
+ * Copyright (c) 2023, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -35,7 +35,7 @@ public class Xcalibur_ITest {
 	private IChromatogramMSD chromatogram;
 
 	@BeforeAll
-	public void setUp() throws Exception {
+	public void setUp() {
 
 		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.XCALIBUR));
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
@@ -53,7 +53,7 @@ public class Xcalibur_ITest {
 	public void testScans() {
 
 		assertEquals(336, chromatogram.getNumberOfScans());
-		IScanMSD scanMSD = (IScanMSD)chromatogram.getScan(62);
+		IScanMSD scanMSD = chromatogram.getScan(62);
 		assertEquals(135, scanMSD.getNumberOfIons());
 		assertEquals(1458599f, chromatogram.getScan(124).getTotalSignal(), 0);
 		assertEquals(190500, chromatogram.getScan(277).getRetentionTime());

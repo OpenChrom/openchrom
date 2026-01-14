@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Lablicate GmbH.
+ * Copyright (c) 2024, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
@@ -164,7 +163,7 @@ public class ExcelTemplateReportWriter {
 		}
 	}
 
-	public void generate(File file, boolean append, List<IChromatogram> chromatograms, ChromatogramReportSettings reportSettings) throws IOException, InvalidFormatException {
+	public void generate(File file, boolean append, List<IChromatogram> chromatograms, ChromatogramReportSettings reportSettings) throws IOException {
 
 		try (FileInputStream fileInputStreamTemplate = new FileInputStream(reportSettings.getTemplate())) {
 			try (XSSFWorkbook workbookTemplate = new XSSFWorkbook(fileInputStreamTemplate)) {

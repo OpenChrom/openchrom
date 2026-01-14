@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Lablicate GmbH.
+ * Copyright (c) 2019, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -13,7 +13,6 @@
 package net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.internal.identifier;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.chemclipse.msd.converter.peak.PeakConverterMSD;
@@ -69,8 +68,6 @@ public class AMDISParser {
 			for(IProcessingMessage message : peaksResult.getMessages()) {
 				result.addMessage(message);
 			}
-		} catch(IOException e) {
-			result.addErrorMessage(PreferenceSupplier.IDENTIFIER, "Reading data failed: " + e);
 		} finally {
 			// delete files produced by amdis...
 			eluFile.delete();
@@ -80,7 +77,7 @@ public class AMDISParser {
 		return result;
 	}
 
-	private boolean waitForFileComplete(File file, long timeout, TimeUnit unit, IProgressMonitor monitor) throws IOException, InterruptedException {
+	private boolean waitForFileComplete(File file, long timeout, TimeUnit unit, IProgressMonitor monitor) throws InterruptedException {
 
 		long millis = unit.toMillis(timeout);
 		long start = System.currentTimeMillis();
@@ -118,7 +115,7 @@ public class AMDISParser {
 		return false;
 	}
 
-	private boolean waitForFile(File file, long timeout, TimeUnit unit, IProgressMonitor monitor) throws IOException, InterruptedException {
+	private boolean waitForFile(File file, long timeout, TimeUnit unit, IProgressMonitor monitor) throws InterruptedException {
 
 		long start = System.currentTimeMillis();
 		long millis = unit.toMillis(timeout);

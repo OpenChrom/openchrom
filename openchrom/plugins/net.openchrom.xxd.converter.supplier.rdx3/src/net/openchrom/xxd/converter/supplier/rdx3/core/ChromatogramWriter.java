@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Lablicate GmbH.
+ * Copyright (c) 2025, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -15,7 +15,6 @@ package net.openchrom.xxd.converter.supplier.rdx3.core;
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,7 +47,7 @@ public class ChromatogramWriter extends AbstractChromatogramWriter {
 	private static final String COLUMN_RT = "RT";
 	private static final String COLUMN_RI = "RI";
 
-	public void export(File file, IChromatogramMSD chromatogram, IProgressMonitor monitor) throws FileNotFoundException, IOException {
+	public void export(File file, IChromatogramMSD chromatogram, IProgressMonitor monitor) throws IOException {
 
 		try (GZIPOutputStream gzipOutputStream = new GZIPOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
 			String name = file.getName().replace(FILE_EXTENSION, "");
