@@ -580,7 +580,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 
 			ProvisioningSession session = ui.getSession();
 
-			IProfileRegistry registry = (IProfileRegistry)session.getProvisioningAgent().getService(IProfileRegistry.class);
+			IProfileRegistry registry = session.getProvisioningAgent().getService(IProfileRegistry.class);
 
 			String profileId = ui.getProfileId();
 			profile = registry.getProfile(profileId);

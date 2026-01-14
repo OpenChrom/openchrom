@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Lablicate GmbH.
+ * Copyright (c) 2021, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -287,7 +287,7 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 						}
 					}
 				}
-				IScanWSD scan = (IScanWSD)chromatogram.getScan(spectra);
+				IScanWSD scan = chromatogram.getScan(spectra);
 				scan.removeScanSignal(0); // replace fixed wavelengths with full DAD spectra
 				for(int i = 0; i < seriesSet.getLength(); i++) {
 					float wavelength = wavelengths[i];

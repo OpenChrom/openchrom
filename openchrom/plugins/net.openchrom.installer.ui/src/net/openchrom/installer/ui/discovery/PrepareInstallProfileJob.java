@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2025 Tasktop Technologies, Polarion Software and others.
+ * Copyright (c) 2009, 2026 Tasktop Technologies, Polarion Software and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -220,7 +220,7 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 
 		ProvisioningSession session = ui.getSession();
 
-		IProfileRegistry registry = (IProfileRegistry)session.getProvisioningAgent().getService(IProfileRegistry.class);
+		IProfileRegistry registry = session.getProvisioningAgent().getService(IProfileRegistry.class);
 
 		String profileId = ui.getProfileId();
 		IProfile profile = registry.getProfile(profileId);

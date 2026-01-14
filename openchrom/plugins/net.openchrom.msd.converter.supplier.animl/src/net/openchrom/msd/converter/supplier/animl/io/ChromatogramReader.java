@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Lablicate GmbH.
+ * Copyright (c) 2021, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -324,7 +324,7 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader {
 						}
 					}
 				}
-				IScanMSD scan = (IScanMSD)chromatogram.getScan(spectra);
+				IScanMSD scan = chromatogram.getScan(spectra);
 				int length = Math.min(mzs.length, intensities.length);
 				for(int i = 0; i < length; i++) {
 					float intensity = intensities[i];

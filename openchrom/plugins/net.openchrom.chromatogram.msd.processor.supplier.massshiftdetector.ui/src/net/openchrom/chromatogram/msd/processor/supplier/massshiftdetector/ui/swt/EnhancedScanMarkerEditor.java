@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Lablicate GmbH.
+ * Copyright (c) 2017, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -325,8 +325,8 @@ public class EnhancedScanMarkerEditor extends AbstractControllerComposite {
 			IChromatogramMSD referenceChromatogram = processorData.getReferenceChromatogram();
 			IChromatogramMSD isotopeChromatogram = processorData.getIsotopeChromatogram();
 			if(referenceChromatogram != null && isotopeChromatogram != null) {
-				IScanMSD referenceMassSpectrum = (IScanMSD)referenceChromatogram.getScan(scan);
-				IScanMSD isotopeMassSpectrum = (IScanMSD)isotopeChromatogram.getScan(scan);
+				IScanMSD referenceMassSpectrum = referenceChromatogram.getScan(scan);
+				IScanMSD isotopeMassSpectrum = isotopeChromatogram.getScan(scan);
 				UpdateNotifierUI.update(display, referenceMassSpectrum, isotopeMassSpectrum);
 				/*
 				 * Update the chromatogram selection.
