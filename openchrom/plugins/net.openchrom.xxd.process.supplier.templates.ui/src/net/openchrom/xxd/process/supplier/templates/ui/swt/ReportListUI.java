@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2025 Lablicate GmbH.
+ * Copyright (c) 2020, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -16,7 +16,6 @@ import java.util.List;
 
 import org.eclipse.chemclipse.support.ui.provider.ListContentProvider;
 import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.widgets.Composite;
 
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
@@ -41,6 +40,7 @@ public class ReportListUI extends AbstractTemplateListUI {
 		createColumns();
 	}
 
+	@Override
 	public void setSearchText(String searchText, boolean caseSensitive) {
 
 		listFilter.setSearchText(searchText, caseSensitive);
@@ -55,7 +55,7 @@ public class ReportListUI extends AbstractTemplateListUI {
 		if(PreferenceSupplier.isReportSettingsSort()) {
 			setComparator(tableComparator); // SORT OK
 		}
-		setFilters(new ViewerFilter[]{listFilter});
+		setFilters(listFilter);
 		setEditingSupport();
 	}
 

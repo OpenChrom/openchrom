@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2025 Lablicate GmbH.
+ * Copyright (c) 2020, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -429,8 +429,8 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 
 				FileDialog fileDialog = new FileDialog(e.widget.getDisplay().getActiveShell(), SWT.READ_ONLY);
 				fileDialog.setText(IMPORT_TITLE);
-				fileDialog.setFilterExtensions(new String[]{ReviewSettings.FILTER_EXTENSION});
-				fileDialog.setFilterNames(new String[]{ReviewSettings.FILTER_NAME});
+				fileDialog.setFilterExtensions(ReviewSettings.FILTER_EXTENSION);
+				fileDialog.setFilterNames(ReviewSettings.FILTER_NAME);
 				fileDialog.setFilterPath(PreferenceSupplier.getListPathImport());
 				String path = fileDialog.open();
 				if(path != null) {
@@ -459,8 +459,8 @@ public class TemplateReviewEditor implements SettingsUIProvider.SettingsUIContro
 				FileDialog fileDialog = new FileDialog(e.widget.getDisplay().getActiveShell(), SWT.SAVE);
 				fileDialog.setOverwrite(true);
 				fileDialog.setText(EXPORT_TITLE);
-				fileDialog.setFilterExtensions(new String[]{ReviewSettings.FILTER_EXTENSION});
-				fileDialog.setFilterNames(new String[]{ReviewSettings.FILTER_NAME});
+				fileDialog.setFilterExtensions(ReviewSettings.FILTER_EXTENSION);
+				fileDialog.setFilterNames(ReviewSettings.FILTER_NAME);
 				fileDialog.setFileName(ReviewSettings.FILE_NAME);
 				fileDialog.setFilterPath(PreferenceSupplier.getListPathExport());
 				String path = fileDialog.open();

@@ -88,8 +88,8 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 				FileDialog fileDialog = new FileDialog(e.widget.getDisplay().getActiveShell(), SWT.SAVE);
 				fileDialog.setOverwrite(true);
 				fileDialog.setText(TITLE);
-				fileDialog.setFilterExtensions(new String[]{ExcelTemplateReportWriter.FILTER_EXTENSION});
-				fileDialog.setFilterNames(new String[]{ExcelTemplateReportWriter.FILTER_NAME});
+				fileDialog.setFilterExtensions(ExcelTemplateReportWriter.FILTER_EXTENSION);
+				fileDialog.setFilterNames(ExcelTemplateReportWriter.FILTER_NAME);
 				fileDialog.setFileName(ExcelTemplateReportWriter.FILE_NAME);
 				fileDialog.setFilterPath(PreferenceSupplier.getListPathExport());
 				String path = fileDialog.open();

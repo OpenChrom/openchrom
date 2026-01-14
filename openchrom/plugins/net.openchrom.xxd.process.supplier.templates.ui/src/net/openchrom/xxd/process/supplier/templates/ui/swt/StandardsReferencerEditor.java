@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2025 Lablicate GmbH.
+ * Copyright (c) 2018, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -375,8 +375,8 @@ public class StandardsReferencerEditor implements SettingsUIProvider.SettingsUIC
 
 				FileDialog fileDialog = new FileDialog(e.widget.getDisplay().getActiveShell(), SWT.READ_ONLY);
 				fileDialog.setText(IMPORT_TITLE);
-				fileDialog.setFilterExtensions(new String[]{AssignerReferences.FILTER_EXTENSION});
-				fileDialog.setFilterNames(new String[]{AssignerReferences.FILTER_NAME});
+				fileDialog.setFilterExtensions(AssignerReferences.FILTER_EXTENSION);
+				fileDialog.setFilterNames(AssignerReferences.FILTER_NAME);
 				fileDialog.setFilterPath(PreferenceSupplier.getListPathImport());
 				String path = fileDialog.open();
 				if(path != null) {
@@ -405,8 +405,8 @@ public class StandardsReferencerEditor implements SettingsUIProvider.SettingsUIC
 				FileDialog fileDialog = new FileDialog(e.widget.getDisplay().getActiveShell(), SWT.SAVE);
 				fileDialog.setOverwrite(true);
 				fileDialog.setText(EXPORT_TITLE);
-				fileDialog.setFilterExtensions(new String[]{AssignerReferences.FILTER_EXTENSION});
-				fileDialog.setFilterNames(new String[]{AssignerReferences.FILTER_NAME});
+				fileDialog.setFilterExtensions(AssignerReferences.FILTER_EXTENSION);
+				fileDialog.setFilterNames(AssignerReferences.FILTER_NAME);
 				fileDialog.setFileName(AssignerReferences.FILE_NAME);
 				fileDialog.setFilterPath(PreferenceSupplier.getListPathExport());
 				String path = fileDialog.open();

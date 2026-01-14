@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Lablicate GmbH.
+ * Copyright (c) 2017, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -124,8 +124,8 @@ public class EditorProcessor extends MultiPageEditorPart {
 		FileDialog fileDialog = new FileDialog(shell, SWT.SAVE);
 		fileDialog.setOverwrite(true);
 		fileDialog.setText("Save results as *.csv file.");
-		fileDialog.setFilterExtensions(new String[]{"*.csv"});
-		fileDialog.setFilterNames(new String[]{"Mass Shift Report (*.csv)"});
+		fileDialog.setFilterExtensions("*.csv");
+		fileDialog.setFilterNames("Mass Shift Report (*.csv)");
 		String pathname = fileDialog.open();
 		if(pathname != null) {
 			File file = new File(pathname);
