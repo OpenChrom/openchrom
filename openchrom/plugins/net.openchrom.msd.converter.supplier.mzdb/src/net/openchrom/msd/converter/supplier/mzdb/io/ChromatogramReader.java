@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Lablicate GmbH.
+ * Copyright (c) 2021, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -89,7 +89,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 
 	private void readMzDB(Statement statement, File file, IVendorChromatogram chromatogram) throws SQLException {
 
-		try (ResultSet mzdbResultSet = statement.executeQuery("SELECT * FROM mzdb;")) {
+		try (ResultSet mzdbResultSet = statement.executeQuery("SELECT creation_timestamp, version FROM mzdb;")) {
 			long epoch = mzdbResultSet.getLong("creation_timestamp") * 1000; // to milliseconds
 			chromatogram.setDate(new Date(epoch));
 			float version = mzdbResultSet.getFloat("version");
@@ -142,7 +142,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 
 	private void readSpectrum(Statement statement, IVendorChromatogram chromatogram) throws SQLException {
 
-		try (ResultSet spectrumResultSet = statement.executeQuery("SELECT * FROM spectrum;")) {
+		try (ResultSet spectrumResultSet = statement.executeQuery("SELECT cycle, title, time, ms_level, tic, main_precursor_mz FROM spectrum;")) {
 			while(spectrumResultSet.next()) {
 				IVendorScan scan = new VendorScan();
 				scan.setScanNumber(spectrumResultSet.getInt("cycle"));
@@ -160,7 +160,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 	private DataEncoding readDataEncoding(Statement statement) throws SQLException {
 
 		DataEncoding dataEncoding = new DataEncoding();
-		try (ResultSet dataEncodingResultSet = statement.executeQuery("SELECT * FROM data_encoding;")) {
+		try (ResultSet dataEncodingResultSet = statement.executeQuery("SELECT mode, compression, byte_order, mz_precision, intensity_precision FROM data_encoding;")) {
 			while(dataEncodingResultSet.next()) {
 				dataEncoding.setDataMode(DataMode.valueOf(dataEncodingResultSet.getString("mode").toUpperCase()));
 				dataEncoding.setCompression(dataEncodingResultSet.getString("compression"));
@@ -187,7 +187,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 		if(dataEncoding.getDataMode() != DataMode.CENTROID) {
 			throw new UnsupportedOperationException("Only centroided data is supported.");
 		}
-		try (ResultSet boundingBoxResultSet = statement.executeQuery("SELECT * FROM bounding_box;")) {
+		try (ResultSet boundingBoxResultSet = statement.executeQuery("SELECT data FROM bounding_box;")) {
 			while(boundingBoxResultSet.next()) {
 				byte[] blobData = boundingBoxResultSet.getBytes("data");
 				ByteBuffer buffer = ByteBuffer.wrap(blobData).order(dataEncoding.getByteOrder());
