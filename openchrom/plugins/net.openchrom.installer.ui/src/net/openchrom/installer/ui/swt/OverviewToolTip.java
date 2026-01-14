@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2025 Tasktop Technologies, Polarion Software and others.
+ * Copyright (c) 2009, 2026 Tasktop Technologies, Polarion Software and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -130,8 +130,7 @@ public class OverviewToolTip extends ToolTip {
 		URL resource = discoverySource.getResource(imagePath);
 		if(resource != null) {
 			ImageDescriptor descriptor = ImageDescriptor.createFromURL(resource);
-			Image image = descriptor.createImage();
-			return image;
+			return descriptor.createImage();
 		}
 		return null;
 	}

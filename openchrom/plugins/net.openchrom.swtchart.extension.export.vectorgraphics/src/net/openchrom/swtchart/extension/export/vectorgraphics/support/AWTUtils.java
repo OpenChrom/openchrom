@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Lablicate GmbH.
+ * Copyright (c) 2023, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -32,9 +32,7 @@ public class AWTUtils {
 
 		float[] elements = new float[6];
 		transform.getElements(elements);
-		AffineTransform affineTransform = new AffineTransform(elements);
-
-		return affineTransform;
+		return new AffineTransform(elements);
 	}
 
 	/**

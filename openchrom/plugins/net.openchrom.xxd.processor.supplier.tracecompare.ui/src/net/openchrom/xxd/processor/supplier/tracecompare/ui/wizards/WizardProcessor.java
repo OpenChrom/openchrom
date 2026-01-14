@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Lablicate GmbH.
+ * Copyright (c) 2017, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -35,6 +35,7 @@ public class WizardProcessor extends AbstractFileWizard {
 	private PageSettingsSelection pageSettingsSelection;
 
 	public WizardProcessor() {
+
 		super("TraceCompare_" + new Date().getTime(), DataProcessor.PROCESSOR_FILE_EXTENSION);
 	}
 
@@ -52,8 +53,7 @@ public class WizardProcessor extends AbstractFileWizard {
 	@Override
 	public boolean canFinish() {
 
-		boolean canFinish = pageSettingsSelection.canFinish();
-		return canFinish;
+		return pageSettingsSelection.canFinish();
 	}
 
 	@Override
