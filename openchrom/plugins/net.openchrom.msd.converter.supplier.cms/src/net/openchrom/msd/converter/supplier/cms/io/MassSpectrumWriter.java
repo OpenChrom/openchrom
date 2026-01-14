@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2025 Walter Whitlock, Philip Wenig.
+ * Copyright (c) 2016, 2026 Walter Whitlock, Philip Wenig.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -93,10 +93,10 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMa
 
 		ICalibratedVendorLibraryMassSpectrum cvmSpectrum = null;
 		String line;
-		if(massSpectrum instanceof ICalibratedVendorMassSpectrum) {
-			cvmSpectrum = (ICalibratedVendorMassSpectrum)massSpectrum;
-		} else if(massSpectrum instanceof ICalibratedVendorLibraryMassSpectrum) {
-			cvmSpectrum = (ICalibratedVendorLibraryMassSpectrum)massSpectrum;
+		if(massSpectrum instanceof ICalibratedVendorMassSpectrum calibratedVendorMassSpectrum) {
+			cvmSpectrum = calibratedVendorMassSpectrum;
+		} else if(massSpectrum instanceof ICalibratedVendorLibraryMassSpectrum calibratedVendorLibraryMassSpectrum) {
+			cvmSpectrum = calibratedVendorLibraryMassSpectrum;
 		} else {
 			throw new NotCalibratedVendorMassSpectrumException();
 		}

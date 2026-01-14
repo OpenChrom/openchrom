@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Lablicate GmbH.
+ * Copyright (c) 2019, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -52,8 +52,7 @@ public class TimeRatioEditingSupport extends EditingSupport {
 	@Override
 	protected Object getValue(Object element) {
 
-		if(element instanceof TimeRatio) {
-			TimeRatio setting = (TimeRatio)element;
+		if(element instanceof TimeRatio setting) {
 			switch(column) {
 				case TimeRatioResultTitles.EXPECTED_RETENTION_TIME:
 					return Double.toString(setting.getExpectedRetentionTimeMinutes());
@@ -69,8 +68,7 @@ public class TimeRatioEditingSupport extends EditingSupport {
 	@Override
 	protected void setValue(Object element, Object value) {
 
-		if(element instanceof TimeRatio) {
-			TimeRatio setting = (TimeRatio)element;
+		if(element instanceof TimeRatio setting) {
 			switch(column) {
 				case TimeRatioResultTitles.EXPECTED_RETENTION_TIME:
 					double expectedRetentionTimeMinutes = parseDouble((String)value);

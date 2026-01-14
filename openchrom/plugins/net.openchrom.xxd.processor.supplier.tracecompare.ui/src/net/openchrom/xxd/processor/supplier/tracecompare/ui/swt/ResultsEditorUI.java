@@ -65,8 +65,7 @@ public class ResultsEditorUI extends Composite {
 
 	public void update(Object object) {
 
-		if(object instanceof EditorProcessor) {
-			EditorProcessor editorProcessor = (EditorProcessor)object;
+		if(object instanceof EditorProcessor editorProcessor) {
 			processorModel = editorProcessor.getProcessorModel();
 
 			textResults.setText(processorModel.getCalculatedResult());
