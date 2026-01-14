@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2025 Tasktop Technologies, Polarion Software and others.
+ * Copyright (c) 2009, 2026 Tasktop Technologies, Polarion Software and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -90,8 +90,7 @@ public class PluginDiscoveryExtensionReader {
 			}
 			pluginDescriptor.setIcon(iconItem);
 		}
-		for(IConfigurationElement child : element.getChildren("overview")) //$NON-NLS-1$
-		{
+		for(IConfigurationElement child : element.getChildren(OVERVIEW)) {
 			Overview overviewItem = readOverview(child);
 			overviewItem.setConnectorDescriptor(pluginDescriptor);
 			if(pluginDescriptor.getOverview() != null) {
@@ -136,7 +135,7 @@ public class PluginDiscoveryExtensionReader {
 			}
 			pluginCategory.setOverview(overviewItem);
 		}
-		for(IConfigurationElement child : element.getChildren("group")) { //$NON-NLS-1$
+		for(IConfigurationElement child : element.getChildren(GROUP)) {
 			Group groupItem = readGroup(child);
 			groupItem.setConnectorCategory(pluginCategory);
 			pluginCategory.getGroup().add(groupItem);
