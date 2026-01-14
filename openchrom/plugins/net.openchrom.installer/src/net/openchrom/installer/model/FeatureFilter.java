@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2025 Tasktop Technologies, Polarion Software and others.
+ * Copyright (c) 2009, 2026 Tasktop Technologies, Polarion Software and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -64,10 +64,10 @@ public class FeatureFilter {
 
 	public void validate() throws IllegalArgumentException {
 
-		if(featureId == null || featureId.length() == 0) {
+		if(featureId == null || featureId.isEmpty()) {
 			throw new IllegalArgumentException("featureID is missing");
 		}
-		if(version == null || version.length() == 0) {
+		if(version == null || version.isEmpty()) {
 			throw new IllegalArgumentException("version is missing");
 		}
 	}

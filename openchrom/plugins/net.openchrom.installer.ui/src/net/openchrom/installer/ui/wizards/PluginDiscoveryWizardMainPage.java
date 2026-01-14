@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2025 Tasktop Technologies, Polarion Software and others.
+ * Copyright (c) 2009, 2026 Tasktop Technologies, Polarion Software and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -242,7 +242,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 
 	protected Pattern createPattern(String filterText) {
 
-		if(filterText == null || filterText.length() == 0) {
+		if(filterText == null || filterText.isEmpty()) {
 			return null;
 		}
 		String regex = filterText;
@@ -858,7 +858,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 			default:
 				throw new IllegalArgumentException();
 		}
-		if(imagePath != null && imagePath.length() > 0) {
+		if(imagePath != null && !imagePath.isEmpty()) {
 			URL resource = discoverySource.getResource(imagePath);
 			if(resource != null) {
 				ImageDescriptor descriptor = ImageDescriptor.createFromURL(resource);
@@ -998,6 +998,6 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 
 	private boolean hasTooltip(final DiscoveryPlugin plugin) {
 
-		return plugin.getOverview() != null && plugin.getOverview().getSummary() != null && plugin.getOverview().getSummary().length() > 0;
+		return plugin.getOverview() != null && plugin.getOverview().getSummary() != null && !plugin.getOverview().getSummary().isEmpty();
 	}
 }

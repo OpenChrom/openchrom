@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2025 Tasktop Technologies, Polarion Software and others.
+ * Copyright (c) 2009, 2026 Tasktop Technologies, Polarion Software and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -194,7 +194,7 @@ public class PluginDiscovery {
 	private void filterDescriptors() {
 
 		for(DiscoveryPlugin plugin : new ArrayList<DiscoveryPlugin>(plugins)) {
-			if(plugin.getPlatformFilter() != null && plugin.getPlatformFilter().trim().length() > 0) {
+			if(plugin.getPlatformFilter() != null && !plugin.getPlatformFilter().trim().isEmpty()) {
 				boolean match = false;
 				try {
 					Filter filter = FrameworkUtil.createFilter(plugin.getPlatformFilter());

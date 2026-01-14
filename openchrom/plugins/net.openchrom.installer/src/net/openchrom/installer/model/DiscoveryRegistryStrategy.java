@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2025 Tasktop Technologies, Polarion Software and others.
+ * Copyright (c) 2009, 2026 Tasktop Technologies, Polarion Software and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -145,15 +145,15 @@ public class DiscoveryRegistryStrategy extends RegistryStrategy {
 		List<String> bundleNames = new ArrayList<>();
 		Locale locale = Locale.getDefault();
 		bundleNames.add(name + suffix);
-		if(locale.getLanguage() != null && locale.getLanguage().length() > 0) {
+		if(locale.getLanguage() != null && !locale.getLanguage().isEmpty()) {
 			name = name + '_' + locale.getLanguage();
 			bundleNames.add(0, name + suffix);
 		}
-		if(locale.getCountry() != null && locale.getCountry().length() > 0) {
+		if(locale.getCountry() != null && !locale.getCountry().isEmpty()) {
 			name = name + '_' + locale.getCountry();
 			bundleNames.add(0, name + suffix);
 		}
-		if(locale.getVariant() != null && locale.getVariant().length() > 0) {
+		if(locale.getVariant() != null && !locale.getVariant().isEmpty()) {
 			name = name + '_' + locale.getVariant();
 			bundleNames.add(0, name + suffix);
 		}
