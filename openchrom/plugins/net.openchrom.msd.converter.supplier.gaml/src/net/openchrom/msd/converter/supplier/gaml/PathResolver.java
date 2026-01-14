@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2025 Lablicate GmbH.
+ * Copyright (c) 2014, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -37,7 +37,7 @@ public class PathResolver {
 		IPath path = new Path(string);
 		URL url = FileLocator.find(bundle, path, null);
 		try {
-			return FileLocator.resolve(url).getPath().toString();
+			return FileLocator.resolve(url).getPath();
 		} catch(IOException e) {
 			e.printStackTrace();
 		}

@@ -37,7 +37,7 @@ public class PathResolver {
 		IPath path = new Path(string);
 		URL url = FileLocator.find(bundle, path, null);
 		try {
-			return FileLocator.resolve(url).getPath().toString();
+			return FileLocator.resolve(url).getPath();
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
