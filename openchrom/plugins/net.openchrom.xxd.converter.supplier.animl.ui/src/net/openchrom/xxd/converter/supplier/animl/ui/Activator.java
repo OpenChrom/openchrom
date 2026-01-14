@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2025 Lablicate GmbH.
+ * Copyright (c) 2013, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -22,7 +22,7 @@ import net.openchrom.xxd.converter.supplier.animl.preferences.PreferenceSupplier
 
 public class Activator extends AbstractActivatorUI {
 
-	public static String ICON_IMAGE = "icon";
+	public static final String ICON_IMAGE = "icon";
 	/*
 	 * Instance
 	 */
