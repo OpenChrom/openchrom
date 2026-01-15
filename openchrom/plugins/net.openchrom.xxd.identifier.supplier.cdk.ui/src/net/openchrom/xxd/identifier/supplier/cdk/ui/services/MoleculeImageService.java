@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2025 Lablicate GmbH.
+ * Copyright (c) 2020, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -33,7 +33,7 @@ import net.openchrom.xxd.identifier.supplier.cdk.ui.Activator;
 import net.openchrom.xxd.identifier.supplier.cdk.ui.converter.ImageConverter;
 import net.openchrom.xxd.identifier.supplier.cdk.ui.preferences.PreferencePage;
 
-@Component(service = {IMoleculeImageService.class}, configurationPolicy = ConfigurationPolicy.OPTIONAL)
+@Component(service = {IMoleculeImageService.class}, configurationPolicy = ConfigurationPolicy.OPTIONAL, property = {"service.ranking:Integer=1000"})
 public class MoleculeImageService implements IMoleculeImageService {
 
 	private static final Logger logger = Logger.getLogger(MoleculeImageService.class);
