@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.io.File;
 import java.io.IOException;
 
-import org.eclipse.chemclipse.converter.PathResolver;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.IProcessingMessage;
 import org.eclipse.chemclipse.wsd.converter.chromatogram.ChromatogramConverterWSD;
@@ -31,7 +30,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
-import org.osgi.framework.FrameworkUtil;
 
 import net.openchrom.wsd.converter.supplier.animl.TestPathHelper;
 
@@ -59,7 +57,7 @@ public class ChromatogramImportExport_ITest {
 		/*
 		 * Import the chromatogram.
 		 */
-		File fileImport = PathResolver.getFile(FrameworkUtil.getBundle(getClass()), TestPathHelper.TESTFILE_IMPORT_DEMO);
+		File fileImport = new File(TestPathHelper.TESTFILE_IMPORT_DEMO);
 		IProcessingInfo<IChromatogramWSD> processingInfoImport = ChromatogramConverterWSD.getInstance().convert(fileImport, extensionPointImport, new NullProgressMonitor());
 		chromatogramImport = processingInfoImport.getProcessingResult();
 		for(IProcessingMessage message : processingInfoImport.getMessages()) {

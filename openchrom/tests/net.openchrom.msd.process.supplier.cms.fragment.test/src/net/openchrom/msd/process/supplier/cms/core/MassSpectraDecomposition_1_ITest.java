@@ -17,12 +17,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.io.File;
 import java.io.IOException;
 
-import org.eclipse.chemclipse.converter.PathResolver;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.jupiter.api.Test;
-import org.osgi.framework.FrameworkUtil;
 
 import net.openchrom.msd.converter.supplier.cms.io.MassSpectrumReader;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
@@ -38,13 +36,13 @@ public class MassSpectraDecomposition_1_ITest {
 		/*
 		 * argon, nitrogen, oxygen, ethane, ethylene
 		 */
-		File scanFile = PathResolver.getFile(FrameworkUtil.getBundle(getClass()), TestPathHelper.TESTFILE_IMPORT_TEST_2_SCAN_SPECTRA);
+		File scanFile = new File(TestPathHelper.TESTFILE_IMPORT_TEST_2_SCAN_SPECTRA);
 		MassSpectrumReader massSpectrumReader = new MassSpectrumReader();
 		IMassSpectra scanSpectra = massSpectrumReader.read(scanFile, new NullProgressMonitor());
 		/*
 		 * argon, nitrogen, oxygen, ethane, ethylene
 		 */
-		File libraryFile = PathResolver.getFile(FrameworkUtil.getBundle(getClass()), TestPathHelper.TESTFILE_IMPORT_TEST_1_LIBRARY_SPECTRA);
+		File libraryFile = new File(TestPathHelper.TESTFILE_IMPORT_TEST_1_LIBRARY_SPECTRA);
 		IMassSpectra librarySpectra = massSpectrumReader.read(libraryFile, new NullProgressMonitor());
 		for(IScanMSD libSpectrum : librarySpectra.getList()) {
 			if(libSpectrum instanceof ICalibratedVendorLibraryMassSpectrum calibratedVendorLibraryMassSpectrum) {

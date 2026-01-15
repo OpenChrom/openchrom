@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.io.File;
 import java.io.IOException;
 
-import org.eclipse.chemclipse.converter.PathResolver;
 import org.eclipse.chemclipse.fsd.model.core.ISpectrumFSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -26,7 +25,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
-import org.osgi.framework.FrameworkUtil;
 
 import net.openchrom.fsd.converter.supplier.gaml.converter.ScanImportConverter;
 
@@ -38,7 +36,7 @@ public class TS_AB2_FLSCAN_ITest {
 	@BeforeAll
 	public void setUp() throws IOException {
 
-		File file = PathResolver.getFile(FrameworkUtil.getBundle(getClass()), TestPathHelper.TS_AB2_FLSCAN_HELIOS);
+		File file = new File(TestPathHelper.TS_AB2_FLSCAN_HELIOS);
 		ScanImportConverter importConverter = new ScanImportConverter();
 		IProcessingInfo<ISpectrumFSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		spectrumFSD = processingInfo.getProcessingResult();
