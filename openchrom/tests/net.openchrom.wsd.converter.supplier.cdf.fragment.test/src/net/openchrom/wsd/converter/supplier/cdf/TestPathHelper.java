@@ -16,7 +16,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 @TestInstance(Lifecycle.PER_CLASS)
-public class TestPathHelper extends PathResolver {
+public class TestPathHelper {
 
 	public static final String HP_CH = "testData/Hewlett Packard/HP-CH.CDF";
 

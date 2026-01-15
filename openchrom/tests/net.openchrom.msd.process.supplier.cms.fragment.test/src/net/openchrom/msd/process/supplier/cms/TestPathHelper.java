@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2025 Walter Whitlock, Philip Wenig.
+ * Copyright (c) 2016, 2026 Walter Whitlock, Philip Wenig.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -17,7 +17,7 @@ package net.openchrom.msd.process.supplier.cms;
  * THIS CLASS IS NOT SUITED FOR PRODUCTIVE USE!<br/>
  * IT IS A TESTCLASS!
  */
-public class TestPathHelper extends PathResolver {
+public class TestPathHelper {
 
 	public static final String TESTFILE_IMPORT_SCANS_1 = "testData/files/import/scans.CMS";
 	public static final String TESTFILE_IMPORT_TEST_1_SCAN_SPECTRA = "testData/files/import/test1/ScanSpectra.cms";

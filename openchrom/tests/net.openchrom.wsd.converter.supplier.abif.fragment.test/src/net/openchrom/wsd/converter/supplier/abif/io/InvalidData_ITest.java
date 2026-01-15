@@ -16,7 +16,9 @@ package net.openchrom.wsd.converter.supplier.abif.io;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.File;
+import java.io.IOException;
 
+import org.eclipse.chemclipse.converter.PathResolver;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.wsd.converter.chromatogram.ChromatogramConverterWSD;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
@@ -25,9 +27,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.osgi.framework.FrameworkUtil;
 
 import net.openchrom.wsd.converter.supplier.abif.ABIF;
-import net.openchrom.wsd.converter.supplier.abif.PathResolver;
 
 @TestInstance(Lifecycle.PER_CLASS)
 public class InvalidData_ITest {
@@ -35,9 +37,9 @@ public class InvalidData_ITest {
 	private IChromatogramWSD chromatogram;
 
 	@BeforeAll
-	public void setUp() {
+	public void setUp() throws IOException {
 
-		File fileImport = new File(PathResolver.getAbsolutePath(ABIF.TESTFILE_IMPORT_FAKE_AB1));
+		File fileImport = PathResolver.getFile(FrameworkUtil.getBundle(getClass()), ABIF.TESTFILE_IMPORT_FAKE_AB1);
 		IProcessingInfo<IChromatogramWSD> processingInfo = ChromatogramConverterWSD.getInstance().convert(fileImport, ABIF.EXTENSION_POINT_ID, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();
 	}

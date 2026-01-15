@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Lablicate GmbH.
+ * Copyright (c) 2024, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -12,7 +12,7 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cdf;
 
-public class TestPathHelper extends PathResolver {
+public class TestPathHelper {
 
 	public static final String TESTFILE_IMPORT_CHROMATOGRAM_2 = "testData/Chromatogram2.ocb";
 	public static final String DIRECTORY_EXPORT_TEST = "testData/export";

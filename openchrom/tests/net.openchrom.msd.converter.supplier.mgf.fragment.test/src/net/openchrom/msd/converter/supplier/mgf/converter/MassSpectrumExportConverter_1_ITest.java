@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2025 Lablicate GmbH.
+ * Copyright (c) 2015, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -29,7 +29,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
-import net.openchrom.msd.converter.supplier.mgf.PathResolver;
 import net.openchrom.msd.converter.supplier.mgf.TestPathHelper;
 
 @TestInstance(Lifecycle.PER_CLASS)
@@ -40,19 +39,20 @@ public class MassSpectrumExportConverter_1_ITest {
 
 		File directory = new File(TestPathHelper.TESTDIR_EXPORT);
 		directory.mkdir();
-		File exportFile = new File(PathResolver.getAbsolutePath(TestPathHelper.TESTDIR_EXPORT) + File.separator + TestPathHelper.TESTFILE_EXPORT_MS_1);
+		File exportFile = new File(directory, File.separator + TestPathHelper.TESTFILE_EXPORT_MS_1);
 		DatabaseExportConverter exportConverter = new DatabaseExportConverter();
 
-		IMassSpectra massSpectra = new MassSpectra();
 		IScanMSD massSpectrum = new ScanMSD();
 		massSpectrum.addIon(new Ion(56.3f, 7382.3f));
 		massSpectrum.addIon(new Ion(26.3f, 73382.3f));
 		massSpectrum.addIon(new Ion(89.3f, 382.3f));
-		massSpectra = new MassSpectra();
+		IMassSpectra massSpectra = new MassSpectra();
 		massSpectra.addMassSpectrum(massSpectrum);
 
 		IProcessingInfo<File> processingInfo = exportConverter.convert(exportFile, massSpectra, false, new NullProgressMonitor());
 		assertTrue(processingInfo.getProcessingResult().exists());
 		assertEquals(125, processingInfo.getProcessingResult().length());
+
+		assertTrue(exportFile.delete());
 	}
 }
