@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2025 Walter Whitlock, Philip Wenig.
+ * Copyright (c) 2016, 2026 Walter Whitlock, Philip Wenig.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -17,7 +17,9 @@ package net.openchrom.msd.converter.supplier.cms.converter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
+import java.io.IOException;
 
+import org.eclipse.chemclipse.converter.PathResolver;
 import org.eclipse.chemclipse.msd.converter.database.IDatabaseImportConverter;
 import org.eclipse.chemclipse.msd.model.core.ILibraryMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
@@ -28,8 +30,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.osgi.framework.FrameworkUtil;
 
-import net.openchrom.msd.converter.supplier.cms.PathResolver;
 import net.openchrom.msd.converter.supplier.cms.TestPathHelper;
 
 @TestInstance(Lifecycle.PER_CLASS)
@@ -38,9 +40,9 @@ public class ImportConverter_1_ITest {
 	private IMassSpectra massSpectra;
 
 	@BeforeAll
-	public void setUp() {
+	public void setUp() throws IOException {
 
-		File importFile = new File(PathResolver.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_MASS_SPECTRA_1));
+		File importFile = PathResolver.getFile(FrameworkUtil.getBundle(getClass()), TestPathHelper.TESTFILE_IMPORT_MASS_SPECTRA_1);
 		IDatabaseImportConverter importConverter = new DatabaseImportConverter();
 		IProcessingInfo<IMassSpectra> processingInfo = importConverter.convert(importFile, new NullProgressMonitor());
 		massSpectra = processingInfo.getProcessingResult();

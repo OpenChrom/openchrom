@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2025 Lablicate GmbH.
+ * Copyright (c) 2020, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -12,7 +12,7 @@
  *******************************************************************************/
 package net.openchrom.wsd.converter.supplier.animl;
 
-public class TestPathHelper extends PathResolver {
+public class TestPathHelper {
 
 	/*
 	 * IMPORT

@@ -16,7 +16,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
+import java.io.IOException;
 
+import org.eclipse.chemclipse.converter.PathResolver;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
@@ -26,8 +28,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.osgi.framework.FrameworkUtil;
 
-import net.openchrom.msd.converter.supplier.mzdb.PathResolver;
 import net.openchrom.msd.converter.supplier.mzdb.converter.ChromatogramImportConverter;
 
 @TestInstance(Lifecycle.PER_CLASS)
@@ -36,9 +38,9 @@ public class ChromatogramImportConverter_ITest {
 	private IChromatogramMSD chromatogram;
 
 	@BeforeAll
-	public void setUp() {
+	public void setUp() throws IOException {
 
-		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.TESTFILE));
+		File file = PathResolver.getFile(FrameworkUtil.getBundle(getClass()), TestPathHelper.TESTFILE);
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramMSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();

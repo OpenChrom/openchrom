@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2025 Lablicate GmbH.
+ * Copyright (c) 2011, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -17,7 +17,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
+import java.io.IOException;
 
+import org.eclipse.chemclipse.converter.PathResolver;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.IProcessingMessage;
 import org.eclipse.chemclipse.wsd.converter.chromatogram.ChromatogramConverterWSD;
@@ -29,8 +31,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.osgi.framework.FrameworkUtil;
 
-import net.openchrom.wsd.converter.supplier.animl.PathResolver;
 import net.openchrom.wsd.converter.supplier.animl.TestPathHelper;
 
 @TestInstance(Lifecycle.PER_CLASS)
@@ -41,24 +43,23 @@ public class ChromatogramImportExport_ITest {
 	private File fileExport;
 
 	@BeforeAll
-	public void setUp() {
+	public void setUp() throws IOException {
 
 		/*
 		 * Import
 		 */
-		String pathImport = PathResolver.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_DEMO);
 		String extensionPointImport = VersionConstants.CONVERTER_ID_CHROMATOGRAM;
 		/*
 		 * Export/Reimport
 		 */
 		File directory = new File(TestPathHelper.DIRECTORY_EXPORT_TEST);
 		directory.mkdir();
-		String pathExport = PathResolver.getAbsolutePath(TestPathHelper.DIRECTORY_EXPORT_TEST) + File.separator + "Test.animl";
+		String pathExport = directory.getAbsolutePath() + File.separator + "Test.animl";
 		String extensionPointExportReimport = "net.openchrom.wsd.converter.supplier.animl.chromatogram";
 		/*
 		 * Import the chromatogram.
 		 */
-		File fileImport = new File(pathImport);
+		File fileImport = PathResolver.getFile(FrameworkUtil.getBundle(getClass()), TestPathHelper.TESTFILE_IMPORT_DEMO);
 		IProcessingInfo<IChromatogramWSD> processingInfoImport = ChromatogramConverterWSD.getInstance().convert(fileImport, extensionPointImport, new NullProgressMonitor());
 		chromatogramImport = processingInfoImport.getProcessingResult();
 		for(IProcessingMessage message : processingInfoImport.getMessages()) {

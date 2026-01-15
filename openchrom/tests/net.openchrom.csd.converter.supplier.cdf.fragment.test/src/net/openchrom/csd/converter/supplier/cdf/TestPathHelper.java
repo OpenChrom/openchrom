@@ -16,7 +16,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 @TestInstance(Lifecycle.PER_CLASS)
-public class TestPathHelper extends PathResolver {
+public class TestPathHelper {
 
 	public static final String DIONEX = "testData/Dionex/DIONEX.CDF";
 	public static final String DNX_7AN = "testData/Dionex/DNX-7AN.CDF";

@@ -16,7 +16,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
+import java.io.IOException;
 
+import org.eclipse.chemclipse.converter.PathResolver;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
@@ -25,8 +27,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.osgi.framework.FrameworkUtil;
 
-import net.openchrom.msd.converter.supplier.mgf.PathResolver;
 import net.openchrom.msd.converter.supplier.mgf.TestPathHelper;
 
 @TestInstance(Lifecycle.PER_CLASS)
@@ -35,9 +37,9 @@ public class MassSpectrumImportConverter_ProteinPilot_Single_ITest {
 	private IMassSpectra massSpectra;
 
 	@BeforeAll
-	public void setUp() {
+	public void setUp() throws IOException {
 
-		File file = new File(PathResolver.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_PROTEINPILOT_SINGLE_ELEMENT));
+		File file = PathResolver.getFile(FrameworkUtil.getBundle(getClass()), TestPathHelper.TESTFILE_IMPORT_PROTEINPILOT_SINGLE_ELEMENT);
 		DatabaseImportConverter importConverter = new DatabaseImportConverter();
 		IProcessingInfo<IMassSpectra> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		massSpectra = processingInfo.getProcessingResult();

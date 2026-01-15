@@ -17,7 +17,3 @@ Require-Bundle: org.eclipse.core.runtime,
  org.xerial.sqlite-jdbc;bundle-version="3.36.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
-Export-Package: net.openchrom.msd.converter.supplier.mzdb,
- net.openchrom.msd.converter.supplier.mzdb.converter,
- net.openchrom.msd.converter.supplier.mzdb.io,
- net.openchrom.msd.converter.supplier.mzdb.model

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Lablicate GmbH.
+ * Copyright (c) 2023, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -13,9 +13,7 @@
  *******************************************************************************/
 package net.openchrom.vsd.converter.supplier.gaml.fragment.test;
 
-import net.openchrom.vsd.converter.supplier.gaml.PathResolver;
-
-public class TestPathHelper extends PathResolver {
+public class TestPathHelper {
 
 	public static final String TN_OMNIC_FTIR = "testData/files/import/TN_OMNIC_FTIR.gaml";
 	public static final String TN_OMNIC_RAMAN = "testData/files/import/TN_OMNIC_Raman.gaml";

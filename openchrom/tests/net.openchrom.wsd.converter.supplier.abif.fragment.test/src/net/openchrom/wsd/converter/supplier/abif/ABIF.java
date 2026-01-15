@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2025 Matthias Mailänder, Philip Wenig.
+ * Copyright (c) 2016, 2026 Matthias Mailänder, Philip Wenig.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -17,7 +17,7 @@ package net.openchrom.wsd.converter.supplier.abif;
  * THIS CLASS IS NOT SUITED FOR PRODUCTIVE USE!<br/>
  * IT IS A TESTCLASS!
  */
-public class ABIF extends PathResolver {
+public class ABIF {
 
 	public static final String EXTENSION_POINT_ID = "net.openchrom.wsd.converter.supplier.ab1";
 	/*

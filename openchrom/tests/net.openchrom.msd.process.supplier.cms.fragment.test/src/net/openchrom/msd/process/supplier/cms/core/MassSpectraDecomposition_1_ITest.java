@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2025 Lablicate GmbH.
+ * Copyright (c) 2016, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -17,14 +17,15 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.io.File;
 import java.io.IOException;
 
+import org.eclipse.chemclipse.converter.PathResolver;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.jupiter.api.Test;
+import org.osgi.framework.FrameworkUtil;
 
 import net.openchrom.msd.converter.supplier.cms.io.MassSpectrumReader;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
-import net.openchrom.msd.process.supplier.cms.PathResolver;
 import net.openchrom.msd.process.supplier.cms.TestPathHelper;
 
 public class MassSpectraDecomposition_1_ITest {
@@ -37,13 +38,13 @@ public class MassSpectraDecomposition_1_ITest {
 		/*
 		 * argon, nitrogen, oxygen, ethane, ethylene
 		 */
-		File scanFile = new File(PathResolver.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_TEST_2_SCAN_SPECTRA));
+		File scanFile = PathResolver.getFile(FrameworkUtil.getBundle(getClass()), TestPathHelper.TESTFILE_IMPORT_TEST_2_SCAN_SPECTRA);
 		MassSpectrumReader massSpectrumReader = new MassSpectrumReader();
 		IMassSpectra scanSpectra = massSpectrumReader.read(scanFile, new NullProgressMonitor());
 		/*
 		 * argon, nitrogen, oxygen, ethane, ethylene
 		 */
-		File libraryFile = new File(PathResolver.getAbsolutePath(TestPathHelper.TESTFILE_IMPORT_TEST_1_LIBRARY_SPECTRA));
+		File libraryFile = PathResolver.getFile(FrameworkUtil.getBundle(getClass()), TestPathHelper.TESTFILE_IMPORT_TEST_1_LIBRARY_SPECTRA);
 		IMassSpectra librarySpectra = massSpectrumReader.read(libraryFile, new NullProgressMonitor());
 		for(IScanMSD libSpectrum : librarySpectra.getList()) {
 			if(libSpectrum instanceof ICalibratedVendorLibraryMassSpectrum calibratedVendorLibraryMassSpectrum) {

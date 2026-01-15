@@ -16,7 +16,3 @@ Require-Bundle: org.eclipse.core.runtime,
  net.openchrom.thirdparty.jhdf5;bundle-version="14.12.6"
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
-Export-Package: net.openchrom.msd.converter.supplier.mz5,
- net.openchrom.msd.converter.supplier.mz5.converter,
- net.openchrom.msd.converter.supplier.mz5.io,
- net.openchrom.msd.converter.supplier.mz5.model
