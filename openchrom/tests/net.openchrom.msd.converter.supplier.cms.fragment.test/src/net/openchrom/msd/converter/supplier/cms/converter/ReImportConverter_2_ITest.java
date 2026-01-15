@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.File;
 import java.io.IOException;
 
-import org.eclipse.chemclipse.converter.PathResolver;
 import org.eclipse.chemclipse.msd.converter.database.IDatabaseExportConverter;
 import org.eclipse.chemclipse.msd.converter.database.IDatabaseImportConverter;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
@@ -30,7 +29,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
-import org.osgi.framework.FrameworkUtil;
 
 import net.openchrom.msd.converter.supplier.cms.TestPathHelper;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
@@ -50,7 +48,7 @@ public class ReImportConverter_2_ITest {
 		/*
 		 * Import
 		 */
-		File importFile = PathResolver.getFile(FrameworkUtil.getBundle(getClass()), TestPathHelper.TESTFILE_IMPORT_MASS_SPECTRA_5);
+		File importFile = new File(TestPathHelper.TESTFILE_IMPORT_MASS_SPECTRA_5);
 		IProcessingInfo<IMassSpectra> processingInfoImport = importConverter.convert(importFile, new NullProgressMonitor());
 		massSpectra1 = processingInfoImport.getProcessingResult();
 		// calculate and subtract signal zero offset
@@ -65,7 +63,7 @@ public class ReImportConverter_2_ITest {
 		/*
 		 * Export
 		 */
-		File exportFolder = PathResolver.getFile(FrameworkUtil.getBundle(getClass()), TestPathHelper.TESTFILE_DIR_EXPORT);
+		File exportFolder = new File(TestPathHelper.TESTFILE_DIR_EXPORT);
 		exportFile = new File(exportFolder, File.separator + TestPathHelper.TESTFILE_MASS_SPECTRA_2);
 		exportConverter.convert(exportFile, massSpectra1, false, new NullProgressMonitor());
 		/*
