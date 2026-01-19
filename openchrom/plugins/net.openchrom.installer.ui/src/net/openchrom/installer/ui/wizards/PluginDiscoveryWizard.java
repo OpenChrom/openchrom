@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2025 Tasktop Technologies, Polarion Software and others.
+ * Copyright (c) 2009, 2026 Tasktop Technologies, Polarion Software and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -14,9 +14,7 @@ package net.openchrom.installer.ui.wizards;
 
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
-import java.util.Dictionary;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Map;
 
 import org.eclipse.chemclipse.logging.core.Logger;
@@ -27,7 +25,6 @@ import org.eclipse.jface.wizard.Wizard;
 import org.osgi.framework.Bundle;
 
 import net.openchrom.installer.model.PluginDescriptorKind;
-import net.openchrom.installer.model.PluginDiscovery;
 import net.openchrom.installer.ui.Activator;
 import net.openchrom.installer.ui.discovery.IPluginInstallJob;
 
@@ -53,7 +50,6 @@ public class PluginDiscoveryWizard extends Wizard {
 	}
 	private boolean showConnectorDescriptorKindFilter = true;
 	private boolean showConnectorDescriptorTextFilter = true;
-	private Dictionary<Object, Object> environment;
 
 	public PluginDiscoveryWizard(IPluginInstallJob installJob) {
 
@@ -63,12 +59,6 @@ public class PluginDiscoveryWizard extends Wizard {
 		Bundle bundle = Activator.getDefault().getBundle();
 		URL fullPathString = FileLocator.find(bundle, new Path("icons/32x32/Plugin.gif"));
 		setDefaultPageImageDescriptor(ImageDescriptor.createFromURL(fullPathString)); // TODO
-		createEnvironment();
-	}
-
-	private void createEnvironment() {
-
-		environment = new Hashtable<>(System.getProperties());
 	}
 
 	@Override
@@ -153,26 +143,4 @@ public class PluginDiscoveryWizard extends Wizard {
 		this.showConnectorDescriptorTextFilter = showConnectorDescriptorTextFilter;
 	}
 
-	/**
-	 * the environment in which discovery should be performed.
-	 * 
-	 * @see PluginDiscovery#getEnvironment()
-	 */
-	public Dictionary<Object, Object> getEnvironment() {
-
-		return environment;
-	}
-
-	/**
-	 * the environment in which discovery should be performed.
-	 * 
-	 * @see PluginDiscovery#getEnvironment()
-	 */
-	public void setEnvironment(Dictionary<Object, Object> environment) {
-
-		if(environment == null) {
-			throw new IllegalArgumentException();
-		}
-		this.environment = environment;
-	}
 }

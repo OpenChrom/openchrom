@@ -129,28 +129,6 @@ public class PluginDiscovery {
 	}
 
 	/**
-	 * The environment used to resolve {@link PluginDescriptor#getPlatformFilter() platform filters}. Defaults to the
-	 * current environment.
-	 */
-	public Dictionary<?, ?> getEnvironment() {
-
-		return environment;
-	}
-
-	/**
-	 * The environment used to resolve {@link PluginDescriptor#getPlatformFilter() platform filters}. Defaults to the
-	 * current environment.
-	 */
-	@SuppressWarnings({"unchecked", "rawtypes"})
-	public void setEnvironment(Dictionary environment) {
-
-		if(environment == null) {
-			throw new IllegalArgumentException();
-		}
-		this.environment = environment;
-	}
-
-	/**
 	 * <em>not for general use: public for testing purposes only</em> A map of installed features to their version. Used
 	 * to resolve {@link PluginDescriptor#getFeatureFilter() feature filters}.
 	 */

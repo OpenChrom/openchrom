@@ -21,7 +21,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Dictionary;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
@@ -875,7 +874,6 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 	private void maybeUpdateDiscovery() {
 
 		if(!getControl().isDisposed() && isCurrentPage() && discovery == null) {
-			final Dictionary<Object, Object> environment = getWizard().getEnvironment();
 			boolean wasCancelled = false;
 			try {
 				getContainer().run(true, true, monitor -> {
@@ -910,7 +908,6 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 							logger.warn(ie);
 						}
 					}
-					pluginDiscovery.setEnvironment(environment);
 					try {
 						pluginDiscovery.performDiscovery(monitor);
 					} catch(CoreException e) {
