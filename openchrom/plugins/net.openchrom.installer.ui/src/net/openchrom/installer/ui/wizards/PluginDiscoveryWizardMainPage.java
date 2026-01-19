@@ -14,6 +14,7 @@ package net.openchrom.installer.ui.wizards;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -82,6 +83,7 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Listener;
@@ -90,6 +92,10 @@ import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.WorkbenchJob;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import net.openchrom.installer.model.BundleDiscoveryStrategy;
 import net.openchrom.installer.model.DiscoveryCategory;
@@ -129,13 +135,13 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 	private WorkbenchJob refreshJob;
 	private String previousFilterText = ""; //$NON-NLS-1$
 	private Pattern filterPattern;
-	private Label clearFilterTextControl;
 	private Set<String> installedFeatures;
 	private Image infoImage;
 	private Cursor handCursor;
 	private Color colorDisabled;
 	private ScrolledComposite bodyScrolledComposite;
 	private IProfile profile;
+	private List<String> importedFeatures;
 
 	public PluginDiscoveryWizardMainPage() {
 
@@ -162,47 +168,49 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 			if(getWizard().isShowConnectorDescriptorKindFilter() || getWizard().isShowConnectorDescriptorTextFilter()) {
 				Composite filterContainer = new Composite(header, SWT.NULL);
 				GridDataFactory.fillDefaults().grab(true, false).applyTo(filterContainer);
-				int numColumns = 1; // 1 for label
-				if(getWizard().isShowConnectorDescriptorKindFilter()) {
-					numColumns += PluginDescriptorKind.values().length;
-				}
-				if(getWizard().isShowConnectorDescriptorTextFilter()) {
-					++numColumns;
-				}
+				int numColumns = 4;
 				GridLayoutFactory.fillDefaults().numColumns(numColumns).applyTo(filterContainer);
 				Label label = new Label(filterContainer, SWT.NULL);
 				label.setText("Filter");
-				if(getWizard().isShowConnectorDescriptorTextFilter()) {
-					Composite textFilterContainer = new Composite(filterContainer, SWT.NULL);
-					GridDataFactory.fillDefaults().grab(true, false).applyTo(textFilterContainer);
-					GridLayoutFactory.fillDefaults().numColumns(2).applyTo(textFilterContainer);
-					filterText = new Text(textFilterContainer, SWT.SINGLE | SWT.BORDER | SWT.SEARCH | SWT.ICON_SEARCH | SWT.ICON_CANCEL);
-					filterText.addModifyListener(e -> filterTextChanged());
-					GridDataFactory.fillDefaults().grab(true, false).span(2, 1).applyTo(filterText);
-				}
-				if(getWizard().isShowConnectorDescriptorKindFilter()) { // filter buttons
-					for(final PluginDescriptorKind kind : PluginDescriptorKind.values()) {
-						final Button checkbox = new Button(filterContainer, SWT.CHECK);
-						checkbox.setSelection(getWizard().isVisible(kind));
-						checkbox.setText(getFilterLabel(kind));
-						checkbox.addSelectionListener(new SelectionListener() {
-
-							@Override
-							public void widgetSelected(SelectionEvent e) {
-
-								boolean selection = checkbox.getSelection();
-								getWizard().setVisibility(kind, selection);
-								pluginDescriptorKindVisibilityUpdated();
-							}
-
-							@Override
-							public void widgetDefaultSelected(SelectionEvent e) {
-
-								widgetSelected(e);
-							}
-						});
+				Composite textFilterContainer = new Composite(filterContainer, SWT.NULL);
+				GridDataFactory.fillDefaults().grab(true, false).applyTo(textFilterContainer);
+				GridLayoutFactory.fillDefaults().numColumns(2).applyTo(textFilterContainer);
+				filterText = new Text(textFilterContainer, SWT.SINGLE | SWT.BORDER | SWT.SEARCH | SWT.ICON_SEARCH | SWT.ICON_CANCEL);
+				filterText.addModifyListener(e -> refreshDisplayedIUs());
+				GridDataFactory.fillDefaults().grab(true, false).span(2, 1).applyTo(filterText);
+				Button imp = new Button(filterContainer, SWT.PUSH);
+				imp.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_IMPORT, IApplicationImageProvider.SIZE_16x16));
+				imp.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+					FileDialog files = new FileDialog(getShell(), SWT.NONE);
+					files.setFilterExtensions("*.json");
+					String fileName = files.open();
+					if(fileName == null) {
+						return;
 					}
-				}
+					try (FileReader reader = new FileReader(fileName)) {
+						JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
+						JsonArray features = json.getAsJsonArray("install_features");
+						if(features != null && !features.isEmpty()) {
+							filterText.setText("");
+							importedFeatures = new ArrayList<>();
+							features.forEach(f -> importedFeatures.add(f.getAsString()+P2_FEATURE_GROUP_SUFFIX));
+						} else {
+							MessageDialog.openWarning(getShell(), "Invalid file content", "Content of the file is not in the expected format.");
+						}
+					} catch(IOException e1) {
+						MessageDialog.openWarning(getShell(), "Problem reading file", "Failed reading file.  Please verify the file exists and it's readable.");
+					}
+					refreshDisplayedIUs();
+				}));
+				Button refresh = new Button(filterContainer, SWT.PUSH);
+				refresh.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_REFRESH, IApplicationImageProvider.SIZE_16x16));
+				refresh.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+					importedFeatures = null;
+					installableConnectors.clear();
+					filterText.setText("");
+					setPageComplete(false);
+					refreshDisplayedIUs();
+				}));
 			}
 		}
 		{ // container
@@ -224,14 +232,12 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 				if(filterText.isDisposed()) {
 					return Status.CANCEL_STATUS;
 				}
-				String text = filterText.getText();
-				text = text.trim();
+				String text = filterText.getText().trim();
 				if(!previousFilterText.equals(text)) {
 					previousFilterText = text;
 					filterPattern = createPattern(previousFilterText);
-					if(clearFilterTextControl != null) {
-						clearFilterTextControl.setVisible(filterPattern != null);
-					}
+					createBodyContents();
+				} else if(importedFeatures == null || !importedFeatures.isEmpty()) {
 					createBodyContents();
 				}
 				return Status.OK_STATUS;
@@ -259,23 +265,13 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 	private void clearFilterText() {
 
 		filterText.setText(""); //$NON-NLS-1$
-		filterTextChanged();
+		refreshDisplayedIUs();
 	}
 
-	private void filterTextChanged() {
+	private void refreshDisplayedIUs() {
 
 		refreshJob.cancel();
 		refreshJob.schedule(200L);
-	}
-
-	private String getFilterLabel(PluginDescriptorKind kind) {
-
-		switch(kind) {
-			case CONVERTER:
-				return "CONVERTER";
-			default:
-				throw new IllegalStateException(kind.name());
-		}
 	}
 
 	/**
@@ -537,6 +533,10 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 
 			boolean isInstalled = isInstalled(plugin.getInstallableUnits().get(0));
 			checkbox.setSelection(isInstalled);
+			if(importedFeatures != null && importedFeatures.contains(plugin.getInstallableUnits().get(0) + P2_FEATURE_GROUP_SUFFIX)) {
+				checkbox.setSelection(true);
+				modifySelection(plugin, true);
+			}
 			checkbox.setEnabled(!isInstalled);
 			if(iconImage != null) {
 				iconLabel.setImage(iconImage);
@@ -644,12 +644,10 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 							iconLabel.setImage(image);
 						}
 					}
-					iconLabel.setBackground(null);
 					GridDataFactory.swtDefaults().align(SWT.CENTER, SWT.BEGINNING).span(1, 2).applyTo(iconLabel);
 					Label nameLabel = new Label(categoryHeaderContainer, SWT.NULL);
 					nameLabel.setFont(h1Font);
 					nameLabel.setText(category.getName());
-					nameLabel.setBackground(null);
 					GridDataFactory.fillDefaults().grab(true, false).applyTo(nameLabel);
 					if(hasTooltip(category)) {
 						ToolBar toolBar = new ToolBar(categoryHeaderContainer, SWT.FLAT);
@@ -664,7 +662,6 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 					}
 					Label description = new Label(categoryHeaderContainer, SWT.WRAP);
 					GridDataFactory.fillDefaults().grab(true, false).span(2, 1).hint(100, SWT.DEFAULT).applyTo(description);
-					description.setBackground(null);
 					description.setText(category.getDescription());
 				}
 				categoryChildrenContainer = new Composite(container, SWT.NULL);
@@ -829,6 +826,9 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 			if(!(filterMatches(descriptor.getName()) || filterMatches(descriptor.getDescription()) || filterMatches(descriptor.getProvider()) || filterMatches(descriptor.getLicense()))) {
 				return true;
 			}
+		}
+		if(importedFeatures != null && !importedFeatures.isEmpty() && !importedFeatures.contains(descriptor.getInstallableUnits().get(0) + P2_FEATURE_GROUP_SUFFIX)) {
+			return true;
 		}
 		return false;
 	}
