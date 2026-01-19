@@ -16,15 +16,12 @@ import java.net.URL;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.jface.resource.ColorRegistry;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.window.ToolTip;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -40,7 +37,6 @@ import net.openchrom.installer.model.Overview;
  */
 public class OverviewToolTip extends ToolTip {
 
-	private static final String COLOR_BLACK = "black"; //$NON-NLS-1$
 	private final Overview overview;
 	private final IDiscoverySource source;
 	private Color colorBlack;
@@ -62,13 +58,6 @@ public class OverviewToolTip extends ToolTip {
 	@Override
 	protected Composite createToolTipContentArea(Event event, Composite parent) {
 
-		if(colorBlack == null) {
-			ColorRegistry colorRegistry = JFaceResources.getColorRegistry();
-			if(!colorRegistry.hasValueFor(COLOR_BLACK)) {
-				colorRegistry.put(COLOR_BLACK, new RGB(0, 0, 0));
-			}
-			colorBlack = colorRegistry.get(COLOR_BLACK);
-		}
 		GridLayoutFactory.fillDefaults().applyTo(parent);
 		Composite container = new Composite(parent, SWT.NULL);
 		container.setBackground(null);
