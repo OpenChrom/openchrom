@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Lablicate GmbH.
+ * Copyright (c) 2025, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -43,9 +43,9 @@ public class RepositoryCleanup implements IStartup {
 	private static void cleanRepositories(IProvisioningAgent agent, Version version) {
 
 		var currentVersion = version.getMajor() + "." + version.getMinor() + "." + version.getMicro();
-		IMetadataRepositoryManager metadataManager = (IMetadataRepositoryManager)agent.getService(IMetadataRepositoryManager.SERVICE_NAME);
+		IMetadataRepositoryManager metadataManager = agent.getService(IMetadataRepositoryManager.class);
 		cleanRepositories(metadataManager, currentVersion);
-		IArtifactRepositoryManager artifactManager = (IArtifactRepositoryManager)agent.getService(IArtifactRepositoryManager.SERVICE_NAME);
+		IArtifactRepositoryManager artifactManager = agent.getService(IArtifactRepositoryManager.class);
 		cleanRepositories(artifactManager, currentVersion);
 	}
 
