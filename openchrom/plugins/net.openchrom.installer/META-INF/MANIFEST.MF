@@ -1,7 +1,6 @@
 Manifest-Version: 1.0
 Automatic-Module-Name: net.openchrom.installer
 Bundle-ActivationPolicy: lazy
-Bundle-Activator: net.openchrom.installer.Activator
 Bundle-ManifestVersion: 2
 Bundle-Name: Lablicate Installer
 Bundle-SymbolicName: net.openchrom.installer;singleton:=true
