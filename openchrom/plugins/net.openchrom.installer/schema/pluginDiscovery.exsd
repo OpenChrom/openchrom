@@ -116,13 +116,6 @@
                </appinfo>
             </annotation>
          </attribute>
-         <attribute name="urls" type="string" use="required">
-            <annotation>
-               <documentation>
-                  The URLs of the update sites containing the plugin.
-               </documentation>
-            </annotation>
-         </attribute>
          <attribute name="id" type="string" use="required">
             <annotation>
                <documentation>

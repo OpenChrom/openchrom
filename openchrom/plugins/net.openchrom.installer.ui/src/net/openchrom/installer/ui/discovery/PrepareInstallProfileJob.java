@@ -38,7 +38,6 @@ import org.eclipse.equinox.p2.metadata.IInstallableUnit;
 import org.eclipse.equinox.p2.metadata.Version;
 import org.eclipse.equinox.p2.operations.InstallOperation;
 import org.eclipse.equinox.p2.operations.ProvisioningSession;
-import org.eclipse.equinox.p2.operations.RepositoryTracker;
 import org.eclipse.equinox.p2.query.IQuery;
 import org.eclipse.equinox.p2.query.IQueryResult;
 import org.eclipse.equinox.p2.query.QueryUtil;
@@ -69,11 +68,14 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 	private static final String P2_FEATURE_GROUP_SUFFIX = ".feature.group"; //$NON-NLS-1$
 	private List<PluginDescriptor> installableConnectors;
 	private final ProvisioningUI provisioningUI;
-	private Set<URI> repositoryLocations;
+	private URI[] repositories;
 
 	public PrepareInstallProfileJob() {
 
 		this.provisioningUI = ProvisioningUI.getDefaultUI();
+		IMetadataRepositoryManager manager = provisioningUI.getSession().getProvisioningAgent()
+				.getService(IMetadataRepositoryManager.class);
+		repositories = manager.getKnownRepositories(IMetadataRepositoryManager.REPOSITORIES_ALL);
 	}
 
 	@Override
@@ -94,7 +96,7 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 				List<IInstallableUnit> installableUnits = computeInstallableUnits(monitor.newChild(50));
 				checkCancelled(monitor);
 				if(!installableUnits.isEmpty()) {
-					final InstallOperation installOperation = resolve(monitor.newChild(50), installableUnits, repositoryLocations.toArray(new URI[0]));
+					final InstallOperation installOperation = resolve(monitor.newChild(50), installableUnits);
 					checkCancelled(monitor);
 					Display.getDefault().asyncExec(() -> provisioningUI.openInstallWizard(installableUnits, installOperation, null));
 				}
@@ -117,7 +119,7 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 		}
 	}
 
-	private InstallOperation resolve(IProgressMonitor monitor, List<IInstallableUnit> ius, URI[] repositories) throws CoreException {
+	private InstallOperation resolve(IProgressMonitor monitor, List<IInstallableUnit> ius) throws CoreException {
 
 		final InstallOperation installOperation = provisioningUI.getInstallOperation(ius, repositories);
 		IStatus operationStatus = installOperation.resolveModal(SubMonitor.convert(monitor, installableConnectors.size()));
@@ -131,8 +133,8 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 
 		monitor.setWorkRemaining(100);
 		// add repository urls and load meta data
-		List<IMetadataRepository> repositories = addRepositories(monitor.newChild(50));
-		final List<IInstallableUnit> installableUnits = queryInstallableUnits(monitor.newChild(50), repositories);
+		List<IMetadataRepository> metadataRepositories = getRepositories(monitor.newChild(50));
+		final List<IInstallableUnit> installableUnits = queryInstallableUnits(monitor.newChild(50), metadataRepositories);
 		removeOldVersions(installableUnits);
 		checkForUnavailable(installableUnits);
 		removeInstalled(installableUnits);
@@ -173,7 +175,7 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 				if(!detailedMessage.isEmpty()) {
 					detailedMessage += ", ";
 				}
-				detailedMessage += MessageFormat.format("{0} (id={1}, site={2})", descriptor.getName(), unavailableIds, descriptor.getURLs());
+				detailedMessage += MessageFormat.format("{0} (id={1})", descriptor.getName(), unavailableIds);
 			}
 		}
 		if(!message.isEmpty()) {
@@ -263,33 +265,18 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 		return installableUnits;
 	}
 
-	private List<IMetadataRepository> addRepositories(SubMonitor monitor) throws URISyntaxException, ProvisionException {
+	private List<IMetadataRepository> getRepositories(SubMonitor monitor) throws ProvisionException {
 
-		// tell p2 that it's okay to use these repositories
-		ProvisioningSession session = ProvisioningUI.getDefaultUI().getSession();
-		RepositoryTracker repositoryTracker = ProvisioningUI.getDefaultUI().getRepositoryTracker();
-		repositoryLocations = new HashSet<>();
-		monitor.setWorkRemaining(installableConnectors.size() * 5);
-		for(PluginDescriptor descriptor : installableConnectors) {
-			for(String url : descriptor.getURLs()) {
-				URI siteURI = new URI(url);
-				if(repositoryLocations.add(siteURI)) {
-					checkCancelled(monitor);
-					repositoryTracker.addRepository(siteURI, null, session);
-				}
-			}
-			monitor.worked(1);
-		}
-		// fetch meta-data for these repositories
-		ArrayList<IMetadataRepository> repositories = new ArrayList<>();
-		monitor.setWorkRemaining(repositories.size());
+		ProvisioningSession session = provisioningUI.getSession();
+		List<IMetadataRepository> metaRepositories = new ArrayList<>();
 		IMetadataRepositoryManager manager = session.getProvisioningAgent().getService(IMetadataRepositoryManager.class);
-		for(URI uri : repositoryLocations) {
+		monitor.setWorkRemaining(repositories.length);
+		for(URI uri : repositories) {
 			checkCancelled(monitor);
 			IMetadataRepository repository = manager.loadRepository(uri, monitor.newChild(1));
-			repositories.add(repository);
+			metaRepositories.add(repository);
 		}
-		return repositories;
+		return metaRepositories;
 	}
 
 	private Set<String> getDescriptorIds(final IMetadataRepository repository) throws URISyntaxException {
@@ -297,11 +284,7 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 		final Set<String> installableUnitIdsThisRepository = new HashSet<>();
 		// determine all installable units for this repository
 		for(PluginDescriptor descriptor : installableConnectors) {
-			for(String url : descriptor.getURLs()) {
-				if(repository.getLocation().equals(new URI(url))) {
-					installableUnitIdsThisRepository.addAll(getFeatureIds(descriptor));
-				}
-			}
+			installableUnitIdsThisRepository.addAll(getFeatureIds(descriptor));
 		}
 		return installableUnitIdsThisRepository;
 	}

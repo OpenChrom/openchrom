@@ -76,7 +76,6 @@
             license="Converter License Terms"
             name="EZChrom GC-FID"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/"
             icon="icons/32x32/EZChrom.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
@@ -92,7 +91,6 @@
             license="Converter License Terms"
             name="Agilent ChemStation GC-FID"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/"
             icon="icons/32x32/Agilent.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
@@ -108,7 +106,6 @@
             license="Converter License Terms"
             name="Thermo/Finnigan GC-FID"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/"
          	icon="icons/32x32/Thermo.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
@@ -124,7 +121,6 @@
             license="Converter License Terms"
             name="Thermo/Finnigan GC-FID"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/"
             icon="icons/32x32/Thermo.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
@@ -140,7 +136,6 @@
             license="Converter License Terms"
             name="I-GraphX GC-WLD"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/"
             icon="icons/32x32/I-GRAPHX.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
@@ -156,8 +151,7 @@
             license="Converter License Terms"
             name="Labjack Data Aquisition"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Labjack.png">
-        
+            icon="icons/32x32/Labjack.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -172,7 +166,7 @@
             license="Converter License Terms"
             name="Agilent MassHunter GC-FID"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Agilent.png">
+            icon="icons/32x32/Agilent.png">
          
          <overview
                summary="Free for commercial use. Must not be used with other software.">
@@ -188,7 +182,7 @@
             license="Converter License Terms"
             name="Moduvision Technologies"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Moduvision.png">
+            icon="icons/32x32/Moduvision.png">
          
          <overview
                summary="Free for commercial use. Must not be used with other software.">
@@ -204,7 +198,7 @@
             license="Converter License Terms"
             name="Agilent OpenLab GC-FID"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Agilent.png">
+            icon="icons/32x32/Agilent.png">
          
          <overview
                summary="Free for commercial use. Must not be used with other software.">
@@ -220,7 +214,7 @@
             license="Converter License Terms"
             name="Agilent OpenLab HPLC-UV/Vis"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Agilent.png">
+            icon="icons/32x32/Agilent.png">
          
          <overview
                summary="Free for commercial use. Must not be used with other software.">
@@ -236,7 +230,7 @@
             license="Converter License Terms"
             name="SRI Peak Simple GC-FID"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/SRI.png">
+            icon="icons/32x32/SRI.png">
          
          <overview
                summary="Free for commercial use. Must not be used with other software.">
@@ -252,7 +246,7 @@
             license="Converter License Terms"
             name="PerkinElmer GC-FID"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/PerkinElmer.png">
+            icon="icons/32x32/PerkinElmer.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -267,7 +261,7 @@
             license="Converter License Terms"
             name="Shimadzu GC-FID"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Shimadzu.png">
+            icon="icons/32x32/Shimadzu.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -282,7 +276,7 @@
             license="Converter License Terms"
             name="Thermo Atlas GC-FID"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Thermo.png">
+            icon="icons/32x32/Thermo.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -297,7 +291,7 @@
             license="Converter License Terms"
             name="Thermo GC-FID"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Thermo.png">
+            icon="icons/32x32/Thermo.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -312,7 +306,7 @@
             license="Converter License Terms"
             name="Varian GC-FID"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Varian.png">
+            icon="icons/32x32/Varian.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -327,7 +321,7 @@
             license="Converter License Terms"
             name="Waters Empower GC-FID"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Waters.png">
+            icon="icons/32x32/Waters.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -342,7 +336,7 @@
             license="Converter License Terms"
             name="ABSciex GC-MS"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Sciex.png">
+            icon="icons/32x32/Sciex.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -357,7 +351,7 @@
             license="Converter License Terms"
             name="ABSciex MALDI TOF/TOF"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Sciex.png">
+            icon="icons/32x32/Sciex.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -372,7 +366,7 @@
             license="Converter License Terms"
             name="Agilent ChemStation GC-MS"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Agilent.png">
+            icon="icons/32x32/Agilent.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -387,7 +381,7 @@
             license="Converter License Terms"
             name="Agilent ICP-MS"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Agilent.png">
+            icon="icons/32x32/Agilent.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -402,7 +396,7 @@
             license="Converter License Terms"
             name="Bruker GC-MS"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Bruker.png">
+            icon="icons/32x32/Bruker.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -417,7 +411,7 @@
             license="Converter License Terms"
             name="Bruker Flex"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Bruker.png">
+            icon="icons/32x32/Bruker.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -432,7 +426,7 @@
             license="Converter License Terms"
             name="ChromTech GC-MS"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/ChromTech.png">
+            icon="icons/32x32/ChromTech.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -447,7 +441,7 @@
             license="Converter License Terms"
             name="Thermo Galactic Grams MS"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Thermo.png">
+            icon="icons/32x32/Thermo.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -462,7 +456,7 @@
             license="Converter License Terms"
             name="Thermo mzVault (mzCloud)"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Thermo.png">
+            icon="icons/32x32/Thermo.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -477,7 +471,7 @@
             license="Converter License Terms"
             name="Thermo/Finnigan Element II"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Thermo.png">
+            icon="icons/32x32/Thermo.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -492,7 +486,7 @@
             license="Converter License Terms"
             name="Thermo/Finnigan ICIS"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Thermo.png">
+            icon="icons/32x32/Thermo.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -507,7 +501,7 @@
             license="Converter License Terms"
             name="Thermo/Finnigan ITDS"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Thermo.png">
+            icon="icons/32x32/Thermo.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -522,7 +516,7 @@
             license="Converter License Terms"
             name="Thermo/Finnigan ITS40"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Thermo.png">
+            icon="icons/32x32/Thermo.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -537,7 +531,7 @@
             license="Converter License Terms"
             name="Thermo/Finnigan MAT95"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Thermo.png">
+            icon="icons/32x32/Thermo.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -552,7 +546,7 @@
             license="Converter License Terms"
             name="Thermo/Finnigan GC-MS"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Thermo.png">
+            icon="icons/32x32/Thermo.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -567,7 +561,7 @@
             license="Converter License Terms"
             name="Agilent JCAMP Dialect"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Agilent.png">
+            icon="icons/32x32/Agilent.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -582,7 +576,7 @@
             license="Converter License Terms"
             name="LECO GC-MS"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/LECO.png">
+            icon="icons/32x32/LECO.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -597,7 +591,7 @@
             license="Converter License Terms"
             name="LECO GCxGC-TOF"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/LECO.png">
+            icon="icons/32x32/LECO.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -611,8 +605,7 @@
             kind="converter"
             license="Converter License Terms"
             name="Markes GC-MS"
-            provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/">
+            provider="Lablicate">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -627,7 +620,7 @@
             license="Converter License Terms"
             name="Agilent MassHunter GC-MS"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Agilent.png">
+            icon="icons/32x32/Agilent.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -642,7 +635,7 @@
             license="Converter License Terms"
             name="MassLib"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/MassLib.gif">
+            icon="icons/32x32/MassLib.gif">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -656,8 +649,7 @@
             kind="converter"
             license="Converter License Terms"
             name="MetAlign"
-            provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/">
+            provider="Lablicate">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -672,7 +664,7 @@
             license="Converter License Terms"
             name="Shimadzu GC-MS"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Shimadzu.png">
+            icon="icons/32x32/Shimadzu.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -687,7 +679,7 @@
             license="Converter License Terms"
             name="Shimadzu GC-MS"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Shimadzu.png">
+            icon="icons/32x32/Shimadzu.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -702,7 +694,7 @@
             license="Converter License Terms"
             name="Shimadzu QP-5000"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Shimadzu.png">
+            icon="icons/32x32/Shimadzu.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -717,7 +709,7 @@
             license="Converter License Terms"
             name="Shimadzu MS Database"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Shimadzu.png">
+            icon="icons/32x32/Shimadzu.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -732,7 +724,7 @@
             license="Converter License Terms"
             name="Syft MS"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Syft.png">
+            icon="icons/32x32/Syft.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -747,7 +739,7 @@
             license="Converter License Terms"
             name="Bruker/Varian MS"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Varian.png">
+            icon="icons/32x32/Varian.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -762,7 +754,7 @@
             license="Converter License Terms"
             name="Bruker/Varian MS"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Varian.png">
+            icon="icons/32x32/Varian.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -777,7 +769,7 @@
             license="Converter License Terms"
             name="VG MassLab"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/VGinstruments.png">
+            icon="icons/32x32/VGinstruments.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -792,7 +784,7 @@
             license="Converter License Terms"
             name="Waters Empower GC-MS"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Waters.png">
+            icon="icons/32x32/Waters.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -807,7 +799,7 @@
             license="Converter License Terms"
             name="Waters GC-MS"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Waters.png">
+            icon="icons/32x32/Waters.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -822,7 +814,7 @@
             license="Converter License Terms"
             name="Bruker NMR"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Bruker.png">
+            icon="icons/32x32/Bruker.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -837,7 +829,7 @@
             license="Converter License Terms"
             name="bioMérieux GENE-UP PCR"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/bioMerieux.png">
+            icon="icons/32x32/bioMerieux.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -852,7 +844,7 @@
             license="Converter License Terms"
             name="Roche LightCycler PCR"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Roche.png">
+            icon="icons/32x32/Roche.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -867,7 +859,7 @@
             license="Converter License Terms"
             name="G.A.S. IMS"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/GAS.png">
+            icon="icons/32x32/GAS.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -882,7 +874,7 @@
             license="Converter License Terms"
             name="ABSciex HPLC-DAD"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Sciex.png">
+            icon="icons/32x32/Sciex.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -897,7 +889,7 @@
             license="Converter License Terms"
             name="Agilent HPLC-DAD"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Agilent.png">
+            icon="icons/32x32/Agilent.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -912,7 +904,7 @@
             license="Converter License Terms"
             name="CAMAG HPTLC"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/CAMAG.png">
+            icon="icons/32x32/CAMAG.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -927,7 +919,7 @@
             license="Converter License Terms"
             name="CHROMuLAN HPLC"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/CHROMuLAN.png">
+            icon="icons/32x32/CHROMuLAN.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -941,8 +933,7 @@
             kind="converter"
             license="Converter License Terms"
             name="HPLC UV-VIS"
-            provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/">
+            provider="Lablicate">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -957,7 +948,7 @@
             license="Converter License Terms"
             name="Agilent MassHunter HPLC-DAD"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Agilent.png">
+            icon="icons/32x32/Agilent.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -972,7 +963,7 @@
             license="Converter License Terms"
             name="Shimadzu HPLC-DAD"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Shimadzu.png">
+            icon="icons/32x32/Shimadzu.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -987,7 +978,7 @@
             license="Converter License Terms"
             name="VUV Analytics HPLC-DAD"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/VUV.png">
+            icon="icons/32x32/VUV.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -1002,7 +993,7 @@
             license="Converter License Terms"
             name="Waters Empower HPLC-DAD"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Waters.png">
+            icon="icons/32x32/Waters.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -1017,7 +1008,7 @@
             license="Converter License Terms"
             name="Waters Empower HPLC-FLD"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Waters.png">
+            icon="icons/32x32/Waters.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -1032,7 +1023,7 @@
             license="Converter License Terms"
             name="Andor Raman Spectroscopy"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/OxfordInstruments.png">
+            icon="icons/32x32/OxfordInstruments.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -1047,7 +1038,7 @@
             license="Converter License Terms"
             name="Bruker Opus NIR Spectroscopy"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Bruker.png">
+            icon="icons/32x32/Bruker.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -1062,7 +1053,7 @@
             license="Converter License Terms"
             name="Thermo Galactic Grams FT-IR"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Thermo.png">
+            icon="icons/32x32/Thermo.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -1077,7 +1068,7 @@
             license="Converter License Terms"
             name="Thermo Nicolet FT-IR"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Thermo.png">
+            icon="icons/32x32/Thermo.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -1092,7 +1083,7 @@
             license="Converter License Terms"
             name="DataApex Chromatography"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/DataApex.png">
+            icon="icons/32x32/DataApex.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -1107,7 +1098,7 @@
             license="Converter License Terms"
             name="MassFinder GC-FID/MS"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/MassFinder.png">
+            icon="icons/32x32/MassFinder.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -1122,7 +1113,7 @@
             license="Converter License Terms"
             name="TetraScience Chromatography"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/TetraScience.png">
+            icon="icons/32x32/TetraScience.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -1137,7 +1128,7 @@
             license="Converter License Terms"
             name="Chromatotec GC-FID"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/Chromatotec.png">
+            icon="icons/32x32/Chromatotec.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -1152,7 +1143,7 @@
             license="Converter End User License"
             name="N2000 GC-TCD"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/N2000.png">
+            icon="icons/32x32/N2000.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -1167,7 +1158,7 @@
             license="End User License"
             name="Allotrope Data Format"
             provider="Lablicate"
-            urls="https://plugins.openchrom.net/allotrope/1.6.3/,https://plugins.openchrom.net/drm/1.6.3/" icon="icons/32x32/ADF.png">
+            icon="icons/32x32/ADF.png">
          <overview
                summary="Commercial product. Requires valid license."
                url="https://lablicate.com/marketplace/extensions/allotrope">
@@ -1183,7 +1174,7 @@
             license="End User License"
             name="Allotrope Simple Model"
             provider="Lablicate"
-            urls="https://plugins.openchrom.net/allotrope/1.6.3/,https://plugins.openchrom.net/drm/1.6.3/" icon="icons/32x32/ASM.png">
+            icon="icons/32x32/ASM.png">
          <overview
                summary="Commercial product. Requires valid license."
                url="https://lablicate.com/marketplace/extensions/allotrope">
@@ -1199,7 +1190,7 @@
             license="Converter License Terms"
             name="MS SEARCH Database"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" icon="icons/32x32/NIST.png">
+            icon="icons/32x32/NIST.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
@@ -1214,7 +1205,7 @@
             license="Commercial License Terms"
             name="MCR-AR"
             provider="Lablicate"
-            urls="https://plugins.openchrom.net/mcrar/1.6.3/,https://plugins.openchrom.net/drm/1.6.3/,https://plugins.openchrom.net/powertools/1.6.3/" icon="icons/32x32/OpenChrom.png">
+            icon="icons/32x32/OpenChrom.png">
          <overview
                summary="Commercial product. Requires valid license."
                url="https://lablicate.com/marketplace/extensions/mcr-ar">
@@ -1230,7 +1221,7 @@
             license="Commercial License Terms"
             name="ChromIdent"
             provider="Lablicate"
-            urls="https://plugins.openchrom.net/xident/1.6.3/,https://plugins.openchrom.net/drm/1.6.3/,https://plugins.openchrom.net/powertools/1.6.3/" icon="icons/32x32/OpenChrom.png">
+            icon="icons/32x32/OpenChrom.png">
          <overview
                summary="Commercial product. Requires valid license."
                url="https://lablicate.com/marketplace/extensions/chromident">
@@ -1246,7 +1237,7 @@
             license="Commercial License Terms"
             name="Quantitation"
             provider="Lablicate"
-            urls="https://plugins.openchrom.net/quantitation/1.6.3/,https://plugins.openchrom.net/drm/1.6.3/,https://plugins.openchrom.net/powertools/1.6.3/" icon="icons/32x32/OpenChrom.png">
+            icon="icons/32x32/OpenChrom.png">
          <overview
                summary="Commercial product. Requires valid license."
                url="https://lablicate.com/marketplace/extensions/quantitation">
@@ -1262,7 +1253,7 @@
             license="Commercial License Terms"
             name="NIST Database Connector"
             provider="Lablicate"
-            urls="https://plugins.openchrom.net/nist/1.6.3/,https://plugins.openchrom.net/drm/1.6.3/" icon="icons/32x32/OpenChrom.png">
+            icon="icons/32x32/OpenChrom.png">
          <overview
                summary="Commercial product. Requires valid license."
                url="https://lablicate.com/marketplace/extensions/connector-db">
@@ -1278,7 +1269,7 @@
             license="Commercial License Terms"
             name="PowerTools"
             provider="Lablicate"
-            urls="https://plugins.openchrom.net/powertools/1.6.3/,https://plugins.openchrom.net/drm/1.6.3/" icon="icons/32x32/OpenChrom.png">
+            icon="icons/32x32/OpenChrom.png">
          <overview
                summary="Commercial product. Requires valid license."
                url="https://lablicate.com/marketplace/extensions/powertools">
@@ -1294,7 +1285,7 @@
             license="Commercial License Terms"
             name="RRF"
             provider="Lablicate"
-            urls="https://plugins.openchrom.net/rrf/1.6.3/,https://plugins.openchrom.net/drm/1.6.3/" icon="icons/32x32/OpenChrom.png">
+            icon="icons/32x32/OpenChrom.png">
          <overview
                summary="Commercial product. Requires valid license."
                url="https://lablicate.com/marketplace/extensions/rrf">
@@ -1310,7 +1301,7 @@
             license="Commercial License Terms"
             name="Ambient Air Processor"
             provider="Lablicate"
-            urls="https://plugins.openchrom.net/ambientair/1.6.3/,https://plugins.openchrom.net/quantitation/1.6.3/,https://plugins.openchrom.net/powertools/1.6.3/,https://plugins.openchrom.net/drm/1.6.3/" icon="icons/32x32/OpenChrom.png">
+            icon="icons/32x32/OpenChrom.png">
          <overview
                summary="Commercial product. Requires valid license."
                url="https://lablicate.com/marketplace/extensions/ambientairprocessor">
@@ -1326,7 +1317,7 @@
             license="Commercial License Terms"
             name="Findings Database"
             provider="Lablicate"
-            urls="https://plugins.openchrom.net/findingsdb/1.6.3/,https://plugins.openchrom.net/drm/1.6.3/" icon="icons/32x32/OpenChrom.png">
+            icon="icons/32x32/OpenChrom.png">
          <overview
                summary="Commercial product. Requires valid license."
                url="https://lablicate.com/marketplace/extensions/findingsdb">
@@ -1342,7 +1333,7 @@
             license="Commercial License Terms"
             name="ChromInspector"
             provider="Lablicate"
-            urls="https://plugins.openchrom.net/chrominspector/1.6.3/,https://plugins.openchrom.net/findingsdb/1.6.3/,https://plugins.openchrom.net/drm/1.6.3/,https://plugins.openchrom.net/powertools/1.6.3/" icon="icons/32x32/OpenChrom.png">
+            icon="icons/32x32/OpenChrom.png">
          <overview
                summary="Commercial product. Requires valid license."
                url="https://lablicate.com/marketplace/extensions/chrominspector">
@@ -1358,7 +1349,7 @@
             license="Commercial License Terms"
             name="PBM"
             provider="Lablicate"
-            urls="https://plugins.openchrom.net/pbm/1.6.3/,https://converter.openchrom.net/1.6.3/,https://plugins.openchrom.net/drm/1.6.3/" icon="icons/32x32/OpenChrom.png">
+            icon="icons/32x32/OpenChrom.png">
          <overview
                summary="Commercial product. Requires valid license."
                url="https://lablicate.com/marketplace/extensions/pbm">
@@ -1374,7 +1365,7 @@
             license="Commercial License Terms"
             name="Chrom2Quant"
             provider="Lablicate"
-            urls="https://plugins.openchrom.net/chrom2quant/1.6.3/,https://plugins.openchrom.net/powertools/1.6.3/,https://plugins.openchrom.net/quantitation/1.6.3/,https://plugins.openchrom.net/combine/1.6.3/,https://plugins.openchrom.net/drm/1.6.3/" icon="icons/32x32/OpenChrom.png">
+            icon="icons/32x32/OpenChrom.png">
          <overview
                summary="Commercial product. Requires valid license."
                url="https://lablicate.com/marketplace/extensions/chrom2quant">
@@ -1390,7 +1381,6 @@
             license="Commercial License Terms"
             name="Handbook"
             provider="Lablicate"
-            urls="https://plugins.openchrom.net/documentation/1.6.3/,https://plugins.openchrom.net/drm/1.6.3/" 
             icon="icons/32x32/OpenChrom.png">
          <overview
                summary="Commercial product. Requires valid license."
@@ -1407,7 +1397,6 @@
             license="Converter License Terms"
             name="Pfeiffer MS"
             provider="Lablicate"
-            urls="https://converter.openchrom.net/1.6.3/" 
             icon="icons/32x32/Pfeiffer.png">
          <overview
                summary="Free for commercial use. Must not be used with other software.">
