@@ -28,7 +28,6 @@ public class PluginDescriptor {
 	protected String provider;
 	protected String license;
 	protected String description;
-	protected List<String> urls = new ArrayList<>();
 	protected List<String> installableUnits = new ArrayList<>();
 	protected String categoryId;
 	protected String platformFilter;
@@ -100,19 +99,6 @@ public class PluginDescriptor {
 	public void setDescription(String description) {
 
 		this.description = description;
-	}
-
-	/**
-	 * The URLs of the update site containing the plugin.
-	 */
-	public List<String> getURLs() {
-
-		return urls;
-	}
-
-	public void setURL(List<String> url) {
-
-		this.urls = url;
 	}
 
 	/**
@@ -210,9 +196,6 @@ public class PluginDescriptor {
 		}
 		if(license == null || license.isEmpty()) {
 			throw new IllegalArgumentException("license is empty");
-		}
-		if(urls == null || urls.isEmpty()) {
-			throw new IllegalArgumentException("urls is empty");
 		}
 		if(installableUnits == null || installableUnits.isEmpty()) {
 			throw new IllegalArgumentException("installableUnits is empty");
