@@ -283,7 +283,7 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 		// fetch meta-data for these repositories
 		ArrayList<IMetadataRepository> repositories = new ArrayList<>();
 		monitor.setWorkRemaining(repositories.size());
-		IMetadataRepositoryManager manager = (IMetadataRepositoryManager)session.getProvisioningAgent().getService(IMetadataRepositoryManager.SERVICE_NAME);
+		IMetadataRepositoryManager manager = session.getProvisioningAgent().getService(IMetadataRepositoryManager.class);
 		for(URI uri : repositoryLocations) {
 			checkCancelled(monitor);
 			IMetadataRepository repository = manager.loadRepository(uri, monitor.newChild(1));
