@@ -7,6 +7,7 @@
 		<unit id="org.eclipse.equinox.sdk.feature.group"/>
 		<unit id="org.eclipse.platform.feature.group"/>
 		<unit id="org.eclipse.jdt.junit5.runtime"/>
+		<unit id="com.google.gson"/>
 		<unit id="com.google.protobuf"/>
 		<unit id="org.jdom2"/>
 		<unit id="org.apache.aries.spifly.dynamic.bundle"/>
