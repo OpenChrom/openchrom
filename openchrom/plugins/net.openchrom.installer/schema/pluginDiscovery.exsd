@@ -57,7 +57,6 @@
       <complexType>
          <sequence>
             <element ref="featureFilter" minOccurs="0" maxOccurs="unbounded"/>
-            <element ref="icon" minOccurs="0" maxOccurs="1"/>
             <element ref="overview" minOccurs="0" maxOccurs="1"/>
          </sequence>
          <attribute name="kind" type="string" use="required">
@@ -74,6 +73,16 @@
                </documentation>
                <appinfo>
                   <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="icon" type="string">
+            <annotation>
+               <documentation>
+                  An icon of the plugin
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="resource"/>
                </appinfo>
             </annotation>
          </attribute>
@@ -159,7 +168,6 @@
       </annotation>
       <complexType>
          <sequence>
-            <element ref="icon" minOccurs="0" maxOccurs="1"/>
             <element ref="overview" minOccurs="0" maxOccurs="1"/>
             <element ref="group" minOccurs="0" maxOccurs="unbounded"/>
          </sequence>
@@ -193,66 +201,21 @@
                </appinfo>
             </annotation>
          </attribute>
+         <attribute name="icon" type="string">
+            <annotation>
+               <documentation>
+                  An icon of the category
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="resource"/>
+               </appinfo>
+            </annotation>
+         </attribute>
          <attribute name="relevance" type="string">
             <annotation>
                <documentation>
                   A relevance, which is a number from 0 to 100.  Categories with higher relevance are displayed with preference in the UI.
                </documentation>
-            </annotation>
-         </attribute>
-      </complexType>
-   </element>
-
-   <element name="icon">
-      <complexType>
-         <attribute name="image16" type="string">
-            <annotation>
-               <documentation>
-
-               </documentation>
-               <appinfo>
-                  <meta.attribute kind="resource"/>
-               </appinfo>
-            </annotation>
-         </attribute>
-         <attribute name="image32" type="string">
-            <annotation>
-               <documentation>
-
-               </documentation>
-               <appinfo>
-                  <meta.attribute kind="resource"/>
-               </appinfo>
-            </annotation>
-         </attribute>
-         <attribute name="image48" type="string">
-            <annotation>
-               <documentation>
-
-               </documentation>
-               <appinfo>
-                  <meta.attribute kind="resource"/>
-               </appinfo>
-            </annotation>
-         </attribute>
-         <attribute name="image64" type="string">
-            <annotation>
-               <documentation>
-
-               </documentation>
-               <appinfo>
-                  <meta.attribute kind="resource"/>
-               </appinfo>
-            </annotation>
-         </attribute>
-         <attribute name="image128" type="string">
-            <annotation>
-               <documentation>
-
-               </documentation>
-               <appinfo>
-                  <meta.attribute kind="resource"/>
-               </appinfo>
             </annotation>
          </attribute>
       </complexType>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2025 Tasktop Technologies, Polarion Software and others.
+ * Copyright (c) 2009, 2026 Tasktop Technologies, Polarion Software and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -34,7 +34,7 @@ public class PluginDescriptor {
 	protected String platformFilter;
 	protected String groupId;
 	protected List<FeatureFilter> featureFilter = new ArrayList<>();
-	protected Icon icon;
+	protected String icon;
 	protected Overview overview;
 
 	public List<PluginDescriptorKind> getKind() {
@@ -177,12 +177,12 @@ public class PluginDescriptor {
 		this.featureFilter = featureFilter;
 	}
 
-	public Icon getIcon() {
+	public String getIcon() {
 
 		return icon;
 	}
 
-	public void setIcon(Icon icon) {
+	public void setIcon(String icon) {
 
 		this.icon = icon;
 	}
@@ -223,8 +223,8 @@ public class PluginDescriptor {
 		for(FeatureFilter featureFilterItem : featureFilter) {
 			featureFilterItem.validate();
 		}
-		if(icon != null) {
-			icon.validate();
+		if(icon != null && icon.isEmpty()) {
+			throw new IllegalArgumentException("icon is provided but is empty");
 		}
 		if(overview != null) {
 			overview.validate();

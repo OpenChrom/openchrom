@@ -27,7 +27,7 @@ public class PluginCategory {
 	protected String name;
 	protected String description;
 	protected String relevance;
-	protected Icon icon;
+	protected String icon;
 	protected Overview overview;
 	protected List<Group> group = new ArrayList<>();
 
@@ -84,12 +84,12 @@ public class PluginCategory {
 		this.relevance = relevance;
 	}
 
-	public Icon getIcon() {
+	public String getIcon() {
 
 		return icon;
 	}
 
-	public void setIcon(Icon icon) {
+	public void setIcon(String icon) {
 
 		this.icon = icon;
 	}
@@ -122,8 +122,8 @@ public class PluginCategory {
 		if(name == null || name.isEmpty()) {
 			throw new IllegalArgumentException("name is missing");
 		}
-		if(icon != null) {
-			icon.validate();
+		if(icon != null && icon.trim().isEmpty()) {
+			throw new IllegalArgumentException("icon is set but empty");
 		}
 		if(relevance != null) {
 			try {

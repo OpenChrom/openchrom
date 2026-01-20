@@ -100,7 +100,6 @@ import net.openchrom.installer.model.BundleDiscoveryStrategy;
 import net.openchrom.installer.model.DiscoveryCategory;
 import net.openchrom.installer.model.DiscoveryPlugin;
 import net.openchrom.installer.model.IDiscoverySource;
-import net.openchrom.installer.model.Icon;
 import net.openchrom.installer.model.Overview;
 import net.openchrom.installer.model.PluginDescriptor;
 import net.openchrom.installer.model.PluginDescriptorKind;
@@ -450,7 +449,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 			configureLook(iconLabel, background);
 			GridDataFactory.swtDefaults().align(SWT.CENTER, SWT.CENTER).applyTo(iconLabel);
 			if(plugin.getIcon() != null) {
-				iconImage = computeIconImage(plugin.getSource(), plugin.getIcon(), 32, false);
+				iconImage = computeIconImage(plugin.getSource(), plugin.getIcon(), false);
 				if(iconImage != null) {
 					iconLabel.setImage(iconImage);
 				}
@@ -638,7 +637,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 					GridLayoutFactory.fillDefaults().numColumns(3).margins(5, 5).equalWidth(false).applyTo(categoryHeaderContainer);
 					Label iconLabel = new Label(categoryHeaderContainer, SWT.NULL);
 					if(category.getIcon() != null) {
-						Image image = computeIconImage(category.getSource(), category.getIcon(), 48, true);
+						Image image = computeIconImage(category.getSource(), category.getIcon(), true);
 						if(image != null) {
 							iconLabel.setImage(image);
 						}
@@ -837,28 +836,10 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 		return text != null && filterPattern.matcher(text).find();
 	}
 
-	private Image computeIconImage(IDiscoverySource discoverySource, Icon icon, int dimension, boolean fallback) {
+	private Image computeIconImage(IDiscoverySource discoverySource, String icon, boolean fallback) {
 
-		String imagePath;
-		switch(dimension) {
-			case 64:
-				imagePath = icon.getImage64();
-				if(imagePath != null || !fallback) {
-					break;
-				}
-			case 48:
-				imagePath = icon.getImage48();
-				if(imagePath != null || !fallback) {
-					break;
-				}
-			case 32:
-				imagePath = icon.getImage32();
-				break;
-			default:
-				throw new IllegalArgumentException();
-		}
-		if(imagePath != null && !imagePath.isEmpty()) {
-			URL resource = discoverySource.getResource(imagePath);
+		if(icon != null && !icon.isEmpty()) {
+			URL resource = discoverySource.getResource(icon);
 			if(resource != null) {
 				ImageDescriptor descriptor = ImageDescriptor.createFromURL(resource);
 				Image image = descriptor.createImage();
