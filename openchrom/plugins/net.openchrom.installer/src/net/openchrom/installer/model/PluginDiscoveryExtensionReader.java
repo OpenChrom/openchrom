@@ -68,6 +68,7 @@ public class PluginDiscoveryExtensionReader {
 		pluginDescriptor.setCategoryId(element.getAttribute("categoryId")); //$NON-NLS-1$
 		pluginDescriptor.setPlatformFilter(element.getAttribute("platformFilter")); //$NON-NLS-1$
 		pluginDescriptor.setGroupId(element.getAttribute("groupId")); //$NON-NLS-1$
+		pluginDescriptor.setIcon(element.getAttribute("icon")); //$NON-NLS-1$
 		String urls = element.getAttribute("urls"); //$NON-NLS-1$
 		if(urls != null) {
 			String[] aids = urls.split("\\s*,\\s*"); //$NON-NLS-1$
@@ -80,15 +81,6 @@ public class PluginDiscoveryExtensionReader {
 			FeatureFilter featureFilterItem = readFeatureFilter(child);
 			featureFilterItem.setConnectorDescriptor(pluginDescriptor);
 			pluginDescriptor.getFeatureFilter().add(featureFilterItem);
-		}
-		for(IConfigurationElement child : element.getChildren("icon")) //$NON-NLS-1$
-		{
-			Icon iconItem = readIcon(child);
-			iconItem.setConnectorDescriptor(pluginDescriptor);
-			if(pluginDescriptor.getIcon() != null) {
-				logger.warn("Unexpected element icon");
-			}
-			pluginDescriptor.setIcon(iconItem);
 		}
 		for(IConfigurationElement child : element.getChildren(OVERVIEW)) {
 			Overview overviewItem = readOverview(child);
@@ -119,14 +111,7 @@ public class PluginDiscoveryExtensionReader {
 		pluginCategory.setName(element.getAttribute("name")); //$NON-NLS-1$
 		pluginCategory.setDescription(element.getAttribute("description")); //$NON-NLS-1$
 		pluginCategory.setRelevance(element.getAttribute("relevance")); //$NON-NLS-1$
-		for(IConfigurationElement child : element.getChildren("icon")) { //$NON-NLS-1$
-			Icon iconItem = readIcon(child);
-			iconItem.setConnectorCategory(pluginCategory);
-			if(pluginCategory.getIcon() != null) {
-				logger.warn("Unexpected element icon");
-			}
-			pluginCategory.setIcon(iconItem);
-		}
+		pluginCategory.setIcon(element.getAttribute("icon")); //$NON-NLS-1$
 		for(IConfigurationElement child : element.getChildren("overview")) { //$NON-NLS-1$
 			Overview overviewItem = readOverview(child);
 			overviewItem.setConnectorCategory(pluginCategory);
@@ -142,18 +127,6 @@ public class PluginDiscoveryExtensionReader {
 		}
 		pluginCategory.validate();
 		return pluginCategory;
-	}
-
-	public Icon readIcon(IConfigurationElement element) {
-
-		Icon icon = new Icon();
-		icon.setImage16(element.getAttribute("image16")); //$NON-NLS-1$
-		icon.setImage32(element.getAttribute("image32")); //$NON-NLS-1$
-		icon.setImage48(element.getAttribute("image48")); //$NON-NLS-1$
-		icon.setImage64(element.getAttribute("image64")); //$NON-NLS-1$
-		icon.setImage128(element.getAttribute("image128")); //$NON-NLS-1$
-		icon.validate();
-		return icon;
 	}
 
 	public Overview readOverview(IConfigurationElement element) {
