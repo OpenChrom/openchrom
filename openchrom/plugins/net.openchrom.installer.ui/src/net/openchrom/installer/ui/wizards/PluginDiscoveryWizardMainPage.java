@@ -191,7 +191,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 						if(features != null && !features.isEmpty()) {
 							filterText.setText("");
 							importedFeatures = new ArrayList<>();
-							features.forEach(f -> importedFeatures.add(f.getAsString()+P2_FEATURE_GROUP_SUFFIX));
+							features.forEach(f -> importedFeatures.add(f.getAsString() + P2_FEATURE_GROUP_SUFFIX));
 						} else {
 							MessageDialog.openWarning(getShell(), "Invalid file content", "Content of the file is not in the expected format.");
 						}
@@ -551,6 +551,10 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 			}
 
 			IProfile profile = getP2Profile();
+			if(profile == null) {
+				return false;
+			}
+
 			IQueryResult<?> result = profile.query(QueryUtil.createIUQuery(uid), null);
 			return !result.isEmpty();
 
