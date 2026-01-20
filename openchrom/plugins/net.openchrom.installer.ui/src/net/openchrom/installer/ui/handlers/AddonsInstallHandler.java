@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Lablicate GmbH.
+ * Copyright (c) 2023, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -24,9 +24,9 @@ import net.openchrom.installer.ui.discovery.IPluginInstallJob;
 import net.openchrom.installer.ui.discovery.PrepareInstallProfileJob;
 import net.openchrom.installer.ui.wizards.PluginDiscoveryWizard;
 
-public class ConverterInstallHandler {
+public class AddonsInstallHandler {
 
-	private static final Logger logger = Logger.getLogger(ConverterInstallHandler.class);
+	private static final Logger logger = Logger.getLogger(AddonsInstallHandler.class);
 
 	@Execute
 	void execute(Shell shell, ECommandService commandService, EHandlerService handlerService) {

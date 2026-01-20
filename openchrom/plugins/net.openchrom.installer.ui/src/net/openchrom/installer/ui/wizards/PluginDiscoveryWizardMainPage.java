@@ -166,7 +166,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 			if(getWizard().isShowConnectorDescriptorKindFilter() || getWizard().isShowConnectorDescriptorTextFilter()) {
 				Composite filterContainer = new Composite(header, SWT.NULL);
 				GridDataFactory.fillDefaults().grab(true, false).applyTo(filterContainer);
-				int numColumns = 4;
+				int numColumns = 5;
 				GridLayoutFactory.fillDefaults().numColumns(numColumns).applyTo(filterContainer);
 				Label label = new Label(filterContainer, SWT.NULL);
 				label.setText("Filter");
@@ -208,6 +208,17 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 					filterText.setText("");
 					setPageComplete(false);
 					refreshDisplayedIUs();
+				}));
+				/*
+				 * Close this wizard and open the "Available Software" dialog.
+				 */
+				Button availableSoftware = new Button(filterContainer, SWT.PUSH);
+				availableSoftware.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_MARKETPLACE, IApplicationImageProvider.SIZE_16x16));
+				availableSoftware.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+
+					getShell().close();
+					ProvisioningUI provisioningUI = ProvisioningUI.getDefaultUI();
+					provisioningUI.openInstallWizard(null, null, null);
 				}));
 			}
 		}
