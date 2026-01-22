@@ -118,7 +118,6 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 
 	private static final String DISCOVERY_PROPERTIES_FILE = "discovery.properties";
 	private static final String URL_DISCOVERY_PROPERTY = "url";
-	private static final String P2_FEATURE_GROUP_SUFFIX = ".feature.group";
 	private static final Logger logger = Logger.getLogger(PluginDiscoveryWizardMainPage.class);
 	private final List<PluginDescriptor> installableConnectors = new ArrayList<>();
 	private PluginDiscovery discovery;
@@ -226,7 +225,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 					PreferenceSupplier.setFilterPathImport(file.getParent());
 					try {
 						SetupDefinition setupDefinition = new SetupDefinition();
-						List<String> features = setupDefinition.getFeatures(file, P2_FEATURE_GROUP_SUFFIX);
+						List<String> features = setupDefinition.getFeatures(file);
 						if(features != null && !features.isEmpty()) {
 							filterText.setText("");
 							importedFeatures = features;
@@ -553,7 +552,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 
 			boolean isInstalled = isInstalled(plugin.getInstallableUnits().get(0));
 			checkbox.setSelection(isInstalled);
-			if(importedFeatures != null && importedFeatures.contains(plugin.getInstallableUnits().get(0) + P2_FEATURE_GROUP_SUFFIX)) {
+			if(importedFeatures != null && importedFeatures.contains(plugin.getInstallableUnits().get(0) + SetupDefinition.P2_FEATURE_GROUP_SUFFIX)) {
 				checkbox.setSelection(true);
 				modifySelection(plugin, true);
 			}
@@ -568,8 +567,8 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 		 */
 		private boolean isInstalled(String uid) {
 
-			if(!uid.endsWith(P2_FEATURE_GROUP_SUFFIX)) {
-				uid += P2_FEATURE_GROUP_SUFFIX;
+			if(!uid.endsWith(SetupDefinition.P2_FEATURE_GROUP_SUFFIX)) {
+				uid += SetupDefinition.P2_FEATURE_GROUP_SUFFIX;
 			}
 
 			IProfile profile = getP2Profile();
@@ -851,7 +850,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 				return true;
 			}
 		}
-		if(importedFeatures != null && !importedFeatures.isEmpty() && !importedFeatures.contains(descriptor.getInstallableUnits().get(0) + P2_FEATURE_GROUP_SUFFIX)) {
+		if(importedFeatures != null && !importedFeatures.isEmpty() && !importedFeatures.contains(descriptor.getInstallableUnits().get(0) + SetupDefinition.P2_FEATURE_GROUP_SUFFIX)) {
 			return true;
 		}
 		return false;
