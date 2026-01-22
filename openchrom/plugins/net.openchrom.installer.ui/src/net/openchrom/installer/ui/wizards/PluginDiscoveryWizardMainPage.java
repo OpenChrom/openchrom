@@ -216,8 +216,8 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 
 			FileDialog fileDialog = new FileDialog(e.display.getActiveShell(), SWT.READ_ONLY);
 			fileDialog.setText(SetupDefinition.DESCRIPTION);
-			fileDialog.setFilterExtensions(new String[]{SetupDefinition.FILTER_EXTENSION});
-			fileDialog.setFilterNames(new String[]{SetupDefinition.FILTER_NAME});
+			fileDialog.setFilterExtensions(SetupDefinition.FILTER_EXTENSION);
+			fileDialog.setFilterNames(SetupDefinition.FILTER_NAME);
 			fileDialog.setFilterPath(PreferenceSupplier.getFilterPathImport());
 			String fileName = fileDialog.open();
 			if(fileName != null) {
@@ -233,7 +233,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 						} else {
 							MessageDialog.openWarning(getShell(), "Invalid file content", "Content of the file is not in the expected format.");
 						}
-					} catch(IOException e1) {
+					} catch(IOException ex) {
 						MessageDialog.openWarning(getShell(), "Problem reading file", "Failed reading file.  Please verify the file exists and it's readable.");
 					}
 					refreshDisplayedIUs();
