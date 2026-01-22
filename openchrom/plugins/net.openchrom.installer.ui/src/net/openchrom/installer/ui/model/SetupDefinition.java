@@ -25,6 +25,8 @@ import com.google.gson.JsonParser;
 
 public class SetupDefinition {
 
+	public static final String P2_FEATURE_GROUP_SUFFIX = ".feature.group";
+
 	public static final String DESCRIPTION = "OpenChrom Setup Definition";
 	public static final String FILE_EXTENSION = ".osd";
 	public static final String FILE_NAME = DESCRIPTION.replaceAll("\\s", "") + FILE_EXTENSION;
@@ -33,7 +35,7 @@ public class SetupDefinition {
 
 	private static final String IDENTIFIER_FEATURES = "install_features";
 
-	public List<String> getFeatures(File file, String p2FeatureGroupSuffix) throws IOException {
+	public List<String> getFeatures(File file) throws IOException {
 
 		List<String> features = new ArrayList<>();
 		if(file != null && file.exists()) {
@@ -41,7 +43,7 @@ public class SetupDefinition {
 				JsonObject jsonObject = JsonParser.parseReader(fileReader).getAsJsonObject();
 				JsonArray jsonArray = jsonObject.getAsJsonArray(IDENTIFIER_FEATURES);
 				if(jsonArray != null && !jsonArray.isEmpty()) {
-					jsonArray.forEach(f -> features.add(f.getAsString() + p2FeatureGroupSuffix));
+					jsonArray.forEach(f -> features.add(f.getAsString() + P2_FEATURE_GROUP_SUFFIX));
 				}
 			}
 		}
