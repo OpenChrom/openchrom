@@ -14,7 +14,7 @@ package net.openchrom.installer.ui.wizards;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.FileReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -92,10 +92,6 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.WorkbenchJob;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
 import net.openchrom.installer.model.BundleDiscoveryStrategy;
 import net.openchrom.installer.model.DiscoveryCategory;
 import net.openchrom.installer.model.DiscoveryPlugin;
@@ -105,7 +101,9 @@ import net.openchrom.installer.model.PluginDescriptor;
 import net.openchrom.installer.model.PluginDescriptorKind;
 import net.openchrom.installer.model.PluginDiscovery;
 import net.openchrom.installer.model.RemoteBundleDiscoveryStrategy;
+import net.openchrom.installer.preferences.PreferenceSupplier;
 import net.openchrom.installer.ui.Activator;
+import net.openchrom.installer.ui.model.SetupDefinition;
 import net.openchrom.installer.ui.swt.OverviewToolTip;
 import net.openchrom.installer.util.DiscoveryCategoryComparator;
 import net.openchrom.installer.util.DiscoveryConnectorComparator;
@@ -176,30 +174,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 				filterText = new Text(textFilterContainer, SWT.SINGLE | SWT.BORDER | SWT.SEARCH | SWT.ICON_SEARCH | SWT.ICON_CANCEL);
 				filterText.addModifyListener(e -> refreshDisplayedIUs());
 				GridDataFactory.fillDefaults().grab(true, false).span(2, 1).applyTo(filterText);
-				Button imp = new Button(filterContainer, SWT.PUSH);
-				imp.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_IMPORT, IApplicationImageProvider.SIZE_16x16));
-				imp.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
-					FileDialog files = new FileDialog(getShell(), SWT.NONE);
-					files.setFilterExtensions("*.json");
-					String fileName = files.open();
-					if(fileName == null) {
-						return;
-					}
-					try (FileReader reader = new FileReader(fileName)) {
-						JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
-						JsonArray features = json.getAsJsonArray("install_features");
-						if(features != null && !features.isEmpty()) {
-							filterText.setText("");
-							importedFeatures = new ArrayList<>();
-							features.forEach(f -> importedFeatures.add(f.getAsString() + P2_FEATURE_GROUP_SUFFIX));
-						} else {
-							MessageDialog.openWarning(getShell(), "Invalid file content", "Content of the file is not in the expected format.");
-						}
-					} catch(IOException e1) {
-						MessageDialog.openWarning(getShell(), "Problem reading file", "Failed reading file.  Please verify the file exists and it's readable.");
-					}
-					refreshDisplayedIUs();
-				}));
+				createButtonImportSetupDefinition(filterContainer);
 				Button refresh = new Button(filterContainer, SWT.PUSH);
 				refresh.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_REFRESH, IApplicationImageProvider.SIZE_16x16));
 				refresh.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
@@ -229,6 +204,42 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 		Dialog.applyDialogFont(container);
 		setControl(container);
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, "net.openchrom.installer.ui.pluginDiscovery"); // TODO: does not work
+	}
+
+	private void createButtonImportSetupDefinition(Composite parent) {
+
+		Button button = new Button(parent, SWT.PUSH);
+		button.setText("");
+		button.setToolTipText("Select a list of add-ons to be installed.");
+		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_IMPORT, IApplicationImageProvider.SIZE_16x16));
+		button.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+
+			FileDialog fileDialog = new FileDialog(e.display.getActiveShell(), SWT.READ_ONLY);
+			fileDialog.setText(SetupDefinition.DESCRIPTION);
+			fileDialog.setFilterExtensions(new String[]{SetupDefinition.FILTER_EXTENSION});
+			fileDialog.setFilterNames(new String[]{SetupDefinition.FILTER_NAME});
+			fileDialog.setFilterPath(PreferenceSupplier.getFilterPathImport());
+			String fileName = fileDialog.open();
+			if(fileName != null) {
+				File file = new File(fileName);
+				if(file.exists()) {
+					PreferenceSupplier.setFilterPathImport(file.getParent());
+					try {
+						SetupDefinition setupDefinition = new SetupDefinition();
+						List<String> features = setupDefinition.getFeatures(file, P2_FEATURE_GROUP_SUFFIX);
+						if(features != null && !features.isEmpty()) {
+							filterText.setText("");
+							importedFeatures = features;
+						} else {
+							MessageDialog.openWarning(getShell(), "Invalid file content", "Content of the file is not in the expected format.");
+						}
+					} catch(IOException e1) {
+						MessageDialog.openWarning(getShell(), "Problem reading file", "Failed reading file.  Please verify the file exists and it's readable.");
+					}
+					refreshDisplayedIUs();
+				}
+			}
+		}));
 	}
 
 	private void createRefreshJob() {
