@@ -23,6 +23,11 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static final String P_PROPRIETARY_CONVERTERS = "proprietaryConverters";
 	public static final String DEF_PROPRIETARY_CONVERTERS = MessageDialogWithToggle.ALWAYS;
 
+	public static final String P_FILTER_PATH_IMPORT = "filterPathImport";
+	public static final String DEF_FILTER_PATH_IMPORT = "";
+	public static final String P_FILTER_PATH_EXPORT = "filterPathExport";
+	public static final String DEF_FILTER_PATH_EXPORT = "";
+
 	public static IPreferenceSupplier INSTANCE() {
 
 		return INSTANCE(PreferenceSupplier.class);
@@ -38,6 +43,8 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public void initializeDefaults() {
 
 		putDefault(P_PROPRIETARY_CONVERTERS, DEF_PROPRIETARY_CONVERTERS);
+		putDefault(P_FILTER_PATH_IMPORT, DEF_FILTER_PATH_IMPORT);
+		putDefault(P_FILTER_PATH_EXPORT, DEF_FILTER_PATH_EXPORT);
 	}
 
 	public static String getProprietaryConverters() {
@@ -48,5 +55,25 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static void setProprietaryConverters(String selection) {
 
 		INSTANCE().set(P_PROPRIETARY_CONVERTERS, selection);
+	}
+
+	public static String getFilterPathImport() {
+
+		return INSTANCE().get(P_FILTER_PATH_IMPORT, DEF_FILTER_PATH_IMPORT);
+	}
+
+	public static void setFilterPathImport(String path) {
+
+		INSTANCE().put(P_FILTER_PATH_IMPORT, path);
+	}
+
+	public static String getFilterPathExport() {
+
+		return INSTANCE().get(P_FILTER_PATH_EXPORT, DEF_FILTER_PATH_EXPORT);
+	}
+
+	public static void setFilterPathExport(String path) {
+
+		INSTANCE().put(P_FILTER_PATH_EXPORT, path);
 	}
 }
