@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Installer UI (Tests)
+Bundle-SymbolicName: net.openchrom.installer.ui.fragment.test
+Bundle-Version: 1.6.2.qualifier
+Bundle-Vendor: Lablicate GmbH
+Fragment-Host: net.openchrom.installer.ui;bundle-version="1.6.2"
+Import-Package: org.junit.jupiter.api;version="5.12.2"
+Automatic-Module-Name: net.openchrom.installer.ui.fragment.test
+Bundle-RequiredExecutionEnvironment: JavaSE-21
