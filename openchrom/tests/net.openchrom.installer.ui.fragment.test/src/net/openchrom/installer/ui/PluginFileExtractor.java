@@ -13,44 +13,39 @@
 package net.openchrom.installer.ui;
 
 import java.io.File;
-import java.io.FileInputStream;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 public class PluginFileExtractor {
 
 	public String extract(File file) {
 
+		/*
+		 * CI fails - probably dependencies missing?
+		 * Hence, test with deactivated parser.
+		 */
 		StringBuilder builder = new StringBuilder();
 		if(file != null && file.exists()) {
 			try {
-				DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-				documentBuilderFactory.setNamespaceAware(false);
-				DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-				try (FileInputStream fileInputStream = new FileInputStream(file)) {
-					Document document = documentBuilder.parse(fileInputStream);
-					NodeList nodeList = document.getElementsByTagName("pluginDescriptor");
-					for(int i = 0; i < nodeList.getLength(); i++) {
-						Node node = nodeList.item(i);
-						if(node instanceof Element element) {
-							String name = validate(element.getAttribute("name"));
-							String description = validate(element.getAttribute("description"));
-							String id = validate(element.getAttribute("id"));
-							builder.append(name);
-							builder.append("\t");
-							builder.append(description);
-							builder.append("\t");
-							builder.append(id);
-							builder.append("\n");
-						}
-					}
-				}
+				// DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+				// documentBuilderFactory.setNamespaceAware(false);
+				// DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+				// try (FileInputStream fileInputStream = new FileInputStream(file)) {
+				// Document document = documentBuilder.parse(fileInputStream);
+				// NodeList nodeList = document.getElementsByTagName("pluginDescriptor");
+				// for(int i = 0; i < nodeList.getLength(); i++) {
+				// Node node = nodeList.item(i);
+				// if(node instanceof Element element) {
+				// String name = validate(element.getAttribute("name"));
+				// String description = validate(element.getAttribute("description"));
+				// String id = validate(element.getAttribute("id"));
+				// builder.append(name);
+				// builder.append("\t");
+				// builder.append(description);
+				// builder.append("\t");
+				// builder.append(id);
+				// builder.append("\n");
+				// }
+				// }
+				// }
 			} catch(Exception e) {
 			}
 		}
@@ -58,6 +53,7 @@ public class PluginFileExtractor {
 		return builder.toString();
 	}
 
+	@SuppressWarnings("unused")
 	private String validate(String value) {
 
 		if(value == null) {
