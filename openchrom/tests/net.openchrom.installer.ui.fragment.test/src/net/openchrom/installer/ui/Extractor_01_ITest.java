@@ -21,20 +21,16 @@ import java.net.URL;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
 
+@Disabled("Only activate it for testing purposes.")
 @TestInstance(Lifecycle.PER_CLASS)
 public class Extractor_01_ITest {
-
-	@BeforeAll
-	public void setUp() throws IOException {
-
-	}
 
 	@Test
 	public void testExtract() {
