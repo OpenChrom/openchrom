@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Lablicate GmbH.
+ * Copyright (c) 2019, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -328,7 +328,7 @@ public class PeakSupport {
 				} else if(chromatogram instanceof IChromatogramVSD) {
 				}
 			} catch(PeakException e) {
-				logger.warn(e);
+				logger.warn(e.getMessage());
 			}
 		}
 		/*
