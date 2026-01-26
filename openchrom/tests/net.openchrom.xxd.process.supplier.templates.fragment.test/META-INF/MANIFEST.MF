@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.xxd.process.supplier.templates.fragment.tes
 Bundle-ManifestVersion: 2
 Bundle-Name: Template Test
 Bundle-SymbolicName: net.openchrom.xxd.process.supplier.templates.fragment.test
-Bundle-Version: 1.6.2.qualifier
+Bundle-Version: 1.6.3.qualifier
 Bundle-Vendor: OpenChrom
 Fragment-Host: net.openchrom.xxd.process.supplier.templates;bundle-version="1.5.31"
 Import-Package: org.junit.jupiter.api;version="5.12.2"
