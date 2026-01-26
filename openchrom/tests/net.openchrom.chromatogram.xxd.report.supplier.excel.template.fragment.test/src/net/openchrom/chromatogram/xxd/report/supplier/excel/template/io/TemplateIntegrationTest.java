@@ -16,17 +16,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Path;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
 
 @TestInstance(Lifecycle.PER_CLASS)
 public class TemplateIntegrationTest {
@@ -37,12 +32,9 @@ public class TemplateIntegrationTest {
 	private File exportPath;
 
 	@BeforeAll
-	public void setUp() throws IOException {
+	public void setUp() {
 
-		new File("testData/files/export").mkdirs();
-		Bundle bundle = FrameworkUtil.getBundle(getClass());
-		URL url = FileLocator.find(bundle, new Path("testData/files/export"), null);
-		exportPath = new File(FileLocator.resolve(url).getPath());
+		exportPath = new File("testData/files/export");
 		exportPath.mkdirs();
 		file = new File(exportPath, "Template.xlsx");
 	}
