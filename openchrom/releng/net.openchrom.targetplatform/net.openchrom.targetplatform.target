@@ -31,7 +31,7 @@
 		<unit id="net.openchrom.thirdparty.inchi.feature.feature.group"/>
 	</location>
 	<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-		<repository location="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/release/4.38.0"/>
+		<repository location="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2025-12"/>
 		<unit id="org.apache.commons.commons-csv"/>
 		<unit id="org.apache.poi"/>
 		<unit id="org.apache.poi.ooxml"/>
