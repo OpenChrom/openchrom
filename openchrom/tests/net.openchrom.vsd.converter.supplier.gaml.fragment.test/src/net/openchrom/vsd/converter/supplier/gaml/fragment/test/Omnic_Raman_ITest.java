@@ -16,7 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.vsd.model.core.ISpectrumVSD;
@@ -34,7 +33,7 @@ public class Omnic_Raman_ITest {
 	private ISpectrumVSD spectrumVSD;
 
 	@BeforeAll
-	public void setUp() throws IOException {
+	public void setUp() {
 
 		File file = new File(TestPathHelper.TN_OMNIC_RAMAN);
 		ScanImportConverter importConverter = new ScanImportConverter();

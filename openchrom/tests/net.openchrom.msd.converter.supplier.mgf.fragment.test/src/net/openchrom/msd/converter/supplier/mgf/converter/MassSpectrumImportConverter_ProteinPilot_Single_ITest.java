@@ -16,7 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
@@ -35,7 +34,7 @@ public class MassSpectrumImportConverter_ProteinPilot_Single_ITest {
 	private IMassSpectra massSpectra;
 
 	@BeforeAll
-	public void setUp() throws IOException {
+	public void setUp() {
 
 		File file = new File(TestPathHelper.TESTFILE_IMPORT_PROTEINPILOT_SINGLE_ELEMENT);
 		DatabaseImportConverter importConverter = new DatabaseImportConverter();

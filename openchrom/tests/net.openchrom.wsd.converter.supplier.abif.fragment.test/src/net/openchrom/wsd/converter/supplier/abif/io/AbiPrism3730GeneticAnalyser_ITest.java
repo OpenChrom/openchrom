@@ -16,7 +16,6 @@ package net.openchrom.wsd.converter.supplier.abif.io;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.wsd.converter.chromatogram.ChromatogramConverterWSD;
@@ -35,7 +34,7 @@ public class AbiPrism3730GeneticAnalyser_ITest {
 	private IChromatogramWSD chromatogram;
 
 	@BeforeAll
-	public void setUp() throws IOException {
+	public void setUp() {
 
 		File fileImport = new File(ABIF.TESTFILE_IMPORT_3730_AB1);
 		IProcessingInfo<IChromatogramWSD> processingInfo = ChromatogramConverterWSD.getInstance().convert(fileImport, ABIF.EXTENSION_POINT_ID, new NullProgressMonitor());

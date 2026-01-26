@@ -16,7 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -37,7 +36,7 @@ public class StrictImport_ITest {
 	private IChromatogramMSD chromatogram;
 
 	@BeforeAll
-	public void setUp() throws IOException {
+	public void setUp() {
 
 		File file = new File(TestPathHelper.TESTFILE_IMPORT_MS_STRICT);
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();

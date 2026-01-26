@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.eclipse.chemclipse.msd.converter.chromatogram.ChromatogramConverterMSD;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
@@ -40,7 +39,7 @@ public class ChromatogramImportExport_ITest {
 	private File fileExport;
 
 	@BeforeAll
-	public void setUp() throws IOException {
+	public void setUp() {
 
 		/*
 		 * Import

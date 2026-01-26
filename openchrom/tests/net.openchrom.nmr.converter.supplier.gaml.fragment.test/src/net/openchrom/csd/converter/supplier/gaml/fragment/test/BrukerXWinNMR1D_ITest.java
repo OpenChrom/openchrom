@@ -17,7 +17,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Collection;
 
 import org.eclipse.chemclipse.model.core.IComplexSignalMeasurement;
@@ -37,7 +36,7 @@ public class BrukerXWinNMR1D_ITest {
 	private Collection<IComplexSignalMeasurement<?>> complexSignals;
 
 	@BeforeAll
-	public void setUp() throws IOException {
+	public void setUp() {
 
 		File file = new File(TestPathHelper.BRUKER_XWINNMR_1D);
 		ScanImportConverter importConverter = new ScanImportConverter();

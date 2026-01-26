@@ -17,7 +17,6 @@ package net.openchrom.msd.converter.supplier.cms.converter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.eclipse.chemclipse.msd.converter.database.IDatabaseImportConverter;
 import org.eclipse.chemclipse.msd.model.core.ILibraryMassSpectrum;
@@ -38,7 +37,7 @@ public class ImportConverter_1_ITest {
 	private IMassSpectra massSpectra;
 
 	@BeforeAll
-	public void setUp() throws IOException {
+	public void setUp() {
 
 		File importFile = new File(TestPathHelper.TESTFILE_IMPORT_MASS_SPECTRA_1);
 		IDatabaseImportConverter importConverter = new DatabaseImportConverter();

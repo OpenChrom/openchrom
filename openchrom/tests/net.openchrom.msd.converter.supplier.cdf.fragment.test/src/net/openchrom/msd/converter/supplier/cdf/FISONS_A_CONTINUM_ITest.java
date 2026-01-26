@@ -15,7 +15,6 @@ package net.openchrom.msd.converter.supplier.cdf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
@@ -35,7 +34,7 @@ public class FISONS_A_CONTINUM_ITest {
 	private IChromatogramMSD chromatogram;
 
 	@BeforeAll
-	public void setUp() throws IOException {
+	public void setUp() {
 
 		File file = new File(TestPathHelper.FISONS_A_CONTINUM);
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();

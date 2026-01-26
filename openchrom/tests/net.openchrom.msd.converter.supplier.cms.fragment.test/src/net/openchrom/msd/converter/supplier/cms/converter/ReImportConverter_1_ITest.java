@@ -17,7 +17,6 @@ package net.openchrom.msd.converter.supplier.cms.converter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.eclipse.chemclipse.msd.converter.database.IDatabaseExportConverter;
 import org.eclipse.chemclipse.msd.converter.database.IDatabaseImportConverter;
@@ -42,7 +41,7 @@ public class ReImportConverter_1_ITest {
 	private File exportFile;
 
 	@BeforeAll
-	public void setUp() throws IOException {
+	public void setUp() {
 
 		IDatabaseImportConverter importConverter = new DatabaseImportConverter();
 		IDatabaseExportConverter exportConverter = new DatabaseExportConverter();

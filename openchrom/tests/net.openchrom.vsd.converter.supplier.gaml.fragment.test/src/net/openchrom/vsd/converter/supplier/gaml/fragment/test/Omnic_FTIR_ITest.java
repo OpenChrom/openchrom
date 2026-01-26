@@ -17,7 +17,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.vsd.model.core.ISpectrumVSD;
@@ -35,7 +34,7 @@ public class Omnic_FTIR_ITest {
 	private ISpectrumVSD spectrumVSD;
 
 	@BeforeAll
-	public void setUp() throws IOException {
+	public void setUp() {
 
 		File file = new File(TestPathHelper.TN_OMNIC_FTIR);
 		ScanImportConverter importConverter = new ScanImportConverter();
