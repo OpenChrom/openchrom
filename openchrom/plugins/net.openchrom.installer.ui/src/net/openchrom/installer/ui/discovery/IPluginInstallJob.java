@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2025 Tasktop Technologies, Polarion Software and others.
+ * Copyright (c) 2009, 2026 Tasktop Technologies, Polarion Software and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -12,7 +12,7 @@
  *******************************************************************************/
 package net.openchrom.installer.ui.discovery;
 
-import java.util.List;
+import java.util.Set;
 
 import org.eclipse.jface.operation.IRunnableWithProgress;
 
@@ -25,5 +25,5 @@ import net.openchrom.installer.model.PluginDescriptor;
  */
 public interface IPluginInstallJob extends IRunnableWithProgress {
 
-	void setInstallableConnectors(List<PluginDescriptor> installableConnectors);
+	void setInstallableConnectors(Set<PluginDescriptor> installableConnectors);
 }
