@@ -119,7 +119,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 	private static final String DISCOVERY_PROPERTIES_FILE = "discovery.properties";
 	private static final String URL_DISCOVERY_PROPERTY = "url";
 	private static final Logger logger = Logger.getLogger(PluginDiscoveryWizardMainPage.class);
-	private final List<PluginDescriptor> installableConnectors = new ArrayList<>();
+	private final Set<PluginDescriptor> installableConnectors = new HashSet<>();
 	private PluginDiscovery discovery;
 	private Composite body;
 	private final List<Resource> disposables = new ArrayList<>();
@@ -970,7 +970,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 		}
 	}
 
-	public List<PluginDescriptor> getInstallableConnectors() {
+	public Set<PluginDescriptor> getInstallableConnectors() {
 
 		return installableConnectors;
 	}

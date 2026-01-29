@@ -51,8 +51,6 @@ import net.openchrom.installer.model.PluginDescriptor;
 import net.openchrom.installer.ui.swt.InstallErrorDialog;
 
 /**
- * Install job for Eclipse 3.6+
- * 
  * A job that configures a p2 {@link #getInstallAction() install action} for installing one or more
  * {@link PluginDescriptor plugins}. The bulk of the installation work is done by p2; this class just sets up the
  * p2 repository meta-data and selects the appropriate features to install. After running the job the
@@ -66,7 +64,7 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 
 	private static final Logger logger = Logger.getLogger(PrepareInstallProfileJob.class);
 	private static final String P2_FEATURE_GROUP_SUFFIX = ".feature.group"; //$NON-NLS-1$
-	private List<PluginDescriptor> installableConnectors;
+	private Set<PluginDescriptor> installableConnectors;
 	private final ProvisioningUI provisioningUI;
 	private URI[] repositories;
 
@@ -79,12 +77,12 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 	}
 
 	@Override
-	public void setInstallableConnectors(List<PluginDescriptor> installableConnectors) {
+	public void setInstallableConnectors(Set<PluginDescriptor> installableConnectors) {
 
 		if(installableConnectors == null || installableConnectors.isEmpty()) {
 			throw new IllegalArgumentException();
 		}
-		this.installableConnectors = new ArrayList<>(installableConnectors);
+		this.installableConnectors = new HashSet<>(installableConnectors);
 	}
 
 	@Override
@@ -93,7 +91,7 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 		try {
 			SubMonitor monitor = SubMonitor.convert(progressMonitor, "configuring", 100);
 			try {
-				List<IInstallableUnit> installableUnits = computeInstallableUnits(monitor.newChild(50));
+				Set<IInstallableUnit> installableUnits = computeInstallableUnits(monitor.newChild(50));
 				checkCancelled(monitor);
 				if(!installableUnits.isEmpty()) {
 					final InstallOperation installOperation = resolve(monitor.newChild(50), installableUnits);
@@ -119,7 +117,7 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 		}
 	}
 
-	private InstallOperation resolve(IProgressMonitor monitor, List<IInstallableUnit> ius) throws CoreException {
+	private InstallOperation resolve(IProgressMonitor monitor, Set<IInstallableUnit> ius) throws CoreException {
 
 		final InstallOperation installOperation = provisioningUI.getInstallOperation(ius, repositories);
 		IStatus operationStatus = installOperation.resolveModal(SubMonitor.convert(monitor, installableConnectors.size()));
@@ -129,12 +127,12 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 		return installOperation;
 	}
 
-	private List<IInstallableUnit> computeInstallableUnits(SubMonitor monitor) throws ProvisionException, URISyntaxException {
+	private Set<IInstallableUnit> computeInstallableUnits(SubMonitor monitor) throws ProvisionException, URISyntaxException {
 
 		monitor.setWorkRemaining(100);
 		// add repository urls and load meta data
 		List<IMetadataRepository> metadataRepositories = getRepositories(monitor.newChild(50));
-		final List<IInstallableUnit> installableUnits = queryInstallableUnits(monitor.newChild(50), metadataRepositories);
+		final Set<IInstallableUnit> installableUnits = queryInstallableUnits(monitor.newChild(50), metadataRepositories);
 		removeOldVersions(installableUnits);
 		checkForUnavailable(installableUnits);
 		removeInstalled(installableUnits);
@@ -146,7 +144,7 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 	 * longer available on their respective sites. In that case we must inform the user. Unfortunately this is the
 	 * earliest point at which we can know.
 	 */
-	private void checkForUnavailable(final List<IInstallableUnit> installableUnits) {
+	private void checkForUnavailable(final Set<IInstallableUnit> installableUnits) {
 
 		// at least one selected plugin could not be found in a repository
 		Set<String> foundIds = new HashSet<>();
@@ -194,7 +192,7 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 	 * that some repositories will host multiple versions of a particular feature. we assume that the user wants the
 	 * highest version.
 	 */
-	private void removeOldVersions(final List<IInstallableUnit> installableUnits) {
+	private void removeOldVersions(final Set<IInstallableUnit> installableUnits) {
 
 		Map<String, Version> symbolicNameToVersion = new HashMap<>();
 		for(IInstallableUnit unit : installableUnits) {
@@ -216,7 +214,7 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 	/**
 	 * Filters IUs that are already installed
 	 */
-	private void removeInstalled(final List<IInstallableUnit> installableUnits) {
+	private void removeInstalled(final Set<IInstallableUnit> installableUnits) {
 
 		ProvisioningUI ui = ProvisioningUI.getDefaultUI();
 
@@ -243,9 +241,9 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 	 * unlikely that the same feature id is available from more than one of the selected repositories, and we must
 	 * ensure that the user gets the one that they asked for.
 	 */
-	private List<IInstallableUnit> queryInstallableUnits(SubMonitor monitor, List<IMetadataRepository> repositories) throws URISyntaxException {
+	private Set<IInstallableUnit> queryInstallableUnits(SubMonitor monitor, List<IMetadataRepository> repositories) throws URISyntaxException {
 
-		final List<IInstallableUnit> installableUnits = new ArrayList<>();
+		final Set<IInstallableUnit> installableUnits = new HashSet<>();
 		monitor.setWorkRemaining(repositories.size());
 		for(final IMetadataRepository repository : repositories) {
 			checkCancelled(monitor);
