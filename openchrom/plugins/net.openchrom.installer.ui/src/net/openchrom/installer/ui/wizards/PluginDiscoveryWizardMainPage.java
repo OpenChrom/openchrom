@@ -68,7 +68,6 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
@@ -132,7 +131,6 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 	private Pattern filterPattern;
 	private Set<String> installedFeatures;
 	private Image infoImage;
-	private Cursor handCursor;
 	private Color colorDisabled;
 	private ScrolledComposite bodyScrolledComposite;
 	private IProfile profile;
@@ -151,6 +149,9 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 	public void createControl(Composite parent) {
 
 		createRefreshJob();
+		initializeColors();
+		initializeImages();
+		initializeFonts();
 		Composite container = new Composite(parent, SWT.NULL);
 		container.addDisposeListener(e -> refreshJob.cancel());
 		container.setLayout(new GridLayout(1, false));
@@ -308,6 +309,8 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 
 		super.dispose();
 		clearDisposables();
+		h1Font.dispose();
+		h2Font.dispose();
 		if(discovery != null) {
 			discovery.dispose();
 		}
@@ -319,10 +322,6 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 			resource.dispose();
 		}
 		disposables.clear();
-		h1Font = null;
-		h2Font = null;
-		infoImage = null;
-		handCursor = null;
 	}
 
 	public void createBodyContents() {
@@ -332,10 +331,6 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 			child.dispose();
 		}
 		clearDisposables();
-		initializeCursors();
-		initializeImages();
-		initializeFonts();
-		initializeColors();
 		GridLayoutFactory.fillDefaults().applyTo(body);
 		bodyScrolledComposite = new ScrolledComposite(body, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
 		configureLook(bodyScrolledComposite, colorWhite);
@@ -373,51 +368,38 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 		body.layout(true);
 	}
 
-	private void initializeCursors() {
-
-		if(handCursor == null) {
-			handCursor = getShell().getDisplay().getSystemCursor(SWT.CURSOR_HAND);
-		}
-	}
-
 	private void initializeImages() {
-
+		
 		infoImage = ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_INFO, IApplicationImageProvider.SIZE_16x16);
 	}
 
 	private void initializeColors() {
 
-		if(colorWhite == null) {
-			colorWhite = getShell().getDisplay().getSystemColor(SWT.COLOR_WHITE);
-		}
-		if(colorDisabled == null) {
-			colorDisabled = getShell().getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY);
-		}
+		colorWhite = getShell().getDisplay().getSystemColor(SWT.COLOR_WHITE);
+		colorDisabled = getShell().getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY);
 	}
 
 	private void initializeFonts() {
 
 		// create a level-2 heading font
-		if(h2Font == null) {
+		{
 			Font baseFont = JFaceResources.getDialogFont();
 			FontData[] fontData = baseFont.getFontData();
-			for(FontData data : fontData) {
+			for (FontData data : fontData) {
 				data.setStyle(data.getStyle() | SWT.BOLD);
 				data.height = data.height * 1.25f;
 			}
 			h2Font = new Font(Display.getCurrent(), fontData);
-			disposables.add(h2Font);
 		}
 		// create a level-1 heading font
-		if(h1Font == null) {
+		{
 			Font baseFont = JFaceResources.getDialogFont();
 			FontData[] fontData = baseFont.getFontData();
-			for(FontData data : fontData) {
+			for (FontData data : fontData) {
 				data.setStyle(data.getStyle() | SWT.BOLD);
 				data.height = data.height * 1.35f;
 			}
 			h1Font = new Font(Display.getCurrent(), fontData);
-			disposables.add(h1Font);
 		}
 	}
 
