@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Automatic-Module-Name: net.openchrom.msd.converter.supplier.pkf
 Bundle-ManifestVersion: 2
-Bundle-Name: MicrobeMS peak list files
-Bundle-SymbolicName: net.openchrom.msd.converter.supplier.microbems.pkf;singleton:=true
+Bundle-Name: MicrobeMS spectral multifiles
+Bundle-SymbolicName: net.openchrom.msd.converter.supplier.microbems.muf;singleton:=true
 Bundle-Version: 1.6.3.qualifier
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
@@ -13,12 +13,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.model;bundle-version="0.8.0",
  org.eclipse.chemclipse.support;bundle-version="0.8.0",
  org.eclipse.chemclipse.logging;bundle-version="0.8.0",
- org.apache.commons.commons-io;bundle-version="2.6.0",
- org.apache.commons.lang3;bundle-version="3.1.0",
- wrapped.us.hebi.matlab.mat.mfl-core;bundle-version="0.5.8"
+ net.openchrom.thirdparty.jhdf5;bundle-version="19.4.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
-Export-Package: net.openchrom.msd.converter.supplier.microbems.pkf.converter,
- net.openchrom.msd.converter.supplier.microbems.pkf.converter.io,
- net.openchrom.msd.converter.supplier.microbems.pkf.converter.model,
- net.openchrom.msd.converter.supplier.pkf
+Export-Package: net.openchrom.msd.converter.supplier.muf.converter.model

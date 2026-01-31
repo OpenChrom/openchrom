@@ -73,7 +73,7 @@
          version="0.0.0"/>
 
    <includes
-         id="net.openchrom.msd.converter.supplier.pkf.feature"
+         id="net.openchrom.msd.converter.supplier.microbems.feature"
          version="0.0.0"/>
 
    <includes

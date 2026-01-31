@@ -28,6 +28,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
+import net.openchrom.msd.converter.supplier.microbems.pkf.converter.DatabaseImportConverter;
 import net.openchrom.msd.converter.supplier.pkf.TestPathHelper;
 
 @TestInstance(Lifecycle.PER_CLASS)

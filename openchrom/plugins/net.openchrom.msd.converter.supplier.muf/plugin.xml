@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+	<extension
+         point="org.eclipse.chemclipse.msd.converter.massSpectrumSupplier">
+      <MassSpectrumSupplier
+            description="Reads and writes MicrobeMS spectral multifiles"
+            exportConverter="net.openchrom.msd.converter.supplier.muf.converter.MassSpectrumExportConverter"
+            fileExtension=".muf"
+            filterName="MicrobeMS spectral multifile (*.muf)"
+            id="net.openchrom.msd.converter.supplier.muf"
+            importConverter="net.openchrom.msd.converter.supplier.muf.converter.MassSpectrumImportConverter"
+            importMagicNumberMatcher="net.openchrom.msd.converter.supplier.muf.converter.MagicNumberMatcher"
+            isExportable="false"
+            isImportable="true">
+      </MassSpectrumSupplier>
+   </extension>
+</plugin>
