@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2026 Lablicate GmbH.
+ * Copyright (c) 2015, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -8,15 +8,11 @@
  * SPDX-License-Identifier: EPL-2.0
  * 
  * Contributors:
- * Matthias Mailänder - initial API and implementation
+ * Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.msd.converter.supplier.pkf;
+package net.openchrom.msd.converter.supplier.microbems.pkf.converter.model;
 
-public class TestPathHelper {
+import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
 
-	public static final String CONVERTER_ID = "org.eclipse.chemclipse.msd.converter.supplier.microbems.pkf";
-	/*
-	 * IMPORT
-	 */
-	public static final String TESTFILE_IMPORT_ECOLI = "data/ecoli-peaklist-oct16.pkf";
+public interface IPeakListFileMassSpectrum extends IRegularLibraryMassSpectrum {
 }
