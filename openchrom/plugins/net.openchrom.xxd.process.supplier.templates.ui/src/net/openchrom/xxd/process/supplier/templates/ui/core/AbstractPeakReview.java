@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2025 Lablicate GmbH.
+ * Copyright (c) 2020, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -76,16 +76,24 @@ public abstract class AbstractPeakReview extends AbstractPeakIdentifier implemen
 					peakType = PeakType.CB;
 					break;
 				case VV:
-				default:
 					peakType = PeakType.VV;
 					break;
+				default:
+					peakType = PeakType.DEFAULT;
+					break;
 			}
-			PreferenceSupplier.setReviewPeakType(peakType);
+			if(peakType != PeakType.DEFAULT) {
+				PreferenceSupplier.setReviewPeakType(peakType);
+			}
 			/*
 			 * Peak Review Delta
 			 */
-			PreferenceSupplier.setReviewDeltaLeftMilliseconds(settings.getReviewDeltaLeft());
-			PreferenceSupplier.setReviewDeltaRightMilliseconds(settings.getReviewDeltaRight());
+			if(settings.getReviewDeltaLeft() > 0) {
+				PreferenceSupplier.setReviewDeltaLeftMilliseconds(settings.getReviewDeltaLeft());
+			}
+			if(settings.getReviewDeltaRight() > 0) {
+				PreferenceSupplier.setReviewDeltaRightMilliseconds(settings.getReviewDeltaRight());
+			}
 		}
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2025 Lablicate GmbH.
+ * Copyright (c) 2020, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -20,7 +20,8 @@ public enum DetectorType implements ILabel {
 	VV("VV (Valley)"), //
 	BB("BB (Baseline)"), //
 	CB("CB (Chromatogram Baseline)"), //
-	MM("MM (Manual)");
+	MM("MM (Manual)"), //
+	DEFAULT("");
 
 	private String label = "";
 
@@ -29,6 +30,7 @@ public enum DetectorType implements ILabel {
 		this.label = label;
 	}
 
+	@Override
 	public String label() {
 
 		return label;
@@ -47,8 +49,10 @@ public enum DetectorType implements ILabel {
 			return PeakType.MM;
 		} else if(DetectorType.CB.equals(detectorType)) {
 			return PeakType.CB;
-		} else {
+		} else if(DetectorType.VV.equals(detectorType)) {
 			return PeakType.VV;
+		} else {
+			return PeakType.DEFAULT;
 		}
 	}
 }

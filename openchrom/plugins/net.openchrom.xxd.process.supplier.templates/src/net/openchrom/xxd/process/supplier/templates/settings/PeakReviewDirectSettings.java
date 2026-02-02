@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Lablicate GmbH.
+ * Copyright (c) 2025, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -26,17 +26,19 @@ import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSuppli
 
 public class PeakReviewDirectSettings extends AbstractProcessSettings implements IPeakIdentifierSettingsMSD, IPeakIdentifierSettingsCSD, IPeakIdentifierSettingsWSD {
 
-	@JsonProperty(value = "Detector Type", defaultValue = "VV")
+	@JsonProperty(value = "Detector Type", defaultValue = "")
 	@JsonPropertyDescription(value = "Select the default detector type.")
-	private DetectorType detectorType = DetectorType.VV;
-	@JsonProperty(value = "Delta Left [ms]", defaultValue = "5000")
+	private DetectorType detectorType = DetectorType.DEFAULT;
+
+	@JsonProperty(value = "Delta Left [ms]", defaultValue = "")
 	@JsonPropertyDescription(value = "Additionally display milliseconds left of the peak.")
 	@IntSettingsProperty(minValue = PreferenceSupplier.MIN_DELTA_MILLISECONDS, maxValue = PreferenceSupplier.MAX_DELTA_MILLISECONDS)
-	private int reviewDeltaLeft = 5000;
-	@JsonProperty(value = "Delta Right [ms]", defaultValue = "5000")
+	private int reviewDeltaLeft = 0;
+
+	@JsonProperty(value = "Delta Right [ms]", defaultValue = "")
 	@JsonPropertyDescription(value = "Additionally display milliseconds right of the peak.")
 	@IntSettingsProperty(minValue = PreferenceSupplier.MIN_DELTA_MILLISECONDS, maxValue = PreferenceSupplier.MAX_DELTA_MILLISECONDS)
-	private int reviewDeltaRight = 5000;
+	private int reviewDeltaRight = 0;
 
 	public DetectorType getDetectorType() {
 
