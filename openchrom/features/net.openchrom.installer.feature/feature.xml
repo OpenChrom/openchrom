@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.installer.feature"
       label="Plugin Installer"
-      version="1.6.3.qualifier"
+      version="1.6.4.qualifier"
       provider-name="OpenChrom">
 
    <description url="http://www.openchrom.net">
