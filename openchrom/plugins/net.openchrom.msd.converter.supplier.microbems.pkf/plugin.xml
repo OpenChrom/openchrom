@@ -8,9 +8,9 @@
             fileExtension=".pkf"
             filterName="MicrobeMS peak list files (*.pkf)"
             id="org.eclipse.chemclipse.msd.converter.supplier.microbems.pkf"
-            importConverter="net.openchrom.msd.converter.supplier.pkf.converter.DatabaseImportConverter"
-            importMagicNumberMatcher="net.openchrom.msd.converter.supplier.pkf.converter.MagicNumberMatcherDatabase"
-            exportConverter="net.openchrom.msd.converter.supplier.pkf.converter.DatabaseExportConverter"
+            importConverter="net.openchrom.msd.converter.supplier.microbems.pkf.converter.DatabaseImportConverter"
+            importMagicNumberMatcher="net.openchrom.msd.converter.supplier.microbems.pkf.converter.MagicNumberMatcherDatabase"
+            exportConverter="net.openchrom.msd.converter.supplier.microbems.pkf.converter.DatabaseExportConverter"
             isExportable="false"
             isImportable="true">
       </DatabaseSupplier>
