@@ -54,13 +54,7 @@ public class PluginDiscoveryExtensionReader {
 				pluginDescriptor.getKind().add(PluginDescriptorKind.fromValue(kind));
 			}
 		}
-		String ids = element.getAttribute("id"); //$NON-NLS-1$
-		if(ids != null) {
-			String[] aids = ids.split("\\s*,\\s*"); //$NON-NLS-1$
-			for(String id : aids) {
-				pluginDescriptor.getInstallableUnits().add(id);
-			}
-		}
+		pluginDescriptor.setInstallableUnit(element.getAttribute("id")); //$NON-NLS-1$
 		pluginDescriptor.setName(element.getAttribute("name")); //$NON-NLS-1$
 		pluginDescriptor.setProvider(element.getAttribute("provider")); //$NON-NLS-1$
 		pluginDescriptor.setLicense(element.getAttribute("license")); //$NON-NLS-1$

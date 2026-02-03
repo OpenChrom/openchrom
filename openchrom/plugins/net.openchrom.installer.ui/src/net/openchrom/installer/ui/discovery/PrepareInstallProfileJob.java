@@ -155,15 +155,12 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 		String detailedMessage = ""; //$NON-NLS-1$
 		for(PluginDescriptor descriptor : installableConnectors) {
 			StringBuilder unavailableIds = null;
-			for(String id : getFeatureIds(descriptor)) {
-				if(!foundIds.contains(id)) {
-					if(unavailableIds == null) {
-						unavailableIds = new StringBuilder();
-					} else {
-						unavailableIds.append(", ");
-					}
-					unavailableIds.append(id);
+			String id = descriptor.getInstallableUnit()+P2_FEATURE_GROUP_SUFFIX;
+			if(!foundIds.contains(id)) {
+				if(unavailableIds == null) {
+					unavailableIds = new StringBuilder();
 				}
+				unavailableIds.append(id);
 			}
 			if(unavailableIds != null) {
 				if(!message.isEmpty()) {
@@ -282,20 +279,9 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 		final Set<String> installableUnitIdsThisRepository = new HashSet<>();
 		// determine all installable units for this repository
 		for(PluginDescriptor descriptor : installableConnectors) {
-			installableUnitIdsThisRepository.addAll(getFeatureIds(descriptor));
+			installableUnitIdsThisRepository.add(descriptor.getInstallableUnit()+P2_FEATURE_GROUP_SUFFIX);
 		}
 		return installableUnitIdsThisRepository;
 	}
 
-	private Set<String> getFeatureIds(PluginDescriptor descriptor) {
-
-		Set<String> featureIds = new HashSet<>();
-		for(String id : descriptor.getInstallableUnits()) {
-			if(!id.endsWith(P2_FEATURE_GROUP_SUFFIX)) {
-				id += P2_FEATURE_GROUP_SUFFIX;
-			}
-			featureIds.add(id);
-		}
-		return featureIds;
-	}
 }

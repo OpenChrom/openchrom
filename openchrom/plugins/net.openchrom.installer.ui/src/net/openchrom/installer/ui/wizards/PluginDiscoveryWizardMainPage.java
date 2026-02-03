@@ -437,7 +437,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 			checkbox = new Button(checkboxContainer, SWT.CHECK);
 			checkbox.setText(" "); //$NON-NLS-1$
 			// help UI tests
-			checkbox.setData("pluginId", plugin.getInstallableUnits()); //$NON-NLS-1$
+			checkbox.setData("pluginId", plugin.getInstallableUnit()); //$NON-NLS-1$
 			checkbox.setSelection(installableConnectors.contains(plugin));
 			checkbox.addFocusListener(new FocusAdapter() {
 
@@ -532,9 +532,9 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 
 		public void updateAvailability() {
 
-			boolean isInstalled = isInstalled(plugin.getInstallableUnits().get(0));
+			boolean isInstalled = isInstalled(plugin.getInstallableUnit());
 			checkbox.setSelection(isInstalled);
-			if(importedFeatures != null && importedFeatures.contains(plugin.getInstallableUnits().get(0) + SetupDefinition.P2_FEATURE_GROUP_SUFFIX)) {
+			if(importedFeatures != null && importedFeatures.contains(plugin.getInstallableUnit() + SetupDefinition.P2_FEATURE_GROUP_SUFFIX)) {
 				checkbox.setSelection(true);
 				modifySelection(plugin, true);
 			}
@@ -810,7 +810,6 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 		return true;
 	}
 
-	@SuppressWarnings("unlikely-arg-type")
 	private boolean isFiltered(PluginDescriptor descriptor) {
 
 		boolean kindFiltered = true;
@@ -823,7 +822,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 		if(kindFiltered) {
 			return true;
 		}
-		if(installedFeatures != null && installedFeatures.contains(descriptor.getInstallableUnits())) {
+		if(installedFeatures != null && installedFeatures.contains(descriptor.getInstallableUnit())) {
 			// always filter installed features per bug 275777
 			return true;
 		}
@@ -832,7 +831,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 				return true;
 			}
 		}
-		if(importedFeatures != null && !importedFeatures.isEmpty() && !importedFeatures.contains(descriptor.getInstallableUnits().get(0) + SetupDefinition.P2_FEATURE_GROUP_SUFFIX)) {
+		if(importedFeatures != null && !importedFeatures.isEmpty() && !importedFeatures.contains(descriptor.getInstallableUnit() + SetupDefinition.P2_FEATURE_GROUP_SUFFIX)) {
 			return true;
 		}
 		return false;
