@@ -28,7 +28,7 @@ public class PluginDescriptor {
 	protected String provider;
 	protected String license;
 	protected String description;
-	protected List<String> installableUnits = new ArrayList<>();
+	protected String installableUnit;
 	protected String categoryId;
 	protected String platformFilter;
 	protected String groupId;
@@ -104,14 +104,14 @@ public class PluginDescriptor {
 	/**
 	 * The id of the feature that installs this plugin
 	 */
-	public List<String> getInstallableUnits() {
+	public String getInstallableUnit() {
 
-		return installableUnits;
+		return installableUnit;
 	}
 
-	public void setInstallableUnits(List<String> id) {
+	public void setInstallableUnit(String id) {
 
-		this.installableUnits = id;
+		this.installableUnit = id;
 	}
 
 	/**
@@ -197,8 +197,8 @@ public class PluginDescriptor {
 		if(license == null || license.isEmpty()) {
 			throw new IllegalArgumentException("license is empty");
 		}
-		if(installableUnits == null || installableUnits.isEmpty()) {
-			throw new IllegalArgumentException("installableUnits is empty");
+		if(installableUnit == null || installableUnit.isEmpty()) {
+			throw new IllegalArgumentException("installableUnit is empty");
 		}
 		if(categoryId == null || categoryId.isEmpty()) {
 			throw new IllegalArgumentException("category is empty");
