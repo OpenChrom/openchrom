@@ -6,6 +6,6 @@ Bundle-SymbolicName: net.openchrom.xxd.identifier.supplier.cdk.fragment.test
 Bundle-Version: 1.6.4.qualifier
 Bundle-Vendor: ChemClipse
 Fragment-Host: net.openchrom.xxd.identifier.supplier.cdk;bundle-version="0.8.0"
-Import-Package: org.junit.jupiter.api;version="5.12.2"
+Import-Package: org.junit.jupiter.api;version="[6.0.0,7.0.0)"
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Require-Bundle: net.openchrom.xxd.identifier.supplier.cdk.ui
