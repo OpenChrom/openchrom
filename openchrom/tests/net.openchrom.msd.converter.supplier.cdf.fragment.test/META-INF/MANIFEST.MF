@@ -5,7 +5,7 @@ Bundle-Name: NetCDF MSD Tests
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.cdf.fragment.test
 Bundle-Version: 1.6.4.qualifier
 Fragment-Host: net.openchrom.msd.converter.supplier.cdf;bundle-version="1.5.31"
-Import-Package: org.junit.jupiter.api;version="5.12.2"
+Import-Package: org.junit.jupiter.api;version="[6.0.0,7.0.0)"
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Require-Bundle: org.eclipse.chemclipse.xxd.converter.supplier.ocx;bundle-version="0.9.0"
 Bundle-Vendor: OpenChrom
