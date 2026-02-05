@@ -116,16 +116,6 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>${tycho.groupid}</groupId>
-				<artifactId>tycho-surefire-plugin</artifactId>
-				<version>${tycho.version}</version>
-				<configuration>
-					<excludes>
-						<exclude>**/*TestCase.java</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-			<plugin>
 				<groupId>${maven.groupid}</groupId>
 				<artifactId>maven-install-plugin</artifactId>
 				<version>${maven-install-plugin.version}</version>
@@ -223,6 +213,17 @@
 						<skipArchive>true</skipArchive>
 					</configuration>
 				</plugin>
+				<plugin>
+				<groupId>${tycho.groupid}</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<configuration>
+					<excludes>
+						<exclude>**/*TestCase.java</exclude>
+					</excludes>
+					<argLine>-Djdk.xml.entityExpansionLimit=0 -Djdk.xml.totalEntitySizeLimit=0 -Djdk.xml.maxGeneralEntitySizeLimit=0 -Djdk.xml.maxParameterEntitySizeLimit=0</argLine>
+				</configuration>
+			</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
