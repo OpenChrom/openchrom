@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogramPeak;
 import org.eclipse.chemclipse.model.core.IPeak;
@@ -44,6 +45,8 @@ import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessReviewSett
 import net.openchrom.xxd.process.supplier.templates.util.ChromatogramValidator;
 
 public abstract class AbstractPeakReview extends AbstractPeakIdentifier implements ITemplateExport {
+
+	private static final Logger logger = Logger.getLogger(AbstractPeakReview.class);
 
 	private boolean cancelled = false;
 
@@ -179,7 +182,8 @@ public abstract class AbstractPeakReview extends AbstractPeakIdentifier implemen
 			} catch(InterruptedException e) {
 				Thread.currentThread().interrupt();
 			} catch(ExecutionException e) {
-				processingInfo.addErrorMessage(description, "The execution failed, see attached log file.", e);
+				processingInfo.addErrorMessage(description, "Execution failed");
+				logger.error(e);
 			}
 		}
 	}

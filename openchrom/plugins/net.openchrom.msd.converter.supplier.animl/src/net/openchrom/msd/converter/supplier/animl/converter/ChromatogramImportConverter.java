@@ -46,8 +46,8 @@ public class ChromatogramImportConverter extends AbstractChromatogramImportConve
 				IChromatogramMSD chromatogram = reader.read(file, monitor);
 				processingInfo.setProcessingResult(chromatogram);
 			} catch(IOException e) {
-				logger.warn(e);
-				processingInfo.addErrorMessage(DESCRIPTION, "Failed to read file: " + file.getAbsolutePath(), e);
+				logger.error(e);
+				processingInfo.addErrorMessage(DESCRIPTION, "Failed to read file: " + file.getAbsolutePath());
 			} catch(InterruptedException e) {
 				logger.warn(e);
 				Thread.currentThread().interrupt();

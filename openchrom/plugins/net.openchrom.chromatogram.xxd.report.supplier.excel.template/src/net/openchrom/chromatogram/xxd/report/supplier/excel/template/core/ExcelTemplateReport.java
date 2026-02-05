@@ -42,8 +42,8 @@ public class ExcelTemplateReport extends AbstractChromatogramReportGenerator {
 					chromatogramReport.generate(file, append, chromatograms, reportSettings);
 					processingInfo.setProcessingResult(file);
 				} catch(IOException e) {
-					logger.warn(e);
-					processingInfo.addErrorMessage("Excel Template Report", "The report couldn't be created.", e);
+					logger.error(e);
+					processingInfo.addErrorMessage("Excel Template Report", "The report couldn't be created.");
 				}
 			} else {
 				logger.warn("The settings are not of type: " + ChromatogramReportSettings.class);

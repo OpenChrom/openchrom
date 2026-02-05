@@ -18,6 +18,7 @@ import java.util.concurrent.ExecutionException;
 
 import org.eclipse.chemclipse.chromatogram.wsd.peak.detector.core.AbstractPeakDetectorWSD;
 import org.eclipse.chemclipse.chromatogram.wsd.peak.detector.settings.IPeakDetectorSettingsWSD;
+import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
@@ -34,6 +35,8 @@ import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessDetectorSe
 import net.openchrom.xxd.process.supplier.templates.util.ChromatogramValidator;
 
 public class PeakDetectorWSD extends AbstractPeakDetectorWSD {
+
+	private static final Logger logger = Logger.getLogger(PeakDetectorWSD.class);
 
 	private static final String DESCRIPTION = "PeakDetectorWSD";
 
@@ -66,7 +69,8 @@ public class PeakDetectorWSD extends AbstractPeakDetectorWSD {
 				} catch(InterruptedException e) {
 					Thread.currentThread().interrupt();
 				} catch(ExecutionException e) {
-					processingInfo.addErrorMessage(DESCRIPTION, "Sorry, somehow the execution failed.", e);
+					processingInfo.addErrorMessage(DESCRIPTION, "Execution failed.");
+					logger.error(e);
 				}
 			}
 		}

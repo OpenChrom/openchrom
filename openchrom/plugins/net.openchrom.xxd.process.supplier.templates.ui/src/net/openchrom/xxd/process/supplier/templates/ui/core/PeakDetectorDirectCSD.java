@@ -19,6 +19,7 @@ import java.util.concurrent.ExecutionException;
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.core.AbstractPeakDetectorCSD;
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.settings.IPeakDetectorSettingsCSD;
 import org.eclipse.chemclipse.csd.model.core.selection.IChromatogramSelectionCSD;
+import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
@@ -37,6 +38,8 @@ import net.openchrom.xxd.process.supplier.templates.ui.wizards.PeakDetectorSuppo
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessDetectorSettings;
 
 public class PeakDetectorDirectCSD extends AbstractPeakDetectorCSD implements IPeakDetectorDirect {
+
+	private static final Logger logger = Logger.getLogger(PeakDetectorDirectCSD.class);
 
 	@Override
 	public IProcessingInfo<?> detect(IChromatogramSelectionCSD chromatogramSelection, IPeakDetectorSettingsCSD peakDetectorSettings, IProgressMonitor monitor) {
@@ -125,7 +128,8 @@ public class PeakDetectorDirectCSD extends AbstractPeakDetectorCSD implements IP
 			} catch(InterruptedException e) {
 				Thread.currentThread().interrupt();
 			} catch(ExecutionException e) {
-				processingInfo.addErrorMessage("PeakDetectorDirectMSD", "Execution failed", e);
+				processingInfo.addErrorMessage("PeakDetectorDirectMSD", "Execution failed");
+				logger.error(e);
 			}
 		}
 		return processingInfo;

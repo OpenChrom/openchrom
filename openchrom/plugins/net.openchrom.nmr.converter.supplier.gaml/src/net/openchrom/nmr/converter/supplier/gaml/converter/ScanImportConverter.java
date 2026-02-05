@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.Collection;
 
 import org.eclipse.chemclipse.converter.exceptions.UnknownVersionException;
+import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IComplexSignalMeasurement;
 import org.eclipse.chemclipse.nmr.converter.core.AbstractScanImportConverter;
 import org.eclipse.chemclipse.nmr.converter.core.IScanImportConverter;
@@ -35,6 +36,8 @@ import net.openchrom.xxd.converter.supplier.gaml.io.Reader110;
 import net.openchrom.xxd.converter.supplier.gaml.io.Reader120;
 
 public class ScanImportConverter extends AbstractScanImportConverter implements IScanImportConverter {
+
+	private static final Logger logger = Logger.getLogger(ScanImportConverter.class);
 
 	public ScanImportConverter() {
 
@@ -69,7 +72,8 @@ public class ScanImportConverter extends AbstractScanImportConverter implements 
 			spectrumNMR.setComplexSignalMeasurements(complexSignalMeasurement);
 			processingInfo.setProcessingResult(spectrumNMR);
 		} catch(IOException e) {
-			processingInfo.addErrorMessage("GAML NMR", "There was a problem during file import.", e);
+			processingInfo.addErrorMessage("GAML NMR", "There was a problem during file import.");
+			logger.error(e);
 		}
 		return processingInfo;
 	}

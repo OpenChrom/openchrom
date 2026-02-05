@@ -18,6 +18,7 @@ import java.util.concurrent.ExecutionException;
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.core.AbstractPeakDetectorCSD;
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.settings.IPeakDetectorSettingsCSD;
 import org.eclipse.chemclipse.csd.model.core.selection.IChromatogramSelectionCSD;
+import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
@@ -33,6 +34,8 @@ import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessDetectorSe
 import net.openchrom.xxd.process.supplier.templates.util.ChromatogramValidator;
 
 public class PeakDetectorCSD extends AbstractPeakDetectorCSD {
+
+	private static final Logger logger = Logger.getLogger(PeakDetectorCSD.class);
 
 	private static final String DESCRIPTION = "PeakDetectorCSD";
 
@@ -65,7 +68,8 @@ public class PeakDetectorCSD extends AbstractPeakDetectorCSD {
 				} catch(InterruptedException e) {
 					Thread.currentThread().interrupt();
 				} catch(ExecutionException e) {
-					processingInfo.addErrorMessage(DESCRIPTION, "Sorry, somehow the execution failed.", e);
+					processingInfo.addErrorMessage(DESCRIPTION, "Failed to detect peaks.");
+					logger.error(e);
 				}
 			}
 		}

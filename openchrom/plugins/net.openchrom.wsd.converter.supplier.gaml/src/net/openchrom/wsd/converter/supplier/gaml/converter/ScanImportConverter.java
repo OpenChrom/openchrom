@@ -64,8 +64,8 @@ public class ScanImportConverter extends AbstractScanImportConverter implements 
 				throw new UnknownVersionException();
 			}
 		} catch(IOException e) {
-			processingInfo.addErrorMessage("GAML Spectroscopy", "Could not import file.", e);
-			logger.warn(e);
+			processingInfo.addErrorMessage("GAML Spectroscopy", "Could not import file.");
+			logger.error(e);
 		}
 		return processingInfo;
 	}
