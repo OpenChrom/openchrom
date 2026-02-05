@@ -25,6 +25,10 @@
 -Dosgi.user.area=@user.home/.openchrom
 -Dorg.eclipse.update.reconcile=false
 -Dorg.eclipse.help.webapp.experimental.ui=true
+-Djdk.xml.entityExpansionLimit=0
+-Djdk.xml.totalEntitySizeLimit=0
+-Djdk.xml.maxGeneralEntitySizeLimit=0
+-Djdk.xml.maxParameterEntitySizeLimit=0
 -Dp2.trustedAuthorities=https://converter.openchrom.net,https://plugins.openchrom.net,https://update.openchrom.net,https://plugins.lablicate.com
 -XX:+UseG1GC
 -XX:+UseStringDeduplication
