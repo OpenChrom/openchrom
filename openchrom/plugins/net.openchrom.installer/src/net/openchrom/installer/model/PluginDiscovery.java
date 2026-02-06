@@ -20,16 +20,12 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IBundleGroup;
-import org.eclipse.core.runtime.IBundleGroupProvider;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SubMonitor;
-import org.eclipse.osgi.service.resolver.VersionRange;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.Filter;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.InvalidSyntaxException;
@@ -53,7 +49,7 @@ public class PluginDiscovery {
 
 	public PluginDiscovery() {
 
-		Dictionary<Object, Object> props = System.getProperties();
+		Properties props = System.getProperties();
 		for(Enumeration<?> iterator = props.keys(); iterator.hasMoreElements();) {
 			String key = (String)iterator.nextElement();
 			environment.put(key, props.get(key));
@@ -183,38 +179,7 @@ public class PluginDiscovery {
 					filteredConnectors.add(plugin);
 				}
 			}
-			for(FeatureFilter featureFilter : plugin.getFeatureFilter()) {
-				if(featureToVersion == null) {
-					featureToVersion = computeFeatureToVersion();
-				}
-				boolean match = false;
-				Version version = featureToVersion.get(featureFilter.getFeatureId());
-				if(version != null) {
-					VersionRange versionRange = new VersionRange(featureFilter.getVersion());
-					if(versionRange.isIncluded(version)) {
-						match = true;
-					}
-				}
-				if(!match) {
-					plugins.remove(plugin);
-					filteredConnectors.add(plugin);
-					break;
-				}
-			}
 		}
-	}
-
-	private Map<String, Version> computeFeatureToVersion() {
-
-		Map<String, Version> featureToVersion = new HashMap<>();
-		for(IBundleGroupProvider provider : Platform.getBundleGroupProviders()) {
-			for(IBundleGroup bundleGroup : provider.getBundleGroups()) {
-				for(Bundle bundle : bundleGroup.getBundles()) {
-					featureToVersion.put(bundle.getSymbolicName(), bundle.getVersion());
-				}
-			}
-		}
-		return featureToVersion;
 	}
 
 }

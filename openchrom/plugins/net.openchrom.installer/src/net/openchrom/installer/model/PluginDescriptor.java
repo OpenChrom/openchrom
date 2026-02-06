@@ -32,7 +32,6 @@ public class PluginDescriptor {
 	protected String categoryId;
 	protected String platformFilter;
 	protected String groupId;
-	protected List<FeatureFilter> featureFilter = new ArrayList<>();
 	protected String icon;
 	protected Overview overview;
 
@@ -153,16 +152,6 @@ public class PluginDescriptor {
 		this.groupId = groupId;
 	}
 
-	public List<FeatureFilter> getFeatureFilter() {
-
-		return featureFilter;
-	}
-
-	public void setFeatureFilter(List<FeatureFilter> featureFilter) {
-
-		this.featureFilter = featureFilter;
-	}
-
 	public String getIcon() {
 
 		return icon;
@@ -202,9 +191,6 @@ public class PluginDescriptor {
 		}
 		if(categoryId == null || categoryId.isEmpty()) {
 			throw new IllegalArgumentException("category is empty");
-		}
-		for(FeatureFilter featureFilterItem : featureFilter) {
-			featureFilterItem.validate();
 		}
 		if(icon != null && icon.isEmpty()) {
 			throw new IllegalArgumentException("icon is provided but is empty");
