@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2025 Tasktop Technologies, Polarion Software and others.
+ * Copyright (c) 2009, 2026 Tasktop Technologies, Polarion Software and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 /**
  * An abstraction of a strategy for discovering plugins and categories. Strategy design pattern. Note that strategies
- * are not reusable and must be disposed.
+ * are not reusable.
  * 
  * @author David Green
  * @author Igor Burilo
@@ -57,7 +57,4 @@ public abstract class AbstractDiscoveryStrategy {
 		this.plugins = plugins;
 	}
 
-	public void dispose() {
-
-	}
 }

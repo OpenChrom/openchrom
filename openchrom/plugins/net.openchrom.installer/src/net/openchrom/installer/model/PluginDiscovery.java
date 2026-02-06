@@ -26,9 +26,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IBundleGroup;
 import org.eclipse.core.runtime.IBundleGroupProvider;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.osgi.service.resolver.VersionRange;
 import org.osgi.framework.Bundle;
@@ -219,23 +217,4 @@ public class PluginDiscovery {
 		return featureToVersion;
 	}
 
-	public void dispose() {
-
-		for(final AbstractDiscoveryStrategy strategy : discoveryStrategies) {
-			SafeRunner.run(new ISafeRunnable() {
-
-				@Override
-				public void run() throws Exception {
-
-					strategy.dispose();
-				}
-
-				@Override
-				public void handleException(Throwable exception) {
-
-					logger.warn(exception);
-				}
-			});
-		}
-	}
 }

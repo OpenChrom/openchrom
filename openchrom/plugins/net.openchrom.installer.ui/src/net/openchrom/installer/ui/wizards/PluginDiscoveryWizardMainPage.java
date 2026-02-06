@@ -16,14 +16,12 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -32,12 +30,10 @@ import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IBundleGroup;
 import org.eclipse.core.runtime.IBundleGroupProvider;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.equinox.p2.engine.IProfile;
@@ -99,9 +95,7 @@ import net.openchrom.installer.model.Overview;
 import net.openchrom.installer.model.PluginDescriptor;
 import net.openchrom.installer.model.PluginDescriptorKind;
 import net.openchrom.installer.model.PluginDiscovery;
-import net.openchrom.installer.model.RemoteBundleDiscoveryStrategy;
 import net.openchrom.installer.preferences.PreferenceSupplier;
-import net.openchrom.installer.ui.Activator;
 import net.openchrom.installer.ui.model.SetupDefinition;
 import net.openchrom.installer.ui.swt.OverviewToolTip;
 import net.openchrom.installer.util.DiscoveryCategoryComparator;
@@ -115,8 +109,6 @@ import net.openchrom.installer.util.DiscoveryConnectorComparator;
  */
 public class PluginDiscoveryWizardMainPage extends WizardPage {
 
-	private static final String DISCOVERY_PROPERTIES_FILE = "discovery.properties";
-	private static final String URL_DISCOVERY_PROPERTY = "url";
 	private static final Logger logger = Logger.getLogger(PluginDiscoveryWizardMainPage.class);
 	private final Set<PluginDescriptor> installableConnectors = new HashSet<>();
 	private PluginDiscovery discovery;
@@ -311,9 +303,6 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 		clearDisposables();
 		h1Font.dispose();
 		h2Font.dispose();
-		if(discovery != null) {
-			discovery.dispose();
-		}
 	}
 
 	private void clearDisposables() {
@@ -369,7 +358,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 	}
 
 	private void initializeImages() {
-		
+
 		infoImage = ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_INFO, IApplicationImageProvider.SIZE_16x16);
 	}
 
@@ -385,7 +374,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 		{
 			Font baseFont = JFaceResources.getDialogFont();
 			FontData[] fontData = baseFont.getFontData();
-			for (FontData data : fontData) {
+			for(FontData data : fontData) {
 				data.setStyle(data.getStyle() | SWT.BOLD);
 				data.height = data.height * 1.25f;
 			}
@@ -395,7 +384,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 		{
 			Font baseFont = JFaceResources.getDialogFont();
 			FontData[] fontData = baseFont.getFontData();
-			for (FontData data : fontData) {
+			for(FontData data : fontData) {
 				data.setStyle(data.getStyle() | SWT.BOLD);
 				data.height = data.height * 1.35f;
 			}
@@ -881,20 +870,6 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 					}
 					PluginDiscovery pluginDiscovery = new PluginDiscovery();
 					pluginDiscovery.getDiscoveryStrategies().add(new BundleDiscoveryStrategy());
-					// retrieve discovery url from properties file and call remote discovery strategy
-					URL discoveryFileUrl = FileLocator.find(Activator.getDefault().getBundle(), new Path(PluginDiscoveryWizardMainPage.DISCOVERY_PROPERTIES_FILE), null);
-					if(discoveryFileUrl != null) {
-						try (InputStream in = discoveryFileUrl.openStream()) {
-							Properties props = new Properties();
-							props.load(in);
-							String discoveryUrl = props.getProperty(PluginDiscoveryWizardMainPage.URL_DISCOVERY_PROPERTY);
-							RemoteBundleDiscoveryStrategy remoteDiscoveryStrategy = new RemoteBundleDiscoveryStrategy();
-							remoteDiscoveryStrategy.setDiscoveryUrl(discoveryUrl);
-							pluginDiscovery.getDiscoveryStrategies().add(remoteDiscoveryStrategy);
-						} catch(IOException ie) {
-							logger.warn(ie);
-						}
-					}
 					try {
 						pluginDiscovery.performDiscovery(monitor);
 					} catch(CoreException e) {
