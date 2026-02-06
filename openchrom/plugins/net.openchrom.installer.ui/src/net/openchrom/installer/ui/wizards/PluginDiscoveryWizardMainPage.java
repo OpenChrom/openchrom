@@ -30,16 +30,14 @@ import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IBundleGroup;
-import org.eclipse.core.runtime.IBundleGroupProvider;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.equinox.p2.engine.IProfile;
 import org.eclipse.equinox.p2.engine.IProfileRegistry;
+import org.eclipse.equinox.p2.metadata.IInstallableUnit;
 import org.eclipse.equinox.p2.operations.ProvisioningSession;
-import org.eclipse.equinox.p2.query.IQueryResult;
+import org.eclipse.equinox.p2.query.IQuery;
 import org.eclipse.equinox.p2.query.QueryUtil;
 import org.eclipse.equinox.p2.ui.ProvisioningUI;
 import org.eclipse.jface.dialogs.Dialog;
@@ -125,7 +123,6 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 	private Image infoImage;
 	private Color colorDisabled;
 	private ScrolledComposite bodyScrolledComposite;
-	private IProfile profile;
 	private List<String> importedFeatures;
 
 	public PluginDiscoveryWizardMainPage() {
@@ -541,14 +538,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 			if(!uid.endsWith(SetupDefinition.P2_FEATURE_GROUP_SUFFIX)) {
 				uid += SetupDefinition.P2_FEATURE_GROUP_SUFFIX;
 			}
-
-			IProfile profile = getP2Profile();
-			if(profile == null) {
-				return false;
-			}
-
-			IQueryResult<?> result = profile.query(QueryUtil.createIUQuery(uid), null);
-			return !result.isEmpty();
+			return installedFeatures.contains(uid);
 
 		}
 
@@ -565,21 +555,6 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 				updateAvailability();
 			}
 		}
-	}
-
-	private IProfile getP2Profile() {
-
-		if(profile == null) {
-			ProvisioningUI ui = ProvisioningUI.getDefaultUI();
-
-			ProvisioningSession session = ui.getSession();
-
-			IProfileRegistry registry = session.getProvisioningAgent().getService(IProfileRegistry.class);
-
-			String profileId = ui.getProfileId();
-			profile = registry.getProfile(profileId);
-		}
-		return profile;
 	}
 
 	private void createDiscoveryContents(Composite container) {
@@ -811,10 +786,6 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 		if(kindFiltered) {
 			return true;
 		}
-		if(installedFeatures != null && installedFeatures.contains(descriptor.getInstallableUnit())) {
-			// always filter installed features per bug 275777
-			return true;
-		}
 		if(filterPattern != null) {
 			if(!(filterMatches(descriptor.getName()) || filterMatches(descriptor.getDescription()) || filterMatches(descriptor.getProvider()) || filterMatches(descriptor.getLicense()))) {
 				return true;
@@ -856,15 +827,15 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 
 					if(PluginDiscoveryWizardMainPage.this.installedFeatures == null) {
 						Set<String> installedFeatures = new HashSet<>();
-						IBundleGroupProvider[] bundleGroupProviders = Platform.getBundleGroupProviders();
-						for(IBundleGroupProvider provider : bundleGroupProviders) {
-							if(monitor.isCanceled()) {
-								throw new InterruptedException();
-							}
-							IBundleGroup[] bundleGroups = provider.getBundleGroups();
-							for(IBundleGroup group : bundleGroups) {
-								installedFeatures.add(group.getIdentifier());
-							}
+						ProvisioningUI ui = ProvisioningUI.getDefaultUI();
+
+						ProvisioningSession session = ui.getSession();
+
+						IProfileRegistry registry = session.getProvisioningAgent().getService(IProfileRegistry.class);
+						IProfile profile = registry.getProfile(IProfileRegistry.SELF);
+						IQuery<IInstallableUnit> query = QueryUtil.createMatchQuery("id ~= /*.feature.group/ && properties['org.eclipse.equinox.p2.type.group'] == true ");
+						for(IInstallableUnit iu : profile.query(query, null)) {
+							installedFeatures.add(iu.getId());
 						}
 						PluginDiscoveryWizardMainPage.this.installedFeatures = installedFeatures;
 					}
