@@ -63,12 +63,6 @@ public class PluginDiscoveryExtensionReader {
 		pluginDescriptor.setPlatformFilter(element.getAttribute("platformFilter")); //$NON-NLS-1$
 		pluginDescriptor.setGroupId(element.getAttribute("groupId")); //$NON-NLS-1$
 		pluginDescriptor.setIcon(element.getAttribute("icon")); //$NON-NLS-1$
-		for(IConfigurationElement child : element.getChildren("featureFilter")) //$NON-NLS-1$
-		{
-			FeatureFilter featureFilterItem = readFeatureFilter(child);
-			featureFilterItem.setConnectorDescriptor(pluginDescriptor);
-			pluginDescriptor.getFeatureFilter().add(featureFilterItem);
-		}
 		for(IConfigurationElement child : element.getChildren(OVERVIEW)) {
 			Overview overviewItem = readOverview(child);
 			overviewItem.setConnectorDescriptor(pluginDescriptor);
@@ -124,15 +118,6 @@ public class PluginDiscoveryExtensionReader {
 		overview.setScreenshot(element.getAttribute("screenshot")); //$NON-NLS-1$
 		overview.validate();
 		return overview;
-	}
-
-	public FeatureFilter readFeatureFilter(IConfigurationElement element) {
-
-		FeatureFilter featureFilter = new FeatureFilter();
-		featureFilter.setFeatureId(element.getAttribute("featureId")); //$NON-NLS-1$
-		featureFilter.setVersion(element.getAttribute("version")); //$NON-NLS-1$
-		featureFilter.validate();
-		return featureFilter;
 	}
 
 	public Group readGroup(IConfigurationElement element) {
