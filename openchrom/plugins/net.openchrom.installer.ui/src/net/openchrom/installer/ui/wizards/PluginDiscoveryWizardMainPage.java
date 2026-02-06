@@ -149,7 +149,6 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 			Composite header = new Composite(container, SWT.NULL);
 			GridLayoutFactory.fillDefaults().applyTo(header);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(header);
-			// TODO: refresh button?
 			if(getWizard().isShowConnectorDescriptorKindFilter() || getWizard().isShowConnectorDescriptorTextFilter()) {
 				Composite filterContainer = new Composite(header, SWT.NULL);
 				GridDataFactory.fillDefaults().grab(true, false).applyTo(filterContainer);
@@ -486,7 +485,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 				public void widgetSelected(SelectionEvent e) {
 
 					boolean selected = checkbox.getSelection();
-					maybeModifySelection(selected);
+					modifySelection(plugin, selected);
 				}
 			});
 			MouseListener pluginItemMouseListener = new MouseAdapter() {
@@ -496,9 +495,8 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 
 					if(checkbox.getEnabled()) {
 						boolean selected = !checkbox.getSelection();
-						if(maybeModifySelection(selected)) {
-							checkbox.setSelection(selected);
-						}
+						modifySelection(plugin, selected);
+						checkbox.setSelection(selected);
 					}
 				}
 			};
@@ -508,12 +506,6 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 			nameLabel.addMouseListener(pluginItemMouseListener);
 			providerLabel.addMouseListener(pluginItemMouseListener);
 			description.addMouseListener(pluginItemMouseListener);
-		}
-
-		protected boolean maybeModifySelection(boolean selected) {
-
-			PluginDiscoveryWizardMainPage.this.modifySelection(plugin, selected);
-			return true;
 		}
 
 		public void updateAvailability() {
@@ -864,9 +856,6 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 				if(discovery.getConnectors().isEmpty()) {
 					return;
 				}
-				// createBodyContents() shouldn't be necessary but for some reason checkboxes don't
-				// regain their enabled state
-				createBodyContents();
 			}
 			// help UI tests
 			body.setData("discoveryComplete", "true"); //$NON-NLS-1$//$NON-NLS-2$
