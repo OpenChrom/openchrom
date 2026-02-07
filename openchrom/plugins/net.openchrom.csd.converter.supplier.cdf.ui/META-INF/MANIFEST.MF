@@ -8,12 +8,8 @@ Bundle-Activator: net.openchrom.csd.converter.supplier.cdf.ui.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.chemclipse.support.ui;bundle-version="0.8.0",
  org.eclipse.chemclipse.support;bundle-version="0.8.0",
  org.eclipse.chemclipse.support.ui;bundle-version="0.8.0",
- org.eclipse.chemclipse.processing;bundle-version="0.8.0",
- org.eclipse.chemclipse.processing.ui;bundle-version="0.8.0",
- org.eclipse.chemclipse.converter;bundle-version="0.8.0",
  net.openchrom.csd.converter.supplier.cdf;bundle-version="1.5.31"
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy

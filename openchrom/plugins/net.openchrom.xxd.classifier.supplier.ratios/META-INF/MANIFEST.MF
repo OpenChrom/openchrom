@@ -7,18 +7,13 @@ Bundle-Version: 1.6.4.qualifier
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.msd.model;bundle-version="0.8.0",
- org.eclipse.chemclipse.chromatogram.msd.identifier;bundle-version="0.8.0",
  org.eclipse.chemclipse.logging;bundle-version="0.8.0",
- org.eclipse.chemclipse.msd.converter;bundle-version="0.8.0",
  org.eclipse.chemclipse.support;bundle-version="0.8.0",
  org.eclipse.chemclipse.processing;bundle-version="0.8.0",
  org.eclipse.chemclipse.converter;bundle-version="0.8.0",
  org.eclipse.chemclipse.model;bundle-version="0.8.0",
  org.eclipse.chemclipse.chromatogram.xxd.classifier;bundle-version="0.8.0",
- org.eclipse.chemclipse.chromatogram.xxd.identifier.supplier.file;bundle-version="0.8.0",
- com.fasterxml.jackson.core.jackson-annotations;bundle-version="2.6.2",
- org.eclipse.core.databinding;bundle-version="1.6.0",
- org.eclipse.chemclipse.wsd.model;bundle-version="0.8.0"
+ org.eclipse.core.databinding;bundle-version="1.6.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.xxd.classifier.supplier.ratios.compiler,
@@ -34,5 +29,6 @@ Export-Package: net.openchrom.xxd.classifier.supplier.ratios.compiler,
  net.openchrom.xxd.classifier.supplier.ratios.util.quant,
  net.openchrom.xxd.classifier.supplier.ratios.util.time,
  net.openchrom.xxd.classifier.supplier.ratios.util.trace
+Import-Package: com.fasterxml.jackson.annotation;version="2.20.0"
 Service-Component: OSGI-INF/net.openchrom.xxd.classifier.supplier.system.TimeRatioExportProcessSupplier.xml,
  OSGI-INF/net.openchrom.xxd.classifier.supplier.system.TraceRatioExportProcessSupplier.xml
