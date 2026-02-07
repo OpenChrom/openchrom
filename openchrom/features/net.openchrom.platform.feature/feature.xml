@@ -106,6 +106,7 @@
    <requires>
       <import feature="org.eclipse.rcp"/>
       <import feature="org.eclipse.help"/>
+      <import feature="org.eclipse.license"/>
       <import feature="org.eclipse.equinox.p2.user.ui"/>
    </requires>
 
