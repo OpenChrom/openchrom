@@ -14,9 +14,9 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.24.100",
  org.eclipse.chemclipse.converter;bundle-version="0.8.0",
  org.eclipse.chemclipse.msd.converter;bundle-version="0.8.0",
  org.eclipse.chemclipse.chromatogram.peak.detector;bundle-version="0.8.0",
- com.fasterxml.jackson.core.jackson-annotations;bundle-version="2.7.1",
  net.openchrom.msd.converter.supplier.cdf;bundle-version="1.5.31",
- org.eclipse.chemclipse.msd.identifier;bundle-version="0.9.0"
+ org.eclipse.chemclipse.msd.identifier;bundle-version="0.9.0",
+ org.eclipse.chemclipse.xxd.filter;bundle-version="0.9.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-Vendor: OpenChrom
@@ -26,6 +26,6 @@ Export-Package: net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.core
  net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.preferences,
  net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.settings,
  net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.support
-Import-Package: org.eclipse.chemclipse.xxd.filter.peaks
+Import-Package: com.fasterxml.jackson.annotation;version="[2.20.0,3.0.0)"
 Service-Component: OSGI-INF/net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.filter.AmbiguousPeakRemoverFilter.xml
 Bundle-Localization: OSGI-INF/l10n/bundle
