@@ -28,10 +28,6 @@
          version="0.0.0"/>
 
    <includes
-         id="net.openchrom.msd.process.supplier.cms.feature"
-         version="0.0.0"/>
-
-   <includes
          id="net.openchrom.xxd.processor.supplier.tracecompare.feature"
          version="0.0.0"/>
 
