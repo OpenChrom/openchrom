@@ -127,4 +127,12 @@
          id="org.eclipse.ui.cheatsheets"
          version="0.0.0"/>
 
+   <plugin
+         id="org.eclipse.ui.navigator"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.ui.navigator.resources"
+         version="0.0.0"/>
+
 </feature>
