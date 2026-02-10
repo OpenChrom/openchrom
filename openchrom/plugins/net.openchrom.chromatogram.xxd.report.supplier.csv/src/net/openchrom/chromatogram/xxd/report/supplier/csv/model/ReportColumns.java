@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Lablicate GmbH.
+ * Copyright (c) 2022, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -21,6 +21,7 @@ public class ReportColumns extends ArrayList<String> {
 	private static final long serialVersionUID = 727322817550120355L;
 
 	public static final String CHROMATOGRAM_NAME = "Chromatogram Name";
+	public static final String FILE_PATH = "File Path";
 	public static final String NUMBER_PEAKS = "Number Peaks";
 	public static final String PEAK_NUMBER = "Peak Number";
 	public static final String RETENTION_TIME = "Retention Time";
@@ -88,6 +89,7 @@ public class ReportColumns extends ArrayList<String> {
 		ReportColumns reportColumns = new ReportColumns();
 
 		reportColumns.add(CHROMATOGRAM_NAME);
+		reportColumns.add(FILE_PATH);
 		reportColumns.add(NUMBER_PEAKS);
 		reportColumns.add(PEAK_NUMBER);
 		reportColumns.add(RETENTION_TIME);
