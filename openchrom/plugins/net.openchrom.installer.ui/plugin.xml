@@ -1391,7 +1391,7 @@
       <pluginDescriptor
             categoryId="com.lablicate.openchrom.converters.proprietary"
             description="Reads *.sbc files."
-            groupId="net.openchrom.csd.converter"
+            groupId="net.openchrom.msd.converter"
             id="net.openchrom.msd.converter.supplier.pfeiffer.sbc.feature"
             kind="converter"
             license="Converter License Terms"
@@ -1401,7 +1401,22 @@
          <overview
                summary="Free for commercial use. Must not be used with other software.">
          </overview>
-      </pluginDescriptor>      
+      </pluginDescriptor>
+      
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.converters.proprietary"
+            description="Reads *.qqq files."
+            groupId="net.openchrom.msd.converter"
+            id="net.openchrom.msd.converter.supplier.bruker.evoq.feature"
+            kind="converter"
+            license="Converter License Terms"
+            name="Bruker EVOQ MS"
+            provider="Lablicate"
+            icon="icons/32x32/Bruker.png">
+         <overview
+               summary="Free for commercial use. Must not be used with other software.">
+         </overview>
+      </pluginDescriptor>            
 
    </extension>
 </plugin>
