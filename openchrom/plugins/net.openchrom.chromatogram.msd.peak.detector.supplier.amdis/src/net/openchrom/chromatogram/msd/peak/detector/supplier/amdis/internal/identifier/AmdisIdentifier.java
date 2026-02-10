@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2025 Lablicate GmbH.
+ * Copyright (c) 2014, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -42,7 +42,7 @@ import net.openchrom.msd.converter.supplier.cdf.io.ChromatogramReaderMSD;
 
 public class AmdisIdentifier {
 
-	public IProcessingResult<Void> calulateAndSetDeconvolutedPeaks(IChromatogramSelectionMSD chromatogramSelection, SettingsAMDIS settingsAMDIS, IProgressMonitor monitor) throws InterruptedException {
+	public IProcessingResult<Void> calculateAndSetDeconvolutedPeaks(IChromatogramSelectionMSD chromatogramSelection, SettingsAMDIS settingsAMDIS, IProgressMonitor monitor) throws InterruptedException {
 
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 100);
 		DefaultProcessingResult<Void> result = new DefaultProcessingResult<>();

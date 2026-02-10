@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2025 Lablicate GmbH.
+ * Copyright (c) 2014, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -40,7 +40,7 @@ public class PeakDetectorAMDIS extends AbstractPeakDetectorMSD {
 			if(peakDetectorSettings instanceof SettingsAMDIS settingsAMDIS) {
 				AmdisIdentifier identifier = new AmdisIdentifier();
 				try {
-					IProcessingResult<Void> result = identifier.calulateAndSetDeconvolutedPeaks(chromatogramSelection, settingsAMDIS, monitor);
+					IProcessingResult<Void> result = identifier.calculateAndSetDeconvolutedPeaks(chromatogramSelection, settingsAMDIS, monitor);
 					for(IProcessingMessage message : result.getMessages()) {
 						processingInfo.addMessage(message);
 					}
