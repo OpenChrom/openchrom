@@ -112,6 +112,9 @@ public class ConfigurableReportWriter {
 				if(reportColumn.equals(ReportColumns.CHROMATOGRAM_NAME)) {
 					records.add(chromatogram.getName());
 				}
+				if(reportColumn.equals(ReportColumns.FILE_PATH)) {
+					records.add(chromatogram.getFile());
+				}
 				Map<String, String> headerMap = chromatogram.getHeaderDataMap();
 				for(Entry<String, String> header : headerMap.entrySet()) {
 					if(reportColumn.equals(header.getKey())) {
