@@ -175,17 +175,15 @@ public class PeakSupport {
 					 * WSD
 					 */
 					isPeakRelevant = true;
-					IScan scan = peakWSD.getPeakModel().getPeakMaximum();
-					if(scan instanceof IScanWSD scanWSD) {
-						IExtractedWavelengthSignal extractedWavelengthSignal = scanWSD.getExtractedWavelengthSignal();
-						Set<Integer> traceSet = getTraceSet(traces);
-						exitloop:
-						for(int trace : traceSet) {
-							float abundance = extractedWavelengthSignal.getAbundance(trace);
-							if(abundance == 0) {
-								isPeakRelevant = false;
-								break exitloop;
-							}
+					IScanWSD scanWSD = peakWSD.getPeakModel().getPeakMaximum();
+					IExtractedWavelengthSignal extractedWavelengthSignal = scanWSD.getExtractedWavelengthSignal();
+					Set<Integer> traceSet = getTraceSet(traces);
+					exitloop:
+					for(int trace : traceSet) {
+						float abundance = extractedWavelengthSignal.getAbundance(trace);
+						if(abundance == 0) {
+							isPeakRelevant = false;
+							break exitloop;
 						}
 					}
 				}

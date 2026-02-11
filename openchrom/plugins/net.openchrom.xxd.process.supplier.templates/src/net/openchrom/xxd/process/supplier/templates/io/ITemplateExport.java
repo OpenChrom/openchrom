@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Lablicate GmbH.
+ * Copyright (c) 2019, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -18,7 +18,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.chemclipse.model.core.IPeak;
-import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
@@ -48,28 +47,26 @@ public interface ITemplateExport {
 		String traces = "";
 		if(numberTraces > 0 && (peak instanceof IPeakMSD || peak instanceof IPeakWSD)) {
 			if(peak instanceof IPeakMSD peakMSD) {
-				IScan scan = peakMSD.getPeakModel().getPeakMaximum();
-				if(scan instanceof IScanMSD scanMSD) {
-					StringBuilder builder = new StringBuilder();
-					IonAbundanceComparator comparator = new IonAbundanceComparator(SortOrder.DESC);
-					List<IIon> ions = new ArrayList<>(scanMSD.getIons());
-					Collections.sort(ions, comparator); // SORT OK
-					Iterator<IIon> iterator = ions.iterator();
-					int counter = 1;
-					exitloop:
-					while(iterator.hasNext()) {
-						IIon ion = iterator.next();
-						builder.append(Math.round(ion.getIon()));
-						counter++;
+				IScanMSD scanMSD = peakMSD.getPeakModel().getPeakMaximum();
+				StringBuilder builder = new StringBuilder();
+				IonAbundanceComparator comparator = new IonAbundanceComparator(SortOrder.DESC);
+				List<IIon> ions = new ArrayList<>(scanMSD.getIons());
+				Collections.sort(ions, comparator); // SORT OK
+				Iterator<IIon> iterator = ions.iterator();
+				int counter = 1;
+				exitloop:
+				while(iterator.hasNext()) {
+					IIon ion = iterator.next();
+					builder.append(Math.round(ion.getIon()));
+					counter++;
 
-						if(iterator.hasNext() && counter <= numberTraces) {
-							builder.append(AbstractTemplateListUtil.SEPARATOR_TRACE_ITEM);
-						} else {
-							break exitloop;
-						}
+					if(iterator.hasNext() && counter <= numberTraces) {
+						builder.append(AbstractTemplateListUtil.SEPARATOR_TRACE_ITEM);
+					} else {
+						break exitloop;
 					}
-					traces = builder.toString();
 				}
+				traces = builder.toString();
 			}
 		}
 
