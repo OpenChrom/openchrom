@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2025 Tasktop Technologies, Polarion Software and others.
+ * Copyright (c) 2009, 2026 Tasktop Technologies, Polarion Software and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -21,7 +21,6 @@ import java.beans.PropertyChangeSupport;
  */
 public class DiscoveryPlugin extends PluginDescriptor {
 
-	private IDiscoverySource source;
 	private DiscoveryCategory category;
 	private boolean selected;
 	private final PropertyChangeSupport changeSupport;
@@ -39,16 +38,6 @@ public class DiscoveryPlugin extends PluginDescriptor {
 	public void setCategory(DiscoveryCategory category) {
 
 		this.category = category;
-	}
-
-	public IDiscoverySource getSource() {
-
-		return source;
-	}
-
-	public void setSource(IDiscoverySource source) {
-
-		this.source = source;
 	}
 
 	/**

@@ -84,11 +84,11 @@ import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.WorkbenchJob;
+import org.osgi.framework.FrameworkUtil;
 
 import net.openchrom.installer.model.BundleDiscoveryStrategy;
 import net.openchrom.installer.model.DiscoveryCategory;
 import net.openchrom.installer.model.DiscoveryPlugin;
-import net.openchrom.installer.model.IDiscoverySource;
 import net.openchrom.installer.model.Overview;
 import net.openchrom.installer.model.PluginDescriptor;
 import net.openchrom.installer.model.PluginDescriptorKind;
@@ -437,7 +437,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 			configureLook(iconLabel, background);
 			GridDataFactory.swtDefaults().align(SWT.CENTER, SWT.CENTER).applyTo(iconLabel);
 			if(plugin.getIcon() != null) {
-				iconImage = computeIconImage(plugin.getSource(), plugin.getIcon(), false);
+				iconImage = computeIconImage(plugin.getIcon());
 				if(iconImage != null) {
 					iconLabel.setImage(iconImage);
 				}
@@ -457,7 +457,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 				infoButton = new ToolItem(toolBar, SWT.PUSH);
 				infoButton.setImage(infoImage);
 				infoButton.setToolTipText("show overview");
-				hookTooltip(toolBar, infoButton, pluginContainer, nameLabel, plugin.getSource(), plugin.getOverview());
+				hookTooltip(toolBar, infoButton, pluginContainer, nameLabel, plugin.getOverview());
 				GridDataFactory.fillDefaults().align(SWT.END, SWT.CENTER).applyTo(toolBar);
 			} else {
 				new Label(pluginContainer, SWT.NULL).setText(" "); //$NON-NLS-1$
@@ -600,7 +600,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 					GridLayoutFactory.fillDefaults().numColumns(3).margins(5, 5).equalWidth(false).applyTo(categoryHeaderContainer);
 					Label iconLabel = new Label(categoryHeaderContainer, SWT.NULL);
 					if(category.getIcon() != null) {
-						Image image = computeIconImage(category.getSource(), category.getIcon(), true);
+						Image image = computeIconImage(category.getIcon());
 						if(image != null) {
 							iconLabel.setImage(image);
 						}
@@ -616,7 +616,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 						ToolItem infoButton = new ToolItem(toolBar, SWT.PUSH);
 						infoButton.setImage(infoImage);
 						infoButton.setToolTipText("Show Overview");
-						hookTooltip(toolBar, infoButton, categoryHeaderContainer, nameLabel, category.getSource(), category.getOverview());
+						hookTooltip(toolBar, infoButton, categoryHeaderContainer, nameLabel, category.getOverview());
 						GridDataFactory.fillDefaults().align(SWT.END, SWT.CENTER).applyTo(toolBar);
 					} else {
 						new Label(categoryHeaderContainer, SWT.NULL).setText(" "); //$NON-NLS-1$
@@ -662,9 +662,9 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 		control.setBackground(background);
 	}
 
-	private void hookTooltip(final Control tooltipControl, final ToolItem tipActivator, final Control exitControl, final Control titleControl, IDiscoverySource source, Overview overview) {
+	private void hookTooltip(final Control tooltipControl, final ToolItem tipActivator, final Control exitControl, final Control titleControl, Overview overview) {
 
-		final OverviewToolTip toolTip = new OverviewToolTip(tooltipControl, source, overview);
+		final OverviewToolTip toolTip = new OverviewToolTip(tooltipControl, overview);
 		Listener listener = event -> {
 
 			switch(event.type) {
@@ -794,10 +794,10 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 		return text != null && filterPattern.matcher(text).find();
 	}
 
-	private Image computeIconImage(IDiscoverySource discoverySource, String icon, boolean fallback) {
+	private Image computeIconImage(String icon) {
 
 		if(icon != null && !icon.isEmpty()) {
-			URL resource = discoverySource.getResource(icon);
+			URL resource = FrameworkUtil.getBundle(PluginDiscoveryWizardMainPage.class).getResource(icon);
 			if(resource != null) {
 				ImageDescriptor descriptor = ImageDescriptor.createFromURL(resource);
 				Image image = descriptor.createImage();

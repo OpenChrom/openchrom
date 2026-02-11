@@ -65,7 +65,6 @@ public class PluginDiscoveryExtensionReader {
 		pluginDescriptor.setIcon(element.getAttribute("icon")); //$NON-NLS-1$
 		for(IConfigurationElement child : element.getChildren(OVERVIEW)) {
 			Overview overviewItem = readOverview(child);
-			overviewItem.setConnectorDescriptor(pluginDescriptor);
 			if(pluginDescriptor.getOverview() != null) {
 				logger.warn("Unexpected element overview");
 			}
@@ -95,7 +94,6 @@ public class PluginDiscoveryExtensionReader {
 		pluginCategory.setIcon(element.getAttribute("icon")); //$NON-NLS-1$
 		for(IConfigurationElement child : element.getChildren("overview")) { //$NON-NLS-1$
 			Overview overviewItem = readOverview(child);
-			overviewItem.setConnectorCategory(pluginCategory);
 			if(pluginCategory.getOverview() != null) {
 				logger.warn("Unexpected element overview");
 			}
@@ -114,8 +112,6 @@ public class PluginDiscoveryExtensionReader {
 
 		Overview overview = new Overview();
 		overview.setSummary(element.getAttribute("summary")); //$NON-NLS-1$
-		overview.setUrl(element.getAttribute("url")); //$NON-NLS-1$
-		overview.setScreenshot(element.getAttribute("screenshot")); //$NON-NLS-1$
 		overview.validate();
 		return overview;
 	}
