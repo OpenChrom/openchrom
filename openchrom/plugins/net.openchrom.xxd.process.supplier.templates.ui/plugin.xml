@@ -355,4 +355,18 @@
             id="net.openchrom.xxd.process.supplier.templates.peaks.transfer.csd">
       </icon>
    </extension>
+   <extension
+         point="org.eclipse.chemclipse.xxd.process.ui.menu.icon">
+      <icon
+            class="net.openchrom.xxd.process.supplier.templates.ui.icon.PeakReviewMenuIcon"
+            id="net.openchrom.xxd.process.supplier.templates.ui.msd.direct">
+      </icon>
+   </extension>
+   <extension
+         point="org.eclipse.chemclipse.xxd.process.ui.menu.icon">
+      <icon
+            class="net.openchrom.xxd.process.supplier.templates.ui.icon.TemplateMenuIcon"
+            id="net.openchrom.xxd.process.supplier.templates.ui.msd">
+      </icon>
+   </extension>
 </plugin>
