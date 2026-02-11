@@ -231,13 +231,6 @@
                </appinfo>
             </annotation>
          </attribute>
-         <attribute name="url" type="string">
-            <annotation>
-               <documentation>
-                  An URL that points to a web page with more information relevant to the plugin or category.
-               </documentation>
-            </annotation>
-         </attribute>
       </complexType>
    </element>
 

@@ -195,8 +195,5 @@ public class PluginDescriptor {
 		if(icon != null && icon.isEmpty()) {
 			throw new IllegalArgumentException("icon is provided but is empty");
 		}
-		if(overview != null) {
-			overview.validate();
-		}
 	}
 }
