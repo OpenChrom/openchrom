@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2025 Tasktop Technologies, Polarion Software and others.
+ * Copyright (c) 2009, 2026 Tasktop Technologies, Polarion Software and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -15,7 +15,6 @@ package net.openchrom.installer.model;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IContributor;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -58,7 +57,6 @@ public class BundleDiscoveryStrategy extends AbstractDiscoveryStrategy {
 		try {
 			PluginDiscoveryExtensionReader extensionReader = new PluginDiscoveryExtensionReader();
 			for(IExtension extension : extensions) {
-				IDiscoverySource discoverySource = computeDiscoverySource(extension.getContributor());
 				IConfigurationElement[] elements = extension.getConfigurationElements();
 				for(IConfigurationElement element : elements) {
 					if(monitor.isCanceled()) {
@@ -66,11 +64,9 @@ public class BundleDiscoveryStrategy extends AbstractDiscoveryStrategy {
 					}
 					if(PluginDiscoveryExtensionReader.PLUGIN_DESCRIPTOR.equals(element.getName())) {
 						DiscoveryPlugin descriptor = extensionReader.readConnectorDescriptor(element, DiscoveryPlugin.class);
-						descriptor.setSource(discoverySource);
 						plugins.add(descriptor);
 					} else if(PluginDiscoveryExtensionReader.PLUGIN_CATEGORY.equals(element.getName())) {
 						DiscoveryCategory category = extensionReader.readConnectorCategory(element, DiscoveryCategory.class);
-						category.setSource(discoverySource);
 						categories.add(category);
 					} else {
 						logger.error("unexpected element " + element.getName());
@@ -82,11 +78,6 @@ public class BundleDiscoveryStrategy extends AbstractDiscoveryStrategy {
 		} finally {
 			monitor.done();
 		}
-	}
-
-	protected IDiscoverySource computeDiscoverySource(IContributor contributor) {
-
-		return new BundleDiscoverySource(Platform.getBundle(contributor.getName()));
 	}
 
 	protected IExtensionRegistry getExtensionRegistry() {
