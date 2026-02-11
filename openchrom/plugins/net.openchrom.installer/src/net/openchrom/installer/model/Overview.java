@@ -35,7 +35,4 @@ public class Overview {
 		this.summary = summary;
 	}
 
-	public void validate() {
-
-	}
 }

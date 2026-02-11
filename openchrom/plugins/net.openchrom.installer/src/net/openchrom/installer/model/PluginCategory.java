@@ -135,9 +135,6 @@ public class PluginCategory {
 				throw new IllegalArgumentException("relevance is not between 1 and 100");
 			}
 		}
-		if(overview != null) {
-			overview.validate();
-		}
 		for(Group groupItem : group) {
 			groupItem.validate();
 		}

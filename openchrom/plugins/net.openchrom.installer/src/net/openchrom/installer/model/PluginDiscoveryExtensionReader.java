@@ -112,7 +112,6 @@ public class PluginDiscoveryExtensionReader {
 
 		Overview overview = new Overview();
 		overview.setSummary(element.getAttribute("summary")); //$NON-NLS-1$
-		overview.validate();
 		return overview;
 	}
 
