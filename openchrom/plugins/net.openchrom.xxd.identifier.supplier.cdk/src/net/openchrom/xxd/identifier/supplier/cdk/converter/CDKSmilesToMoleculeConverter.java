@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Egon Willighagen <egonw@users.sf.net>
+ * Copyright (c) 2023, 2026 Lablicate GmbH
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -10,6 +10,7 @@
  * Contributors:
  * Marwin Wollschläger - initial API and implementation
  * Philip Wenig - additional API and implementation
+ * Egon Willighagen - additional API and implementation
  *******************************************************************************/
 package net.openchrom.xxd.identifier.supplier.cdk.converter;
 
