@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2025 Lablicate GmbH.
+ * Copyright (c) 2013, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -28,9 +28,6 @@ import org.eclipse.chemclipse.logging.core.Logger;
  * Though it is currently not being used because of Input/Output overhead!
  * => Still it looks like an interesting possibility to be able to export
  * molecules as they are represented in the CDK to the PNG file format!
- * 
- * @author administrator_marwin
- * 
  */
 public class AWTMolDrawer {
 

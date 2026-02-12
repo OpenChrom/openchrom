@@ -24,9 +24,6 @@ import org.openscience.cdk.interfaces.IIsotope;
 /**
  * A class for managing simple collections of isotopes that are often in use,
  * e.g., all isotopes of the PSE or only the most abundant isotopes etc ...
- * 
- * @author administrator_marwin
- * 
  */
 public class IsotopeDeciderFactory {
 

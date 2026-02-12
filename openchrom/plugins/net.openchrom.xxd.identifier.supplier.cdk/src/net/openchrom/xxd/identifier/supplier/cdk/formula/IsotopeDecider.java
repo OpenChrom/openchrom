@@ -24,9 +24,6 @@ import org.openscience.cdk.interfaces.IIsotope;
  * A Simple class for handling the settings of the generic mass to formula tool. Using this class,
  * the client can decide on what isotopes to respect in calculating the formula.
  * See also GenericMassToFormulaTool
- * 
- * @author administrator_marwin
- * 
  */
 public class IsotopeDecider {
 

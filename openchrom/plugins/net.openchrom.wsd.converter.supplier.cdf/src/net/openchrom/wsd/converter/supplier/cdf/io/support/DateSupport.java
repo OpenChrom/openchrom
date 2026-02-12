@@ -29,8 +29,6 @@ import java.util.Locale;
  * 20080313003000+0200<br/>
  * 20080908131858+0200<br/>
  * 20080329065100+0200<br/>
- * 
- * @author eselmeister
  */
 public class DateSupport {
 

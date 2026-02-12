@@ -15,8 +15,6 @@ package net.openchrom.wsd.converter.supplier.cdf.io.support;
 /**
  * This class stores all the dimensions, variables and attributes which are
  * important to read and write a valid cdf file.
- * 
- * @author eselmeister
  */
 public class CDFConstants {
 

@@ -28,9 +28,6 @@ import org.openscience.cdk.interfaces.IIsotope;
  * To get the correct Isotope out of this information, the class uses the regex
  * [0-9]+ for the mass number and [A-Z][a-z]* for the element symbol.
  * It should be noted, that <em> Element Symbols should be given with capital letters in the beginning. </em>
- * 
- * @author administrator_marwin
- * 
  */
 public class IsotopeParser {
 

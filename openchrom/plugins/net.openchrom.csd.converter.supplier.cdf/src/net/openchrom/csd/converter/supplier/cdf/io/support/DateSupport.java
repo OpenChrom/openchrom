@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2025 Lablicate GmbH.
+ * Copyright (c) 2014, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -29,8 +29,6 @@ import java.util.Locale;
  * 20080313003000+0200<br/>
  * 20080908131858+0200<br/>
  * 20080329065100+0200<br/>
- * 
- * @author eselmeister
  */
 public class DateSupport {
 

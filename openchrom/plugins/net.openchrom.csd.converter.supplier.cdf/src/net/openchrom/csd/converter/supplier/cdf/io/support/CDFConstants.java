@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2025 Lablicate GmbH.
+ * Copyright (c) 2014, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -15,8 +15,6 @@ package net.openchrom.csd.converter.supplier.cdf.io.support;
 /**
  * This class stores all the dimensions, variables and attributes which are
  * important to read and write a valid cdf file.
- * 
- * @author eselmeister
  */
 public class CDFConstants {
 

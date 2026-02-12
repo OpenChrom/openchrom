@@ -19,9 +19,6 @@ import org.openscience.cdk.interfaces.IAtom;
 
 /**
  * Utility class for defining AtomColors
- * 
- * @author administrator_marwin
- * 
  */
 public class AtomToColorMapping {
 

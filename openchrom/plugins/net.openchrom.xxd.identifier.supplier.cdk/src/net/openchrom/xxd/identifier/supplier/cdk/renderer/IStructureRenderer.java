@@ -22,9 +22,6 @@ import org.openscience.cdk.interfaces.IAtomContainer;
  * Has a method checkForCoordinates(), that verifies validity and a method for
  * adding missing coordinates...
  * Contains a method renderStructure(Graphics2D,IMolecule) that does the job.
- * 
- * @author administrator_marwin
- * 
  */
 public interface IStructureRenderer {
 

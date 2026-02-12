@@ -27,9 +27,6 @@ import org.openscience.cdk.silent.SilentChemObjectBuilder;
  * => via adding IAtom instances to the symbolicAtoms list it is possible to choose, whether
  * atoms should be displayed via their respective Symbol or if they should be hide (e.g. shown
  * as shape etc.)
- * 
- * @author administrator_marwin
- * 
  */
 public class StructureRendererSimpleColorTheme implements IStructureRendererColorScheme {
 
@@ -40,10 +37,7 @@ public class StructureRendererSimpleColorTheme implements IStructureRendererColo
 
 		atomToColorMap = new ArrayList<>();
 		symbolicAtoms = new ArrayList<>();
-		AtomToColorMapping cToBlue = new AtomToColorMapping(
-			SilentChemObjectBuilder.getInstance().newInstance(IAtom.class,"C"),
-			Color.BLUE
-		);
+		AtomToColorMapping cToBlue = new AtomToColorMapping(SilentChemObjectBuilder.getInstance().newInstance(IAtom.class, "C"), Color.BLUE);
 		atomToColorMap.add(cToBlue);
 		symbolicAtoms.add(SilentChemObjectBuilder.getInstance().newInstance(IAtom.class, "Cl"));
 	}

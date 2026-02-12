@@ -23,10 +23,7 @@ import org.openscience.cdk.smiles.SmilesParser;
 import net.openchrom.xxd.identifier.supplier.cdk.preferences.PreferenceSupplier;
 
 /**
- * Very useful wrapper class, that converts Smiles Strings to IMolecule instances and also does (a little) exception handling.
- * 
- * @author administrator_marwin
- * 
+ * Wrapper class, that converts SMILES strings to {@link IAtomContainer} instances and also does (a little) exception handling.
  */
 public class CDKSmilesToMoleculeConverter implements IStructureConverter {
 

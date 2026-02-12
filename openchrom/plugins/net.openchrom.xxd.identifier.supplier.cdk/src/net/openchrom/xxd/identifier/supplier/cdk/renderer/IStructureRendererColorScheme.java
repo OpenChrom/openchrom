@@ -16,9 +16,6 @@ package net.openchrom.xxd.identifier.supplier.cdk.renderer;
 /**
  * Interface that makes use of AtomToColorMap but also defines a default color for rendering.
  * Also defines rules for the rendering of bonds ...
- * 
- * @author administrator_marwin
- * 
  */
 import java.awt.Color;
 import java.awt.Stroke;

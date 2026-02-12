@@ -28,8 +28,6 @@ import org.openscience.cdk.silent.SilentChemObjectBuilder;
  * A Bridge class that should simplify the communication between the
  * GenericMassToFormula instance and the views that are part of the mass to formula calculations.
  * 
- * @author administrator_marwin
- * 
  */
 public class GenericMassToFormulaBridge {
 

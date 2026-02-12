@@ -17,9 +17,6 @@ import javax.vecmath.Point3d;
 
 /**
  * Helps for visualization of IAtom instances ...
- * 
- * @author administrator_marwin
- * 
  */
 public class AtomRadialRepresentation {
 
