@@ -42,19 +42,19 @@
    <extension
          point="org.eclipse.e4.ui.css.swt.theme">
       <stylesheet
-            uri="css/default.css">
+            uri="stylesheets/default.css">
          <themeid
                refid="org.eclipse.e4.ui.css.theme.e4_default">
          </themeid>
       </stylesheet>
       <stylesheet
-            uri="css/classic.css">
+            uri="stylesheets/classic.css">
          <themeid
                refid="org.eclipse.e4.ui.css.theme.e4_classic">
          </themeid>
       </stylesheet>
       <stylesheet
-            uri="css/dark.css">
+            uri="stylesheets/dark.css">
          <themeid
                refid="org.eclipse.e4.ui.css.theme.e4_dark">
          </themeid>
