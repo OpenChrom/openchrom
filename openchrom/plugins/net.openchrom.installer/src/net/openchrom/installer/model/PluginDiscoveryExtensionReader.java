@@ -12,15 +12,10 @@
  *******************************************************************************/
 package net.openchrom.installer.model;
 
-import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IConfigurationElement;
 
 /**
- * Connector Discovery extension point reader, for extension points of type
- * <tt>org.eclipse.team.svn.core.pluginDiscovery</tt>
- * 
- * @author David Green
- * @author Igor Burilo
+ * Connector Discovery extension point reader.
  */
 public class PluginDiscoveryExtensionReader {
 
@@ -31,8 +26,6 @@ public class PluginDiscoveryExtensionReader {
 	public static final String OVERVIEW = "overview"; //$NON-NLS-1$
 	public static final String FEATURE_FILTER = "featureFilter"; //$NON-NLS-1$
 	public static final String GROUP = "group"; //$NON-NLS-1$
-
-	private static final Logger logger = Logger.getLogger(PluginDiscoveryExtensionReader.class);
 
 	public PluginDescriptor readConnectorDescriptor(IConfigurationElement element) {
 
@@ -63,13 +56,8 @@ public class PluginDiscoveryExtensionReader {
 		pluginDescriptor.setPlatformFilter(element.getAttribute("platformFilter")); //$NON-NLS-1$
 		pluginDescriptor.setGroupId(element.getAttribute("groupId")); //$NON-NLS-1$
 		pluginDescriptor.setIcon(element.getAttribute("icon")); //$NON-NLS-1$
-		for(IConfigurationElement child : element.getChildren(OVERVIEW)) {
-			Overview overviewItem = readOverview(child);
-			if(pluginDescriptor.getOverview() != null) {
-				logger.warn("Unexpected element overview");
-			}
-			pluginDescriptor.setOverview(overviewItem);
-		}
+		pluginDescriptor.setUrl(element.getAttribute("url")); //$NON-NLS-1$
+		pluginDescriptor.setSummary(element.getAttribute("summary")); //$NON-NLS-1$
 		pluginDescriptor.validate();
 		return pluginDescriptor;
 	}
@@ -92,34 +80,9 @@ public class PluginDiscoveryExtensionReader {
 		pluginCategory.setDescription(element.getAttribute("description")); //$NON-NLS-1$
 		pluginCategory.setRelevance(element.getAttribute("relevance")); //$NON-NLS-1$
 		pluginCategory.setIcon(element.getAttribute("icon")); //$NON-NLS-1$
-		for(IConfigurationElement child : element.getChildren("overview")) { //$NON-NLS-1$
-			Overview overviewItem = readOverview(child);
-			if(pluginCategory.getOverview() != null) {
-				logger.warn("Unexpected element overview");
-			}
-			pluginCategory.setOverview(overviewItem);
-		}
-		for(IConfigurationElement child : element.getChildren(GROUP)) {
-			Group groupItem = readGroup(child);
-			groupItem.setConnectorCategory(pluginCategory);
-			pluginCategory.getGroup().add(groupItem);
-		}
+		pluginCategory.setSummary(element.getAttribute("summary")); //$NON-NLS-1$
 		pluginCategory.validate();
 		return pluginCategory;
 	}
 
-	public Overview readOverview(IConfigurationElement element) {
-
-		Overview overview = new Overview();
-		overview.setSummary(element.getAttribute("summary")); //$NON-NLS-1$
-		return overview;
-	}
-
-	public Group readGroup(IConfigurationElement element) {
-
-		Group group = new Group();
-		group.setId(element.getAttribute("id")); //$NON-NLS-1$
-		group.validate();
-		return group;
-	}
 }

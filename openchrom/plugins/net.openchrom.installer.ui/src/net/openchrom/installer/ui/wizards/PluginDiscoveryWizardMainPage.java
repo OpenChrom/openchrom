@@ -89,7 +89,6 @@ import org.osgi.framework.FrameworkUtil;
 import net.openchrom.installer.model.BundleDiscoveryStrategy;
 import net.openchrom.installer.model.DiscoveryCategory;
 import net.openchrom.installer.model.DiscoveryPlugin;
-import net.openchrom.installer.model.Overview;
 import net.openchrom.installer.model.PluginDescriptor;
 import net.openchrom.installer.model.PluginDescriptorKind;
 import net.openchrom.installer.model.PluginDiscovery;
@@ -457,7 +456,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 				infoButton = new ToolItem(toolBar, SWT.PUSH);
 				infoButton.setImage(infoImage);
 				infoButton.setToolTipText("show overview");
-				hookTooltip(toolBar, infoButton, pluginContainer, nameLabel, plugin.getOverview());
+				hookTooltip(toolBar, infoButton, pluginContainer, nameLabel, plugin.getSummary());
 				GridDataFactory.fillDefaults().align(SWT.END, SWT.CENTER).applyTo(toolBar);
 			} else {
 				new Label(pluginContainer, SWT.NULL).setText(" "); //$NON-NLS-1$
@@ -616,7 +615,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 						ToolItem infoButton = new ToolItem(toolBar, SWT.PUSH);
 						infoButton.setImage(infoImage);
 						infoButton.setToolTipText("Show Overview");
-						hookTooltip(toolBar, infoButton, categoryHeaderContainer, nameLabel, category.getOverview());
+						hookTooltip(toolBar, infoButton, categoryHeaderContainer, nameLabel, category.getSummary());
 						GridDataFactory.fillDefaults().align(SWT.END, SWT.CENTER).applyTo(toolBar);
 					} else {
 						new Label(categoryHeaderContainer, SWT.NULL).setText(" "); //$NON-NLS-1$
@@ -662,9 +661,9 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 		control.setBackground(background);
 	}
 
-	private void hookTooltip(final Control tooltipControl, final ToolItem tipActivator, final Control exitControl, final Control titleControl, Overview overview) {
+	private void hookTooltip(final Control tooltipControl, final ToolItem tipActivator, final Control exitControl, final Control titleControl, String summary) {
 
-		final OverviewToolTip toolTip = new OverviewToolTip(tooltipControl, overview);
+		final OverviewToolTip toolTip = new OverviewToolTip(tooltipControl, summary);
 		Listener listener = event -> {
 
 			switch(event.type) {
@@ -732,7 +731,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 
 	private boolean hasTooltip(final DiscoveryCategory category) {
 
-		return category.getOverview() != null && category.getOverview().getSummary() != null && category.getOverview().getSummary().length() > 0;
+		return category.getSummary() != null && category.getSummary().length() > 0;
 	}
 
 	/**
@@ -917,6 +916,6 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 
 	private boolean hasTooltip(final DiscoveryPlugin plugin) {
 
-		return plugin.getOverview() != null && plugin.getOverview().getSummary() != null && !plugin.getOverview().getSummary().isEmpty();
+		return plugin.getSummary() != null && !plugin.getSummary().isEmpty();
 	}
 }

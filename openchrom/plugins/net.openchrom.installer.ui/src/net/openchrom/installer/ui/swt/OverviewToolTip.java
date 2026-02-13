@@ -20,30 +20,23 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 
-import net.openchrom.installer.model.Overview;
-
-/**
- * @author David Green
- * @author Igor Burilo
- */
 public class OverviewToolTip extends ToolTip {
 
-	private final Overview overview;
+	private final String summary;
 
-	public OverviewToolTip(Control control, Overview overview) {
+	public OverviewToolTip(Control control, String summary) {
 
 		super(control, ToolTip.RECREATE, true);
-		if(overview == null) {
+		if(summary == null) {
 			throw new IllegalArgumentException();
 		}
-		this.overview = overview;
+		this.summary = summary;
 		setHideOnMouseDown(false); // required for links to work
 	}
 
 	@Override
 	protected Composite createToolTipContentArea(Event event, Composite parent) {
 
-		String summary = overview.getSummary();
 		Composite summaryContainer = new Composite(parent, SWT.NULL);
 		summaryContainer.setBackground(null);
 		GridLayoutFactory.fillDefaults().applyTo(summaryContainer);

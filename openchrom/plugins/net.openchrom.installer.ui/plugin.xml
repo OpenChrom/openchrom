@@ -50,7 +50,6 @@
             id="com.lablicate.openchrom.converters.proprietary"
             name="Proprietary OpenChrom File Format Converters"
             relevance="100" icon="icons/32x32/OpenChrom.png">
-         <group id="openchrom.converters"/>
       </pluginCategory>
 
       <pluginCategory
@@ -58,7 +57,6 @@
             id="com.lablicate.openchrom.extensions.commercial"
             name="OpenChrom Extensions"
             relevance="50" icon="icons/32x32/OpenChrom.png">
-         <group id="openchrom.extensions"/>
       </pluginCategory>
 
    </extension>
@@ -76,10 +74,8 @@
             license="Converter License Terms"
             name="EZChrom GC-FID"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/EZChrom.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -91,10 +87,8 @@
             license="Converter License Terms"
             name="Agilent ChemStation GC-FID"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Agilent.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -106,10 +100,8 @@
             license="Converter License Terms"
             name="Thermo/Finnigan GC-FID"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
          	icon="icons/32x32/Thermo.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -121,10 +113,8 @@
             license="Converter License Terms"
             name="Thermo/Finnigan GC-FID"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Thermo.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -136,10 +126,8 @@
             license="Converter License Terms"
             name="I-GraphX GC-WLD"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/I-GRAPHX.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -151,10 +139,8 @@
             license="Converter License Terms"
             name="Labjack Data Aquisition"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Labjack.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -166,11 +152,8 @@
             license="Converter License Terms"
             name="Agilent MassHunter GC-FID"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Agilent.png">
-         
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -182,11 +165,8 @@
             license="Converter License Terms"
             name="Moduvision Technologies"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Moduvision.png">
-         
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -198,11 +178,8 @@
             license="Converter License Terms"
             name="Agilent OpenLab GC-FID"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Agilent.png">
-         
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -214,11 +191,8 @@
             license="Converter License Terms"
             name="Agilent OpenLab HPLC-UV/Vis"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Agilent.png">
-         
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -230,11 +204,8 @@
             license="Converter License Terms"
             name="SRI Peak Simple GC-FID"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/SRI.png">
-         
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -246,10 +217,8 @@
             license="Converter License Terms"
             name="PerkinElmer GC-FID"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/PerkinElmer.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -261,10 +230,8 @@
             license="Converter License Terms"
             name="Shimadzu GC-FID"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Shimadzu.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -276,10 +243,8 @@
             license="Converter License Terms"
             name="Thermo Atlas GC-FID"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Thermo.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -291,10 +256,8 @@
             license="Converter License Terms"
             name="Thermo GC-FID"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Thermo.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -306,10 +269,8 @@
             license="Converter License Terms"
             name="Varian GC-FID"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Varian.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -321,10 +282,8 @@
             license="Converter License Terms"
             name="Waters Empower GC-FID"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Waters.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -336,10 +295,8 @@
             license="Converter License Terms"
             name="ABSciex GC-MS"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Sciex.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -351,10 +308,8 @@
             license="Converter License Terms"
             name="ABSciex MALDI TOF/TOF"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Sciex.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -366,10 +321,8 @@
             license="Converter License Terms"
             name="Agilent ChemStation GC-MS"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Agilent.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -381,10 +334,8 @@
             license="Converter License Terms"
             name="Agilent ICP-MS"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Agilent.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -396,10 +347,8 @@
             license="Converter License Terms"
             name="Bruker GC-MS"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Bruker.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -411,10 +360,8 @@
             license="Converter License Terms"
             name="Bruker Flex"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Bruker.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -426,10 +373,8 @@
             license="Converter License Terms"
             name="ChromTech GC-MS"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/ChromTech.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -441,10 +386,8 @@
             license="Converter License Terms"
             name="Thermo Galactic Grams MS"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Thermo.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -456,10 +399,8 @@
             license="Converter License Terms"
             name="Thermo mzVault (mzCloud)"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Thermo.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -471,10 +412,8 @@
             license="Converter License Terms"
             name="Thermo/Finnigan Element II"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Thermo.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -486,10 +425,8 @@
             license="Converter License Terms"
             name="Thermo/Finnigan ICIS"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Thermo.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -501,10 +438,8 @@
             license="Converter License Terms"
             name="Thermo/Finnigan ITDS"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Thermo.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -516,10 +451,8 @@
             license="Converter License Terms"
             name="Thermo/Finnigan ITS40"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Thermo.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -531,10 +464,8 @@
             license="Converter License Terms"
             name="Thermo/Finnigan MAT95"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Thermo.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -546,10 +477,8 @@
             license="Converter License Terms"
             name="Thermo/Finnigan GC-MS"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Thermo.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -561,10 +490,8 @@
             license="Converter License Terms"
             name="Agilent JCAMP Dialect"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Agilent.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -576,10 +503,8 @@
             license="Converter License Terms"
             name="LECO GC-MS"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/LECO.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -591,10 +516,8 @@
             license="Converter License Terms"
             name="LECO GCxGC-TOF"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/LECO.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -605,10 +528,8 @@
             kind="converter"
             license="Converter License Terms"
             name="Markes GC-MS"
+            summary="Free for commercial use. Must not be used with other software."
             provider="Lablicate">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -620,10 +541,8 @@
             license="Converter License Terms"
             name="Agilent MassHunter GC-MS"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Agilent.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -635,10 +554,8 @@
             license="Converter License Terms"
             name="MassLib"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/MassLib.gif">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -649,10 +566,8 @@
             kind="converter"
             license="Converter License Terms"
             name="MetAlign"
-            provider="Lablicate">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
+            provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software.">
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -664,10 +579,8 @@
             license="Converter License Terms"
             name="Shimadzu GC-MS"
             provider="Lablicate"
-            icon="icons/32x32/Shimadzu.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
+            icon="icons/32x32/Shimadzu.png"
+            summary="Free for commercial use. Must not be used with other software.">
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -679,10 +592,8 @@
             license="Converter License Terms"
             name="Shimadzu GC-MS"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Shimadzu.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -694,10 +605,8 @@
             license="Converter License Terms"
             name="Shimadzu QP-5000"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Shimadzu.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -709,10 +618,8 @@
             license="Converter License Terms"
             name="Shimadzu MS Database"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Shimadzu.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -724,10 +631,8 @@
             license="Converter License Terms"
             name="Syft MS"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Syft.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -739,10 +644,8 @@
             license="Converter License Terms"
             name="Bruker/Varian MS"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Varian.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -754,10 +657,8 @@
             license="Converter License Terms"
             name="Bruker/Varian MS"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Varian.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -769,10 +670,8 @@
             license="Converter License Terms"
             name="VG MassLab"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/VGinstruments.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -784,10 +683,8 @@
             license="Converter License Terms"
             name="Waters Empower GC-MS"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Waters.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -799,10 +696,8 @@
             license="Converter License Terms"
             name="Waters GC-MS"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Waters.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -814,10 +709,8 @@
             license="Converter License Terms"
             name="Bruker NMR"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Bruker.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -829,10 +722,8 @@
             license="Converter License Terms"
             name="bioMérieux GENE-UP PCR"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/bioMerieux.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -844,10 +735,8 @@
             license="Converter License Terms"
             name="Roche LightCycler PCR"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Roche.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -859,10 +748,8 @@
             license="Converter License Terms"
             name="G.A.S. IMS"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/GAS.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -874,10 +761,8 @@
             license="Converter License Terms"
             name="ABSciex HPLC-DAD"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Sciex.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -889,10 +774,8 @@
             license="Converter License Terms"
             name="Agilent HPLC-DAD"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Agilent.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -904,10 +787,8 @@
             license="Converter License Terms"
             name="CAMAG HPTLC"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/CAMAG.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -919,10 +800,8 @@
             license="Converter License Terms"
             name="CHROMuLAN HPLC"
             provider="Lablicate"
-            icon="icons/32x32/CHROMuLAN.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
+            icon="icons/32x32/CHROMuLAN.png"
+            summary="Free for commercial use. Must not be used with other software.">
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -933,10 +812,8 @@
             kind="converter"
             license="Converter License Terms"
             name="HPLC UV-VIS"
+            summary="Free for commercial use. Must not be used with other software."
             provider="Lablicate">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -948,10 +825,8 @@
             license="Converter License Terms"
             name="Agilent MassHunter HPLC-DAD"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Agilent.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -963,10 +838,8 @@
             license="Converter License Terms"
             name="Shimadzu HPLC-DAD"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Shimadzu.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -978,10 +851,8 @@
             license="Converter License Terms"
             name="VUV Analytics HPLC-DAD"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/VUV.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -993,10 +864,8 @@
             license="Converter License Terms"
             name="Waters Empower HPLC-DAD"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Waters.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -1008,10 +877,8 @@
             license="Converter License Terms"
             name="Waters Empower HPLC-FLD"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Waters.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -1023,10 +890,8 @@
             license="Converter License Terms"
             name="Andor Raman Spectroscopy"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/OxfordInstruments.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -1038,10 +903,8 @@
             license="Converter License Terms"
             name="Bruker Opus NIR Spectroscopy"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Bruker.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -1053,10 +916,8 @@
             license="Converter License Terms"
             name="Thermo Galactic Grams FT-IR"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Thermo.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -1068,10 +929,8 @@
             license="Converter License Terms"
             name="Thermo Nicolet FT-IR"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Thermo.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -1083,10 +942,8 @@
             license="Converter License Terms"
             name="DataApex Chromatography"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/DataApex.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -1098,10 +955,8 @@
             license="Converter License Terms"
             name="MassFinder GC-FID/MS"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/MassFinder.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -1113,10 +968,8 @@
             license="Converter License Terms"
             name="TetraScience Chromatography"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/TetraScience.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -1128,10 +981,8 @@
             license="Converter License Terms"
             name="Chromatotec GC-FID"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Chromatotec.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -1143,10 +994,8 @@
             license="Converter End User License"
             name="N2000 GC-TCD"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/N2000.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -1158,11 +1007,9 @@
             license="End User License"
             name="Allotrope Data Format"
             provider="Lablicate"
-            icon="icons/32x32/ADF.png">
-         <overview
-               summary="Commercial product. Requires valid license."
-               url="https://lablicate.com/marketplace/extensions/allotrope">
-         </overview>
+            summary="Commercial product. Requires valid license."
+            icon="icons/32x32/ADF.png"
+            url="https://lablicate.com/marketplace/extensions/allotrope">
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -1174,11 +1021,9 @@
             license="End User License"
             name="Allotrope Simple Model"
             provider="Lablicate"
-            icon="icons/32x32/ASM.png">
-         <overview
-               summary="Commercial product. Requires valid license."
-               url="https://lablicate.com/marketplace/extensions/allotrope">
-         </overview>
+            icon="icons/32x32/ASM.png"
+            summary="Commercial product. Requires valid license."
+            url="https://lablicate.com/marketplace/extensions/allotrope">
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -1190,10 +1035,8 @@
             license="Converter License Terms"
             name="MS SEARCH Database"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/NIST.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -1205,11 +1048,9 @@
             license="Commercial License Terms"
             name="MCR-AR"
             provider="Lablicate"
+            summary="Commercial product. Requires valid license."
+            url="https://lablicate.com/marketplace/extensions/mcr-ar"
             icon="icons/32x32/OpenChrom.png">
-         <overview
-               summary="Commercial product. Requires valid license."
-               url="https://lablicate.com/marketplace/extensions/mcr-ar">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -1221,11 +1062,9 @@
             license="Commercial License Terms"
             name="ChromIdent"
             provider="Lablicate"
+            summary="Commercial product. Requires valid license."
+            url="https://lablicate.com/marketplace/extensions/chromident"
             icon="icons/32x32/OpenChrom.png">
-         <overview
-               summary="Commercial product. Requires valid license."
-               url="https://lablicate.com/marketplace/extensions/chromident">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -1237,11 +1076,9 @@
             license="Commercial License Terms"
             name="Quantitation"
             provider="Lablicate"
+            summary="Commercial product. Requires valid license."
+            url="https://lablicate.com/marketplace/extensions/quantitation"
             icon="icons/32x32/OpenChrom.png">
-         <overview
-               summary="Commercial product. Requires valid license."
-               url="https://lablicate.com/marketplace/extensions/quantitation">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -1253,11 +1090,9 @@
             license="Commercial License Terms"
             name="NIST Database Connector"
             provider="Lablicate"
+            summary="Commercial product. Requires valid license."
+            url="https://lablicate.com/marketplace/extensions/connector-db"
             icon="icons/32x32/OpenChrom.png">
-         <overview
-               summary="Commercial product. Requires valid license."
-               url="https://lablicate.com/marketplace/extensions/connector-db">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -1269,11 +1104,9 @@
             license="Commercial License Terms"
             name="PowerTools"
             provider="Lablicate"
+            summary="Commercial product. Requires valid license."
+            url="https://lablicate.com/marketplace/extensions/powertools"
             icon="icons/32x32/OpenChrom.png">
-         <overview
-               summary="Commercial product. Requires valid license."
-               url="https://lablicate.com/marketplace/extensions/powertools">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -1285,11 +1118,9 @@
             license="Commercial License Terms"
             name="RRF"
             provider="Lablicate"
+            summary="Commercial product. Requires valid license."
+            url="https://lablicate.com/marketplace/extensions/rrf"
             icon="icons/32x32/OpenChrom.png">
-         <overview
-               summary="Commercial product. Requires valid license."
-               url="https://lablicate.com/marketplace/extensions/rrf">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -1301,11 +1132,9 @@
             license="Commercial License Terms"
             name="Ambient Air Processor"
             provider="Lablicate"
+            summary="Commercial product. Requires valid license."
+            url="https://lablicate.com/marketplace/extensions/ambientairprocessor"
             icon="icons/32x32/OpenChrom.png">
-         <overview
-               summary="Commercial product. Requires valid license."
-               url="https://lablicate.com/marketplace/extensions/ambientairprocessor">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -1317,11 +1146,9 @@
             license="Commercial License Terms"
             name="Findings Database"
             provider="Lablicate"
+            summary="Commercial product. Requires valid license."
+            url="https://lablicate.com/marketplace/extensions/findingsdb"
             icon="icons/32x32/OpenChrom.png">
-         <overview
-               summary="Commercial product. Requires valid license."
-               url="https://lablicate.com/marketplace/extensions/findingsdb">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -1333,11 +1160,9 @@
             license="Commercial License Terms"
             name="ChromInspector"
             provider="Lablicate"
+            summary="Commercial product. Requires valid license."
+            url="https://lablicate.com/marketplace/extensions/chrominspector"
             icon="icons/32x32/OpenChrom.png">
-         <overview
-               summary="Commercial product. Requires valid license."
-               url="https://lablicate.com/marketplace/extensions/chrominspector">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -1349,11 +1174,9 @@
             license="Commercial License Terms"
             name="PBM"
             provider="Lablicate"
+            summary="Commercial product. Requires valid license."
+            url="https://lablicate.com/marketplace/extensions/pbm"
             icon="icons/32x32/OpenChrom.png">
-         <overview
-               summary="Commercial product. Requires valid license."
-               url="https://lablicate.com/marketplace/extensions/pbm">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -1365,11 +1188,9 @@
             license="Commercial License Terms"
             name="Chrom2Quant"
             provider="Lablicate"
+            summary="Commercial product. Requires valid license."
+            url="https://lablicate.com/marketplace/extensions/chrom2quant"
             icon="icons/32x32/OpenChrom.png">
-         <overview
-               summary="Commercial product. Requires valid license."
-               url="https://lablicate.com/marketplace/extensions/chrom2quant">
-         </overview>
       </pluginDescriptor>
 
       <pluginDescriptor
@@ -1381,11 +1202,9 @@
             license="Commercial License Terms"
             name="Handbook"
             provider="Lablicate"
+            summary="Commercial product. Requires valid license."
+            url="https://lablicate.com/marketplace/extensions/handbook"
             icon="icons/32x32/OpenChrom.png">
-         <overview
-               summary="Commercial product. Requires valid license."
-               url="https://lablicate.com/marketplace/extensions/handbook">
-         </overview>
       </pluginDescriptor>
       
       <pluginDescriptor
@@ -1397,10 +1216,8 @@
             license="Converter License Terms"
             name="Pfeiffer MS"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Pfeiffer.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>
       
       <pluginDescriptor
@@ -1412,10 +1229,8 @@
             license="Converter License Terms"
             name="Bruker EVOQ MS"
             provider="Lablicate"
+            summary="Free for commercial use. Must not be used with other software."
             icon="icons/32x32/Bruker.png">
-         <overview
-               summary="Free for commercial use. Must not be used with other software.">
-         </overview>
       </pluginDescriptor>            
 
    </extension>
