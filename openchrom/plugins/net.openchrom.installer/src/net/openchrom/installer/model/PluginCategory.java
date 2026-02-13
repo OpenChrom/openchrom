@@ -12,14 +12,8 @@
  *******************************************************************************/
 package net.openchrom.installer.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * a category of plugins, which is a way of organizing plugins in top-level groups.
- * 
- * @author David Green
- * @author Igor Burilo
  */
 public class PluginCategory {
 
@@ -28,8 +22,7 @@ public class PluginCategory {
 	protected String description;
 	protected String relevance;
 	protected String icon;
-	protected Overview overview;
-	protected List<Group> group = new ArrayList<>();
+	protected String summary;
 
 	/**
 	 * an id that uniquely identifies the category
@@ -43,7 +36,7 @@ public class PluginCategory {
 
 		this.id = id;
 	}
-
+	
 	/**
 	 * the name of the category, as it is displayed in the ui.
 	 */
@@ -94,24 +87,14 @@ public class PluginCategory {
 		this.icon = icon;
 	}
 
-	public Overview getOverview() {
+	public String getSummary() {
 
-		return overview;
+		return summary;
 	}
 
-	public void setOverview(Overview overview) {
+	public void setSummary(String summary) {
 
-		this.overview = overview;
-	}
-
-	public List<Group> getGroup() {
-
-		return group;
-	}
-
-	public void setGroup(List<Group> group) {
-
-		this.group = group;
+		this.summary = summary;
 	}
 
 	public void validate() throws IllegalArgumentException {
@@ -125,6 +108,9 @@ public class PluginCategory {
 		if(icon != null && icon.trim().isEmpty()) {
 			throw new IllegalArgumentException("icon is set but empty");
 		}
+		if(summary != null && summary.trim().isEmpty()) {
+			throw new IllegalArgumentException("summary is set but empty");
+		}
 		if(relevance != null) {
 			try {
 				int r = Integer.parseInt(relevance, 10);
@@ -134,9 +120,6 @@ public class PluginCategory {
 			} catch(NumberFormatException e) {
 				throw new IllegalArgumentException("relevance is not between 1 and 100");
 			}
-		}
-		for(Group groupItem : group) {
-			groupItem.validate();
 		}
 	}
 }

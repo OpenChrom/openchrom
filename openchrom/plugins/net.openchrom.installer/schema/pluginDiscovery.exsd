@@ -57,7 +57,6 @@
       <complexType>
          <sequence>
             <element ref="featureFilter" minOccurs="0" maxOccurs="unbounded"/>
-            <element ref="overview" minOccurs="0" maxOccurs="1"/>
          </sequence>
          <attribute name="kind" type="string" use="required">
             <annotation>
@@ -150,6 +149,23 @@
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="url" type="string">
+            <annotation>
+               <documentation>
+                  An URL that points to a web page with more information relevant to the plugin or category.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="summary" type="string">
+            <annotation>
+               <documentation>
+                  A description providing detailed information about the item.  Newlines can be used to format the text into multiple paragraphs if necessary.  Text must fit into an area 320x240, otherwise it will be truncated in the UI.  More lengthy descriptions can be provided on a  web page if required, see @url.
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 
@@ -160,10 +176,6 @@
          </documentation>
       </annotation>
       <complexType>
-         <sequence>
-            <element ref="overview" minOccurs="0" maxOccurs="1"/>
-            <element ref="group" minOccurs="0" maxOccurs="unbounded"/>
-         </sequence>
          <attribute name="id" type="string" use="required">
             <annotation>
                <documentation>
@@ -211,16 +223,6 @@
                </documentation>
             </annotation>
          </attribute>
-      </complexType>
-   </element>
-
-   <element name="overview">
-      <annotation>
-         <documentation>
-            An overview that provides more detailed information, which may include a summary, url and screenshot.
-         </documentation>
-      </annotation>
-      <complexType>
          <attribute name="summary" type="string">
             <annotation>
                <documentation>
@@ -261,23 +263,6 @@
       </complexType>
    </element>
 
-   <element name="group">
-      <annotation>
-         <documentation>
-            groups provide a way to anchor plugins in a grouping with other like entries.
-         </documentation>
-      </annotation>
-      <complexType>
-         <attribute name="id" type="string" use="required">
-            <annotation>
-               <documentation>
-                  An identifier that identifies the group.  Must be unique for a particular plugin category.
-               </documentation>
-            </annotation>
-         </attribute>
-      </complexType>
-   </element>
-
    <annotation>
       <appinfo>
          <meta.section type="since"/>
@@ -287,15 +272,12 @@
       </documentation>
    </annotation>
 
-
-
-
    <annotation>
       <appinfo>
          <meta.section type="copyright"/>
       </appinfo>
       <documentation>
-         Copyright (c) 2023, 2024 Lablicate GmbH.
+         Copyright (c) 2023, 2026 Lablicate GmbH.
 All rights reserved. This program and the accompanying materials
 are made available under the terms of the Eclipse Public License v2.0
 which accompanies this distribution, and is available at

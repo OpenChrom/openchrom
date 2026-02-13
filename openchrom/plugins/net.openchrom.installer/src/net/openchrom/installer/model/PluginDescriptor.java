@@ -33,7 +33,8 @@ public class PluginDescriptor {
 	protected String platformFilter;
 	protected String groupId;
 	protected String icon;
-	protected Overview overview;
+	protected String url;
+	protected String summary;
 
 	public List<PluginDescriptorKind> getKind() {
 
@@ -70,6 +71,20 @@ public class PluginDescriptor {
 
 		this.provider = provider;
 	}
+	
+	/**
+	 * The name of the organization that supplies the plugin.
+	 */
+	public String getUrl() {
+
+		return url;
+	}
+
+	public void setUrl(String url) {
+
+		this.url = url;
+	}
+
 
 	/**
 	 * The short name of the license, for example 'EPL 1.0', 'GPL 2.0', or 'Commercial'.
@@ -161,15 +176,20 @@ public class PluginDescriptor {
 
 		this.icon = icon;
 	}
+	
+	/**
+	 * A description providing detailed information about the item. Newlines can be used to format the text into
+	 * multiple paragraphs if necessary. Text must fit into an area 320x240, otherwise it will be truncated in the UI.
+	 * More lengthy descriptions can be provided on a web page if required, see @url.
+	 */
+	public String getSummary() {
 
-	public Overview getOverview() {
-
-		return overview;
+		return summary;
 	}
 
-	public void setOverview(Overview overview) {
+	public void setSummary(String summary) {
 
-		this.overview = overview;
+		this.summary = summary;
 	}
 
 	public void validate() throws IllegalArgumentException {
@@ -193,6 +213,14 @@ public class PluginDescriptor {
 			throw new IllegalArgumentException("category is empty");
 		}
 		if(icon != null && icon.isEmpty()) {
+			throw new IllegalArgumentException("icon is provided but is empty");
+		}
+		
+		if(url != null && url.isEmpty()) {
+			throw new IllegalArgumentException("icon is provided but is empty");
+		}
+		
+		if(summary != null && summary.isEmpty()) {
 			throw new IllegalArgumentException("icon is provided but is empty");
 		}
 	}
