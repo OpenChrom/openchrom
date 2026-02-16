@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Lablicate GmbH.
+ * Copyright (c) 2019, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -14,7 +14,9 @@
 package net.openchrom.xxd.process.supplier.templates.ui.charts;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.chemclipse.model.baseline.IBaselineModel;
 import org.eclipse.chemclipse.model.core.IChromatogram;
@@ -26,6 +28,10 @@ import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.model.updates.IPeakUpdateListener;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.ChromatogramSelectionMSD;
+import org.eclipse.chemclipse.support.traces.ITrace;
+import org.eclipse.chemclipse.support.traces.TraceFactory;
+import org.eclipse.chemclipse.support.traces.TraceNominalMSD;
+import org.eclipse.chemclipse.support.traces.TraceRasteredWSD;
 import org.eclipse.chemclipse.ux.extension.ui.support.BaselineSelectionPaintListener;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.custom.ChromatogramPeakChart;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.custom.PeakChartSettings;
@@ -539,8 +545,14 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 								 * CB
 								 */
 								IBaselineModel baselineModel = chromatogram.getBaselineModel();
-								startIntensity = baselineModel.getBackgroundAbundance(startRetentionTime);
-								stopIntensity = baselineModel.getBackgroundAbundance(stopRetentionTime);
+								Set<ITrace> traceSet = getTraceSet(chromatogram, traces);
+								if(traceSet != null) {
+									startIntensity = baselineModel.getBackground(startRetentionTime, traceSet);
+									stopIntensity = baselineModel.getBackground(stopRetentionTime, traceSet);
+								} else {
+									startIntensity = baselineModel.getBackground(startRetentionTime);
+									stopIntensity = baselineModel.getBackground(stopRetentionTime);
+								}
 							}
 							PeakSupport peakSupport = new PeakSupport();
 							peak = peakSupport.extractPeakByRetentionTime(chromatogram, startRetentionTime, stopRetentionTime, startIntensity, stopIntensity, traces);
@@ -559,6 +571,17 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 		}
 
 		return peak;
+	}
+
+	private Set<ITrace> getTraceSet(IChromatogram chromatogram, String traces) {
+
+		if(chromatogram instanceof IChromatogramMSD) {
+			return new HashSet<>(TraceFactory.parseTraces(traces, TraceNominalMSD.class));
+		} else if(chromatogram instanceof IChromatogramWSD) {
+			return new HashSet<>(TraceFactory.parseTraces(traces, TraceRasteredWSD.class));
+		}
+
+		return null;
 	}
 
 	private void fireUpdate(IPeak peak) {
