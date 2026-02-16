@@ -19,3 +19,4 @@ Require-Bundle: org.eclipse.core.runtime,
 Export-Package: net.openchrom.installer.model,
  net.openchrom.installer.preferences,
  net.openchrom.installer.util
+Service-Component: OSGI-INF/net.openchrom.installer.model.PluginsDS.xml

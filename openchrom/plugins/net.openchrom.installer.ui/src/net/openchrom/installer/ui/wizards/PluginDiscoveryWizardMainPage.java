@@ -87,6 +87,7 @@ import org.eclipse.ui.progress.WorkbenchJob;
 import org.osgi.framework.FrameworkUtil;
 
 import net.openchrom.installer.model.BundleDiscoveryStrategy;
+import net.openchrom.installer.model.DSDiscoveryStrategy;
 import net.openchrom.installer.model.DiscoveryCategory;
 import net.openchrom.installer.model.IPluginDescriptor;
 import net.openchrom.installer.model.PluginDescriptorKind;
@@ -831,6 +832,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 					}
 					PluginDiscovery pluginDiscovery = new PluginDiscovery();
 					pluginDiscovery.getDiscoveryStrategies().add(new BundleDiscoveryStrategy());
+					pluginDiscovery.getDiscoveryStrategies().add(new DSDiscoveryStrategy());
 					try {
 						pluginDiscovery.performDiscovery(monitor);
 					} catch(CoreException e) {
