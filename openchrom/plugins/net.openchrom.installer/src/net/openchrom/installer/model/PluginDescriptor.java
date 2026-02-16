@@ -37,6 +37,9 @@ public class PluginDescriptor implements IPluginDescriptor {
 	protected String icon;
 	protected String url;
 	protected String summary;
+	private boolean selected;
+	private final PropertyChangeSupport changeSupport;
+	private DiscoveryCategory category;
 
 	public PluginDescriptor() {
 
@@ -221,10 +224,6 @@ public class PluginDescriptor implements IPluginDescriptor {
 
 		this.summary = summary;
 	}
-
-	private DiscoveryCategory category;
-	private boolean selected;
-	private final PropertyChangeSupport changeSupport;
 
 	public DiscoveryCategory getCategory() {
 

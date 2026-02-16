@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="net.openchrom.installer.model.PluginsDS">
+   <service>
+      <provide interface="net.openchrom.installer.model.PluginsDS"/>
+   </service>
+   <reference bind="bindDescriptor" cardinality="0..n" interface="net.openchrom.installer.model.IPluginDescriptor" name="Descriptor" policy="dynamic" unbind="unbindDescriptor"/>
+   <implementation class="net.openchrom.installer.model.PluginsDS"/>
+</scr:component>
