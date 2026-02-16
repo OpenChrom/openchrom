@@ -15,16 +15,11 @@ package net.openchrom.installer.model;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 
- * @author David Green
- * @author Igor Burilo
- */
 public class DiscoveryCategory extends PluginCategory {
 
-	private List<DiscoveryPlugin> plugins = new ArrayList<>();
+	private List<IPluginDescriptor> plugins = new ArrayList<>();
 
-	public List<DiscoveryPlugin> getConnectors() {
+	public List<IPluginDescriptor> getConnectors() {
 
 		return plugins;
 	}

@@ -27,12 +27,12 @@ public class PluginDiscoveryExtensionReader {
 	public static final String FEATURE_FILTER = "featureFilter"; //$NON-NLS-1$
 	public static final String GROUP = "group"; //$NON-NLS-1$
 
-	public PluginDescriptor readConnectorDescriptor(IConfigurationElement element) {
+	public IPluginDescriptor readConnectorDescriptor(IConfigurationElement element) {
 
 		return readConnectorDescriptor(element, PluginDescriptor.class);
 	}
 
-	public <T extends PluginDescriptor> T readConnectorDescriptor(IConfigurationElement element, Class<T> clazz) {
+	public <T extends IPluginDescriptor> T readConnectorDescriptor(IConfigurationElement element, Class<T> clazz) {
 
 		T pluginDescriptor;
 		try {

@@ -16,14 +16,12 @@ import java.util.Set;
 
 import org.eclipse.jface.operation.IRunnableWithProgress;
 
-import net.openchrom.installer.model.PluginDescriptor;
+import net.openchrom.installer.model.IPluginDescriptor;
 
 /**
  * Interface for install jobs
- * 
- * @author Igor Burilo
  */
 public interface IPluginInstallJob extends IRunnableWithProgress {
 
-	void setInstallableConnectors(Set<PluginDescriptor> installableConnectors);
+	void setInstallableConnectors(Set<IPluginDescriptor> installableConnectors);
 }

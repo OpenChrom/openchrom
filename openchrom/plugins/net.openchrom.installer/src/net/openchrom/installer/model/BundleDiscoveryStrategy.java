@@ -25,9 +25,6 @@ import org.osgi.framework.Bundle;
 
 /**
  * a strategy for discovering via installed platform {@link Bundle bundles}.
- * 
- * @author David Green
- * @author Igor Burilo
  */
 public class BundleDiscoveryStrategy extends AbstractDiscoveryStrategy {
 
@@ -63,7 +60,7 @@ public class BundleDiscoveryStrategy extends AbstractDiscoveryStrategy {
 						return;
 					}
 					if(PluginDiscoveryExtensionReader.PLUGIN_DESCRIPTOR.equals(element.getName())) {
-						DiscoveryPlugin descriptor = extensionReader.readConnectorDescriptor(element, DiscoveryPlugin.class);
+						IPluginDescriptor descriptor = extensionReader.readConnectorDescriptor(element, PluginDescriptor.class);
 						plugins.add(descriptor);
 					} else if(PluginDiscoveryExtensionReader.PLUGIN_CATEGORY.equals(element.getName())) {
 						DiscoveryCategory category = extensionReader.readConnectorCategory(element, DiscoveryCategory.class);
