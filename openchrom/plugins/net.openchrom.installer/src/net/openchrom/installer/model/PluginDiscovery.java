@@ -39,9 +39,9 @@ import org.osgi.framework.Version;
  */
 public class PluginDiscovery {
 
-	private List<DiscoveryPlugin> plugins = Collections.emptyList();
+	private List<IPluginDescriptor> plugins = Collections.emptyList();
 	private List<DiscoveryCategory> categories = Collections.emptyList();
-	private List<DiscoveryPlugin> filteredConnectors = Collections.emptyList();
+	private List<IPluginDescriptor> filteredConnectors = Collections.emptyList();
 	private final List<AbstractDiscoveryStrategy> discoveryStrategies = new ArrayList<>();
 	private Dictionary<String, Object> environment = new Hashtable<>();
 	private Map<String, Version> featureToVersion = null;
@@ -107,7 +107,7 @@ public class PluginDiscovery {
 	 * 
 	 * @return the plugins, or an empty list if there are none.
 	 */
-	public List<DiscoveryPlugin> getConnectors() {
+	public List<IPluginDescriptor> getConnectors() {
 
 		return plugins;
 	}
@@ -117,7 +117,7 @@ public class PluginDiscovery {
 	 * 
 	 * @return the filtered plugins, or an empty list if there were none.
 	 */
-	public List<DiscoveryPlugin> getFilteredConnectors() {
+	public List<IPluginDescriptor> getFilteredConnectors() {
 
 		return filteredConnectors;
 	}
@@ -149,7 +149,7 @@ public class PluginDiscovery {
 				logger.error("Duplicate");
 			}
 		}
-		for(DiscoveryPlugin plugin : plugins) {
+		for(IPluginDescriptor plugin : plugins) {
 			DiscoveryCategory category = idToCategory.get(plugin.getCategoryId());
 			if(category != null) {
 				category.getConnectors().add(plugin);
@@ -165,7 +165,7 @@ public class PluginDiscovery {
 	 */
 	private void filterDescriptors() {
 
-		for(DiscoveryPlugin plugin : new ArrayList<DiscoveryPlugin>(plugins)) {
+		for(IPluginDescriptor plugin : new ArrayList<>(plugins)) {
 			if(plugin.getPlatformFilter() != null && !plugin.getPlatformFilter().trim().isEmpty()) {
 				boolean match = false;
 				try {

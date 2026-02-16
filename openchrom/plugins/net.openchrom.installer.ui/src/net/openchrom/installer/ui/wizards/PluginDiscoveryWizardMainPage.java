@@ -88,8 +88,7 @@ import org.osgi.framework.FrameworkUtil;
 
 import net.openchrom.installer.model.BundleDiscoveryStrategy;
 import net.openchrom.installer.model.DiscoveryCategory;
-import net.openchrom.installer.model.DiscoveryPlugin;
-import net.openchrom.installer.model.PluginDescriptor;
+import net.openchrom.installer.model.IPluginDescriptor;
 import net.openchrom.installer.model.PluginDescriptorKind;
 import net.openchrom.installer.model.PluginDiscovery;
 import net.openchrom.installer.preferences.PreferenceSupplier;
@@ -107,7 +106,7 @@ import net.openchrom.installer.util.DiscoveryConnectorComparator;
 public class PluginDiscoveryWizardMainPage extends WizardPage {
 
 	private static final Logger logger = Logger.getLogger(PluginDiscoveryWizardMainPage.class);
-	private final Set<PluginDescriptor> installableConnectors = new HashSet<>();
+	private final Set<IPluginDescriptor> installableConnectors = new HashSet<>();
 	private PluginDiscovery discovery;
 	private Composite body;
 	private final List<Resource> disposables = new ArrayList<>();
@@ -389,7 +388,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 
 	private class PluginDescriptorItemUI implements PropertyChangeListener, Runnable {
 
-		private final DiscoveryPlugin plugin;
+		private final IPluginDescriptor plugin;
 		private final Button checkbox;
 		private final Label iconLabel;
 		private final Label nameLabel;
@@ -401,7 +400,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 		private final Display display;
 		private Image iconImage;
 
-		public PluginDescriptorItemUI(DiscoveryPlugin plugin, Composite categoryChildrenContainer, Color background) {
+		public PluginDescriptorItemUI(IPluginDescriptor plugin, Composite categoryChildrenContainer, Color background) {
 
 			display = categoryChildrenContainer.getDisplay();
 			this.plugin = plugin;
@@ -629,9 +628,9 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 				GridDataFactory.fillDefaults().span(2, 1).grab(true, false).applyTo(categoryChildrenContainer);
 				GridLayoutFactory.fillDefaults().spacing(0, 0).applyTo(categoryChildrenContainer);
 				int numChildren = 0;
-				List<DiscoveryPlugin> plugins = new ArrayList<>(category.getConnectors());
+				List<IPluginDescriptor> plugins = new ArrayList<>(category.getConnectors());
 				Collections.sort(plugins, new DiscoveryConnectorComparator(category));
-				for(final DiscoveryPlugin plugin : plugins) {
+				for(final IPluginDescriptor plugin : plugins) {
 					if(isFiltered(plugin)) {
 						continue;
 					}
@@ -757,7 +756,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 		if(category.getConnectors().isEmpty()) {
 			return true;
 		}
-		for(PluginDescriptor descriptor : category.getConnectors()) {
+		for(IPluginDescriptor descriptor : category.getConnectors()) {
 			if(!isFiltered(descriptor)) {
 				return false;
 			}
@@ -765,7 +764,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 		return true;
 	}
 
-	private boolean isFiltered(PluginDescriptor descriptor) {
+	private boolean isFiltered(IPluginDescriptor descriptor) {
 
 		boolean kindFiltered = true;
 		for(PluginDescriptorKind kind : descriptor.getKind()) {
@@ -885,12 +884,12 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 		}
 	}
 
-	public Set<PluginDescriptor> getInstallableConnectors() {
+	public Set<IPluginDescriptor> getInstallableConnectors() {
 
 		return installableConnectors;
 	}
 
-	private void modifySelection(final DiscoveryPlugin plugin, boolean selected) {
+	private void modifySelection(final IPluginDescriptor plugin, boolean selected) {
 
 		plugin.setSelected(selected);
 		if(selected) {
@@ -914,7 +913,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 		}
 	}
 
-	private boolean hasTooltip(final DiscoveryPlugin plugin) {
+	private boolean hasTooltip(final IPluginDescriptor plugin) {
 
 		return plugin.getSummary() != null && !plugin.getSummary().isEmpty();
 	}

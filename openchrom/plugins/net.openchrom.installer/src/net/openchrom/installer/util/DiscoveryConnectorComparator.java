@@ -14,13 +14,13 @@ package net.openchrom.installer.util;
 
 import java.util.Comparator;
 
-import net.openchrom.installer.model.DiscoveryPlugin;
+import net.openchrom.installer.model.IPluginDescriptor;
 import net.openchrom.installer.model.PluginCategory;
 
 /**
  * a comparator that orders plugins by group and alphabetically by their name
  */
-public class DiscoveryConnectorComparator implements Comparator<DiscoveryPlugin> {
+public class DiscoveryConnectorComparator implements Comparator<IPluginDescriptor> {
 
 	private final PluginCategory category;
 
@@ -33,7 +33,7 @@ public class DiscoveryConnectorComparator implements Comparator<DiscoveryPlugin>
 	}
 
 	@Override
-	public int compare(DiscoveryPlugin o1, DiscoveryPlugin o2) {
+	public int compare(IPluginDescriptor o1, IPluginDescriptor o2) {
 
 		if(o1.getCategory() != category || o2.getCategory() != category) {
 			throw new IllegalArgumentException();

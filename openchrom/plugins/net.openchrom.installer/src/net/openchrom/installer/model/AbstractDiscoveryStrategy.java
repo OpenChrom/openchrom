@@ -20,14 +20,11 @@ import org.eclipse.core.runtime.IProgressMonitor;
 /**
  * An abstraction of a strategy for discovering plugins and categories. Strategy design pattern. Note that strategies
  * are not reusable.
- * 
- * @author David Green
- * @author Igor Burilo
  */
 public abstract class AbstractDiscoveryStrategy {
 
 	protected List<DiscoveryCategory> categories;
-	protected List<DiscoveryPlugin> plugins;
+	protected List<IPluginDescriptor> plugins;
 
 	/**
 	 * Perform discovery and add discovered items to {@link #getCategories() categories} and {@link #getConnectors()}.
@@ -47,12 +44,12 @@ public abstract class AbstractDiscoveryStrategy {
 		this.categories = categories;
 	}
 
-	public List<DiscoveryPlugin> getConnectors() {
+	public List<IPluginDescriptor> getConnectors() {
 
 		return plugins;
 	}
 
-	public void setConnectors(List<DiscoveryPlugin> plugins) {
+	public void setConnectors(List<IPluginDescriptor> plugins) {
 
 		this.plugins = plugins;
 	}

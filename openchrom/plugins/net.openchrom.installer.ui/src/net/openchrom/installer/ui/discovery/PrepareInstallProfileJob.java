@@ -47,6 +47,7 @@ import org.eclipse.equinox.p2.ui.ProvisioningUI;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 
+import net.openchrom.installer.model.IPluginDescriptor;
 import net.openchrom.installer.model.PluginDescriptor;
 import net.openchrom.installer.ui.swt.InstallErrorDialog;
 
@@ -64,20 +65,19 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 
 	private static final Logger logger = Logger.getLogger(PrepareInstallProfileJob.class);
 	private static final String P2_FEATURE_GROUP_SUFFIX = ".feature.group"; //$NON-NLS-1$
-	private Set<PluginDescriptor> installableConnectors;
+	private Set<IPluginDescriptor> installableConnectors;
 	private final ProvisioningUI provisioningUI;
 	private URI[] repositories;
 
 	public PrepareInstallProfileJob() {
 
 		this.provisioningUI = ProvisioningUI.getDefaultUI();
-		IMetadataRepositoryManager manager = provisioningUI.getSession().getProvisioningAgent()
-				.getService(IMetadataRepositoryManager.class);
+		IMetadataRepositoryManager manager = provisioningUI.getSession().getProvisioningAgent().getService(IMetadataRepositoryManager.class);
 		repositories = manager.getKnownRepositories(IMetadataRepositoryManager.REPOSITORIES_ALL);
 	}
 
 	@Override
-	public void setInstallableConnectors(Set<PluginDescriptor> installableConnectors) {
+	public void setInstallableConnectors(Set<IPluginDescriptor> installableConnectors) {
 
 		if(installableConnectors == null || installableConnectors.isEmpty()) {
 			throw new IllegalArgumentException();
@@ -153,9 +153,9 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 		}
 		String message = ""; //$NON-NLS-1$
 		String detailedMessage = ""; //$NON-NLS-1$
-		for(PluginDescriptor descriptor : installableConnectors) {
+		for(IPluginDescriptor descriptor : installableConnectors) {
 			StringBuilder unavailableIds = null;
-			String id = descriptor.getInstallableUnit()+P2_FEATURE_GROUP_SUFFIX;
+			String id = descriptor.getInstallableUnit() + P2_FEATURE_GROUP_SUFFIX;
 			if(!foundIds.contains(id)) {
 				if(unavailableIds == null) {
 					unavailableIds = new StringBuilder();
@@ -278,8 +278,8 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 
 		final Set<String> installableUnitIdsThisRepository = new HashSet<>();
 		// determine all installable units for this repository
-		for(PluginDescriptor descriptor : installableConnectors) {
-			installableUnitIdsThisRepository.add(descriptor.getInstallableUnit()+P2_FEATURE_GROUP_SUFFIX);
+		for(IPluginDescriptor descriptor : installableConnectors) {
+			installableUnitIdsThisRepository.add(descriptor.getInstallableUnit() + P2_FEATURE_GROUP_SUFFIX);
 		}
 		return installableUnitIdsThisRepository;
 	}
