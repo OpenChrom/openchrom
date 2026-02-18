@@ -42,7 +42,6 @@ import org.eclipse.chemclipse.csd.model.core.selection.IChromatogramSelectionCSD
 import org.eclipse.chemclipse.csd.model.implementation.ChromatogramPeakCSD;
 import org.eclipse.chemclipse.csd.model.implementation.PeakModelCSD;
 import org.eclipse.chemclipse.csd.model.implementation.ScanCSD;
-import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogramPeak;
 import org.eclipse.chemclipse.model.core.IPeakIntensityValues;
@@ -71,8 +70,6 @@ import net.openchrom.xxd.process.supplier.templates.support.PeakSupport;
 import net.openchrom.xxd.process.supplier.templates.util.TracesUtil;
 
 public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorMSD, IPeakDetectorCSD {
-
-	private static final Logger logger = Logger.getLogger(PeakTransfer.class);
 
 	@Override
 	public IProcessingInfo<?> detect(IChromatogramSelectionMSD chromatogramSelection, IPeakDetectorSettingsMSD settings, IProgressMonitor monitor) {
