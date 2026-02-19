@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2025 Lablicate GmbH.
+ * Copyright (c) 2020, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -17,15 +17,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.eclipse.chemclipse.csd.model.core.IPeakCSD;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.model.core.ITargetSupplier;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.targets.ITarget;
-import org.eclipse.chemclipse.model.types.DataType;
 import org.eclipse.chemclipse.model.updates.ITargetUpdateListener;
-import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
@@ -37,17 +34,14 @@ import org.eclipse.chemclipse.support.ui.updates.IUpdateListenerUI;
 import org.eclipse.chemclipse.support.updates.IUpdateListener;
 import org.eclipse.chemclipse.swt.ui.components.ISearchListener;
 import org.eclipse.chemclipse.swt.ui.components.SearchSupportUI;
-import org.eclipse.chemclipse.swt.ui.services.IScanIdentifierService;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.chemclipse.ux.extension.ui.swt.IExtendedPartUI;
 import org.eclipse.chemclipse.ux.extension.ui.swt.ISettingsHandler;
-import org.eclipse.chemclipse.ux.extension.xxd.ui.Activator;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.preferences.PreferencePageTargets;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.preferences.PreferencePageTargetsList;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.swt.ScanIdentifierUI;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.swt.TargetsListUI;
 import org.eclipse.chemclipse.ux.extension.xxd.ui.targets.ComboTarget;
-import org.eclipse.chemclipse.wsd.model.core.IPeakWSD;
 import org.eclipse.jface.preference.IPreferencePage;
 import org.eclipse.jface.viewers.StyledCellLabelProvider;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -66,7 +60,6 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swtchart.extensions.core.IKeyboardSupport;
-import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import net.openchrom.xxd.process.supplier.templates.model.ReviewSetting;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
@@ -186,30 +179,9 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 
 	private List<Class<? extends IPreferencePage>> getPreferencePages() {
 
-		/*
-		 * Default pages
-		 */
 		List<Class<? extends IPreferencePage>> preferencePages = new ArrayList<>();
 		preferencePages.add(PreferencePageTargets.class);
 		preferencePages.add(PreferencePageTargetsList.class);
-		/*
-		 * Additional pages.
-		 */
-		DataType scanDataType = getScanDataType();
-		Object[] scanIdentifierServices = Activator.getDefault().getScanIdentifierServices();
-		if(scanIdentifierServices != null) {
-			for(Object object : scanIdentifierServices) {
-				if(object instanceof IScanIdentifierService scanIdentifierService) {
-					DataType dataType = scanIdentifierService.getDataType();
-					if(scanDataType.equals(dataType)) {
-						Class<? extends IWorkbenchPreferencePage> preferencePage = scanIdentifierService.getPreferencePage();
-						if(preferencePage != null) {
-							preferencePages.add(preferencePage);
-						}
-					}
-				}
-			}
-		}
 
 		return preferencePages;
 	}
@@ -579,19 +551,6 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 		}
 
 		return null;
-	}
-
-	private DataType getScanDataType() {
-
-		if(peak instanceof IPeakCSD) {
-			return DataType.CSD;
-		} else if(peak instanceof IPeakMSD) {
-			return DataType.MSD;
-		} else if(peak instanceof IPeakWSD) {
-			return DataType.WSD;
-		}
-
-		return DataType.NONE;
 	}
 
 	private void fireUpdate(boolean updateChart) {
