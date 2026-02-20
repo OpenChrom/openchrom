@@ -106,6 +106,7 @@
       <import feature="org.eclipse.swtchart.feature"/>
       <import feature="org.eclipse.equinox.p2.user.ui"/>
       <import plugin="org.eclipse.ui.net"/>
+      <import plugin="org.eclipse.ui.monitoring"/>
    </requires>
 
    <plugin
