@@ -105,6 +105,7 @@
       <import feature="org.eclipse.license"/>
       <import feature="org.eclipse.swtchart.feature"/>
       <import feature="org.eclipse.equinox.p2.user.ui"/>
+      <import plugin="org.eclipse.ui.net"/>
    </requires>
 
    <plugin
