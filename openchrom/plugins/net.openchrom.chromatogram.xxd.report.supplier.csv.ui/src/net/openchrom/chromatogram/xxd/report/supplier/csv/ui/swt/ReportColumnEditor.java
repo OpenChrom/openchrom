@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Lablicate GmbH.
+ * Copyright (c) 2021, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -500,7 +500,7 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 		}
 		List<String> toRemove = new ArrayList<>();
 		for(String columnText : availableColumns) {
-			if(!Strings.CI.endsWith(columnText, searchText)) {
+			if(!Strings.CI.contains(columnText, searchText)) {
 				toRemove.add(columnText);
 			}
 		}
