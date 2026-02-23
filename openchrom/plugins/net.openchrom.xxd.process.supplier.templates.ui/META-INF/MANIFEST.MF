@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.xxd.process.supplier.templates.ui
 Bundle-ManifestVersion: 2
 Bundle-Name: Templates UI
 Bundle-SymbolicName: net.openchrom.xxd.process.supplier.templates.ui;singleton:=true
-Bundle-Version: 1.6.6.qualifier
+Bundle-Version: 1.6.7.qualifier
 Bundle-Activator: net.openchrom.xxd.process.supplier.templates.ui.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.ui,

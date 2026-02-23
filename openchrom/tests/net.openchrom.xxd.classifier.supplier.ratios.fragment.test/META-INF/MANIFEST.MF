@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.xxd.classifier.supplier.ratios.fragment.tes
 Bundle-ManifestVersion: 2
 Bundle-Name: Ratio Calculator Test
 Bundle-SymbolicName: net.openchrom.xxd.classifier.supplier.ratios.fragment.test
-Bundle-Version: 1.6.6.qualifier
+Bundle-Version: 1.6.7.qualifier
 Bundle-Vendor: OpenChrom
 Fragment-Host: net.openchrom.xxd.classifier.supplier.ratios;bundle-version="1.0.0"
 Import-Package: org.junit.jupiter.api;version="[6.0.0,7.0.0)"
