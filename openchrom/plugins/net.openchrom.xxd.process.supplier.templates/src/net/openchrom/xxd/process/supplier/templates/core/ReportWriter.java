@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2026 Lablicate GmbH.
+ * Copyright (c) 2020, 2025 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -32,6 +32,7 @@ import org.eclipse.chemclipse.model.core.IChromatogramPeak;
 import org.eclipse.chemclipse.model.core.IIntegrationEntry;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
+import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.model.core.support.HeaderField;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
@@ -601,20 +602,22 @@ public class ReportWriter {
 			 */
 			double integratedArea = peakMSD.getIntegratedArea();
 			if(integratedArea > 0) {
-				IScanMSD scanMSD = peakMSD.getPeakModel().getPeakMaximum();
-				double totalIntensity = scanMSD.getTotalSignal();
-				double tracesIntensity = 0.0d;
-				IExtractedIonSignal extractedIonSignal = scanMSD.getExtractedIonSignal();
-				for(int ion = extractedIonSignal.getStartIon(); ion <= extractedIonSignal.getStopIon(); ion++) {
-					float intensity = extractedIonSignal.getAbundance(ion);
-					if(intensity > 0 && ion == trace) {
-						tracesIntensity += intensity;
+				IScan scan = peakMSD.getPeakModel().getPeakMaximum();
+				if(scan instanceof IScanMSD scanMSD) {
+					double totalIntensity = scanMSD.getTotalSignal();
+					double tracesIntensity = 0.0d;
+					IExtractedIonSignal extractedIonSignal = scanMSD.getExtractedIonSignal();
+					for(int ion = extractedIonSignal.getStartIon(); ion <= extractedIonSignal.getStopIon(); ion++) {
+						float intensity = extractedIonSignal.getAbundance(ion);
+						if(intensity > 0 && ion == trace) {
+							tracesIntensity += intensity;
+						}
 					}
-				}
 
-				if(totalIntensity > 0) {
-					double percentage = 1.0d / totalIntensity * tracesIntensity;
-					area = integratedArea * percentage;
+					if(totalIntensity > 0) {
+						double percentage = 1.0d / totalIntensity * tracesIntensity;
+						area = integratedArea * percentage;
+					}
 				}
 			}
 		}
@@ -643,20 +646,22 @@ public class ReportWriter {
 			 */
 			double integratedArea = peakWSD.getIntegratedArea();
 			if(integratedArea > 0) {
-				IScanWSD scanWSD = peakWSD.getPeakModel().getPeakMaximum();
-				double totalIntensity = scanWSD.getTotalSignal();
-				double tracesIntensity = 0.0d;
-				IExtractedWavelengthSignal extractedWavelengthSignal = scanWSD.getExtractedWavelengthSignal();
-				for(int wavelength = extractedWavelengthSignal.getStartWavelength(); wavelength <= extractedWavelengthSignal.getStopWavelength(); wavelength++) {
-					float intensity = extractedWavelengthSignal.getAbundance(wavelength);
-					if(intensity > 0 && wavelength == trace) {
-						tracesIntensity += intensity;
+				IScan scan = peakWSD.getPeakModel().getPeakMaximum();
+				if(scan instanceof IScanWSD scanWSD) {
+					double totalIntensity = scanWSD.getTotalSignal();
+					double tracesIntensity = 0.0d;
+					IExtractedWavelengthSignal extractedWavelengthSignal = scanWSD.getExtractedWavelengthSignal();
+					for(int wavelength = extractedWavelengthSignal.getStartWavelength(); wavelength <= extractedWavelengthSignal.getStopWavelength(); wavelength++) {
+						float intensity = extractedWavelengthSignal.getAbundance(wavelength);
+						if(intensity > 0 && wavelength == trace) {
+							tracesIntensity += intensity;
+						}
 					}
-				}
 
-				if(totalIntensity > 0) {
-					double percentage = 1.0d / totalIntensity * tracesIntensity;
-					area = integratedArea * percentage;
+					if(totalIntensity > 0) {
+						double percentage = 1.0d / totalIntensity * tracesIntensity;
+						area = integratedArea * percentage;
+					}
 				}
 			}
 		}
