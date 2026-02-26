@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Lablicate GmbH.
+ * Copyright (c) 2023, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -15,6 +15,7 @@ package net.openchrom.xxd.base.ui.services;
 import java.util.List;
 
 import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.identifier.IIdentifierSettings;
 import org.eclipse.chemclipse.model.ranges.TimeRanges;
 import org.eclipse.chemclipse.model.types.DataType;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
@@ -31,7 +32,7 @@ public interface IDeconvolutionBatchService {
 
 	DataType getDataType();
 
-	IProcessingInfo<?> calculate(List<IChromatogram> chromatograms, TimeRanges timeRanges, IProgressMonitor monitor);
+	IProcessingInfo<?> calculate(List<IChromatogram> chromatograms, TimeRanges timeRanges, IIdentificationService identificationService, IIdentifierSettings identifierSettings, boolean savePcaMatrix, IProgressMonitor monitor);
 
 	Class<? extends IWorkbenchPreferencePage> getPreferencePage();
 }
