@@ -85,8 +85,7 @@ public class MoleculeToInChI_Test {
 				$$$$
 				""");
 
-		InChIGeneratorFactory factory = InChIGeneratorFactory.getInstance();
-		InChIGenerator generator = factory.getInChIGenerator(molecule);
+		InChIGenerator generator = InChIGeneratorFactory.getInChIGenerator(molecule);
 		String inchi = generator.getInchi();
 		assertEquals("InChI=1S/C8H10N4O2/c1-10-4-9-6-5(10)7(13)12(3)8(14)11(6)2/h4H,1-3H3", inchi);
 	}
