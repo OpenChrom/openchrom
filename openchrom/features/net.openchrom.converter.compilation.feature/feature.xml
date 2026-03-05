@@ -29,6 +29,10 @@
          version="0.0.0"/>
 
    <includes
+         id="net.openchrom.wsd.converter.supplier.axr.feature"
+         version="0.0.0"/>
+
+   <includes
          id="net.openchrom.wsd.converter.supplier.cdf.feature"
          version="0.0.0"/>
 

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="net.openchrom.wsd.converter.supplier.axr.feature"
+      label="AXR WSD (*.axr)"
+      version="1.6.15.qualifier"
+      provider-name="OpenChrom" plugin="net.openchrom.feature.branding"
+      license-feature="org.eclipse.license" license-feature-version="2.0.2.qualifier">
+
+   <description url="https://www.openchrom.net">
+      This feature provides AXR chromatogram import.
+   </description>
+
+   <copyright url="https://www.lablicate.com">
+      Copyright (c) 2026 Lablicate GmbH.
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <plugin
+         id="net.openchrom.wsd.converter.supplier.axr"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
