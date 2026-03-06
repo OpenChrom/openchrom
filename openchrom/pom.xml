@@ -132,7 +132,7 @@
 						<phase>prepare-package</phase>
 						<configuration>
 							<outputDirectory>${project.build.directory}</outputDirectory>
-							<overwrite>true</overwrite>
+							<changeDetection>always</changeDetection>
 							<resources>
 								<resource>
 									<directory>${basedir}</directory>
