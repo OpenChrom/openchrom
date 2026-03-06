@@ -134,10 +134,6 @@
          version="0.0.0"/>
 
    <plugin
-         id="org.eclipse.ui.navigator.resources"
-         version="0.0.0"/>
-
-   <plugin
          id="org.eclipse.e4.ui.css.swt.theme"
          version="0.0.0"/>
 
