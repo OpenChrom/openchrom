@@ -188,6 +188,9 @@ public class ConfigurableReportWriter {
 				if(reportColumn.equals(ReportColumns.PEAK_WIDTH_0)) {
 					records.add(peakModel.getWidthByInflectionPoints(0.0f) / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 				}
+				if(reportColumn.equals(ReportColumns.PEAK_WIDTH_5)) {
+					records.add(peakModel.getWidthByInflectionPoints(0.05f) / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
+				}
 				if(reportColumn.equals(ReportColumns.PEAK_WIDTH_10)) {
 					records.add(peakModel.getWidthByInflectionPoints(0.10f) / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 				}
