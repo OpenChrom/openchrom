@@ -74,6 +74,7 @@ public class ReportColumns extends ArrayList<String> {
 	public static final String PEAK_WIDTH_BASELINE_TOTAL = "Peak Width Baseline Total";
 	public static final String PEAK_WIDTH_BY_INFLECTION_POINTS = "Peak Width at Half Peak Height";
 	public static final String PEAK_WIDTH_0 = "Peak Width at 0% Height";
+	public static final String PEAK_WIDTH_5 = "Peak Width at 5% Height";
 	public static final String PEAK_WIDTH_10 = "Peak Width at 10% Height";
 	public static final String PEAK_WIDTH_15 = "Peak Width at 15% Height";
 	public static final String PEAK_WIDTH_50 = "Peak Width at 50% Height";
@@ -142,6 +143,7 @@ public class ReportColumns extends ArrayList<String> {
 		reportColumns.add(PEAK_WIDTH_BASELINE_TOTAL);
 		reportColumns.add(PEAK_WIDTH_BY_INFLECTION_POINTS);
 		reportColumns.add(PEAK_WIDTH_0);
+		reportColumns.add(PEAK_WIDTH_5);
 		reportColumns.add(PEAK_WIDTH_10);
 		reportColumns.add(PEAK_WIDTH_15);
 		reportColumns.add(PEAK_WIDTH_50);
