@@ -244,7 +244,7 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 		monitor.setWorkRemaining(repositories.size());
 		for(final IMetadataRepository repository : repositories) {
 			checkCancelled(monitor);
-			final Set<String> installableUnitIdsThisRepository = getDescriptorIds(repository);
+			final Set<String> installableUnitIdsThisRepository = getDescriptorIds();
 			IQuery<IInstallableUnit> query = QueryUtil.createMatchQuery( //
 					"id ~= /*.feature.group/ && " + //$NON-NLS-1$
 							"properties['org.eclipse.equinox.p2.type.group'] == true ");//$NON-NLS-1$
@@ -274,7 +274,7 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 		return metaRepositories;
 	}
 
-	private Set<String> getDescriptorIds(final IMetadataRepository repository) throws URISyntaxException {
+	private Set<String> getDescriptorIds() throws URISyntaxException {
 
 		final Set<String> installableUnitIdsThisRepository = new HashSet<>();
 		// determine all installable units for this repository

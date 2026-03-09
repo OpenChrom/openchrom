@@ -14,11 +14,8 @@ package net.openchrom.installer.ui.handlers;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.support.ui.workbench.DisplayUtils;
-import org.eclipse.e4.core.commands.ECommandService;
-import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.swt.widgets.Shell;
 
 import net.openchrom.installer.ui.discovery.IPluginInstallJob;
 import net.openchrom.installer.ui.discovery.PrepareInstallProfileJob;
@@ -29,7 +26,7 @@ public class AddonsInstallHandler {
 	private static final Logger logger = Logger.getLogger(AddonsInstallHandler.class);
 
 	@Execute
-	void execute(Shell shell, ECommandService commandService, EHandlerService handlerService) {
+	void execute() {
 
 		try {
 			IPluginInstallJob installJob = new PrepareInstallProfileJob();
