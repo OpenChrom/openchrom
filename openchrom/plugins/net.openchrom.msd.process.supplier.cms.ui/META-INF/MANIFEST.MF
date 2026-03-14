@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.msd.process.supplier.cms.ui
 Bundle-ManifestVersion: 2
 Bundle-Name: CMS Process UI
 Bundle-SymbolicName: net.openchrom.msd.process.supplier.cms.ui;singleton:=true
-Bundle-Version: 1.6.9.qualifier
+Bundle-Version: 1.6.10.qualifier
 Bundle-Activator: net.openchrom.msd.process.supplier.cms.ui.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.ui,
