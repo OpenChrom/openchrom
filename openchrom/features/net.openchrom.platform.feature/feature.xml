@@ -107,6 +107,11 @@
       <import feature="org.eclipse.equinox.p2.user.ui"/>
       <import plugin="org.eclipse.ui.net"/>
       <import plugin="org.eclipse.ui.monitoring"/>
+      <import plugin="org.eclipse.ui.cheatsheets"/>
+      <import plugin="org.eclipse.ui.navigator"/>
+      <import plugin="org.eclipse.e4.ui.css.swt.theme"/>
+      <import plugin="org.eclipse.ui.themes"/>
+      <import plugin="org.eclipse.ui.views.log"/>
    </requires>
 
    <plugin
@@ -123,26 +128,6 @@
 
    <plugin
          id="net.openchrom.xxd.base.ui"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.ui.cheatsheets"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.ui.navigator"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.e4.ui.css.swt.theme"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.ui.themes"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.ui.views.log"
          version="0.0.0"/>
 
 </feature>
