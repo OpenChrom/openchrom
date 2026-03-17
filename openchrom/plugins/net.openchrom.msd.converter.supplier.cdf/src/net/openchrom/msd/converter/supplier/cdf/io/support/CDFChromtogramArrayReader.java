@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2025 Lablicate GmbH.
+ * Copyright (c) 2013, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -13,10 +13,6 @@
 package net.openchrom.msd.converter.supplier.cdf.io.support;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.eclipse.chemclipse.msd.model.core.AbstractIon;
 
 import net.openchrom.msd.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
 import net.openchrom.msd.converter.supplier.cdf.exceptions.NoSuchScanStored;
@@ -41,10 +37,10 @@ public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReade
 	public CDFChromtogramArrayReader(NetcdfFile chromatogram) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
 
 		super(chromatogram);
-		initializeVariables();
+		initializeScanVariables();
 	}
 
-	private void initializeVariables() throws IOException, NoCDFVariableDataFound {
+	private void initializeScanVariables() throws IOException, NoCDFVariableDataFound {
 
 		String variable;
 		variable = CDFConstants.VARIABLE_MASS_VALUES;
@@ -79,7 +75,7 @@ public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReade
 		valueArrayScanIndex = (int[])valuesScanIndex.read().get1DJavaArray(DataType.INT);
 	}
 
-	public VendorScan getMassSpectrum(int scan, int precision, boolean forceNominal) throws NoSuchScanStored {
+	public VendorScan getMassSpectrum(int scan) throws NoSuchScanStored {
 
 		/*
 		 * If the scan is out of a valid range.
@@ -91,7 +87,6 @@ public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReade
 		 * Scan
 		 */
 		VendorScan massSpectrum = new VendorScan();
-		Map<Integer, DataPoint> dataPointMap = (forceNominal) ? new HashMap<>() : null;
 		/*
 		 * --scan because the index of the array starts at 0 and not at 1.
 		 */
@@ -101,45 +96,15 @@ public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReade
 
 		for(int i = 0; i < peaks; i++) {
 			int position = offset + i;
-			/*
-			 * If force nominal, then first collect and condense the data.
-			 */
-			if(forceNominal) {
-				int mz = AbstractIon.getIon(valueArrayIon[position]);
-				float intensity = valueArrayAbundance[position];
 
-				if(intensity > 0) {
-					DataPoint dataPoint = dataPointMap.get(mz);
-					if(dataPoint == null) {
-						dataPoint = new DataPoint(mz, intensity);
-						dataPointMap.put(mz, dataPoint);
-					} else {
-						double abundance = dataPoint.getIntensity() + intensity;
-						dataPoint.setIntensity(abundance);
-					}
-				}
-			} else {
-				/*
-				 * Normal
-				 */
-				double mz = AbstractIon.getIon(valueArrayIon[position], precision);
-				float intensity = valueArrayAbundance[position];
+			double mz = valueArrayIon[position];
+			float intensity = valueArrayAbundance[position];
 
-				if(intensity > 0) {
-					addIon(massSpectrum, mz, intensity);
-				}
-			}
-		}
-		/*
-		 * Add the collected and condensed data.
-		 */
-		if(forceNominal) {
-			for(DataPoint dataPoint : dataPointMap.values()) {
-				double mz = dataPoint.getMz();
-				float intensity = (float)dataPoint.getIntensity();
+			if(intensity > 0) {
 				addIon(massSpectrum, mz, intensity);
 			}
 		}
+
 		/*
 		 * ++scan because it was decremented before
 		 */
