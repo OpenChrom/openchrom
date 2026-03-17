@@ -26,12 +26,6 @@
             id="net.openchrom.xxd.classifier.supplier.ratios.ui.preferences.preferencePageQuant"
             name="Quant Ratios">
       </page> 
-      <page
-            category="net.openchrom.xxd.classifier.supplier.ratios.ui.preferences.preferencePage"
-            class="net.openchrom.xxd.classifier.supplier.ratios.ui.preferences.PreferencePageQual"
-            id="net.openchrom.xxd.classifier.supplier.ratios.ui.preferences.preferencePageQual"
-            name="Quality Ratio Classifier">
-      </page>                       
    </extension>
    <extension
          point="org.eclipse.core.runtime.adapters">
