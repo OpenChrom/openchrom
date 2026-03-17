@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2025 Lablicate GmbH.
+ * Copyright (c) 2013, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -39,7 +39,6 @@ import net.openchrom.msd.converter.supplier.cdf.io.support.IAbstractCDFChromatog
 import net.openchrom.msd.converter.supplier.cdf.model.VendorChromatogram;
 import net.openchrom.msd.converter.supplier.cdf.model.VendorIon;
 import net.openchrom.msd.converter.supplier.cdf.model.VendorScan;
-import net.openchrom.msd.converter.supplier.cdf.preferences.PreferenceSupplier;
 
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.NetcdfFiles;
@@ -121,13 +120,10 @@ public class ChromatogramReaderMSD extends AbstractChromatogramMSDReader impleme
 		chromatogram = new VendorChromatogram();
 		setChromatogramEntries(chromatogram, in, file);
 
-		int precision = PreferenceSupplier.getPrecision();
-		boolean forceParseNominal = PreferenceSupplier.isForceParseNominal();
-
 		monitor.beginTask(ConverterMessages.importScan, in.getNumberOfScans());
 		for(int i = 1; i <= in.getNumberOfScans(); i++) {
 			try {
-				massSpectrum = in.getMassSpectrum(i, precision, forceParseNominal);
+				massSpectrum = in.getMassSpectrum(i);
 				chromatogram.addScan(massSpectrum);
 			} catch(NoSuchScanStored e) {
 				logger.warn(e);
