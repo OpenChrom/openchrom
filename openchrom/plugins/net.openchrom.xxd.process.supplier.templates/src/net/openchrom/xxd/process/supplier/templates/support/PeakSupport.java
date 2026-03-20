@@ -450,7 +450,8 @@ public class PeakSupport {
 				 * Baseline Subtract
 				 */
 				org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.baselinesubtract.core.ChromatogramFilter baselineSubtractFilter = new org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.baselinesubtract.core.ChromatogramFilter();
-				baselineSubtractFilter.applyFilter(chromatogramSelectionCSD, new NullProgressMonitor());
+				org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.baselinesubtract.settings.ChromatogramFilterSettings baselineSubtractSettings = new org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.baselinesubtract.settings.ChromatogramFilterSettings();
+				baselineSubtractFilter.applyFilter(chromatogramSelectionCSD, baselineSubtractSettings, new NullProgressMonitor());
 				/*
 				 * Remove Negative/Empty Scans
 				 */
