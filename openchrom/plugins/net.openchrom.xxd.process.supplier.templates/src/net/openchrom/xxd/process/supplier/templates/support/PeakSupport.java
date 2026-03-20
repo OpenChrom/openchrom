@@ -417,7 +417,8 @@ public class PeakSupport {
 				 * Zero Set
 				 */
 				org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.zeroset.core.ChromatogramFilterCSD zeroSetFilter = new org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.zeroset.core.ChromatogramFilterCSD();
-				zeroSetFilter.applyFilter(chromatogramSelectionCSD, new NullProgressMonitor());
+				org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.zeroset.core.settings.FilterSettingsCSD filterSettings = new org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.zeroset.core.settings.FilterSettingsCSD();
+				zeroSetFilter.applyFilter(chromatogramSelectionCSD, filterSettings, new NullProgressMonitor());
 				/*
 				 * Scan Density
 				 */
