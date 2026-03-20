@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Lablicate GmbH.
+ * Copyright (c) 2019, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -95,31 +95,10 @@ public class TemplateIntegrator extends AbstractPeakIntegrator {
 	}
 
 	@Override
-	public IProcessingInfo<IPeakIntegrationResults> integrate(IPeak peak, IProgressMonitor monitor) {
-
-		List<IPeak> peaks = new ArrayList<>();
-		peaks.add(peak);
-		return integrate(peaks, getSettings(), monitor);
-	}
-
-	@Override
-	public IProcessingInfo<IPeakIntegrationResults> integrate(List<? extends IPeak> peaks, IProgressMonitor monitor) {
-
-		return integrate(peaks, getSettings(), monitor);
-	}
-
-	@Override
 	public IProcessingInfo<IPeakIntegrationResults> integrate(IChromatogramSelection chromatogramSelection, IPeakIntegrationSettings peakIntegrationSettings, IProgressMonitor monitor) {
 
 		List<? extends IPeak> peaks = chromatogramSelection.getChromatogram().getPeaks(chromatogramSelection);
 		return integrate(peaks, peakIntegrationSettings, monitor);
-	}
-
-	@Override
-	public IProcessingInfo<IPeakIntegrationResults> integrate(IChromatogramSelection chromatogramSelection, IProgressMonitor monitor) {
-
-		List<? extends IPeak> peaks = chromatogramSelection.getChromatogram().getPeaks(chromatogramSelection);
-		return integrate(peaks, getSettings(), monitor);
 	}
 
 	private PeakIntegrationSettings getSettings() {
@@ -169,7 +148,7 @@ public class TemplateIntegrator extends AbstractPeakIntegrator {
 			}
 
 			if(!"".equals(integratorId)) {
-				PeakIntegrator.integrate(peaks, integratorId, new NullProgressMonitor());
+				PeakIntegrator.integrate(peaks, getSettings(), integratorId, new NullProgressMonitor());
 			}
 		}
 	}
