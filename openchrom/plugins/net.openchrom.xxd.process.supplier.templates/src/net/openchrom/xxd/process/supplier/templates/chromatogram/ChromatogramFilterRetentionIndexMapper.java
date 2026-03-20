@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Lablicate GmbH.
+ * Copyright (c) 2022, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -25,9 +25,6 @@ import org.eclipse.chemclipse.processing.core.MessageType;
 import org.eclipse.chemclipse.processing.core.ProcessingMessage;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
-import net.openchrom.xxd.process.supplier.templates.settings.FilterSettingsRetentionIndexMapper;
-
 public class ChromatogramFilterRetentionIndexMapper extends AbstractChromatogramFilter {
 
 	@Override
@@ -42,13 +39,6 @@ public class ChromatogramFilterRetentionIndexMapper extends AbstractChromatogram
 		}
 		chromatogramSelection.getChromatogram().setDirty(true);
 		return processingInfo;
-	}
-
-	@Override
-	public IProcessingInfo<IChromatogramFilterResult> applyFilter(IChromatogramSelection chromatogramSelection, IProgressMonitor monitor) {
-
-		FilterSettingsRetentionIndexMapper filterSettings = PreferenceSupplier.getFilterSettings();
-		return applyFilter(chromatogramSelection, filterSettings, monitor);
 	}
 
 	private void applyChromatogramCleanerFilter(IChromatogramSelection chromatogramSelection) {

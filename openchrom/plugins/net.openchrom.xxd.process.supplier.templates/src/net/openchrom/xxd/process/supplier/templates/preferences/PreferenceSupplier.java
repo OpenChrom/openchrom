@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2025 Lablicate GmbH.
+ * Copyright (c) 2018, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -24,7 +24,6 @@ import org.osgi.framework.FrameworkUtil;
 import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
 import net.openchrom.xxd.process.supplier.templates.model.Visibility;
 import net.openchrom.xxd.process.supplier.templates.settings.ChromatogramReportSettings;
-import net.openchrom.xxd.process.supplier.templates.settings.FilterSettingsRetentionIndexMapper;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorDirectSettings;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakReviewSettings;
@@ -424,11 +423,6 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static String getSettings(String key, String def) {
 
 		return INSTANCE().get(key, def);
-	}
-
-	public static FilterSettingsRetentionIndexMapper getFilterSettings() {
-
-		return new FilterSettingsRetentionIndexMapper();
 	}
 
 	public static String getListPathImport() {
