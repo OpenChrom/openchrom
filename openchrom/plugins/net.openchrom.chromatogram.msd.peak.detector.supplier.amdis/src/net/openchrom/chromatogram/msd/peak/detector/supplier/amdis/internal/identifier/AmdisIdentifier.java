@@ -54,7 +54,7 @@ public class AmdisIdentifier {
 		 * amdisTmpPath, e.g.:
 		 * E.g.: /home/openchrom/.wine/drive_c/tmp
 		 */
-		File amdisTmpPath = settingsAMDIS.getTmpFolder();
+		File amdisTmpPath = PreferenceSupplier.getDataFolder();
 		File file = new File(amdisTmpPath.getAbsolutePath() + File.separator + chromatogram.getName());
 		IProcessingInfo<File> processingInfo = ChromatogramConverterMSD.getInstance().convert(file, chromatogram, ChromatogramReaderMSD.CONVERTER_ID, subMonitor.split(10));
 		if(processingInfo == null) {
@@ -105,7 +105,8 @@ public class AmdisIdentifier {
 	private IProcessingResult<IPeaksMSD> executeAMDIS(File fileChromatogram, SettingsAMDIS settingsAMDIS, AMDISParser parser, IProgressMonitor monitor) throws InterruptedException {
 
 		IExtendedRuntimeSupport runtimeSupport;
-		String amdisApplication = settingsAMDIS.getAmdisFolder().getAbsolutePath() + File.separator + PreferenceSupplier.AMDIS_EXECUTABLE;
+
+		String amdisApplication = PreferenceSupplier.getInstallationFolder().getAbsolutePath() + File.separator + PreferenceSupplier.AMDIS_EXECUTABLE;
 		String filePath = getAmdisCompatibleFilePath(fileChromatogram, settingsAMDIS);
 
 		try {
@@ -147,7 +148,7 @@ public class AmdisIdentifier {
 	private String getAmdisCompatibleFilePath(File fileChromatogram, SettingsAMDIS settingsAMDIS) {
 
 		String filePath = "";
-		File amdisTmpPath = settingsAMDIS.getTmpFolder();
+		File amdisTmpPath = PreferenceSupplier.getDataFolder();
 		if(OperatingSystemUtils.isWindows()) {
 			/*
 			 * e.g.:
