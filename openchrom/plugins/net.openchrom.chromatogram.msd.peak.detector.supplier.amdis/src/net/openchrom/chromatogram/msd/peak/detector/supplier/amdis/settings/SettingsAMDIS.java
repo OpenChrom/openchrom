@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2025 Lablicate GmbH.
+ * Copyright (c) 2008, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -12,15 +12,10 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.settings;
 
-import java.io.File;
-
-import org.eclipse.chemclipse.support.settings.FileSettingProperty;
-import org.eclipse.chemclipse.support.settings.FileSettingProperty.DialogType;
 import org.eclipse.chemclipse.support.settings.IntSettingsProperty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
 import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.model.AdjacentPeakSubtraction;
 import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.model.InstrumentFile;
@@ -34,51 +29,54 @@ import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.model.Thresho
 
 public class SettingsAMDIS extends AbstractProcessSettings {
 
-	@JsonProperty(value = "AMDIS Folder (AMDIS32)", defaultValue = "")
-	@JsonPropertyDescription("Select the AMDIS folder, called AMDIS32.")
-	@FileSettingProperty(dialogType = DialogType.OPEN_DIALOG, onlyDirectory = true, allowEmpty = false)
-	private File amdisFolder = null;
-	@JsonProperty(value = "Data Folder (tmp)", defaultValue = "")
-	@JsonPropertyDescription("Select the data folder, normally called tmp.")
-	@FileSettingProperty(dialogType = DialogType.OPEN_DIALOG, onlyDirectory = true, allowEmpty = false)
-	private File tmpFolder = null;
-
 	@JsonProperty(value = "Autodetect low m/z", defaultValue = "true")
 	private boolean lowMzAuto = true;
+
 	@JsonProperty(value = "Start m/z", defaultValue = "35")
 	@IntSettingsProperty(minValue = 1, maxValue = 1000)
 	private int startMZ = 35;
+
 	@JsonProperty(value = "Autodetect high m/z", defaultValue = "true")
 	private boolean highMzAuto = true;
+
 	@JsonProperty(value = "Stop m/z", defaultValue = "600")
 	@IntSettingsProperty(minValue = 1, maxValue = 1000)
 	private int stopMZ = 600;
 
 	@JsonProperty(value = "Omit m/z", defaultValue = "false")
 	private boolean omitMz = false;
+
 	@JsonProperty(value = "Up to 8 m/z values separated by a space, 0 to omit TIC.", defaultValue = "0 18 28")
 	private String omitedMZ = "0 18 28";
 
 	@JsonProperty(value = "Use solvent tailing", defaultValue = "true")
 	private boolean useSolventTailing = true;
+
 	@JsonProperty(value = "Solvent tailing m/z.", defaultValue = "84")
 	private String solventTailingMZ = "84";
+
 	@JsonProperty(value = "Use column bleed", defaultValue = "true")
 	private boolean useColumnBleed = true;
+
 	@JsonProperty(value = "Column Bleed m/z.", defaultValue = "207")
 	private String columnBleedMZ = "207";
 
 	@JsonProperty(value = "Threshold", defaultValue = "MEDIUM")
 	private Threshold threshold = Threshold.MEDIUM;
+
 	@JsonProperty(value = "Component Width", defaultValue = "12")
 	@IntSettingsProperty(minValue = IOnsiteSettings.MIN_PEAK_WIDTH, maxValue = IOnsiteSettings.MAX_PEAK_WIDTH)
 	private int componentWidth = 12;
+
 	@JsonProperty(value = "Adjacent Peak Subtract", defaultValue = "NONE")
 	private AdjacentPeakSubtraction adjactentPeakSubtraction = AdjacentPeakSubtraction.NONE;
+
 	@JsonProperty(value = "Resolution", defaultValue = "MEDIUM")
 	private Resolution resolution = Resolution.MEDIUM;
+
 	@JsonProperty(value = "Sensitivity", defaultValue = "MEDIUM")
 	private Sensitivity sensitivity = Sensitivity.MEDIUM;
+
 	@JsonProperty(value = "Shape Requirements", defaultValue = "HIGH")
 	private ShapeRequirements shapeRequirements = ShapeRequirements.HIGH;
 
@@ -121,25 +119,5 @@ public class SettingsAMDIS extends AbstractProcessSettings {
 		}
 
 		return onsiteSettings;
-	}
-
-	public File getAmdisFolder() {
-
-		return amdisFolder;
-	}
-
-	public void setAmdisFolder(File amdisFolder) {
-
-		this.amdisFolder = amdisFolder;
-	}
-
-	public File getTmpFolder() {
-
-		return tmpFolder;
-	}
-
-	public void setTmpFolder(File tmpFolder) {
-
-		this.tmpFolder = tmpFolder;
 	}
 }
