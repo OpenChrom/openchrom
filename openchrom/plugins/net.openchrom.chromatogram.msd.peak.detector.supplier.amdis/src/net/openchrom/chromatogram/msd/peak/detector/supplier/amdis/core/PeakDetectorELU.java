@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2025 Lablicate GmbH.
+ * Copyright (c) 2020, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -21,7 +21,6 @@ import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.preferences.PreferenceSupplier;
 import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.settings.SettingsELU;
 import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.support.PeakProcessorSupport;
 
@@ -51,12 +50,5 @@ public class PeakDetectorELU extends AbstractPeakDetectorMSD {
 			}
 		}
 		return processingInfo;
-	}
-
-	@Override
-	public IProcessingInfo<?> detect(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) {
-
-		SettingsELU settingsELU = PreferenceSupplier.getSettingsELU();
-		return detect(chromatogramSelection, settingsELU, monitor);
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Lablicate GmbH.
+ * Copyright (c) 2019, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -28,7 +28,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.widgets.Shell;
 
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
-import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.PeakDetectorSupport;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.ProcessDetectorSettings;
@@ -75,12 +74,5 @@ public class PeakDetectorMSD extends AbstractPeakDetectorMSD {
 			}
 		}
 		return processingInfo;
-	}
-
-	@Override
-	public IProcessingInfo<?> detect(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) {
-
-		PeakDetectorSettings settings = PreferenceSupplier.getPeakDetectorSettingsMSD();
-		return detect(chromatogramSelection, settings, monitor);
 	}
 }

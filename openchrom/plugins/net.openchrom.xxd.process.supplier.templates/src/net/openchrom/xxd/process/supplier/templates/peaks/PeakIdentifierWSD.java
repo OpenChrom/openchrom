@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2025 Lablicate GmbH.
+ * Copyright (c) 2018, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -24,17 +24,12 @@ import org.eclipse.chemclipse.support.literature.LiteratureReference;
 import org.eclipse.chemclipse.wsd.model.core.IPeakWSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.support.RetentionIndexSupport;
 
 public class PeakIdentifierWSD extends AbstractPeakIdentifier implements IPeakIdentifierWSD {
 
 	@Override
 	public IProcessingInfo<IPeakIdentificationResults> identify(List<? extends IPeakWSD> peaks, IPeakIdentifierSettingsWSD settings, IProgressMonitor monitor) {
-
-		if(settings == null) {
-			settings = getSettings(PreferenceSupplier.P_PEAK_IDENTIFIER_LIST_WSD);
-		}
 
 		RetentionIndexMap retentionIndexMap = RetentionIndexSupport.getRetentionIndexMap(peaks);
 		return applyIdentifier(peaks, settings, retentionIndexMap, monitor);

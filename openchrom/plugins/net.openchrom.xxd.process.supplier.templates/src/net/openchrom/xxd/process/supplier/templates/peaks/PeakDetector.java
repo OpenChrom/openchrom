@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2025 Lablicate GmbH.
+ * Copyright (c) 2018, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -54,43 +54,15 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 	}
 
 	@Override
-	public IProcessingInfo<?> detect(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) {
-
-		PeakDetectorSettings settings = getSettings(PreferenceSupplier.P_PEAK_DETECTOR_LIST_MSD);
-		return detect(chromatogramSelection, settings, monitor);
-	}
-
-	@Override
 	public IProcessingInfo<?> detect(IChromatogramSelectionCSD chromatogramSelection, IPeakDetectorSettingsCSD settings, IProgressMonitor monitor) {
 
 		return applyDetector(chromatogramSelection, settings, monitor);
 	}
 
 	@Override
-	public IProcessingInfo<?> detect(IChromatogramSelectionCSD chromatogramSelection, IProgressMonitor monitor) {
-
-		PeakDetectorSettings settings = getSettings(PreferenceSupplier.P_PEAK_DETECTOR_LIST_CSD);
-		return detect(chromatogramSelection, settings, monitor);
-	}
-
-	@Override
 	public IProcessingInfo<?> detect(IChromatogramSelectionWSD chromatogramSelection, IPeakDetectorSettingsWSD settings, IProgressMonitor monitor) {
 
 		return applyDetector(chromatogramSelection, settings, monitor);
-	}
-
-	@Override
-	public IProcessingInfo<?> detect(IChromatogramSelectionWSD chromatogramSelection, IProgressMonitor monitor) {
-
-		PeakDetectorSettings settings = getSettings(PreferenceSupplier.P_PEAK_DETECTOR_LIST_WSD);
-		return detect(chromatogramSelection, settings, monitor);
-	}
-
-	private PeakDetectorSettings getSettings(String preferenceKey) {
-
-		PeakDetectorSettings settings = new PeakDetectorSettings();
-		settings.setDetectorSettings(PreferenceSupplier.getSettings(preferenceKey, ""));
-		return settings;
 	}
 
 	private IProcessingInfo<?> applyDetector(IChromatogramSelection chromatogramSelection, IPeakDetectorSettings settings, IProgressMonitor monitor) {

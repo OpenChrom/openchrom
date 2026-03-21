@@ -24,9 +24,6 @@ import org.osgi.framework.FrameworkUtil;
 import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
 import net.openchrom.xxd.process.supplier.templates.model.Visibility;
 import net.openchrom.xxd.process.supplier.templates.settings.ChromatogramReportSettings;
-import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorDirectSettings;
-import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
-import net.openchrom.xxd.process.supplier.templates.settings.PeakReviewSettings;
 
 public class PreferenceSupplier extends AbstractPreferenceSupplier implements IPreferenceSupplier {
 
@@ -63,18 +60,6 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static final int MAX_DELTA_REPLACE_PEAK_MILLISECONDS = Integer.MAX_VALUE;
 	public static final int DEF_DELTA_REPLACE_PEAK_MILLISECONDS = 5000; // 5 Seconds
 
-	public static final String P_PEAK_DETECTOR_LIST_MSD = "peakDetectorListMSD";
-	public static final String DEF_PEAK_DETECTOR_LIST_MSD = "";
-	public static final String P_PEAK_DETECTOR_LIST_CSD = "peakDetectorListCSD";
-	public static final String DEF_PEAK_DETECTOR_LIST_CSD = "";
-	public static final String P_PEAK_DETECTOR_LIST_WSD = "peakDetectorListWSD";
-	public static final String DEF_PEAK_DETECTOR_LIST_WSD = "";
-	public static final String P_PEAK_IDENTIFIER_LIST_MSD = "peakIdentifierListMSD";
-	public static final String DEF_PEAK_IDENTIFIER_LIST_MSD = "";
-	public static final String P_PEAK_IDENTIFIER_LIST_CSD = "peakIdentifierListCSD";
-	public static final String DEF_PEAK_IDENTIFIER_LIST_CSD = "";
-	public static final String P_PEAK_IDENTIFIER_LIST_WSD = "peakIdentifierListWSD";
-	public static final String DEF_PEAK_IDENTIFIER_LIST_WSD = "";
 	public static final String P_STANDARDS_ASSIGNER_LIST = "standardsAssignerList";
 	public static final String DEF_STANDARDS_ASSIGNER_LIST = "";
 	public static final String P_STANDARDS_REFERENCER_LIST = "standardsReferencerList";
@@ -303,12 +288,6 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	@Override
 	public void initializeDefaults() {
 
-		putDefault(P_PEAK_DETECTOR_LIST_MSD, DEF_PEAK_DETECTOR_LIST_MSD);
-		putDefault(P_PEAK_DETECTOR_LIST_CSD, DEF_PEAK_DETECTOR_LIST_CSD);
-		putDefault(P_PEAK_DETECTOR_LIST_WSD, DEF_PEAK_DETECTOR_LIST_WSD);
-		putDefault(P_PEAK_IDENTIFIER_LIST_MSD, DEF_PEAK_IDENTIFIER_LIST_MSD);
-		putDefault(P_PEAK_IDENTIFIER_LIST_CSD, DEF_PEAK_IDENTIFIER_LIST_CSD);
-		putDefault(P_PEAK_IDENTIFIER_LIST_WSD, DEF_PEAK_IDENTIFIER_LIST_WSD);
 		putDefault(P_STANDARDS_ASSIGNER_LIST, DEF_STANDARDS_ASSIGNER_LIST);
 		putDefault(P_STANDARDS_REFERENCER_LIST, DEF_STANDARDS_REFERENCER_LIST);
 		putDefault(P_PEAK_INTEGRATOR_LIST, DEF_PEAK_INTEGRATOR_LIST);
@@ -903,60 +882,11 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 		return INSTANCE().getBoolean(P_REVIEW_SORT_BY_POSITION, DEF_REVIEW_SORT_BY_POSITION);
 	}
 
-	public static PeakDetectorSettings getPeakDetectorSettingsCSD() {
-
-		PeakDetectorSettings settings = new PeakDetectorSettings();
-		settings.setDetectorSettings(INSTANCE().get(P_PEAK_DETECTOR_LIST_CSD, DEF_PEAK_DETECTOR_LIST_CSD));
-		return settings;
-	}
-
-	public static PeakDetectorSettings getPeakDetectorSettingsMSD() {
-
-		PeakDetectorSettings settings = new PeakDetectorSettings();
-		settings.setDetectorSettings(INSTANCE().get(P_PEAK_DETECTOR_LIST_MSD, DEF_PEAK_DETECTOR_LIST_MSD));
-		return settings;
-	}
-
-	public static PeakDetectorSettings getPeakDetectorSettingsWSD() {
-
-		PeakDetectorSettings settings = new PeakDetectorSettings();
-		settings.setDetectorSettings(INSTANCE().get(P_PEAK_DETECTOR_LIST_WSD, DEF_PEAK_DETECTOR_LIST_WSD));
-		return settings;
-	}
-
-	public static PeakDetectorDirectSettings getPeakDetectorSettingsDirectMSD() {
-
-		PeakDetectorDirectSettings settings = new PeakDetectorDirectSettings();
-		settings.setTraces("");
-		return settings;
-	}
-
-	public static PeakDetectorDirectSettings getPeakDetectorSettingsDirectWSD() {
-
-		PeakDetectorDirectSettings settings = new PeakDetectorDirectSettings();
-		settings.setTraces("");
-		return settings;
-	}
-
 	public static ChromatogramReportSettings getChromatogramReportSettings() {
 
 		ChromatogramReportSettings settings = new ChromatogramReportSettings();
 		settings.setReportReferencedChromatograms(INSTANCE().getBoolean(P_REPORT_REFERENCED_CHROMATOGRAMS, DEF_REPORT_REFERENCED_CHROMATOGRAMS));
 		settings.getReportSettings().load(INSTANCE().get(P_CHROMATOGRAM_REPORT_LIST, DEF_CHROMATOGRAM_REPORT_LIST));
-		return settings;
-	}
-
-	public static PeakReviewSettings getReviewSettingsMSD() {
-
-		PeakReviewSettings settings = new PeakReviewSettings();
-		settings.setReviewSettings(INSTANCE().get(P_CHROMATOGRAM_REVIEW_LIST_MSD, DEF_CHROMATOGRAM_REVIEW_LIST_MSD));
-		return settings;
-	}
-
-	public static PeakReviewSettings getReviewSettingsCSD() {
-
-		PeakReviewSettings settings = new PeakReviewSettings();
-		settings.setReviewSettings(INSTANCE().get(P_CHROMATOGRAM_REVIEW_LIST_CSD, DEF_CHROMATOGRAM_REVIEW_LIST_CSD));
 		return settings;
 	}
 

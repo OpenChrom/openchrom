@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2025 Lablicate GmbH.
+ * Copyright (c) 2010, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -28,7 +28,6 @@ import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.model.Thresho
 import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.settings.IOnsiteSettings;
 import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.settings.IProcessSettings;
 import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.settings.ModelPeakOption;
-import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.settings.SettingsAMDIS;
 import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.settings.SettingsELU;
 
 public class PreferenceSupplier extends AbstractPreferenceSupplier implements IPreferenceSupplier {
@@ -159,33 +158,6 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier implements IP
 	public static File getDataFolder() {
 
 		return getFolder(P_AMDIS_TMP_PATH);
-	}
-
-	public static SettingsAMDIS getSettingsAMDIS() {
-
-		SettingsAMDIS settings = new SettingsAMDIS();
-
-		setApplicationSettings(settings);
-		setProcessSettings(settings);
-		setOnsiteSettings(settings.getOnsiteSettings());
-
-		return settings;
-	}
-
-	public static SettingsELU getSettingsELU() {
-
-		SettingsELU settings = new SettingsELU();
-
-		setProcessSettings(settings);
-		setResultSettings(settings);
-
-		return settings;
-	}
-
-	public static void setApplicationSettings(SettingsAMDIS settings) {
-
-		settings.setAmdisFolder(getInstallationFolder());
-		settings.setTmpFolder(getDataFolder());
 	}
 
 	public static void setProcessSettings(IProcessSettings processSettings) {

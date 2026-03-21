@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2025 Lablicate GmbH.
+ * Copyright (c) 2020, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -31,7 +31,6 @@ import org.eclipse.swt.widgets.Shell;
 
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 import net.openchrom.xxd.process.supplier.templates.model.DetectorType;
-import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorDirectSettings;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
 import net.openchrom.xxd.process.supplier.templates.ui.wizards.PeakDetectorSupport;
@@ -133,12 +132,5 @@ public class PeakDetectorDirectCSD extends AbstractPeakDetectorCSD implements IP
 			}
 		}
 		return processingInfo;
-	}
-
-	@Override
-	public IProcessingInfo<?> detect(IChromatogramSelectionCSD chromatogramSelection, IProgressMonitor monitor) {
-
-		PeakDetectorSettings settings = PreferenceSupplier.getPeakDetectorSettingsCSD();
-		return detect(chromatogramSelection, settings, monitor);
 	}
 }

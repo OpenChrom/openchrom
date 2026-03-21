@@ -22,7 +22,6 @@ import org.eclipse.chemclipse.processing.core.IProcessingResult;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.internal.identifier.AmdisIdentifier;
-import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.preferences.PreferenceSupplier;
 import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.settings.SettingsAMDIS;
 
 public class PeakDetectorAMDIS extends AbstractPeakDetectorMSD {
@@ -54,12 +53,5 @@ public class PeakDetectorAMDIS extends AbstractPeakDetectorMSD {
 			}
 		}
 		return processingInfo;
-	}
-
-	@Override
-	public IProcessingInfo<?> detect(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) {
-
-		SettingsAMDIS settingsAMDIS = PreferenceSupplier.getSettingsAMDIS();
-		return detect(chromatogramSelection, settingsAMDIS, monitor);
 	}
 }

@@ -63,7 +63,6 @@ import org.eclipse.chemclipse.numeric.core.Point;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakTransferSettings;
 import net.openchrom.xxd.process.supplier.templates.support.PeakSupport;
@@ -78,43 +77,9 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 	}
 
 	@Override
-	public IProcessingInfo<?> detect(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) {
-
-		PeakTransferSettings settings = getSettings();
-		return detect(chromatogramSelection, settings, monitor);
-	}
-
-	@Override
 	public IProcessingInfo<?> detect(IChromatogramSelectionCSD chromatogramSelection, IPeakDetectorSettingsCSD settings, IProgressMonitor monitor) {
 
 		return applyDetector(chromatogramSelection, settings, monitor);
-	}
-
-	@Override
-	public IProcessingInfo<?> detect(IChromatogramSelectionCSD chromatogramSelection, IProgressMonitor monitor) {
-
-		PeakTransferSettings settings = getSettings();
-		return detect(chromatogramSelection, settings, monitor);
-	}
-
-	private PeakTransferSettings getSettings() {
-
-		PeakTransferSettings settings = new PeakTransferSettings();
-
-		settings.setUseIdentifiedPeaksOnly(PreferenceSupplier.isTransferUseIdentifiedPeaksOnly());
-		settings.setUseBestTargetOnly(PreferenceSupplier.isTransferUseBestTargetOnly());
-		settings.setMatchQuality(PreferenceSupplier.getMatchQualityTransfer());
-		settings.setDeltaRetentionTimeLeft(PreferenceSupplier.getTransferRetentionTimeMillisecondsLeft());
-		settings.setDeltaRetentionTimeRight(PreferenceSupplier.getTransferRetentionTimeMillisecondsRight());
-		settings.setOffsetRetentionTimePeakMaximum(PreferenceSupplier.getTransferOffsetRetentionTimePeakMaximum());
-		settings.setAdjustPeakHeight(PreferenceSupplier.isTransferAdjustPeakHeight());
-		settings.setCreateModelPeak(PreferenceSupplier.isTransferCreateModelPeak());
-		settings.setPeakOverlapCoverage(PreferenceSupplier.getTransferPeakOverlapCoverage());
-		settings.setOptimizeRange(PreferenceSupplier.isTransferOptimizeRange());
-		settings.setCheckPurity(PreferenceSupplier.isTransferCheckPurity());
-		settings.setNumberTraces(PreferenceSupplier.getTransferNumberTraces());
-
-		return settings;
 	}
 
 	private IProcessingInfo<?> applyDetector(IChromatogramSelection chromatogramSelection, IPeakDetectorSettings settings, IProgressMonitor monitor) {
