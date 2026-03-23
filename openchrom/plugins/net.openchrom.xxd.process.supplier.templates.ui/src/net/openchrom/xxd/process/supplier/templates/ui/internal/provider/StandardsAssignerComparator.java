@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2025 Lablicate GmbH.
+ * Copyright (c) 2018, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -13,12 +13,11 @@
 package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 
 import org.eclipse.chemclipse.support.ui.swt.AbstractRecordTableComparator;
-import org.eclipse.chemclipse.support.ui.swt.IRecordTableComparator;
 import org.eclipse.jface.viewers.Viewer;
 
 import net.openchrom.xxd.process.supplier.templates.model.AssignerStandard;
 
-public class StandardsAssignerComparator extends AbstractRecordTableComparator implements IRecordTableComparator {
+public class StandardsAssignerComparator extends AbstractRecordTableComparator {
 
 	@Override
 	public int compare(Viewer viewer, Object e1, Object e2) {

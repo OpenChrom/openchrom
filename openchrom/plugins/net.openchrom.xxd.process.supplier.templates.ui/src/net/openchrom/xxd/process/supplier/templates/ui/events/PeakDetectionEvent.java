@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Lablicate GmbH.
+ * Copyright (c) 2019, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -17,9 +17,8 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swtchart.extensions.core.BaseChart;
 import org.eclipse.swtchart.extensions.core.IKeyboardSupport;
 import org.eclipse.swtchart.extensions.events.AbstractHandledEventProcessor;
-import org.eclipse.swtchart.extensions.events.IHandledEventProcessor;
 
-public class PeakDetectionEvent extends AbstractHandledEventProcessor implements IHandledEventProcessor {
+public class PeakDetectionEvent extends AbstractHandledEventProcessor {
 
 	@Override
 	public int getEvent() {

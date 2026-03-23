@@ -229,173 +229,133 @@ public class ExcelTemplateReportWriter {
 
 	private Function<CellData, String> getFunctionChromatogram(Function<IChromatogram, String> function) {
 
-		return new Function<CellData, String>() {
+		return cellData -> {
 
-			@Override
-			public String apply(CellData cellData) {
-
-				IChromatogram chromatogram = cellData.getChromatogram();
-				if(chromatogram != null) {
-					return function.apply(chromatogram);
-				}
-
-				return "";
+			IChromatogram chromatogram = cellData.getChromatogram();
+			if(chromatogram != null) {
+				return function.apply(chromatogram);
 			}
+
+			return "";
 		};
 	}
 
 	private Function<CellData, String> getFunctionPeak(Function<IPeak, String> function) {
 
-		return new Function<CellData, String>() {
+		return cellData -> {
 
-			@Override
-			public String apply(CellData cellData) {
-
-				IPeak peak = cellData.getPeak();
-				if(peak != null) {
-					return function.apply(peak);
-				}
-
-				return "";
+			IPeak peak = cellData.getPeak();
+			if(peak != null) {
+				return function.apply(peak);
 			}
+
+			return "";
 		};
 	}
 
 	private Function<CellData, String> getFunctionPeakModel(Function<IPeakModel, String> function) {
 
-		return new Function<CellData, String>() {
+		return cellData -> {
 
-			@Override
-			public String apply(CellData cellData) {
-
-				IPeakModel peakModel = cellData.getPeakModel();
-				if(peakModel != null) {
-					return function.apply(peakModel);
-				}
-
-				return "";
+			IPeakModel peakModel = cellData.getPeakModel();
+			if(peakModel != null) {
+				return function.apply(peakModel);
 			}
+
+			return "";
 		};
 	}
 
 	private Function<CellData, String> getFunctionLibraryInformation(Function<ILibraryInformation, String> function) {
 
-		return new Function<CellData, String>() {
+		return cellData -> {
 
-			@Override
-			public String apply(CellData cellData) {
-
-				ILibraryInformation libraryInformation = cellData.getLibraryInformation();
-				if(libraryInformation != null) {
-					return function.apply(libraryInformation);
-				}
-
-				return "";
+			ILibraryInformation libraryInformation = cellData.getLibraryInformation();
+			if(libraryInformation != null) {
+				return function.apply(libraryInformation);
 			}
+
+			return "";
 		};
 	}
 
 	private Function<CellData, String> getFunctionComparisonResult(Function<IComparisonResult, String> function) {
 
-		return new Function<CellData, String>() {
+		return cellData -> {
 
-			@Override
-			public String apply(CellData cellData) {
-
-				IComparisonResult comparisonResult = cellData.getComparisonResult();
-				if(comparisonResult != null) {
-					return function.apply(comparisonResult);
-				}
-
-				return "";
+			IComparisonResult comparisonResult = cellData.getComparisonResult();
+			if(comparisonResult != null) {
+				return function.apply(comparisonResult);
 			}
+
+			return "";
 		};
 	}
 
 	private Function<CellData, String> getFunctionInternalStandard(Function<IInternalStandard, String> function) {
 
-		return new Function<CellData, String>() {
+		return cellData -> {
 
-			@Override
-			public String apply(CellData cellData) {
-
-				IInternalStandard internalStandard = cellData.getInternalStandard();
-				if(internalStandard != null) {
-					return function.apply(internalStandard);
-				}
-
-				return "";
+			IInternalStandard internalStandard = cellData.getInternalStandard();
+			if(internalStandard != null) {
+				return function.apply(internalStandard);
 			}
+
+			return "";
 		};
 	}
 
 	private Function<CellData, String> getFunctionQuantitationEntry(Function<IQuantitationEntry, String> function) {
 
-		return new Function<CellData, String>() {
+		return cellData -> {
 
-			@Override
-			public String apply(CellData cellData) {
-
-				IQuantitationEntry quantitationEntry = cellData.getQuantitationEntry();
-				if(quantitationEntry != null) {
-					return function.apply(quantitationEntry);
-				}
-
-				return "";
+			IQuantitationEntry quantitationEntry = cellData.getQuantitationEntry();
+			if(quantitationEntry != null) {
+				return function.apply(quantitationEntry);
 			}
+
+			return "";
 		};
 	}
 
 	private Function<CellData, String> getFunctionNoiseFactor() {
 
-		return new Function<CellData, String>() {
+		return cellData -> {
 
-			@Override
-			public String apply(CellData cellData) {
-
-				IChromatogram chromatogram = cellData.getChromatogram();
-				chromatogram.getSignalToNoiseRatio(100); // Trigger the NoiseCalculator
-				INoiseCalculator noiseCalculator = chromatogram.getNoiseCalculator();
-				if(noiseCalculator != null) {
-					return Float.toString(noiseCalculator.getNoiseFactor());
-				}
-
-				return "";
+			IChromatogram chromatogram = cellData.getChromatogram();
+			chromatogram.getSignalToNoiseRatio(100); // Trigger the NoiseCalculator
+			INoiseCalculator noiseCalculator = chromatogram.getNoiseCalculator();
+			if(noiseCalculator != null) {
+				return Float.toString(noiseCalculator.getNoiseFactor());
 			}
+
+			return "";
 		};
 	}
 
 	private Function<CellData, String> getFunctionPurity() {
 
-		return new Function<CellData, String>() {
+		return cellData -> {
 
-			@Override
-			public String apply(CellData cellData) {
-
-				IPeak peak = cellData.getPeak();
-				if(peak instanceof IChromatogramPeak chromatogramPeak) {
-					return Float.toString(chromatogramPeak.getPurity());
-				}
-
-				return "";
+			IPeak peak = cellData.getPeak();
+			if(peak instanceof IChromatogramPeak chromatogramPeak) {
+				return Float.toString(chromatogramPeak.getPurity());
 			}
+
+			return "";
 		};
 	}
 
 	private Function<CellData, String> getFunctionSN() {
 
-		return new Function<CellData, String>() {
+		return cellData -> {
 
-			@Override
-			public String apply(CellData cellData) {
-
-				IPeak peak = cellData.getPeak();
-				if(peak instanceof IChromatogramPeak chromatogramPeak) {
-					return Float.toString(chromatogramPeak.getSignalToNoiseRatio());
-				}
-
-				return "";
+			IPeak peak = cellData.getPeak();
+			if(peak instanceof IChromatogramPeak chromatogramPeak) {
+				return Float.toString(chromatogramPeak.getSignalToNoiseRatio());
 			}
+
+			return "";
 		};
 	}
 

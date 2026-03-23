@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2025 Lablicate GmbH.
+ * Copyright (c) 2020, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -13,12 +13,8 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.adapter;
 
-import java.io.IOException;
-
-import org.eclipse.chemclipse.processing.supplier.IProcessorPreferences;
 import org.eclipse.chemclipse.ux.extension.ui.methods.SettingsUIProvider;
 import org.eclipse.core.runtime.IAdapterFactory;
-import org.eclipse.swt.widgets.Composite;
 
 import net.openchrom.xxd.process.supplier.templates.settings.PeakIntegrationSettings;
 import net.openchrom.xxd.process.supplier.templates.ui.swt.TemplatePeakIntegrationEditor;
@@ -38,14 +34,10 @@ public class PeakIntegrationSettingsAdapterFactory implements IAdapterFactory {
 
 	private static SettingsUIProvider<PeakIntegrationSettings> createSettingsUIProvider(PeakIntegrationSettings adaptedSettings) {
 
-		return new SettingsUIProvider<PeakIntegrationSettings>() {
+		return (parent, preferences, showProfileToolbar) -> {
 
-			@Override
-			public SettingsUIProvider.SettingsUIControl createUI(Composite parent, IProcessorPreferences<PeakIntegrationSettings> preferences, boolean showProfileToolbar) throws IOException {
-
-				PeakIntegrationSettings userSettings = preferences.getUserSettings();
-				return new TemplatePeakIntegrationEditor(parent, preferences, userSettings == null ? adaptedSettings : userSettings);
-			}
+			PeakIntegrationSettings userSettings = preferences.getUserSettings();
+			return new TemplatePeakIntegrationEditor(parent, preferences, userSettings == null ? adaptedSettings : userSettings);
 		};
 	}
 
