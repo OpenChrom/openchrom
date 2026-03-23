@@ -23,7 +23,6 @@ import org.eclipse.chemclipse.converter.l10n.ConverterMessages;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.msd.converter.io.AbstractChromatogramMSDReader;
-import org.eclipse.chemclipse.msd.converter.io.IChromatogramMSDReader;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -43,7 +42,7 @@ import net.openchrom.msd.converter.supplier.cdf.model.VendorScan;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.NetcdfFiles;
 
-public class ChromatogramReaderMSD extends AbstractChromatogramMSDReader implements IChromatogramMSDReader {
+public class ChromatogramReaderMSD extends AbstractChromatogramMSDReader {
 
 	public static final String CONVERTER_ID = "net.openchrom.msd.converter.supplier.cdf";
 

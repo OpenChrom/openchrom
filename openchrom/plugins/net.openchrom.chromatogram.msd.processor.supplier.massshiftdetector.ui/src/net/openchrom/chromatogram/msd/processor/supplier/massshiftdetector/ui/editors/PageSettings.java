@@ -30,7 +30,6 @@ import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.chemclipse.support.ui.editors.AbstractExtendedEditorPage;
-import org.eclipse.chemclipse.support.ui.editors.IExtendedEditorPage;
 import org.eclipse.chemclipse.support.ui.swt.EnhancedCombo;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.chemclipse.ux.extension.ui.provider.ISupplierEditorSupport;
@@ -71,7 +70,7 @@ import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.prefe
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.Activator;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.runnables.ChromatogramImportRunnable;
 
-public class PageSettings extends AbstractExtendedEditorPage implements IExtendedEditorPage {
+public class PageSettings extends AbstractExtendedEditorPage {
 
 	private static final Logger logger = Logger.getLogger(PageSettings.class);
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Lablicate GmbH.
+ * Copyright (c) 2017, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -19,7 +19,6 @@ import org.eclipse.chemclipse.support.ui.wizards.AbstractFileWizard;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.ui.INewWizard;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.core.MassShiftDetector;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.io.ProcessorModelWriter;
@@ -27,7 +26,7 @@ import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model
 
 import jakarta.xml.bind.JAXBException;
 
-public class WizardProcessor extends AbstractFileWizard implements INewWizard {
+public class WizardProcessor extends AbstractFileWizard {
 
 	private static final Logger logger = Logger.getLogger(WizardProcessor.class);
 

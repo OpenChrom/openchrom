@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Lablicate GmbH.
+ * Copyright (c) 2023, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -19,7 +19,7 @@ import org.osgi.framework.FrameworkUtil;
 import net.openchrom.swtchart.extension.export.vectorgraphics.model.PageSizeOption;
 import net.openchrom.swtchart.extension.export.vectorgraphics.model.PageUnit;
 
-public class PreferenceSupplier extends AbstractPreferenceSupplier implements IPreferenceSupplier {
+public class PreferenceSupplier extends AbstractPreferenceSupplier {
 
 	public static final String P_PAGE_SIZE_OPTION = "pageSizeOption";
 	public static final String DEF_PAGE_SIZE_OPTION = PageSizeOption.FULL_LANDSCAPE.name();

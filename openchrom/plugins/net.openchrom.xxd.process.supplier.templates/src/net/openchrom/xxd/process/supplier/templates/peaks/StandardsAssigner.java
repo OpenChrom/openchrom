@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.chemclipse.chromatogram.xxd.quantitation.core.AbstractPeakQuantifier;
-import org.eclipse.chemclipse.chromatogram.xxd.quantitation.core.IPeakQuantifier;
 import org.eclipse.chemclipse.chromatogram.xxd.quantitation.settings.IPeakQuantifierSettings;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IPeak;
@@ -34,7 +33,7 @@ import net.openchrom.xxd.process.supplier.templates.settings.StandardsAssignerSe
 import net.openchrom.xxd.process.supplier.templates.support.RetentionIndexSupport;
 import net.openchrom.xxd.process.supplier.templates.util.TracesUtil;
 
-public class StandardsAssigner extends AbstractPeakQuantifier implements IPeakQuantifier {
+public class StandardsAssigner extends AbstractPeakQuantifier {
 
 	private static final Logger logger = Logger.getLogger(StandardsAssigner.class);
 

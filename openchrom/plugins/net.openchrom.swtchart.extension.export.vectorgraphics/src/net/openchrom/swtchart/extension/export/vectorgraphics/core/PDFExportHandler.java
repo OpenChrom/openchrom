@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2025 Lablicate GmbH.
+ * Copyright (c) 2018, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -19,14 +19,13 @@ import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swtchart.export.core.ISeriesExportConverter;
 import org.eclipse.swtchart.extensions.core.ScrollableChart;
 import org.eclipse.swtchart.vectorgraphics2d.pdf.PDFProcessor;
 
 import net.openchrom.swtchart.extension.export.vectorgraphics.internal.io.AbstractExportHandler;
 import net.openchrom.swtchart.extension.export.vectorgraphics.model.PageSizeOption;
 
-public class PDFExportHandler extends AbstractExportHandler implements ISeriesExportConverter {
+public class PDFExportHandler extends AbstractExportHandler {
 
 	public static final String DESCRIPTION = "Vector Graphics 2D";
 	public static final String FILE_EXTENSION = ".pdf";

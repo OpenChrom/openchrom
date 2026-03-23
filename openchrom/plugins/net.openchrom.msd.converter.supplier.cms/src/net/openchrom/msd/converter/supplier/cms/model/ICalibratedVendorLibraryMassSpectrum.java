@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2025 Walter Whitlock, Philip Wenig.
+ * Copyright (c) 2016, 2026 Walter Whitlock, Philip Wenig.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -17,10 +17,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
-import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 
 // public interface ICalibratedVendorLibraryMassSpectrum extends IRegularLibraryMassSpectrum {
-public interface ICalibratedVendorLibraryMassSpectrum extends IRegularLibraryMassSpectrum, IScanMSD {
+public interface ICalibratedVendorLibraryMassSpectrum extends IRegularLibraryMassSpectrum {
 
 	public int compareTo(ICalibratedVendorLibraryMassSpectrum spectrum);
 

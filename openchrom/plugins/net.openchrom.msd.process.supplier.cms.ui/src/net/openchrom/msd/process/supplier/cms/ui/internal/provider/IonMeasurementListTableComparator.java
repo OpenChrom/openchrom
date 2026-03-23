@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Lablicate GmbH.
+ * Copyright (c) 2017, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -13,12 +13,11 @@
 package net.openchrom.msd.process.supplier.cms.ui.internal.provider;
 
 import org.eclipse.chemclipse.support.ui.swt.AbstractRecordTableComparator;
-import org.eclipse.chemclipse.support.ui.swt.IRecordTableComparator;
 import org.eclipse.jface.viewers.Viewer;
 
 import net.openchrom.msd.converter.supplier.cms.model.IIonMeasurement;
 
-public class IonMeasurementListTableComparator extends AbstractRecordTableComparator implements IRecordTableComparator {
+public class IonMeasurementListTableComparator extends AbstractRecordTableComparator {
 
 	@Override
 	public int compare(Viewer viewer, Object e1, Object e2) {

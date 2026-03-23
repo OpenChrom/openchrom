@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Lablicate GmbH.
+ * Copyright (c) 2019, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.chemclipse.chromatogram.xxd.quantitation.core.AbstractPeakQuantifier;
-import org.eclipse.chemclipse.chromatogram.xxd.quantitation.core.IPeakQuantifier;
 import org.eclipse.chemclipse.chromatogram.xxd.quantitation.settings.IPeakQuantifierSettings;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
@@ -34,7 +33,7 @@ import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSuppli
 import net.openchrom.xxd.process.supplier.templates.settings.CompensationQuantifierSettings;
 import net.openchrom.xxd.process.supplier.templates.settings.StandardsAssignerSettings;
 
-public class CompensationQuantifier extends AbstractPeakQuantifier implements IPeakQuantifier {
+public class CompensationQuantifier extends AbstractPeakQuantifier {
 
 	private static final String LABEL_ADJUSTED = " [adjusted]";
 

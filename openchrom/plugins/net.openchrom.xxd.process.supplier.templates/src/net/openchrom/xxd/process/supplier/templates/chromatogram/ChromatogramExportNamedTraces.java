@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Lablicate GmbH.
+ * Copyright (c) 2022, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -17,7 +17,6 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
 import org.eclipse.chemclipse.converter.chromatogram.AbstractChromatogramExportConverter;
-import org.eclipse.chemclipse.converter.chromatogram.IChromatogramExportConverter;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.targets.TargetSupport;
@@ -30,7 +29,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 
-public class ChromatogramExportNamedTraces extends AbstractChromatogramExportConverter implements IChromatogramExportConverter {
+public class ChromatogramExportNamedTraces extends AbstractChromatogramExportConverter {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramExportNamedTraces.class);
 	private static final String DESCRIPTION = "Named Traces Export";

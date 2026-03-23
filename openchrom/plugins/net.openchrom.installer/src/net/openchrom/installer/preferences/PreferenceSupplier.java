@@ -18,7 +18,7 @@ import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.osgi.framework.FrameworkUtil;
 
-public class PreferenceSupplier extends AbstractPreferenceSupplier implements IPreferenceSupplier {
+public class PreferenceSupplier extends AbstractPreferenceSupplier {
 
 	public static final String P_PROPRIETARY_CONVERTERS = "proprietaryConverters";
 	public static final String DEF_PROPRIETARY_CONVERTERS = MessageDialogWithToggle.ALWAYS;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2025 Lablicate GmbH.
+ * Copyright (c) 2014, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -16,7 +16,6 @@ import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.chemclipse.converter.chromatogram.AbstractChromatogramExportConverter;
-import org.eclipse.chemclipse.converter.chromatogram.IChromatogramExportConverter;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
 import org.eclipse.chemclipse.converter.l10n.ConverterMessages;
 import org.eclipse.chemclipse.logging.core.Logger;
@@ -30,7 +29,7 @@ import org.eclipse.osgi.util.NLS;
 import net.openchrom.wsd.converter.supplier.animl.io.ChromatogramWriter;
 import net.openchrom.xxd.converter.supplier.animl.l10n.Messages;
 
-public class ChromatogramExportConverter extends AbstractChromatogramExportConverter implements IChromatogramExportConverter {
+public class ChromatogramExportConverter extends AbstractChromatogramExportConverter {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramExportConverter.class);
 	private static final String DESCRIPTION = "AnIML Export Converter";

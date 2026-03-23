@@ -25,7 +25,7 @@ import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
 import net.openchrom.xxd.process.supplier.templates.model.Visibility;
 import net.openchrom.xxd.process.supplier.templates.settings.ChromatogramReportSettings;
 
-public class PreferenceSupplier extends AbstractPreferenceSupplier implements IPreferenceSupplier {
+public class PreferenceSupplier extends AbstractPreferenceSupplier {
 
 	public static final String[][] VISIBILITY_OPTIONS = new String[][]{//
 			{"TIC", Visibility.TIC.name()}, //

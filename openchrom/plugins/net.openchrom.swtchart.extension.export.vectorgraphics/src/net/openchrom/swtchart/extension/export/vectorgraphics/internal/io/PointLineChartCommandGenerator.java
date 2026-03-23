@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Lablicate GmbH.
+ * Copyright (c) 2023, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -50,7 +50,7 @@ import net.openchrom.swtchart.extension.export.vectorgraphics.support.AWTUtils;
  * ---
  * affineTransform.rotate(Math.toRadians(-90), anchorx, anchory);
  */
-public class PointLineChartCommandGenerator extends AbstractCommandGenerator implements IChartCommandGenerator {
+public class PointLineChartCommandGenerator extends AbstractCommandGenerator {
 
 	@Override
 	public CommandSequence getCommandSequence(PageSizeOption pageSizeOption, int indexAxisX, int indexAxisY, ScrollableChart scrollableChart) {

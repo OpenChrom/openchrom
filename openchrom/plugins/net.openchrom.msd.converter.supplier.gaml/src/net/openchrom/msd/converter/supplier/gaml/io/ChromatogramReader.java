@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Lablicate GmbH.
+ * Copyright (c) 2021, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -16,18 +16,18 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+import org.eclipse.chemclipse.converter.exceptions.UnknownVersionException;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.msd.converter.io.AbstractChromatogramMSDReader;
 import org.eclipse.chemclipse.msd.converter.io.IChromatogramMSDReader;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
-import org.eclipse.chemclipse.converter.exceptions.UnknownVersionException;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.xxd.converter.supplier.gaml.io.Reader100;
 import net.openchrom.xxd.converter.supplier.gaml.io.Reader110;
 import net.openchrom.xxd.converter.supplier.gaml.io.Reader120;
 
-public class ChromatogramReader extends AbstractChromatogramMSDReader implements IChromatogramMSDReader {
+public class ChromatogramReader extends AbstractChromatogramMSDReader {
 
 	public static IChromatogramMSDReader getReader(final File file) throws IOException {
 

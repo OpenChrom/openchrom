@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Lablicate GmbH.
+ * Copyright (c) 2025, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -37,7 +37,7 @@ import net.openchrom.swtchart.extension.export.vectorgraphics.model.PageSettings
 import net.openchrom.swtchart.extension.export.vectorgraphics.model.PageSizeOption;
 import net.openchrom.swtchart.extension.export.vectorgraphics.support.AWTUtils;
 
-public class BarChartCommandGenerator extends AbstractCommandGenerator implements IChartCommandGenerator {
+public class BarChartCommandGenerator extends AbstractCommandGenerator {
 
 	@Override
 	public CommandSequence getCommandSequence(PageSizeOption pageSizeOption, int indexAxisX, int indexAxisY, ScrollableChart scrollableChart) {

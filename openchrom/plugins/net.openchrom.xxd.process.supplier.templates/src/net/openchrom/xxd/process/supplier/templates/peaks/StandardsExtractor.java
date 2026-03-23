@@ -18,7 +18,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.chemclipse.chromatogram.xxd.quantitation.core.AbstractPeakQuantifier;
-import org.eclipse.chemclipse.chromatogram.xxd.quantitation.core.IPeakQuantifier;
 import org.eclipse.chemclipse.chromatogram.xxd.quantitation.settings.IPeakQuantifierSettings;
 import org.eclipse.chemclipse.csd.model.core.IChromatogramPeakCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
@@ -38,7 +37,7 @@ import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSuppli
 import net.openchrom.xxd.process.supplier.templates.settings.StandardsAssignerSettings;
 import net.openchrom.xxd.process.supplier.templates.settings.StandardsExtractorSettings;
 
-public class StandardsExtractor extends AbstractPeakQuantifier implements IPeakQuantifier {
+public class StandardsExtractor extends AbstractPeakQuantifier {
 
 	private static final Logger logger = Logger.getLogger(StandardsExtractor.class);
 

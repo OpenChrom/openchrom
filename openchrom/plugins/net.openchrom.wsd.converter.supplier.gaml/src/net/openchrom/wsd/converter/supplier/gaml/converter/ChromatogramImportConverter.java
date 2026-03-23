@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2025 Lablicate GmbH.
+ * Copyright (c) 2008, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -17,7 +17,6 @@ import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.chemclipse.converter.chromatogram.AbstractChromatogramImportConverter;
-import org.eclipse.chemclipse.converter.chromatogram.IChromatogramImportConverter;
 import org.eclipse.chemclipse.converter.l10n.ConverterMessages;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
@@ -29,7 +28,7 @@ import org.eclipse.osgi.util.NLS;
 
 import net.openchrom.wsd.converter.supplier.gaml.io.ChromatogramReader;
 
-public class ChromatogramImportConverter extends AbstractChromatogramImportConverter<IChromatogramWSD> implements IChromatogramImportConverter<IChromatogramWSD> {
+public class ChromatogramImportConverter extends AbstractChromatogramImportConverter<IChromatogramWSD> {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramImportConverter.class);
 	private static final String DESCRIPTION = "GAML Chromatogram Import Converter";

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2025 Lablicate GmbH.
+ * Copyright (c) 2018, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.IStatus;
 import net.openchrom.xxd.process.supplier.templates.model.AssignerReference;
 import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
 
-public class StandardsReferencerValidator extends AbstractTemplateValidator implements ITemplateValidator {
+public class StandardsReferencerValidator extends AbstractTemplateValidator {
 
 	private static final String ERROR_ENTRY = "Please enter an item, e.g.: '" + StandardsReferencerListUtil.EXAMPLE_SINGLE + "'";
 
