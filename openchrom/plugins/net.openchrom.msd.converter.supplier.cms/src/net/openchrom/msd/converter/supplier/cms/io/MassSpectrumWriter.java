@@ -22,7 +22,6 @@ import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.msd.converter.io.AbstractMassSpectraWriter;
-import org.eclipse.chemclipse.msd.converter.io.IMassSpectraWriter;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
@@ -33,7 +32,7 @@ import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMa
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.IIonMeasurement;
 
-public class MassSpectrumWriter extends AbstractMassSpectraWriter implements IMassSpectraWriter {
+public class MassSpectrumWriter extends AbstractMassSpectraWriter {
 
 	public static final String CRLF = "\r\n";
 	public static final float NORMALIZATION_BASE = 1000.0f;

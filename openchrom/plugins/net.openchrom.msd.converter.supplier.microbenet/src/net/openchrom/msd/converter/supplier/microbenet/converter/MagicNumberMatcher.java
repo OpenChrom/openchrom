@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Lablicate GmbH.
+ * Copyright (c) 2023, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -15,9 +15,8 @@ package net.openchrom.msd.converter.supplier.microbenet.converter;
 import java.io.File;
 
 import org.eclipse.chemclipse.converter.core.AbstractMagicNumberMatcher;
-import org.eclipse.chemclipse.converter.core.IMagicNumberMatcher;
 
-public class MagicNumberMatcher extends AbstractMagicNumberMatcher implements IMagicNumberMatcher {
+public class MagicNumberMatcher extends AbstractMagicNumberMatcher {
 
 	@Override
 	public boolean checkFileFormat(File file) {

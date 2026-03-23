@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Lablicate GmbH.
+ * Copyright (c) 2019, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -17,7 +17,6 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 import org.eclipse.chemclipse.converter.chromatogram.AbstractChromatogramExportConverter;
-import org.eclipse.chemclipse.converter.chromatogram.IChromatogramExportConverter;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.quantitation.IQuantitationEntry;
@@ -30,7 +29,7 @@ import net.openchrom.xxd.classifier.supplier.ratios.model.quant.QuantRatio;
 import net.openchrom.xxd.classifier.supplier.ratios.model.quant.QuantRatios;
 import net.openchrom.xxd.classifier.supplier.ratios.preferences.PreferenceSupplier;
 
-public class QuantRatioExport extends AbstractChromatogramExportConverter implements IChromatogramExportConverter, ITemplateExport {
+public class QuantRatioExport extends AbstractChromatogramExportConverter implements ITemplateExport {
 
 	private static final String DESCRIPTION = "Quant Ratio Template Export";
 

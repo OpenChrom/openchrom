@@ -16,14 +16,13 @@ import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.chemclipse.converter.core.AbstractFileContentMatcher;
-import org.eclipse.chemclipse.converter.core.IFileContentMatcher;
 import org.eclipse.chemclipse.logging.core.Logger;
 
 import ucar.nc2.Attribute;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.NetcdfFiles;
 
-public class FileContentMatcher extends AbstractFileContentMatcher implements IFileContentMatcher {
+public class FileContentMatcher extends AbstractFileContentMatcher {
 
 	private static final Logger logger = Logger.getLogger(FileContentMatcher.class);
 

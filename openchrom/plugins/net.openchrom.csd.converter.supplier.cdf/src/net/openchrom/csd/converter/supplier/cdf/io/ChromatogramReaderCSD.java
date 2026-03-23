@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2025 Lablicate GmbH.
+ * Copyright (c) 2014, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -21,7 +21,6 @@ import java.util.Date;
 
 import org.eclipse.chemclipse.converter.l10n.ConverterMessages;
 import org.eclipse.chemclipse.csd.converter.io.AbstractChromatogramCSDReader;
-import org.eclipse.chemclipse.csd.converter.io.IChromatogramCSDReader;
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
@@ -39,7 +38,7 @@ import net.openchrom.csd.converter.supplier.cdf.model.VendorScan;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.NetcdfFiles;
 
-public class ChromatogramReaderCSD extends AbstractChromatogramCSDReader implements IChromatogramCSDReader {
+public class ChromatogramReaderCSD extends AbstractChromatogramCSDReader {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramReaderCSD.class);
 

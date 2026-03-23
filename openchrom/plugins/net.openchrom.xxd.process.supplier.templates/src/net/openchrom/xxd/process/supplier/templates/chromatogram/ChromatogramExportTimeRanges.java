@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Lablicate GmbH.
+ * Copyright (c) 2022, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -15,7 +15,6 @@ package net.openchrom.xxd.process.supplier.templates.chromatogram;
 import java.io.File;
 
 import org.eclipse.chemclipse.converter.chromatogram.AbstractChromatogramExportConverter;
-import org.eclipse.chemclipse.converter.chromatogram.IChromatogramExportConverter;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
@@ -25,7 +24,7 @@ import org.eclipse.chemclipse.model.targets.TargetSupport;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-public class ChromatogramExportTimeRanges extends AbstractChromatogramExportConverter implements IChromatogramExportConverter {
+public class ChromatogramExportTimeRanges extends AbstractChromatogramExportConverter {
 
 	@Override
 	public IProcessingInfo<File> convert(File file, IChromatogram chromatogram, IProgressMonitor monitor) {

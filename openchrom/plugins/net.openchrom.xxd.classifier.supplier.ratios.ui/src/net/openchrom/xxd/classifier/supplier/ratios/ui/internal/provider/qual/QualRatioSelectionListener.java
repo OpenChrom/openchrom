@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Lablicate GmbH.
+ * Copyright (c) 2019, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -21,14 +21,13 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
 import net.openchrom.xxd.classifier.supplier.ratios.model.qual.QualRatio;
 
-public class QualRatioSelectionListener extends SelectionAdapter implements SelectionListener, ISelectionChangedListener {
+public class QualRatioSelectionListener extends SelectionAdapter implements ISelectionChangedListener {
 
 	@Override
 	public void widgetSelected(SelectionEvent e) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2025 Lablicate GmbH.
+ * Copyright (c) 2013, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -25,7 +25,7 @@ import net.openchrom.xxd.identifier.supplier.cdk.formula.IsotopeParser;
 import net.openchrom.xxd.identifier.supplier.cdk.settings.CleanerSettings;
 import net.openchrom.xxd.identifier.supplier.cdk.settings.IdentifierSettings;
 
-public class PreferenceSupplier extends AbstractPreferenceSupplier implements IPreferenceSupplier {
+public class PreferenceSupplier extends AbstractPreferenceSupplier {
 
 	public static final int MIN_LENGTH_NAME_EXPORT = 1;
 	public static final int MAX_LENGTH_NAME_EXPORT = 1000;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Lablicate GmbH.
+ * Copyright (c) 2022, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -13,7 +13,6 @@
 package net.openchrom.xxd.process.supplier.templates.io;
 
 import org.eclipse.chemclipse.converter.chromatogram.AbstractChromatogramExportConverter;
-import org.eclipse.chemclipse.converter.chromatogram.IChromatogramExportConverter;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
@@ -22,7 +21,7 @@ import org.eclipse.chemclipse.model.support.RetentionIndexMap;
 import net.openchrom.xxd.process.supplier.templates.model.AbstractSetting;
 import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
 
-public abstract class AbstractTemplateExport extends AbstractChromatogramExportConverter implements IChromatogramExportConverter, ITemplateExport {
+public abstract class AbstractTemplateExport extends AbstractChromatogramExportConverter implements ITemplateExport {
 
 	protected void setPosition(IPeak peak, RetentionIndexMap retentionIndexMap, AbstractSetting setting, PositionDirective positionDirective, double deltaLeft, double deltaRight) {
 

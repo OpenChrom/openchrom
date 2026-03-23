@@ -23,7 +23,6 @@ import org.eclipse.chemclipse.converter.l10n.ConverterMessages;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.wsd.converter.io.AbstractChromatogramWSDReader;
-import org.eclipse.chemclipse.wsd.converter.io.IChromatogramWSDReader;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 
@@ -39,7 +38,7 @@ import net.openchrom.wsd.converter.supplier.cdf.model.VendorScan;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.NetcdfFiles;
 
-public class ChromatogramReaderWSD extends AbstractChromatogramWSDReader implements IChromatogramWSDReader {
+public class ChromatogramReaderWSD extends AbstractChromatogramWSDReader {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramReaderWSD.class);
 

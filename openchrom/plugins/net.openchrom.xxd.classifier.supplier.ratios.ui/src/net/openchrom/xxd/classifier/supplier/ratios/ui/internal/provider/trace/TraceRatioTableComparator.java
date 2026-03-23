@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Lablicate GmbH.
+ * Copyright (c) 2019, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -14,13 +14,12 @@ package net.openchrom.xxd.classifier.supplier.ratios.ui.internal.provider.trace;
 
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.support.ui.swt.AbstractRecordTableComparator;
-import org.eclipse.chemclipse.support.ui.swt.IRecordTableComparator;
 import org.eclipse.jface.viewers.Viewer;
 
 import net.openchrom.xxd.classifier.supplier.ratios.model.trace.TraceRatio;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.swt.DisplayOption;
 
-public class TraceRatioTableComparator extends AbstractRecordTableComparator implements IRecordTableComparator {
+public class TraceRatioTableComparator extends AbstractRecordTableComparator {
 
 	private DisplayOption displayOption = DisplayOption.RESULTS;
 

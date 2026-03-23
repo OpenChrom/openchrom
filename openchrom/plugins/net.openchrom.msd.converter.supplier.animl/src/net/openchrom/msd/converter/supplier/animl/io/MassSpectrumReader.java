@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Lablicate GmbH.
+ * Copyright (c) 2021, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -21,7 +21,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.converter.io.AbstractMassSpectraReader;
-import org.eclipse.chemclipse.msd.converter.io.IMassSpectraReader;
 import org.eclipse.chemclipse.msd.model.core.AbstractIon;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IStandaloneMassSpectrum;
@@ -49,7 +48,7 @@ import net.openchrom.xxd.converter.supplier.animl.model.astm.core.SeriesType;
 
 import jakarta.xml.bind.JAXBException;
 
-public class MassSpectrumReader extends AbstractMassSpectraReader implements IMassSpectraReader {
+public class MassSpectrumReader extends AbstractMassSpectraReader {
 
 	private static final Logger logger = Logger.getLogger(MassSpectrumReader.class);
 

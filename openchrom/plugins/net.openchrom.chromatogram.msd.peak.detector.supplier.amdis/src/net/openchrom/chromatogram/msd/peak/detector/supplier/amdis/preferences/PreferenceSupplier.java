@@ -19,7 +19,7 @@ import org.eclipse.chemclipse.support.preferences.AbstractPreferenceSupplier;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
 import org.osgi.framework.FrameworkUtil;
 
-public class PreferenceSupplier extends AbstractPreferenceSupplier implements IPreferenceSupplier {
+public class PreferenceSupplier extends AbstractPreferenceSupplier {
 
 	private static final Logger logger = Logger.getLogger(PreferenceSupplier.class);
 

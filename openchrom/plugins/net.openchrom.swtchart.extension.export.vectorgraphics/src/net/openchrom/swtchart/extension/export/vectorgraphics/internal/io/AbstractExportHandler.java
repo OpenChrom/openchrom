@@ -29,7 +29,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtchart.export.core.AbstractSeriesExportHandler;
-import org.eclipse.swtchart.export.core.ISeriesExportConverter;
 import org.eclipse.swtchart.extensions.barcharts.BarChart;
 import org.eclipse.swtchart.extensions.core.ChartType;
 import org.eclipse.swtchart.extensions.core.IChartSettings;
@@ -44,7 +43,7 @@ import net.openchrom.swtchart.extension.export.vectorgraphics.dialogs.PageSizeDi
 import net.openchrom.swtchart.extension.export.vectorgraphics.model.PageSizeOption;
 import net.openchrom.swtchart.extension.export.vectorgraphics.preferences.PreferenceSupplier;
 
-public abstract class AbstractExportHandler extends AbstractSeriesExportHandler implements ISeriesExportConverter {
+public abstract class AbstractExportHandler extends AbstractSeriesExportHandler {
 
 	private static final Logger logger = Logger.getLogger(AbstractExportHandler.class);
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2025 Lablicate GmbH.
+ * Copyright (c) 2016, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -16,13 +16,12 @@ import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.chemclipse.converter.core.AbstractFileContentMatcher;
-import org.eclipse.chemclipse.converter.core.IFileContentMatcher;
 import org.eclipse.chemclipse.logging.core.Logger;
 
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.NetcdfFiles;
 
-public class FileContentMatcher extends AbstractFileContentMatcher implements IFileContentMatcher {
+public class FileContentMatcher extends AbstractFileContentMatcher {
 
 	private static final Logger logger = Logger.getLogger(FileContentMatcher.class);
 	private static final String VARIABLE_MASS_VALUES = "mass_values";

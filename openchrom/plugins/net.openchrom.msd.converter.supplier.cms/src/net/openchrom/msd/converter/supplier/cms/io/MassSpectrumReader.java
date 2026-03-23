@@ -30,7 +30,6 @@ import java.util.regex.Pattern;
 
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.msd.converter.io.AbstractMassSpectraReader;
-import org.eclipse.chemclipse.msd.converter.io.IMassSpectraReader;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.implementation.Ion;
@@ -44,7 +43,7 @@ import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpect
 import net.openchrom.msd.converter.supplier.cms.model.IIonMeasurement;
 import net.openchrom.msd.converter.supplier.cms.model.IonMeasurement;
 
-public class MassSpectrumReader extends AbstractMassSpectraReader implements IMassSpectraReader {
+public class MassSpectrumReader extends AbstractMassSpectraReader {
 
 	/**
 	 * The converter id is used in the extension point mechanism.

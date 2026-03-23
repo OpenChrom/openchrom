@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Lablicate GmbH.
+ * Copyright (c) 2021, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -16,7 +16,7 @@ import org.eclipse.chemclipse.support.preferences.AbstractPreferenceSupplier;
 import org.eclipse.chemclipse.support.preferences.IPreferenceSupplier;
 import org.osgi.framework.FrameworkUtil;
 
-public class PreferenceSupplier extends AbstractPreferenceSupplier implements IPreferenceSupplier {
+public class PreferenceSupplier extends AbstractPreferenceSupplier {
 
 	public static final int MIN_MODULATION_TIME = 1;
 	public static final int MAX_MODULATION_TIME = Integer.MAX_VALUE;

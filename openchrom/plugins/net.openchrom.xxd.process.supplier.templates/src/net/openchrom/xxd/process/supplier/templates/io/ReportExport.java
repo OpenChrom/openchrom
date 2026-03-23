@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2025 Lablicate GmbH.
+ * Copyright (c) 2020, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -16,7 +16,6 @@ import java.io.File;
 import java.util.List;
 
 import org.eclipse.chemclipse.converter.chromatogram.AbstractChromatogramExportConverter;
-import org.eclipse.chemclipse.converter.chromatogram.IChromatogramExportConverter;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.core.IPeak;
@@ -32,7 +31,7 @@ import net.openchrom.xxd.process.supplier.templates.model.ReportSetting;
 import net.openchrom.xxd.process.supplier.templates.model.ReportSettings;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 
-public class ReportExport extends AbstractChromatogramExportConverter implements IChromatogramExportConverter, ITemplateExport {
+public class ReportExport extends AbstractChromatogramExportConverter implements ITemplateExport {
 
 	private static final String DESCRIPTION = "Report Template Export";
 

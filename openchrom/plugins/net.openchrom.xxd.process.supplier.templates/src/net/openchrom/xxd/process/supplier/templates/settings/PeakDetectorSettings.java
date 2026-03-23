@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2025 Lablicate GmbH.
+ * Copyright (c) 2018, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -18,7 +18,6 @@ import java.util.List;
 
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.settings.IPeakDetectorSettingsCSD;
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.AbstractPeakDetectorSettingsMSD;
-import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetectorSettingsMSD;
 import org.eclipse.chemclipse.chromatogram.wsd.peak.detector.settings.IPeakDetectorSettingsWSD;
 import org.eclipse.core.runtime.IStatus;
 
@@ -31,7 +30,7 @@ import net.openchrom.xxd.process.supplier.templates.model.DetectorSettings;
 import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorListUtil;
 import net.openchrom.xxd.process.supplier.templates.util.PeakDetectorValidator;
 
-public class PeakDetectorSettings extends AbstractPeakDetectorSettingsMSD implements IPeakDetectorSettingsMSD, IPeakDetectorSettingsCSD, IPeakDetectorSettingsWSD, ITemplateSettings {
+public class PeakDetectorSettings extends AbstractPeakDetectorSettingsMSD implements IPeakDetectorSettingsCSD, IPeakDetectorSettingsWSD, ITemplateSettings {
 
 	public static final String DETECTOR_DESCRIPTION = "Template Peak Detector";
 

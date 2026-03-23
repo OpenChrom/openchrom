@@ -15,9 +15,8 @@ package net.openchrom.wsd.converter.supplier.cdf.converter;
 import java.io.File;
 
 import org.eclipse.chemclipse.converter.core.AbstractMagicNumberMatcher;
-import org.eclipse.chemclipse.converter.core.IMagicNumberMatcher;
 
-public class MagicNumberMatcher extends AbstractMagicNumberMatcher implements IMagicNumberMatcher {
+public class MagicNumberMatcher extends AbstractMagicNumberMatcher {
 
 	@Override
 	public boolean checkFileFormat(File file) {

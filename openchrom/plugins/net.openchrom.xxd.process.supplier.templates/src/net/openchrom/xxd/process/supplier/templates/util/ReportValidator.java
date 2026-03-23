@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2025 Lablicate GmbH.
+ * Copyright (c) 2020, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -23,7 +23,7 @@ import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
 import net.openchrom.xxd.process.supplier.templates.model.ReportSetting;
 import net.openchrom.xxd.process.supplier.templates.model.ReportStrategy;
 
-public class ReportValidator extends AbstractTemplateValidator implements ITemplateValidator {
+public class ReportValidator extends AbstractTemplateValidator {
 
 	public static final Set<ReportStrategy> REPORT_STRATEGIES = Collections.unmodifiableSet(EnumSet.of(ReportStrategy.ALL, ReportStrategy.BEST_MATCH, ReportStrategy.LARGEST_AREA, ReportStrategy.SMALLEST_AREA));
 
