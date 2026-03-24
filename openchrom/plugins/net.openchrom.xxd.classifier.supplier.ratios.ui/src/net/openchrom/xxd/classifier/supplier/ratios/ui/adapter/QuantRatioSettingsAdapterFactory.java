@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Lablicate GmbH.
+ * Copyright (c) 2022, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -12,12 +12,8 @@
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.ui.adapter;
 
-import java.io.IOException;
-
-import org.eclipse.chemclipse.processing.supplier.IProcessorPreferences;
 import org.eclipse.chemclipse.ux.extension.ui.methods.SettingsUIProvider;
 import org.eclipse.core.runtime.IAdapterFactory;
-import org.eclipse.swt.widgets.Composite;
 
 import net.openchrom.xxd.classifier.supplier.ratios.settings.QuantRatioSettings;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.swt.QuantRatioListEditor;
@@ -37,14 +33,10 @@ public class QuantRatioSettingsAdapterFactory implements IAdapterFactory {
 
 	private static SettingsUIProvider<QuantRatioSettings> createSettingsUIProvider(QuantRatioSettings adaptedSettings) {
 
-		return new SettingsUIProvider<QuantRatioSettings>() {
+		return (parent, preferences, showProfileToolbar) -> {
 
-			@Override
-			public SettingsUIProvider.SettingsUIControl createUI(Composite parent, IProcessorPreferences<QuantRatioSettings> preferences, boolean showProfileToolbar) throws IOException {
-
-				QuantRatioSettings userSettings = preferences.getUserSettings();
-				return new QuantRatioListEditor(parent, preferences, userSettings == null ? adaptedSettings : userSettings);
-			}
+			QuantRatioSettings userSettings = preferences.getUserSettings();
+			return new QuantRatioListEditor(parent, preferences, userSettings == null ? adaptedSettings : userSettings);
 		};
 	}
 

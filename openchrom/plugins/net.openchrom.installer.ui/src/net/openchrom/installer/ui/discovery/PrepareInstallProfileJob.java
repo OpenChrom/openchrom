@@ -199,7 +199,7 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 			}
 		}
 		if(symbolicNameToVersion.size() != installableUnits.size()) {
-			for(IInstallableUnit unit : new ArrayList<IInstallableUnit>(installableUnits)) {
+			for(IInstallableUnit unit : new ArrayList<>(installableUnits)) {
 				Version version = symbolicNameToVersion.get(unit.getId());
 				if(!version.equals(unit.getVersion())) {
 					installableUnits.remove(unit);

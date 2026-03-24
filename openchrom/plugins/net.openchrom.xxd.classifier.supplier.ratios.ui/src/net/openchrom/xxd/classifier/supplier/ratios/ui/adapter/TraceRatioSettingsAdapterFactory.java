@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Lablicate GmbH.
+ * Copyright (c) 2022, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -12,12 +12,8 @@
  *******************************************************************************/
 package net.openchrom.xxd.classifier.supplier.ratios.ui.adapter;
 
-import java.io.IOException;
-
-import org.eclipse.chemclipse.processing.supplier.IProcessorPreferences;
 import org.eclipse.chemclipse.ux.extension.ui.methods.SettingsUIProvider;
 import org.eclipse.core.runtime.IAdapterFactory;
-import org.eclipse.swt.widgets.Composite;
 
 import net.openchrom.xxd.classifier.supplier.ratios.settings.TraceRatioSettings;
 import net.openchrom.xxd.classifier.supplier.ratios.ui.swt.TraceRatioListEditor;
@@ -37,14 +33,10 @@ public class TraceRatioSettingsAdapterFactory implements IAdapterFactory {
 
 	private static SettingsUIProvider<TraceRatioSettings> createSettingsUIProvider(TraceRatioSettings adaptedSettings) {
 
-		return new SettingsUIProvider<TraceRatioSettings>() {
+		return (parent, preferences, showProfileToolbar) -> {
 
-			@Override
-			public SettingsUIProvider.SettingsUIControl createUI(Composite parent, IProcessorPreferences<TraceRatioSettings> preferences, boolean showProfileToolbar) throws IOException {
-
-				TraceRatioSettings userSettings = preferences.getUserSettings();
-				return new TraceRatioListEditor(parent, preferences, userSettings == null ? adaptedSettings : userSettings);
-			}
+			TraceRatioSettings userSettings = preferences.getUserSettings();
+			return new TraceRatioListEditor(parent, preferences, userSettings == null ? adaptedSettings : userSettings);
 		};
 	}
 

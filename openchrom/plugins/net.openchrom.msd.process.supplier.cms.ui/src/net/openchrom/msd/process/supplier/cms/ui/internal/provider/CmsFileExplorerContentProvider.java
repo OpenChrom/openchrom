@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Lablicate GmbH.
+ * Copyright (c) 2017, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -30,7 +30,7 @@ public class CmsFileExplorerContentProvider extends FileExplorerContentProvider 
 	@Override
 	public File[] getFiles(File parentFile) {
 
-		List<File> files = new ArrayList<File>();
+		List<File> files = new ArrayList<>();
 		if(parentFile.isDirectory() && parentFile.canRead()) {
 			/*
 			 * I have found no method to monitor file system changes outside the
