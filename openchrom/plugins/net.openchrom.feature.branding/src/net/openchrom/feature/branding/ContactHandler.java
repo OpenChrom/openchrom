@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Lablicate GmbH.
+ * Copyright (c) 2024, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -14,12 +14,11 @@ package net.openchrom.feature.branding;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.swt.program.Program;
-import org.eclipse.swt.widgets.Shell;
 
 public class ContactHandler {
 
 	@Execute
-	public void execute(Shell shell) {
+	public void execute() {
 
 		Program.launch("https://lablicate.com/about/contact");
 	}
