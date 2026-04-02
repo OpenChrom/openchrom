@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.chromatogram.xxd.report.supplier.csv.ui
 Bundle-ManifestVersion: 2
 Bundle-Name: Excel Template Report UI
 Bundle-SymbolicName: net.openchrom.chromatogram.xxd.report.supplier.excel.template.ui;singleton:=true
-Bundle-Version: 1.6.10.qualifier
+Bundle-Version: 1.6.11.qualifier
 Bundle-Activator: net.openchrom.chromatogram.xxd.report.supplier.excel.template.ui.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
