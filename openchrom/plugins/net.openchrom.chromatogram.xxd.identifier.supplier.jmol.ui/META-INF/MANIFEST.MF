@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.chromatogram.xxd.identifier.supplier.cdk.ui
 Bundle-ManifestVersion: 2
 Bundle-Name: JMol Identifier UI
 Bundle-SymbolicName: net.openchrom.chromatogram.xxd.identifier.supplier.jmol.ui;singleton:=true
-Bundle-Version: 1.6.11.qualifier
+Bundle-Version: 1.6.12.qualifier
 Bundle-Activator: net.openchrom.chromatogram.xxd.identifier.supplier.jmol.ui.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.ui,

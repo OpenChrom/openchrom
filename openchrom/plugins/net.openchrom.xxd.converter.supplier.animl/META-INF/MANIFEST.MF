@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.xxd.converter.supplier.animl
 Bundle-ManifestVersion: 2
 Bundle-Name: AnIML
 Bundle-SymbolicName: net.openchrom.xxd.converter.supplier.animl
-Bundle-Version: 1.6.11.qualifier
+Bundle-Version: 1.6.12.qualifier
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.support,

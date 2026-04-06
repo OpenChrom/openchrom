@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.msd.identifier.supplier.massbank.feature"
       label="MassBank"
-      version="1.6.11.qualifier"
+      version="1.6.12.qualifier"
       provider-name="OpenChrom"
       plugin="net.openchrom.feature.branding"
       license-feature="org.eclipse.license"

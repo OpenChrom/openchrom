@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.xxd.processor.supplier.tracecompare
 Bundle-ManifestVersion: 2
 Bundle-Name: Trace Compare (Model)
 Bundle-SymbolicName: net.openchrom.xxd.processor.supplier.tracecompare
-Bundle-Version: 1.6.11.qualifier
+Bundle-Version: 1.6.12.qualifier
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.model;bundle-version="0.8.0",
