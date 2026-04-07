@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Lablicate GmbH.
+ * Copyright (c) 2024, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -44,10 +44,10 @@ public class InstallErrorDialog {
 
 	private static MultiStatus createMultiStatus(Throwable t) {
 
-		List<Status> childStatuses = new ArrayList<>();
+		List<IStatus> childStatuses = new ArrayList<>();
 		StackTraceElement[] stackTraces = Thread.currentThread().getStackTrace();
 		for(StackTraceElement stackTrace : stackTraces) {
-			Status status = new Status(IStatus.ERROR, "net.openchrom.auth.ui", stackTrace.toString());
+			IStatus status = Status.error(stackTrace.toString());
 			childStatuses.add(status);
 		}
 		return new MultiStatus("net.openchrom.installer.ui", IStatus.ERROR, childStatuses.toArray(new Status[]{}), t.toString(), t);
