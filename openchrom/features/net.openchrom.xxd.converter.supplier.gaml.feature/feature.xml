@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.xxd.converter.supplier.gaml.feature"
       label="GAML Converter"
-      version="1.6.12.qualifier"
+      version="1.6.13.qualifier"
       provider-name="OpenChrom"
       plugin="net.openchrom.feature.branding"
       license-feature="org.eclipse.license"
