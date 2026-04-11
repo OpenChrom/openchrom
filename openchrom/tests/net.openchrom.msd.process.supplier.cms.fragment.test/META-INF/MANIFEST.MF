@@ -5,7 +5,7 @@ Bundle-Name: CMS Process Test
 Bundle-SymbolicName: net.openchrom.msd.process.supplier.cms.fragment.test
 Bundle-Version: 1.6.12.qualifier
 Bundle-Vendor: OpenChrom
-Fragment-Host: net.openchrom.msd.process.supplier.cms;bundle-version="1.5.31"
+Fragment-Host: net.openchrom.msd.process.supplier.cms;bundle-version="1.6.12"
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Import-Package: org.junit.jupiter.api;version="[6.0.0,7.0.0)"
 Require-Bundle: net.openchrom.msd.converter.supplier.cms;bundle-version="1.5.0"

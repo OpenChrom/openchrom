@@ -5,6 +5,6 @@ Bundle-Name: BioTyper Main Spectra Projection Test
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.btmsp.fragment.test
 Bundle-Version: 1.6.12.qualifier
 Bundle-Vendor: OpenChrom
-Fragment-Host: net.openchrom.msd.converter.supplier.btmsp;bundle-version="1.5.31"
+Fragment-Host: net.openchrom.msd.converter.supplier.btmsp;bundle-version="1.6.12"
 Import-Package: org.junit.jupiter.api;version="[6.0.0,7.0.0)"
 Bundle-RequiredExecutionEnvironment: JavaSE-21
