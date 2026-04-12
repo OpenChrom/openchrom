@@ -17,6 +17,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.support;bundle-version="0.8.0",
  wrapped.org.ejml.ejml-ddense;bundle-version="0.43.0",
  wrapped.org.ejml.ejml-core;bundle-version="0.43.0",
- net.openchrom.msd.converter.supplier.cms;bundle-version="1.6.4"
+ net.openchrom.msd.converter.supplier.cms;bundle-version="1.6.13"
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy

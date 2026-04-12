@@ -5,6 +5,6 @@ Bundle-Name: GAML MSD Test
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.gaml.fragment.test
 Bundle-Version: 1.6.13.qualifier
 Bundle-Vendor: OpenChrom
-Fragment-Host: net.openchrom.msd.converter.supplier.gaml;bundle-version="1.6.12"
+Fragment-Host: net.openchrom.msd.converter.supplier.gaml;bundle-version="1.6.13"
 Import-Package: org.junit.jupiter.api;version="[6.0.0,7.0.0)"
 Bundle-RequiredExecutionEnvironment: JavaSE-21

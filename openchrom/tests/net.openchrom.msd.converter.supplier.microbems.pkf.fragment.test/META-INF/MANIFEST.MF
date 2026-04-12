@@ -5,6 +5,6 @@ Bundle-Name: MicrobeMS peak list files Test
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.microbems.pkf.fragment.test
 Bundle-Version: 1.6.13.qualifier
 Bundle-Vendor: OpenChrom
-Fragment-Host: net.openchrom.msd.converter.supplier.microbems.pkf;bundle-version="1.6.12"
+Fragment-Host: net.openchrom.msd.converter.supplier.microbems.pkf;bundle-version="1.6.13"
 Import-Package: org.junit.jupiter.api;version="5.12.2"
 Bundle-RequiredExecutionEnvironment: JavaSE-21
