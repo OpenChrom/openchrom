@@ -33,8 +33,6 @@ import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.jface.preference.PreferenceNode;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
@@ -305,19 +303,15 @@ public class DecompositionResultUI extends Composite {
 		GridData spinnerLeftScanNumberGridData = new GridData(SWT.RIGHT, SWT.CENTER, false, true);
 		spinnerLeftScanNumberGridData.widthHint = 32;
 		spinnerLeftScanNumber.setLayoutData(spinnerLeftScanNumberGridData);
-		spinnerLeftScanNumber.addModifyListener(new ModifyListener() {
+		spinnerLeftScanNumber.addModifyListener(e -> {
 
-			@Override
-			public void modifyText(ModifyEvent e) {
-
-				if(spinnersIgnoreChange) {
-					return;
-				}
-				if(spinnerLeftScanNumber.getSelection() >= spinnerRightScanNumber.getSelection()) {
-					spinnerLeftScanNumber.setSelection(spinnerRightScanNumber.getSelection() - 1);
-				}
-				updateTextLeftETimes(cmsSpectra);
+			if(spinnersIgnoreChange) {
+				return;
 			}
+			if(spinnerLeftScanNumber.getSelection() >= spinnerRightScanNumber.getSelection()) {
+				spinnerLeftScanNumber.setSelection(spinnerRightScanNumber.getSelection() - 1);
+			}
+			updateTextLeftETimes(cmsSpectra);
 		});
 	}
 
@@ -355,19 +349,15 @@ public class DecompositionResultUI extends Composite {
 		GridData spinnerRightScanNumberGridData = new GridData(SWT.RIGHT, SWT.CENTER, false, true);
 		spinnerRightScanNumberGridData.widthHint = 32;
 		spinnerRightScanNumber.setLayoutData(spinnerRightScanNumberGridData);
-		spinnerRightScanNumber.addModifyListener(new ModifyListener() {
+		spinnerRightScanNumber.addModifyListener(e -> {
 
-			@Override
-			public void modifyText(ModifyEvent e) {
-
-				if(spinnersIgnoreChange) {
-					return;
-				}
-				if(spinnerRightScanNumber.getSelection() <= spinnerLeftScanNumber.getSelection()) {
-					spinnerRightScanNumber.setSelection(spinnerLeftScanNumber.getSelection() + 1);
-				}
-				updateTextRightETimes(cmsSpectra);
+			if(spinnersIgnoreChange) {
+				return;
 			}
+			if(spinnerRightScanNumber.getSelection() <= spinnerLeftScanNumber.getSelection()) {
+				spinnerRightScanNumber.setSelection(spinnerLeftScanNumber.getSelection() + 1);
+			}
+			updateTextRightETimes(cmsSpectra);
 		});
 	}
 

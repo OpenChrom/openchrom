@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Walter Whitlock, Philip Wenig.
+ * Copyright (c) 2017, 2026 Walter Whitlock, Philip Wenig.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -33,8 +33,6 @@ import org.eclipse.nebula.visualization.xygraph.figures.Trace;
 import org.eclipse.nebula.visualization.xygraph.figures.XYGraph;
 import org.eclipse.nebula.visualization.xygraph.util.XYGraphMediaFactory;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
@@ -324,14 +322,10 @@ public class CompositeCompositionsUI extends Composite {
 		textLogScaleOffset.setText("");
 		GridData textLogScaleOffsetGridData = new GridData(SWT.FILL, SWT.CENTER, true, true);
 		textLogScaleOffset.setLayoutData(textLogScaleOffsetGridData);
-		textLogScaleOffset.addModifyListener(new ModifyListener() {
+		textLogScaleOffset.addModifyListener(e -> {
 
-			@Override
-			public void modifyText(ModifyEvent e) {
-
-				if(!txtLogScaleOffsetIgnoreEvent && usingOffsetLogScale) {
-					updateXYGraph();
-				}
+			if(!txtLogScaleOffsetIgnoreEvent && usingOffsetLogScale) {
+				updateXYGraph();
 			}
 		});
 		// xygraph goes here

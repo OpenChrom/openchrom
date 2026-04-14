@@ -37,8 +37,6 @@ import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.jface.preference.PreferenceNode;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.ImageData;
@@ -56,7 +54,6 @@ import org.eclipse.swtchart.extensions.clipboard.ImageSupplier;
 import org.eclipse.swtchart.extensions.core.BaseChart;
 import org.eclipse.swtchart.extensions.core.IChartSettings;
 import org.eclipse.swtchart.extensions.core.ISeriesData;
-import org.eclipse.swtchart.extensions.core.ISeriesModificationListener;
 import org.eclipse.swtchart.extensions.linecharts.ICompressionSupport;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
@@ -569,14 +566,10 @@ public class TraceDataComparisonUI extends Composite {
 		gridData.heightHint = 80;
 		gridData.horizontalIndent = HORIZONTAL_INDENT;
 		notesText.setLayoutData(gridData);
-		notesText.addModifyListener(new ModifyListener() {
+		notesText.addModifyListener(e -> {
 
-			@Override
-			public void modifyText(ModifyEvent e) {
-
-				if(trackModel != null) {
-					trackModel.setNotes(notesText.getText().trim());
-				}
+			if(trackModel != null) {
+				trackModel.setNotes(notesText.getText().trim());
 			}
 		});
 	}
@@ -603,14 +596,7 @@ public class TraceDataComparisonUI extends Composite {
 		traceDataUI.applySettings(chartSettings);
 
 		BaseChart baseChart = traceDataUI.getBaseChart();
-		baseChart.addSeriesModificationListener(new ISeriesModificationListener() {
-
-			@Override
-			public void handleSeriesModificationEvent() {
-
-				modifyDataStatusLabel();
-			}
-		});
+		baseChart.addSeriesModificationListener(() -> modifyDataStatusLabel());
 	}
 
 	private void showComments(boolean isVisible) {

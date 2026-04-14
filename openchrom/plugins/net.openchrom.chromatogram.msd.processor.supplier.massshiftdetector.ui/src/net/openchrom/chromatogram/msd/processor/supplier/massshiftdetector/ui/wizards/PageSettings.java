@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Lablicate GmbH.
+ * Copyright (c) 2017, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -15,8 +15,6 @@ package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.w
 import org.eclipse.chemclipse.support.ui.swt.EnhancedCombo;
 import org.eclipse.chemclipse.support.ui.wizards.AbstractExtendedWizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -146,13 +144,7 @@ public class PageSettings extends AbstractExtendedWizardPage {
 		startShiftLevelSpinner.setMinimum(MassShiftDetector.MIN_ISOTOPE_LEVEL);
 		startShiftLevelSpinner.setMaximum(MassShiftDetector.MAX_ISOTOPE_LEVEL);
 		startShiftLevelSpinner.setIncrement(MassShiftDetector.INCREMENT_ISOTOPE_LEVEL);
-		startShiftLevelSpinner.addModifyListener(new ModifyListener() {
-
-			public void modifyText(ModifyEvent e) {
-
-				validateData();
-			}
-		});
+		startShiftLevelSpinner.addModifyListener(e -> validateData());
 	}
 
 	private void createStopShiftLevelSection(Composite parent) {
@@ -166,13 +158,7 @@ public class PageSettings extends AbstractExtendedWizardPage {
 		stopShiftLevelSpinner.setMinimum(MassShiftDetector.MIN_ISOTOPE_LEVEL);
 		stopShiftLevelSpinner.setMaximum(MassShiftDetector.MAX_ISOTOPE_LEVEL);
 		stopShiftLevelSpinner.setIncrement(MassShiftDetector.INCREMENT_ISOTOPE_LEVEL);
-		stopShiftLevelSpinner.addModifyListener(new ModifyListener() {
-
-			public void modifyText(ModifyEvent e) {
-
-				validateData();
-			}
-		});
+		stopShiftLevelSpinner.addModifyListener(e -> validateData());
 	}
 
 	private void createNormalizeDataSection(Composite parent) {
@@ -227,13 +213,7 @@ public class PageSettings extends AbstractExtendedWizardPage {
 		numberHighestIntensityMZText = new Text(parent, SWT.BORDER);
 		numberHighestIntensityMZText.setText("");
 		numberHighestIntensityMZText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		numberHighestIntensityMZText.addModifyListener(new ModifyListener() {
-
-			public void modifyText(ModifyEvent e) {
-
-				validateData();
-			}
-		});
+		numberHighestIntensityMZText.addModifyListener(e -> validateData());
 	}
 
 	private void createUsePeaksSection(Composite parent) {

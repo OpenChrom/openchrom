@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Lablicate GmbH.
+ * Copyright (c) 2024, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -25,8 +25,6 @@ import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -77,43 +75,35 @@ public class IdentifierSettingsPage extends WizardPage implements IExtendedPartU
 		createLabel(parent, "Name", "Enter a substance name.");
 
 		Text text = createText(parent);
-		IValidator<String> nameValidator = new IValidator<>() {
+		IValidator<String> nameValidator = value -> {
 
-			@Override
-			public IStatus validate(String value) {
-
-				String message = null;
-				if(value != null) {
-					if(value.isBlank()) {
-						message = "The name must not be empty.";
-					} else {
-						if(invalidNames != null) {
-							if(invalidNames.contains(value)) {
-								message = "The name exists already.";
-							}
+			String message = null;
+			if(value != null) {
+				if(value.isBlank()) {
+					message = "The name must not be empty.";
+				} else {
+					if(invalidNames != null) {
+						if(invalidNames.contains(value)) {
+							message = "The name exists already.";
 						}
 					}
-				} else {
-					message = "No name is supported yet.";
 				}
+			} else {
+				message = "No name is supported yet.";
+			}
 
-				if(message != null) {
-					return ValidationStatus.error(message);
-				} else {
-					return ValidationStatus.ok();
-				}
+			if(message != null) {
+				return ValidationStatus.error(message);
+			} else {
+				return ValidationStatus.ok();
 			}
 		};
 		ControlDecoration controlDecoration = new ControlDecoration(text, SWT.LEFT | SWT.TOP);
-		text.addModifyListener(new ModifyListener() {
+		text.addModifyListener(e -> {
 
-			@Override
-			public void modifyText(ModifyEvent e) {
-
-				if(identifierSetting != null) {
-					identifierSetting.setName(text.getText().trim());
-					validate(nameValidator, controlDecoration, text);
-				}
+			if(identifierSetting != null) {
+				identifierSetting.setName(text.getText().trim());
+				validate(nameValidator, controlDecoration, text);
 			}
 		});
 
@@ -127,15 +117,11 @@ public class IdentifierSettingsPage extends WizardPage implements IExtendedPartU
 		Text text = createText(parent);
 		CasValidator casValidator = new CasValidator(true);
 		ControlDecoration controlDecoration = new ControlDecoration(text, SWT.LEFT | SWT.TOP);
-		text.addModifyListener(new ModifyListener() {
+		text.addModifyListener(e -> {
 
-			@Override
-			public void modifyText(ModifyEvent e) {
-
-				if(identifierSetting != null) {
-					identifierSetting.setCasNumber(text.getText().trim());
-					validate(casValidator, controlDecoration, text);
-				}
+			if(identifierSetting != null) {
+				identifierSetting.setCasNumber(text.getText().trim());
+				validate(casValidator, controlDecoration, text);
 			}
 		});
 
@@ -147,14 +133,10 @@ public class IdentifierSettingsPage extends WizardPage implements IExtendedPartU
 		createLabel(parent, "Reference Identifier", "Enter e.g. an internal tracking number.");
 
 		Text text = createText(parent);
-		text.addModifyListener(new ModifyListener() {
+		text.addModifyListener(e -> {
 
-			@Override
-			public void modifyText(ModifyEvent e) {
-
-				if(identifierSetting != null) {
-					identifierSetting.setReferenceIdentifier(text.getText().trim());
-				}
+			if(identifierSetting != null) {
+				identifierSetting.setReferenceIdentifier(text.getText().trim());
 			}
 		});
 
@@ -166,14 +148,10 @@ public class IdentifierSettingsPage extends WizardPage implements IExtendedPartU
 		createLabel(parent, "Comments", "Enter e.g. an analysis hint.");
 
 		Text text = createText(parent);
-		text.addModifyListener(new ModifyListener() {
+		text.addModifyListener(e -> {
 
-			@Override
-			public void modifyText(ModifyEvent e) {
-
-				if(identifierSetting != null) {
-					identifierSetting.setComments(text.getText().trim());
-				}
+			if(identifierSetting != null) {
+				identifierSetting.setComments(text.getText().trim());
 			}
 		});
 
