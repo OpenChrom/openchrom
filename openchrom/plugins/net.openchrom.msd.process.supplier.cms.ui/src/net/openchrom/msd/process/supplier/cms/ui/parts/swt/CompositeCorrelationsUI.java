@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Walter Whitlock, Philip Wenig.
+ * Copyright (c) 2017, 2026 Walter Whitlock, Philip Wenig.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -23,8 +23,6 @@ import org.eclipse.nebula.visualization.xygraph.dataprovider.CircularBufferDataP
 import org.eclipse.nebula.visualization.xygraph.figures.Trace;
 import org.eclipse.nebula.visualization.xygraph.figures.XYGraph;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -89,14 +87,10 @@ public class CompositeCorrelationsUI extends Composite {
 		GridData spinnerLeftScanNumberGridData = new GridData(SWT.RIGHT, SWT.CENTER, false, true);
 		spinnerLeftScanNumberGridData.widthHint = 32;
 		spinnerTopSelect.setLayoutData(spinnerLeftScanNumberGridData);
-		spinnerTopSelect.addModifyListener(new ModifyListener() {
+		spinnerTopSelect.addModifyListener(e -> {
 
-			@Override
-			public void modifyText(ModifyEvent e) {
-
-				maxTop = spinnerTopSelect.getSelection();
-				updateXYGraph();
-			}
+			maxTop = spinnerTopSelect.getSelection();
+			updateXYGraph();
 		});
 
 		Composite compositeGraph = new Composite(this, SWT.NONE);

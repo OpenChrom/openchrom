@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Lablicate GmbH.
+ * Copyright (c) 2023, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -21,8 +21,6 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -155,18 +153,14 @@ public class PageSizeDialog extends Dialog {
 		text.setText("");
 		text.setToolTipText("Page Width");
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		text.addModifyListener(new ModifyListener() {
+		text.addModifyListener(e -> {
 
-			@Override
-			public void modifyText(ModifyEvent e) {
-
-				try {
-					double input = Double.parseDouble(text.getText().trim());
-					PageSize pageSize = pageSizeOption.pageSize();
-					double width = convert(pageUnit, PageUnit.MM, input);
-					pageSize.setWidth(width);
-				} catch(NumberFormatException e1) {
-				}
+			try {
+				double input = Double.parseDouble(text.getText().trim());
+				PageSize pageSize = pageSizeOption.pageSize();
+				double width = convert(pageUnit, PageUnit.MM, input);
+				pageSize.setWidth(width);
+			} catch(NumberFormatException e1) {
 			}
 		});
 
@@ -179,18 +173,14 @@ public class PageSizeDialog extends Dialog {
 		text.setText("");
 		text.setToolTipText("Page Height");
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		text.addModifyListener(new ModifyListener() {
+		text.addModifyListener(e -> {
 
-			@Override
-			public void modifyText(ModifyEvent e) {
-
-				try {
-					double input = Double.parseDouble(text.getText().trim());
-					PageSize pageSize = pageSizeOption.pageSize();
-					double height = convert(pageUnit, PageUnit.MM, input);
-					pageSize.setHeight(height);
-				} catch(NumberFormatException e1) {
-				}
+			try {
+				double input = Double.parseDouble(text.getText().trim());
+				PageSize pageSize = pageSizeOption.pageSize();
+				double height = convert(pageUnit, PageUnit.MM, input);
+				pageSize.setHeight(height);
+			} catch(NumberFormatException e1) {
 			}
 		});
 
@@ -251,17 +241,13 @@ public class PageSizeDialog extends Dialog {
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 3;
 		text.setLayoutData(gridData);
-		text.addModifyListener(new ModifyListener() {
+		text.addModifyListener(e -> {
 
-			@Override
-			public void modifyText(ModifyEvent e) {
-
-				try {
-					float factor = Float.parseFloat(text.getText().trim());
-					ChartSettings chartSettings = pageSizeOption.chartSettings();
-					chartSettings.setFactorGraphics(factor);
-				} catch(NumberFormatException e1) {
-				}
+			try {
+				float factor = Float.parseFloat(text.getText().trim());
+				ChartSettings chartSettings = pageSizeOption.chartSettings();
+				chartSettings.setFactorGraphics(factor);
+			} catch(NumberFormatException e1) {
 			}
 		});
 
@@ -282,17 +268,13 @@ public class PageSizeDialog extends Dialog {
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 3;
 		text.setLayoutData(gridData);
-		text.addModifyListener(new ModifyListener() {
+		text.addModifyListener(e -> {
 
-			@Override
-			public void modifyText(ModifyEvent e) {
-
-				try {
-					float factor = Float.parseFloat(text.getText().trim());
-					ChartSettings chartSettings = pageSizeOption.chartSettings();
-					chartSettings.setFactorFont(factor);
-				} catch(NumberFormatException e1) {
-				}
+			try {
+				float factor = Float.parseFloat(text.getText().trim());
+				ChartSettings chartSettings = pageSizeOption.chartSettings();
+				chartSettings.setFactorFont(factor);
+			} catch(NumberFormatException e1) {
 			}
 		});
 

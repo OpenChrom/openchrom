@@ -42,8 +42,6 @@ import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -433,14 +431,10 @@ public class PageSettings extends AbstractExtendedEditorPage {
 		GridData gridData = new GridData(GridData.FILL_BOTH);
 		gridData.heightHint = 300;
 		descriptionText.setLayoutData(gridData);
-		descriptionText.addModifyListener(new ModifyListener() {
+		descriptionText.addModifyListener(e -> {
 
-			@Override
-			public void modifyText(ModifyEvent e) {
-
-				ProcessorData processorData = editorProcessor.getProcessorData();
-				processorData.getProcessorModel().setDescription(descriptionText.getText().trim());
-			}
+			ProcessorData processorData = editorProcessor.getProcessorData();
+			processorData.getProcessorModel().setDescription(descriptionText.getText().trim());
 		});
 		/*
 		 * Add the client to the section.
@@ -497,14 +491,7 @@ public class PageSettings extends AbstractExtendedEditorPage {
 				processorRawData.setReferenceChromatogramSelection(chromatogramSelections.get(0));
 				processorRawData.setIsotopeChromatogramSelection(chromatogramSelections.get(1));
 
-				display.asyncExec(new Runnable() {
-
-					@Override
-					public void run() {
-
-						updateChromatogramSelections();
-					}
-				});
+				display.asyncExec(() -> updateChromatogramSelections());
 			}
 		});
 		return imageHyperlink;

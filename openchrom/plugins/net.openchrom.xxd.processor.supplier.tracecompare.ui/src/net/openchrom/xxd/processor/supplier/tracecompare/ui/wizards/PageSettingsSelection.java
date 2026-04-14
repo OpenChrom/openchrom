@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Lablicate GmbH.
+ * Copyright (c) 2017, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -16,8 +16,6 @@ import java.io.File;
 
 import org.eclipse.chemclipse.support.ui.wizards.AbstractExtendedWizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -142,13 +140,7 @@ public class PageSettingsSelection extends AbstractExtendedWizardPage {
 		textSampleDirectory = new Text(parent, SWT.BORDER);
 		textSampleDirectory.setText("");
 		textSampleDirectory.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		textSampleDirectory.addModifyListener(new ModifyListener() {
-
-			public void modifyText(ModifyEvent e) {
-
-				validateData();
-			}
-		});
+		textSampleDirectory.addModifyListener(e -> validateData());
 
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("Select");
@@ -194,13 +186,7 @@ public class PageSettingsSelection extends AbstractExtendedWizardPage {
 		textReferenceDirectory = new Text(parent, SWT.BORDER);
 		textReferenceDirectory.setText("");
 		textReferenceDirectory.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		textReferenceDirectory.addModifyListener(new ModifyListener() {
-
-			public void modifyText(ModifyEvent e) {
-
-				validateData();
-			}
-		});
+		textReferenceDirectory.addModifyListener(e -> validateData());
 
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("Select");
@@ -261,13 +247,7 @@ public class PageSettingsSelection extends AbstractExtendedWizardPage {
 		GridData gridData = new GridData(GridData.FILL_BOTH);
 		gridData.horizontalSpan = 2;
 		textGeneralNotes.setLayoutData(gridData);
-		textGeneralNotes.addModifyListener(new ModifyListener() {
-
-			public void modifyText(ModifyEvent e) {
-
-				validateData();
-			}
-		});
+		textGeneralNotes.addModifyListener(e -> validateData());
 	}
 
 	private void validateData() {
