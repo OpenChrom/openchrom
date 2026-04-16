@@ -288,17 +288,23 @@ public class PeakSupport {
 
 	public IChromatogramPeak extractPeakByScanRange(IChromatogram chromatogram, int startScan, int stopScan, boolean includeBackground, boolean optimizeRange, String traces) {
 
+		/*
+		 * On purpose: intensityRange is null.
+		 * No support for MM or CB modus.
+		 */
 		IScanRange scanRange = optimizeRange ? optimizeRange(chromatogram, startScan, stopScan, traces) : new ScanRange(startScan, stopScan);
-		IntensityRange intensityRange = null; // On purpose: no MM or CB modus
-
+		IntensityRange intensityRange = null;
 		return extractPeakByScanRange(chromatogram, scanRange, intensityRange, includeBackground, traces);
 	}
 
 	public IChromatogramPeak extractPeakByScanRange(IChromatogram chromatogram, int startScan, int stopScan, float startIntensity, float stopIntensity, String traces) {
 
-		IScanRange scanRange = new ScanRange(startScan, stopScan); // On purpose: no optimization of the peak range
+		/*
+		 * On purpose: no optimization of the peak range
+		 * Support for MM or CB modus.
+		 */
+		IScanRange scanRange = new ScanRange(startScan, stopScan);
 		IntensityRange intensityRange = new IntensityRange(startIntensity, stopIntensity);
-
 		return extractPeakByScanRange(chromatogram, scanRange, intensityRange, false, traces);
 	}
 
@@ -319,10 +325,10 @@ public class PeakSupport {
 				/*
 				 * Template
 				 */
-				if(chromatogram instanceof IChromatogramMSD chromatogramMSD) {
-					peak = extractChromatogramPeakMSD(chromatogramMSD, scanRange, traces, intensityRange, includeBackground);
-				} else if(chromatogram instanceof IChromatogramCSD chromatogramCSD) {
+				if(chromatogram instanceof IChromatogramCSD chromatogramCSD) {
 					peak = extractChromatogramPeakCSD(chromatogramCSD, scanRange, intensityRange, includeBackground);
+				} else if(chromatogram instanceof IChromatogramMSD chromatogramMSD) {
+					peak = extractChromatogramPeakMSD(chromatogramMSD, scanRange, traces, intensityRange, includeBackground);
 				} else if(chromatogram instanceof IChromatogramWSD chromatogramWSD) {
 					peak = extractChromatogramPeakWSD(chromatogramWSD, scanRange, traces, intensityRange, includeBackground);
 				} else if(chromatogram instanceof IChromatogramVSD) {
@@ -402,7 +408,13 @@ public class PeakSupport {
 					chromatogramCopy.addScan(scanCopy);
 				}
 			} else if(chromatogram instanceof IChromatogramWSD) {
+				/*
+				 * TODO WSD
+				 */
 			} else if(chromatogram instanceof IChromatogramVSD) {
+				/*
+				 * TODO VSD
+				 */
 			}
 			/*
 			 * Process and cache chromatogram
