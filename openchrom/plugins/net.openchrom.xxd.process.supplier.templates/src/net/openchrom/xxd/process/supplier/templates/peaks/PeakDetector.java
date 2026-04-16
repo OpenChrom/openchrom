@@ -25,8 +25,10 @@ import org.eclipse.chemclipse.chromatogram.peak.detector.settings.IPeakDetectorS
 import org.eclipse.chemclipse.chromatogram.wsd.peak.detector.core.IPeakDetectorWSD;
 import org.eclipse.chemclipse.chromatogram.wsd.peak.detector.settings.IPeakDetectorSettingsWSD;
 import org.eclipse.chemclipse.csd.model.core.selection.IChromatogramSelectionCSD;
+import org.eclipse.chemclipse.model.baseline.IBaselineModel;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogramPeak;
+import org.eclipse.chemclipse.model.core.PeakType;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.model.support.RetentionIndexMap;
@@ -134,13 +136,22 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 			}
 		}
 		/*
+		 * Detect the peak.
 		 * At least 3 scans must be available.
 		 */
 		if(deltaScan > 2) {
+			IChromatogramPeak peak;
+			if(detectorSetting.getPeakType().equals(PeakType.CB)) {
+				IBaselineModel baselineModel = chromatogram.getBaselineModel();
+				float startIntensity = baselineModel.getBackground(chromatogram.getScan(startScan).getRetentionTime());
+				float stopIntensity = baselineModel.getBackground(chromatogram.getScan(stopScan).getRetentionTime());
+				peak = peakSupport.extractPeakByScanRange(chromatogram, startScan, stopScan, startIntensity, stopIntensity, detectorSetting.getTraces());
+			} else {
+				peak = peakSupport.extractPeakByScanRange(chromatogram, startScan, stopScan, detectorSetting.isIncludeBackground(), detectorSetting.isOptimizeRange(), detectorSetting.getTraces());
+			}
 			/*
-			 * Detect
+			 * Handle
 			 */
-			IChromatogramPeak peak = peakSupport.extractPeakByScanRange(chromatogram, startScan, stopScan, detectorSetting.isIncludeBackground(), detectorSetting.isOptimizeRange(), detectorSetting.getTraces());
 			if(peak != null) {
 				/*
 				 * Add an identification on demand.
