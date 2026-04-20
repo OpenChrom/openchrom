@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2025 Lablicate GmbH.
+ * Copyright (c) 2014, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -13,7 +13,6 @@
 package net.openchrom.installer.ui;
 
 import org.eclipse.chemclipse.support.ui.activator.AbstractActivatorUI;
-import org.eclipse.equinox.p2.ui.Policy;
 import org.osgi.framework.BundleContext;
 
 import net.openchrom.installer.preferences.PreferenceSupplier;
@@ -32,7 +31,6 @@ public class Activator extends AbstractActivatorUI {
 		super.start(context);
 		plugin = this;
 		initializePreferenceStore(PreferenceSupplier.INSTANCE());
-		setPolicy(context);
 	}
 
 	@Override
@@ -47,10 +45,4 @@ public class Activator extends AbstractActivatorUI {
 		return plugin;
 	}
 
-	private void setPolicy(BundleContext context) {
-
-		Policy policy = context.getService(context.getServiceReference(Policy.class));
-		policy.setRepositoriesVisible(false);
-		policy.setRepositoryPreferencePageId(null);
-	}
 }

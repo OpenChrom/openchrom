@@ -36,6 +36,7 @@ Require-Bundle: org.eclipse.core.runtime,
  net.openchrom.feature.branding;bundle-version="1.6.13",
  com.google.gson;bundle-version="2.13.2",
  org.eclipse.e4.core.contexts;bundle-version="[1.13.0,2.0.0)"
+Service-Component: OSGI-INF/net.openchrom.installer.ui.OpenchromP2Policy.xml
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: net.openchrom.installer.ui
