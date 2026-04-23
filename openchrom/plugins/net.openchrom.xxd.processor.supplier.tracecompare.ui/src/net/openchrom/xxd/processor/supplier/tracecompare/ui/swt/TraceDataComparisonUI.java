@@ -813,7 +813,7 @@ public class TraceDataComparisonUI extends Composite {
 		String sampleDirectory = processorModel.getSampleDirectory();
 
 		List<String> samplePatterns = dataProcessorUI.getMeasurementPatterns(sampleDirectory, fileExtension);
-		setMeasurementComboItems(comboSampleMeasurements, samplePatterns, sampleGroup);
+		setMeasurementComboItems(comboSampleMeasurements, samplePatterns);
 		sampleGroup = comboSampleMeasurements.getText();
 	}
 
@@ -823,11 +823,11 @@ public class TraceDataComparisonUI extends Composite {
 		String referenceDirectory = processorModel.getReferenceDirectory();
 
 		List<String> referencePatterns = dataProcessorUI.getMeasurementPatterns(referenceDirectory, fileExtension);
-		setMeasurementComboItems(comboReferenceMeasurements, referencePatterns, referenceGroup);
+		setMeasurementComboItems(comboReferenceMeasurements, referencePatterns);
 		referenceGroup = comboReferenceMeasurements.getText();
 	}
 
-	private void setMeasurementComboItems(Combo combo, List<String> patterns, String selectedGroup) {
+	private void setMeasurementComboItems(Combo combo, List<String> patterns) {
 
 		combo.setItems(patterns.toArray(new String[patterns.size()]));
 	}

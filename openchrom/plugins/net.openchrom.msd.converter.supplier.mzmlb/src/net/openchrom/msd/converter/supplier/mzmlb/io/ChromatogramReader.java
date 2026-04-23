@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Lablicate GmbH.
+ * Copyright (c) 2021, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -102,7 +102,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 				readSpectrumParameters(spectrum, scanProxy);
 				readScan(spectrum, scanProxy);
 
-				IScanMarker scanMarker = readBinaryData(spectrum, scanProxy, readerProxy);
+				IScanMarker scanMarker = readBinaryData(spectrum, readerProxy);
 				scanProxy.setScanMarker(scanMarker);
 				chromatogram.addScan(scanProxy);
 				monitor.worked(1);
@@ -150,7 +150,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 		}
 	}
 
-	private IScanMarker readBinaryData(SpectrumType spectrum, IVendorScanProxy scanProxy, IReaderProxy scanReaderProxy) {
+	private IScanMarker readBinaryData(SpectrumType spectrum, IReaderProxy scanReaderProxy) {
 
 		IScanMarker scanMarker = new ScanMarker();
 		for(BinaryDataArrayType binaryDataArray : spectrum.getBinaryDataArrayList().getBinaryDataArray()) {

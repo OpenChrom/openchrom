@@ -39,10 +39,10 @@ public class TimeRatioTableComparator extends AbstractRecordTableComparator {
 		int result;
 		switch(displayOption) {
 			case RESULTS:
-				result = compareResults(viewer, e1, e2);
+				result = compareResults(e1, e2);
 				break;
 			case SETTINGS:
-				result = compareSettings(viewer, e1, e2);
+				result = compareSettings(e1, e2);
 				break;
 			default:
 				result = 0;
@@ -51,7 +51,7 @@ public class TimeRatioTableComparator extends AbstractRecordTableComparator {
 		return result;
 	}
 
-	public int compareSettings(Viewer viewer, Object e1, Object e2) {
+	public int compareSettings(Object e1, Object e2) {
 
 		int sortOrder = 0;
 		if(e1 instanceof TimeRatio timeRatio1 && e2 instanceof TimeRatio timeRatio2) {
@@ -76,7 +76,7 @@ public class TimeRatioTableComparator extends AbstractRecordTableComparator {
 		return sortOrder;
 	}
 
-	public int compareResults(Viewer viewer, Object e1, Object e2) {
+	public int compareResults(Object e1, Object e2) {
 
 		int sortOrder = 0;
 		if(e1 instanceof TimeRatio timeRatio1 && e2 instanceof TimeRatio timeRatio2) {

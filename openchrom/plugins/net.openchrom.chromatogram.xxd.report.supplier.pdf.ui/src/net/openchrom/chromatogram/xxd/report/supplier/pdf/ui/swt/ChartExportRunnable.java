@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Lablicate GmbH.
+ * Copyright (c) 2017, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -117,8 +117,8 @@ public class ChartExportRunnable implements Runnable {
 			List<ILineSeriesData> lineSeriesDataList = new ArrayList<>();
 			lineSeriesDataList.add(chromatogramChartSupport.getLineSeriesDataChromatogram(chromatogram, chromatogram.getName(), Colors.RED));
 			BaseChart baseChart = chromatogramChart.getBaseChart();
-			peaks = addPeaks(baseChart, lineSeriesDataList);
-			scans = addScans(baseChart, lineSeriesDataList);
+			peaks = addPeaks(lineSeriesDataList);
+			scans = addScans(lineSeriesDataList);
 			chromatogramChart.addSeriesData(lineSeriesDataList);
 			/*
 			 * Show Peak Labels
@@ -204,7 +204,7 @@ public class ChartExportRunnable implements Runnable {
 		return chromatogramFiles;
 	}
 
-	private List<? extends IPeak> addPeaks(BaseChart baseChart, List<ILineSeriesData> lineSeriesDataList) {
+	private List<? extends IPeak> addPeaks(List<ILineSeriesData> lineSeriesDataList) {
 
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
 		if(!peaks.isEmpty()) {
@@ -222,7 +222,7 @@ public class ChartExportRunnable implements Runnable {
 		return peaks;
 	}
 
-	private List<IScan> addScans(BaseChart baseChart, List<ILineSeriesData> lineSeriesDataList) {
+	private List<IScan> addScans(List<ILineSeriesData> lineSeriesDataList) {
 
 		List<IScan> scans = ChromatogramDataSupport.getIdentifiedScans(chromatogram);
 		if(!scans.isEmpty()) {

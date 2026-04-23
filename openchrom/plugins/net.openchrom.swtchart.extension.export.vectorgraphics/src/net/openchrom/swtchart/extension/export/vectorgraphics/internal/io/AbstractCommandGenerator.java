@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Lablicate GmbH.
+ * Copyright (c) 2023, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -96,11 +96,11 @@ public abstract class AbstractCommandGenerator implements IChartCommandGenerator
 
 	public void drawAxes(Graphics2D graphics2D, IPoint scale, BaseChart baseChart, int indexAxisX, int indexAxisY, PageSettings pageSettings) {
 
-		drawAxisX(graphics2D, scale, baseChart, indexAxisX, pageSettings);
+		drawAxisX(graphics2D, baseChart, indexAxisX, pageSettings);
 		drawAxisY(graphics2D, scale, baseChart, indexAxisY, pageSettings);
 	}
 
-	private void drawAxisX(Graphics2D graphics2D, IPoint scale, BaseChart baseChart, int indexAxisX, PageSettings pageSettings) {
+	private void drawAxisX(Graphics2D graphics2D, BaseChart baseChart, int indexAxisX, PageSettings pageSettings) {
 
 		int numberTics = pageSettings.getChartSettings().getNumberTics();
 		double width = pageSettings.getWidth();
@@ -439,7 +439,7 @@ public abstract class AbstractCommandGenerator implements IChartCommandGenerator
 							graphics2D.setStroke(pageSettings.getStrokeSolid());
 
 							double y = graphicElement.getY();
-							int x1 = getX(factorX, x, width, xMin, xBorderLeft, xBorderRight);
+							int x1 = getX(factorX, x, xMin, xBorderLeft, xBorderRight);
 							int y1 = getY(factorY, y, height, yMin, yBorderTop, yBorderBottom);
 
 							if(graphicElement instanceof ElementRectangle elementRectangle) {
@@ -462,7 +462,7 @@ public abstract class AbstractCommandGenerator implements IChartCommandGenerator
 									int index = 0;
 									for(int i = 0; i < (size - 1); i++) {
 										if(i % 2 == 0) {
-											xPoints[index] = getX(factorX, polygon[i], width, xMin, xBorderLeft, xBorderRight);
+											xPoints[index] = getX(factorX, polygon[i], xMin, xBorderLeft, xBorderRight);
 											yPoints[index] = getY(factorY, polygon[i + 1], height, yMin, yBorderTop, yBorderBottom);
 											index++;
 										}
@@ -473,7 +473,7 @@ public abstract class AbstractCommandGenerator implements IChartCommandGenerator
 								/*
 								 * Line
 								 */
-								int x2 = getX(factorX, elementLine.getX2(), width, xMin, xBorderLeft, xBorderRight);
+								int x2 = getX(factorX, elementLine.getX2(), xMin, xBorderLeft, xBorderRight);
 								int y2 = getY(factorY, elementLine.getY2(), height, yMin, yBorderTop, yBorderBottom);
 								graphics2D.setStroke(pageSettings.getStroke(elementLine.getLineStyle(), elementLine.getLineWidth()));
 								graphics2D.drawLine(x1, y1, x2, y2);
@@ -506,7 +506,7 @@ public abstract class AbstractCommandGenerator implements IChartCommandGenerator
 		}
 	}
 
-	private int getX(double factorX, double x, double pageWidth, double xMin, double xBorderLeft, double xBorderRight) {
+	private int getX(double factorX, double x, double xMin, double xBorderLeft, double xBorderRight) {
 
 		if(x == IElement.POSITION_LEFT_X) {
 			return (int)xBorderLeft;

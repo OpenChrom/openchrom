@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Lablicate GmbH.
+ * Copyright (c) 2019, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -32,8 +32,6 @@ import net.openchrom.xxd.classifier.supplier.ratios.model.qual.PeakQuality;
 import net.openchrom.xxd.classifier.supplier.ratios.model.qual.QualRatio;
 import net.openchrom.xxd.classifier.supplier.ratios.model.qual.QualRatioResult;
 import net.openchrom.xxd.classifier.supplier.ratios.model.qual.QualRatios;
-import net.openchrom.xxd.classifier.supplier.ratios.preferences.PreferenceSupplier;
-import net.openchrom.xxd.classifier.supplier.ratios.settings.QualRatioSettings;
 
 public class QualRatioClassifier extends AbstractRatioClassifier {
 
@@ -42,18 +40,12 @@ public class QualRatioClassifier extends AbstractRatioClassifier {
 	@Override
 	public IProcessingInfo<IChromatogramClassifierResult> applyClassifier(IChromatogramSelection chromatogramSelection, IChromatogramClassifierSettings chromatogramClassifierSettings, IProgressMonitor monitor) {
 
-		QualRatioSettings settings;
-		if(chromatogramClassifierSettings instanceof QualRatioSettings qualRatioSettings) {
-			settings = qualRatioSettings;
-		} else {
-			settings = PreferenceSupplier.getSettingsQual();
-		}
 		IProcessingInfo<IChromatogramClassifierResult> processingInfo = validate(chromatogramSelection, chromatogramClassifierSettings);
 		if(!processingInfo.hasErrorMessages()) {
 			/*
 			 * Calculate the peak quality
 			 */
-			QualRatios qualRatios = calculateRatios(chromatogramSelection.getChromatogram(), settings);
+			QualRatios qualRatios = calculateRatios(chromatogramSelection.getChromatogram());
 			QualRatioResult classifierResult = new QualRatioResult(ResultStatus.OK, "The chromatogram peaks have been classified.", qualRatios);
 			IMeasurementResult<?> measurementResult = new MeasurementResult("Quality Ratio Classifier", CLASSIFIER_ID, "Quality Ratios", qualRatios);
 			chromatogramSelection.getChromatogram().addMeasurementResult(measurementResult);
@@ -62,7 +54,7 @@ public class QualRatioClassifier extends AbstractRatioClassifier {
 		return processingInfo;
 	}
 
-	private QualRatios calculateRatios(IChromatogram chromatogram, QualRatioSettings classifierSettings) {
+	private QualRatios calculateRatios(IChromatogram chromatogram) {
 
 		QualRatios ratios = new QualRatios();
 

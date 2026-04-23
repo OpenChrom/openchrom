@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Lablicate GmbH.
+ * Copyright (c) 2017, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -34,7 +34,7 @@ public class TraceCompareEditorUI extends Composite {
 	public TraceCompareEditorUI(Composite parent, int style) {
 
 		super(parent, style);
-		initialize(parent);
+		initialize();
 	}
 
 	public void update(Object object) {
@@ -49,7 +49,7 @@ public class TraceCompareEditorUI extends Composite {
 		}
 	}
 
-	private void initialize(Composite parent) {
+	private void initialize() {
 
 		setLayout(new FillLayout());
 
