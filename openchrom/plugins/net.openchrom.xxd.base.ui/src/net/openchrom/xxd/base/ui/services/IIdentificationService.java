@@ -21,7 +21,6 @@ import org.eclipse.chemclipse.model.types.DataType;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IWorkbenchPreferencePage;
 
 public interface IIdentificationService {
 
@@ -36,6 +35,4 @@ public interface IIdentificationService {
 	IProcessingInfo<IPeakIdentificationResults> identify(List<? extends IPeak> peaks, IIdentifierSettings identifierSettings, IProgressMonitor monitor);
 
 	IIdentifierSettings getIdentifierSettings(Shell shell);
-
-	Class<? extends IWorkbenchPreferencePage> getPreferencePage();
 }
