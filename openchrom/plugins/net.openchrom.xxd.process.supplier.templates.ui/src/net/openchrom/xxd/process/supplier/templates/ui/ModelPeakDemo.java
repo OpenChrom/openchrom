@@ -98,8 +98,8 @@ public class ModelPeakDemo {
 		composite.setLayout(new GridLayout(2, true));
 		composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		textSigmaFront = createText(composite, 60.0d, "Sigma Front: 1 - 200");
-		textSigmaBack = createText(composite, 60.0d, "Sigma Back: 1 - 200");
+		textSigmaFront = createText(composite, 60.0d);
+		textSigmaBack = createText(composite, 60.0d);
 	}
 
 	private static void createSectionDistribution(Composite parent) {
@@ -118,11 +118,11 @@ public class ModelPeakDemo {
 		composite.setLayout(new GridLayout(2, true));
 		composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		textShape = createText(composite, 9.0d, "Shape: 1 - 9");
-		textScale = createText(composite, 0.1d, "Scale: 0.1 - 2");
+		textShape = createText(composite, 9.0d);
+		textScale = createText(composite, 0.1d);
 	}
 
-	private static Text createText(Composite parent, double init, String tooltip) {
+	private static Text createText(Composite parent, double init) {
 
 		Text text = new Text(parent, SWT.BORDER);
 		text.setText(Double.toString(init));

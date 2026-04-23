@@ -399,7 +399,7 @@ public class ExcelTemplateReportWriter {
 		boolean success = false;
 
 		if(printPeaks(chromatogram, placeholderProcessors, sheet, row)) {
-			deletePlaceholderRow(row, sheet);
+			deletePlaceholderRow(sheet);
 			success = true;
 		}
 
@@ -469,7 +469,7 @@ public class ExcelTemplateReportWriter {
 		return cellData.getCellValue();
 	}
 
-	private void deletePlaceholderRow(Row row, Sheet sheet) {
+	private void deletePlaceholderRow(Sheet sheet) {
 
 		Row rowDelete = getPlaceholderRow(sheet);
 		if(rowDelete != null) {

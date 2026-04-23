@@ -58,7 +58,7 @@ public class ResultsEditorUI extends Composite {
 	public ResultsEditorUI(Composite parent, int style) {
 
 		super(parent, style);
-		initialize(parent);
+		initialize();
 	}
 
 	public void update(Object object) {
@@ -72,7 +72,7 @@ public class ResultsEditorUI extends Composite {
 		}
 	}
 
-	private void initialize(Composite parent) {
+	private void initialize() {
 
 		setLayout(new FillLayout());
 		Composite composite = new Composite(this, SWT.FILL);

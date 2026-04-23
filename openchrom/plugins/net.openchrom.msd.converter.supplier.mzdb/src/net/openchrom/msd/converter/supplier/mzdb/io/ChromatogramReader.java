@@ -74,7 +74,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 			try (Statement statement = connection.createStatement()) {
 				chromatogram = new VendorChromatogram();
 				chromatogram.setFile(file);
-				readMzDB(statement, file, chromatogram);
+				readMzDB(statement, chromatogram);
 				readName(statement, chromatogram);
 				readEditHistory(statement, chromatogram);
 				readSpectrum(statement, chromatogram);
@@ -87,7 +87,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 		return chromatogram;
 	}
 
-	private void readMzDB(Statement statement, File file, IVendorChromatogram chromatogram) throws SQLException {
+	private void readMzDB(Statement statement, IVendorChromatogram chromatogram) throws SQLException {
 
 		try (ResultSet mzdbResultSet = statement.executeQuery("SELECT creation_timestamp, version FROM mzdb;")) {
 			long epoch = mzdbResultSet.getLong("creation_timestamp") * 1000; // to milliseconds

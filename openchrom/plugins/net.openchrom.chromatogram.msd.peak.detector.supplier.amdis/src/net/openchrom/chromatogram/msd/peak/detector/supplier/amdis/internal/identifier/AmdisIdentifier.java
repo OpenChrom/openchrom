@@ -107,7 +107,7 @@ public class AmdisIdentifier {
 		IExtendedRuntimeSupport runtimeSupport;
 
 		String amdisApplication = PreferenceSupplier.getInstallationFolder().getAbsolutePath() + File.separator + PreferenceSupplier.AMDIS_EXECUTABLE;
-		String filePath = getAmdisCompatibleFilePath(fileChromatogram, settingsAMDIS);
+		String filePath = getAmdisCompatibleFilePath(fileChromatogram);
 
 		try {
 			runtimeSupport = RuntimeSupportFactory.getRuntimeSupport(amdisApplication, filePath);
@@ -145,7 +145,7 @@ public class AmdisIdentifier {
 	 * @param fileChromatogram
 	 * @return String
 	 */
-	private String getAmdisCompatibleFilePath(File fileChromatogram, SettingsAMDIS settingsAMDIS) {
+	private String getAmdisCompatibleFilePath(File fileChromatogram) {
 
 		String filePath = "";
 		File amdisTmpPath = PreferenceSupplier.getDataFolder();
