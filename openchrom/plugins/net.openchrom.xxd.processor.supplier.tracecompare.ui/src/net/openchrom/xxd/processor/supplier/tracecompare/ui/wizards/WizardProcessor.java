@@ -15,8 +15,6 @@ package net.openchrom.xxd.processor.supplier.tracecompare.ui.wizards;
 import java.io.File;
 import java.util.Date;
 
-import jakarta.xml.bind.JAXBException;
-
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.support.ui.wizards.AbstractFileWizard;
 import org.eclipse.core.resources.IFile;
@@ -26,6 +24,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import net.openchrom.xxd.processor.supplier.tracecompare.core.DataProcessor;
 import net.openchrom.xxd.processor.supplier.tracecompare.io.ProcessorModelWriter;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
+
+import jakarta.xml.bind.JAXBException;
 
 public class WizardProcessor extends AbstractFileWizard {
 
@@ -78,7 +78,7 @@ public class WizardProcessor extends AbstractFileWizard {
 			IProcessorModel processorModel = wizardElements.getProcessorModel();
 			processorModel.setImageDirectory(imageDirectory);
 			ProcessorModelWriter processorModelWriter = new ProcessorModelWriter();
-			processorModelWriter.write(file.getLocation().toFile(), processorModel, monitor);
+			processorModelWriter.write(file.getLocation().toFile(), processorModel);
 		} catch(JAXBException e) {
 			logger.warn(e);
 		}

@@ -14,21 +14,19 @@ package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.io;
 
 import java.io.File;
 
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Marshaller;
-
-import org.eclipse.core.runtime.IProgressMonitor;
-
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.IProcessorModel;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.v1000.MassShift_v1000;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.v1000.ProcessorModel_v1000;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.v1000.ProcessorSettings_v1000;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.model.v1000.ScanMarker_v1000;
 
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
+
 public class ProcessorModelWriter {
 
-	public void write(File file, IProcessorModel processorModel, IProgressMonitor monitor) throws JAXBException {
+	public void write(File file, IProcessorModel processorModel) throws JAXBException {
 
 		JAXBContext jaxbContext = JAXBContext.newInstance(ProcessorModel_v1000.class, ScanMarker_v1000.class, MassShift_v1000.class, ProcessorSettings_v1000.class);
 		Marshaller marshaller = jaxbContext.createMarshaller();

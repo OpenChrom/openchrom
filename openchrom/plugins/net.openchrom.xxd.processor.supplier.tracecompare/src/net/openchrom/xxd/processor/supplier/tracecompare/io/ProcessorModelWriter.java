@@ -14,21 +14,19 @@ package net.openchrom.xxd.processor.supplier.tracecompare.io;
 
 import java.io.File;
 
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Marshaller;
-
-import org.eclipse.core.runtime.IProgressMonitor;
-
 import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.v1000.ProcessorModel_v1000;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.v1000.ReferenceModel_v1000;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.v1000.SampleModel_v1000;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.v1000.TrackModel_v1000;
 
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
+
 public class ProcessorModelWriter {
 
-	public void write(File file, IProcessorModel processorModel, IProgressMonitor monitor) throws JAXBException {
+	public void write(File file, IProcessorModel processorModel) throws JAXBException {
 
 		JAXBContext jaxbContext = JAXBContext.newInstance(ProcessorModel_v1000.class, ReferenceModel_v1000.class, SampleModel_v1000.class, TrackModel_v1000.class);
 		Marshaller marshaller = jaxbContext.createMarshaller();

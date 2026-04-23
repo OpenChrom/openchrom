@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2025 Walter Whitlock, Philip Wenig.
+ * Copyright (c) 2016, 2026 Walter Whitlock, Philip Wenig.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -20,7 +20,6 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.ejml.data.DMatrixRMaj;
 import org.ejml.dense.row.CommonOps_DDRM;
 import org.ejml.dense.row.SpecializedOps_DDRM;
@@ -60,7 +59,7 @@ public class MassSpectraDecomposition {
 	private ICalibratedVendorMassSpectrum scanResidual; // residual mass spectrum after subtracting calculated ion signals
 	private MassSpectraCorrelation massSpectraCorrelator = new MassSpectraCorrelation();
 
-	public DecompositionResults decompose(IMassSpectra scanSpectra, IMassSpectra libMassSpectra, boolean useWeightedError, PrintStream printStreamTables, IProgressMonitor monitor) {
+	public DecompositionResults decompose(IMassSpectra scanSpectra, IMassSpectra libMassSpectra, boolean useWeightedError, PrintStream printStreamTables) {
 
 		// parameter scanSpectra has all the scans we wish to decompose, 1 by 1, into components
 		// parameter libMassSpectra has a set of library component cracking patterns, the ones we want to fit to have true == isSelected()
@@ -276,7 +275,7 @@ public class MassSpectraDecomposition {
 			}
 
 			decompositionResult.setResidualSpectrum(scanResidual);
-			correlationResult = massSpectraCorrelator.correlate(scanResidual, libMassSpectra, massTol, monitor);
+			correlationResult = massSpectraCorrelator.correlate(scanResidual, libMassSpectra, massTol);
 			decompositionResult.setCorrelationResult(correlationResult);
 			results.addDecompositionResult(decompositionResult);
 			// residualSpectra.addMassSpectrum(scanResidual);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Lablicate GmbH.
+ * Copyright (c) 2021, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -25,14 +25,10 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IComplexSignalMeasurement;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Unmarshaller;
 import net.openchrom.nmr.converter.supplier.gaml.model.VendorFIDMeasurement;
 import net.openchrom.nmr.converter.supplier.gaml.model.VendorFIDSignal;
 import net.openchrom.xxd.converter.supplier.gaml.io.Reader;
@@ -45,11 +41,15 @@ import net.openchrom.xxd.converter.supplier.gaml.v110.model.Trace;
 import net.openchrom.xxd.converter.supplier.gaml.v110.model.Xdata;
 import net.openchrom.xxd.converter.supplier.gaml.v110.model.Ydata;
 
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
+
 public class ScanReaderVersion110 {
 
 	private static final Logger logger = Logger.getLogger(ScanReaderVersion110.class);
 
-	public Collection<IComplexSignalMeasurement<?>> read(File file, IProgressMonitor monitor) throws IOException {
+	public Collection<IComplexSignalMeasurement<?>> read(File file) throws IOException {
 
 		List<IComplexSignalMeasurement<?>> measurements = new ArrayList<>();
 		try {

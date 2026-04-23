@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Walter Whitlock.
+ * Copyright (c) 2017, 2026 Walter Whitlock.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -15,7 +15,6 @@ package net.openchrom.msd.process.supplier.cms.core;
 
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
-import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
@@ -51,7 +50,7 @@ public class MassSpectraCorrelation {
 		return correlation;
 	}
 
-	public CorrelationResult correlate(ICalibratedVendorMassSpectrum scanSpectrum, IMassSpectra libSpectra, double massTol, IProgressMonitor monitor) {
+	public CorrelationResult correlate(ICalibratedVendorMassSpectrum scanSpectrum, IMassSpectra libSpectra, double massTol) {
 
 		CorrelationResult result = new CorrelationResult(libSpectra.getList().size(), scanSpectrum);
 		for(IScanMSD libSpectrum : libSpectra.getList()) {
@@ -64,7 +63,7 @@ public class MassSpectraCorrelation {
 		return result;
 	}
 
-	public CorrelationResults correlate(IMassSpectra testSpectra, IMassSpectra libSpectra, IProgressMonitor monitor) {
+	public CorrelationResults correlate(IMassSpectra testSpectra, IMassSpectra libSpectra) {
 
 		// parameter testSpectra has all the scans we wish to correlate with library component spectra
 		// parameter libSpectra has the set of library component cracking patterns we want to correlate with
@@ -86,7 +85,7 @@ public class MassSpectraCorrelation {
 				// } // for
 
 				// results.addCorrelationResult(result);
-				results.addCorrelationResult(correlate(scanSpectrum, libSpectra, massTol, monitor));
+				results.addCorrelationResult(correlate(scanSpectrum, libSpectra, massTol));
 			} // if
 		} // for
 		return results;

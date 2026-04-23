@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2025 Lablicate GmbH.
+ * Copyright (c) 2016, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -39,13 +39,13 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 	@Override
 	public IChromatogramWSD read(File file, IProgressMonitor monitor) throws IOException {
 
-		return readChromatogram(file, monitor);
+		return readChromatogram(file);
 	}
 
 	@Override
 	public IChromatogramOverview readOverview(File file, IProgressMonitor monitor) throws IOException {
 
-		return readChromatogram(file, monitor);
+		return readChromatogram(file);
 	}
 
 	// limit to 4 wavelenths (for each nucleobase) although format might have an optional 5th dye
@@ -73,7 +73,7 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 		}
 	}
 
-	private IChromatogramWSD readChromatogram(File file, IProgressMonitor monitor) throws IOException {
+	private IChromatogramWSD readChromatogram(File file) throws IOException {
 
 		IChromatogramArrayReader in = new ChromatogramArrayReader(file);
 		/*

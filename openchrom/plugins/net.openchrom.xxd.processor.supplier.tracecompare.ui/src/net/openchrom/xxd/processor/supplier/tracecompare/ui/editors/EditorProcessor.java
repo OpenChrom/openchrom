@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Lablicate GmbH.
+ * Copyright (c) 2017, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -16,7 +16,6 @@ import java.io.File;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.dialogs.IPageChangedListener;
 import org.eclipse.jface.dialogs.PageChangedEvent;
 import org.eclipse.ui.IEditorInput;
@@ -26,10 +25,11 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.MultiPageEditorPart;
 
-import jakarta.xml.bind.JAXBException;
 import net.openchrom.xxd.processor.supplier.tracecompare.io.ProcessorModelReader;
 import net.openchrom.xxd.processor.supplier.tracecompare.io.ProcessorModelWriter;
 import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
+
+import jakarta.xml.bind.JAXBException;
 
 public class EditorProcessor extends MultiPageEditorPart {
 
@@ -93,7 +93,7 @@ public class EditorProcessor extends MultiPageEditorPart {
 
 		try {
 			ProcessorModelWriter processorModelWriter = new ProcessorModelWriter();
-			processorModelWriter.write(file, processorModel, monitor);
+			processorModelWriter.write(file, processorModel);
 			setDirty(false);
 		} catch(JAXBException e) {
 			logger.warn(e);
@@ -140,7 +140,7 @@ public class EditorProcessor extends MultiPageEditorPart {
 			try {
 				file = fileEditorInput.getFile().getLocation().toFile();
 				ProcessorModelReader processorModelReader = new ProcessorModelReader();
-				processorModel = processorModelReader.read(file, new NullProgressMonitor());
+				processorModel = processorModelReader.read(file);
 				logger.info(processorModel);
 			} catch(JAXBException e) {
 				logger.warn(e);

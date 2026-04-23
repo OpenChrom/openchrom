@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Lablicate GmbH.
+ * Copyright (c) 2021, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -22,7 +22,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.wsd.model.core.implementation.SignalWSD;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -47,7 +46,7 @@ public class ScanReaderVersion110 {
 
 	private static final Logger logger = Logger.getLogger(ScanReaderVersion110.class);
 
-	public IVendorSpectrumWSD read(File file, IProgressMonitor monitor) throws IOException {
+	public IVendorSpectrumWSD read(File file) throws IOException {
 
 		IVendorSpectrumWSD vendorScan = null;
 		try {

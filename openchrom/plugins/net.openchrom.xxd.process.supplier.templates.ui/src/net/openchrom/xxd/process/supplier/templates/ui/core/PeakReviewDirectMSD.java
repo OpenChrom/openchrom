@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2025 Lablicate GmbH.
+ * Copyright (c) 2020, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -31,6 +31,6 @@ public class PeakReviewDirectMSD extends AbstractPeakReview implements IPeakIden
 		 * and set to null on purpose, to allow a dynamic review.
 		 */
 		applyPeakReviewDirectSettings(peakIdentifierSettings);
-		return runProcess(peaks, null, "PeakReviewDirectMSD", monitor);
+		return runProcess(peaks, null, "PeakReviewDirectMSD");
 	}
 }

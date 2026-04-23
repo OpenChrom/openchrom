@@ -75,7 +75,7 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter {
 	public void write(File file, IMassSpectra massSpectra, boolean append, IProgressMonitor monitor) throws FileIsNotWriteableException, IOException {
 
 		FileWriter fileWriter = new FileWriter(file, append);
-		writeMassSpectra(fileWriter, massSpectra, monitor);
+		writeMassSpectra(fileWriter, massSpectra);
 		fileWriter.close();
 	}
 
@@ -478,7 +478,7 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter {
 	 *
 	 * @throws IOException
 	 */
-	private void writeMassSpectra(FileWriter fileWriter, IMassSpectra massSpectra, IProgressMonitor monitor) throws IOException {
+	private void writeMassSpectra(FileWriter fileWriter, IMassSpectra massSpectra) throws IOException {
 
 		/*
 		 * Get all mass spectra, test to null and append them with the given

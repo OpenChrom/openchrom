@@ -73,7 +73,7 @@ public class WizardProcessor extends AbstractFileWizard {
 		try {
 			IProcessorModel processorModel = wizardElements.getProcessorModel();
 			ProcessorModelWriter processorModelWriter = new ProcessorModelWriter();
-			processorModelWriter.write(file.getLocation().toFile(), processorModel, monitor);
+			processorModelWriter.write(file.getLocation().toFile(), processorModel);
 		} catch(JAXBException e) {
 			logger.error(e);
 		}
