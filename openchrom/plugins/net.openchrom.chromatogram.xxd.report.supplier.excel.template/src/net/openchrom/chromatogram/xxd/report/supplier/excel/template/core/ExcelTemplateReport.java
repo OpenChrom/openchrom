@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Lablicate GmbH.
+ * Copyright (c) 2024, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -32,7 +32,7 @@ public class ExcelTemplateReport extends AbstractChromatogramReportGenerator {
 
 	private static final Logger logger = Logger.getLogger(ExcelTemplateReport.class);
 
-	public IProcessingInfo<File> report(File file, boolean append, List<IChromatogram> chromatograms, IChromatogramReportSettings settings, IProgressMonitor monitor) {
+	public IProcessingInfo<File> report(File file, boolean append, List<IChromatogram> chromatograms, IChromatogramReportSettings settings) {
 
 		IProcessingInfo<File> processingInfo = super.validate(file);
 		if(!processingInfo.hasErrorMessages()) {
@@ -57,27 +57,27 @@ public class ExcelTemplateReport extends AbstractChromatogramReportGenerator {
 
 		List<IChromatogram> chromatograms = getChromatogramList(chromatogram);
 		ChromatogramReportSettings settings = PreferenceSupplier.getReportSettings();
-		return report(file, append, chromatograms, settings, monitor);
+		return report(file, append, chromatograms, settings);
 	}
 
 	@Override
 	public IProcessingInfo<File> generate(File file, boolean append, List<IChromatogram> chromatograms, IProgressMonitor monitor) {
 
 		ChromatogramReportSettings settings = PreferenceSupplier.getReportSettings();
-		return report(file, append, chromatograms, settings, monitor);
+		return report(file, append, chromatograms, settings);
 	}
 
 	@Override
 	public IProcessingInfo<?> generate(File file, boolean append, IChromatogram chromatogram, IChromatogramReportSettings settings, IProgressMonitor monitor) {
 
 		List<IChromatogram> chromatograms = getChromatogramList(chromatogram);
-		return report(file, append, chromatograms, settings, monitor);
+		return report(file, append, chromatograms, settings);
 	}
 
 	@Override
 	public IProcessingInfo<?> generate(File file, boolean append, List<IChromatogram> chromatograms, IChromatogramReportSettings settings, IProgressMonitor monitor) {
 
-		return report(file, append, chromatograms, settings, monitor);
+		return report(file, append, chromatograms, settings);
 	}
 
 	protected List<IChromatogram> getChromatogramList(IChromatogram chromatogram) {

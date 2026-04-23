@@ -17,7 +17,6 @@ import java.io.FileNotFoundException;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.dialogs.IPageChangedListener;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.PageChangedEvent;
@@ -110,7 +109,7 @@ public class EditorProcessor extends MultiPageEditorPart {
 
 		try {
 			ProcessorModelWriter processorModelWriter = new ProcessorModelWriter();
-			processorModelWriter.write(file, processorData.getProcessorModel(), monitor);
+			processorModelWriter.write(file, processorData.getProcessorModel());
 			setDirty(false);
 		} catch(JAXBException e) {
 			logger.warn(e);
@@ -170,7 +169,7 @@ public class EditorProcessor extends MultiPageEditorPart {
 				file = fileEditorInput.getFile().getLocation().toFile();
 				ProcessorModelReader processorModelReader = new ProcessorModelReader();
 				processorData = new ProcessorData();
-				processorData.setProcessorModel(processorModelReader.read(file, new NullProgressMonitor()));
+				processorData.setProcessorModel(processorModelReader.read(file));
 
 			} catch(JAXBException e) {
 				logger.warn(e);

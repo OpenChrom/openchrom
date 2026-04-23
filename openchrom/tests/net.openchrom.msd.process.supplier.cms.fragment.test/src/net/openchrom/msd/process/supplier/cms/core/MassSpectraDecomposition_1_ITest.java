@@ -49,7 +49,7 @@ public class MassSpectraDecomposition_1_ITest {
 				calibratedVendorLibraryMassSpectrum.setSelected(true);
 			}
 		}
-		DecompositionResults results = massSpectraDecomposition.decompose(scanSpectra, librarySpectra, true, System.out, new NullProgressMonitor());
+		DecompositionResults results = massSpectraDecomposition.decompose(scanSpectra, librarySpectra, true, System.out);
 		assertNotNull(results);
 	}
 }

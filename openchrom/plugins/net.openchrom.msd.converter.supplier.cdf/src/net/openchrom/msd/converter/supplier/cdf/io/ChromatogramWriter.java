@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2025 Lablicate GmbH.
+ * Copyright (c) 2013, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -41,10 +41,10 @@ public class ChromatogramWriter extends AbstractChromatogramWriter implements IC
 	public void writeChromatogram(File file, IChromatogramMSD chromatogram, IProgressMonitor monitor) throws FileIsNotWriteableException, IOException {
 
 		// Do not distinguish between CDFChromatogram and others.
-		writeCDFChromatogram(file, chromatogram, monitor);
+		writeCDFChromatogram(file, chromatogram);
 	}
 
-	private void writeCDFChromatogram(File file, IChromatogramMSD chromatogram, IProgressMonitor monitor) throws IOException {
+	private void writeCDFChromatogram(File file, IChromatogramMSD chromatogram) throws IOException {
 
 		Builder builder = NetcdfFormatWriter.createNewNetcdf3(file.getAbsolutePath());
 		DimensionSupport dimensionSupport = new DimensionSupport(builder, chromatogram);

@@ -196,7 +196,7 @@ public class DecompositionResultUI extends Composite {
 			messageConsoleStream.setActivateOnWrite(false);
 			MassSpectraDecomposition decomposer = new MassSpectraDecomposition();
 			// do the work
-			results = decomposer.decompose(scanSpectra, libMassSpectra, buttonUseRelError.getSelection(), tables, new NullProgressMonitor());
+			results = decomposer.decompose(scanSpectra, libMassSpectra, buttonUseRelError.getSelection(), tables);
 
 		} catch(Exception e1) {
 			logger.warn(e1);

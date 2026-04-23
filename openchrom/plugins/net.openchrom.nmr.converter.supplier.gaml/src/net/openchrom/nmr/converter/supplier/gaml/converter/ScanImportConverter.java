@@ -57,13 +57,13 @@ public class ScanImportConverter extends AbstractScanImportConverter {
 			final String header = new String(charBuffer);
 			if(header.contains(Reader100.VERSION)) {
 				ScanReaderVersion100 scanReader = new ScanReaderVersion100();
-				complexSignalMeasurement = scanReader.read(file, monitor);
+				complexSignalMeasurement = scanReader.read(file);
 			} else if(header.contains(Reader110.VERSION)) {
 				ScanReaderVersion110 scanReader = new ScanReaderVersion110();
-				complexSignalMeasurement = scanReader.read(file, monitor);
+				complexSignalMeasurement = scanReader.read(file);
 			} else if(header.contains(Reader120.VERSION)) {
 				ScanReaderVersion120 scanReader = new ScanReaderVersion120();
-				complexSignalMeasurement = scanReader.read(file, monitor);
+				complexSignalMeasurement = scanReader.read(file);
 			} else {
 				throw new UnknownVersionException();
 			}

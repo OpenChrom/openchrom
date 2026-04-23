@@ -30,7 +30,6 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.chemclipse.support.literature.LiteratureReference;
 import org.eclipse.chemclipse.support.ui.workbench.DisplayUtils;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.widgets.Shell;
 
 import net.openchrom.xxd.process.supplier.templates.io.ITemplateExport;
@@ -100,17 +99,17 @@ public abstract class AbstractPeakReview extends AbstractPeakIdentifier implemen
 		}
 	}
 
-	protected IProcessingInfo<IPeakIdentificationResults> runProcess(List<? extends IPeak> peaks, IIdentifierSettings identifierSettings, String description, IProgressMonitor monitor) {
+	protected IProcessingInfo<IPeakIdentificationResults> runProcess(List<? extends IPeak> peaks, IIdentifierSettings identifierSettings, String description) {
 
 		IProcessingInfo<IPeakIdentificationResults> processingInfo = new ProcessingInfo<>();
 		if(peaks == null || peaks.isEmpty()) {
 			processingInfo.addWarnMessage(description, "No peaks are available in the current selection.");
 		} else {
 			if(identifierSettings instanceof PeakReviewSettings peakReviewSettings) {
-				executeReviewWizard(peaks, peakReviewSettings, description, processingInfo, monitor);
+				executeReviewWizard(peaks, peakReviewSettings, description, processingInfo);
 			} else {
 				if(identifierSettings == null) {
-					prepareDirectReview(peaks, description, processingInfo, monitor);
+					prepareDirectReview(peaks, description, processingInfo);
 				} else {
 					processingInfo.addWarnMessage(description, "The settings must be an instance of PeakReviewSettings.");
 				}
@@ -120,7 +119,7 @@ public abstract class AbstractPeakReview extends AbstractPeakIdentifier implemen
 		return processingInfo;
 	}
 
-	private void prepareDirectReview(List<? extends IPeak> peaks, String description, IProcessingInfo<IPeakIdentificationResults> processingInfo, IProgressMonitor monitor) {
+	private void prepareDirectReview(List<? extends IPeak> peaks, String description, IProcessingInfo<IPeakIdentificationResults> processingInfo) {
 
 		List<ReviewSetting> reviewSettings = new ArrayList<>();
 		for(IPeak peak : peaks) {
@@ -147,13 +146,13 @@ public abstract class AbstractPeakReview extends AbstractPeakIdentifier implemen
 		if(!reviewSettings.isEmpty()) {
 			PeakReviewSettings peakReviewSettings = new PeakReviewSettings();
 			peakReviewSettings.setReviewSettings(reviewSettings);
-			executeReviewWizard(peaks, peakReviewSettings, description, processingInfo, monitor);
+			executeReviewWizard(peaks, peakReviewSettings, description, processingInfo);
 		} else {
 			processingInfo.addWarnMessage(description, "No peak review settings are available.");
 		}
 	}
 
-	private void executeReviewWizard(List<? extends IPeak> peaks, PeakReviewSettings peakReviewSettings, String description, IProcessingInfo<IPeakIdentificationResults> processingInfo, IProgressMonitor monitor) {
+	private void executeReviewWizard(List<? extends IPeak> peaks, PeakReviewSettings peakReviewSettings, String description, IProcessingInfo<IPeakIdentificationResults> processingInfo) {
 
 		/*
 		 * Retention indices (RI) will be adjusted to retention time (minutes) dynamically.

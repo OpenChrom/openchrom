@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2025 Lablicate GmbH.
+ * Copyright (c) 2020, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -49,7 +49,6 @@ import org.eclipse.chemclipse.support.validators.TraceValidator;
 import org.eclipse.chemclipse.wsd.model.core.IPeakWSD;
 import org.eclipse.chemclipse.wsd.model.core.IScanWSD;
 import org.eclipse.chemclipse.wsd.model.xwc.IExtractedWavelengthSignal;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 
 import net.openchrom.xxd.process.supplier.templates.model.AbstractSetting;
@@ -66,7 +65,7 @@ public class ReportWriter {
 	private static final DecimalFormat SIGNAL_TO_NOISE_FORMAT = ValueFormat.getDecimalFormatEnglish("0.00");
 	private static final DecimalFormat AREA_FORMAT = ValueFormat.getDecimalFormatEnglish("0.0000");
 
-	public void generate(File file, boolean append, List<IChromatogram> chromatograms, ChromatogramReportSettings chromatogramReportSettings, IProgressMonitor monitor) throws IOException {
+	public void generate(File file, boolean append, List<IChromatogram> chromatograms, ChromatogramReportSettings chromatogramReportSettings) throws IOException {
 
 		boolean fileExists = file.exists() && file.length() > 0;
 		TraceValidator traceValidator = new TraceValidator();

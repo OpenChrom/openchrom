@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2025 Lablicate GmbH.
+ * Copyright (c) 2020, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -26,6 +26,6 @@ public class PeakReviewCSD extends AbstractPeakReview implements IPeakIdentifier
 	@Override
 	public IProcessingInfo<IPeakIdentificationResults> identify(List<? extends IPeakCSD> peaks, IPeakIdentifierSettingsCSD peakIdentifierSettings, IProgressMonitor monitor) {
 
-		return runProcess(peaks, peakIdentifierSettings, "PeakReviewCSD", monitor);
+		return runProcess(peaks, peakIdentifierSettings, "PeakReviewCSD");
 	}
 }

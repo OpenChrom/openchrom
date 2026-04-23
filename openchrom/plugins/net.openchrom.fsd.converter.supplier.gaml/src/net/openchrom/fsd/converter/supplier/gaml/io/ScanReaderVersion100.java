@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Lablicate GmbH.
+ * Copyright (c) 2021, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -22,7 +22,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.chemclipse.fsd.model.core.implementation.SignalFSD;
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -48,7 +47,7 @@ public class ScanReaderVersion100 {
 
 	private static final Logger logger = Logger.getLogger(ScanReaderVersion100.class);
 
-	public IVendorSpectrumFSD read(File file, IProgressMonitor monitor) throws IOException {
+	public IVendorSpectrumFSD read(File file) throws IOException {
 
 		IVendorSpectrumFSD vendorScan = null;
 		try {
