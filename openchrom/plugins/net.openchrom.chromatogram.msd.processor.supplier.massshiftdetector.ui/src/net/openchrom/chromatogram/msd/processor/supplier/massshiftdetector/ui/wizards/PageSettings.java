@@ -12,7 +12,6 @@
  *******************************************************************************/
 package net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.wizards;
 
-import org.eclipse.chemclipse.support.ui.swt.EnhancedCombo;
 import org.eclipse.chemclipse.support.ui.wizards.AbstractExtendedWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -185,7 +184,7 @@ public class PageSettings extends AbstractExtendedWizardPage {
 		label.setText("Ion Selection Strategy:");
 		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		ionSelectionStrategyCombo = EnhancedCombo.create(parent, SWT.READ_ONLY);
+		ionSelectionStrategyCombo = new Combo(parent, SWT.READ_ONLY);
 		ionSelectionStrategyCombo.setItems(ionSelectionStrategies);
 		ionSelectionStrategyCombo.select(0);
 		ionSelectionStrategyCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));

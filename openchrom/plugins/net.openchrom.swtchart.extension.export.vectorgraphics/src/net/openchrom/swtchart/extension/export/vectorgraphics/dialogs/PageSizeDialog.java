@@ -15,7 +15,6 @@ package net.openchrom.swtchart.extension.export.vectorgraphics.dialogs;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.chemclipse.support.ui.provider.AbstractLabelProvider;
-import org.eclipse.chemclipse.support.ui.swt.EnhancedComboViewer;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -99,7 +98,7 @@ public class PageSizeDialog extends Dialog {
 
 	private void createComboViewerPageSize(Composite parent) {
 
-		ComboViewer comboViewer = new EnhancedComboViewer(parent, SWT.READ_ONLY);
+		ComboViewer comboViewer = new ComboViewer(parent, SWT.READ_ONLY);
 		Combo combo = comboViewer.getCombo();
 		comboViewer.setContentProvider(ArrayContentProvider.getInstance());
 		comboViewer.setLabelProvider(new AbstractLabelProvider() {
@@ -189,7 +188,7 @@ public class PageSizeDialog extends Dialog {
 
 	private void createComboViewerUnit(Composite parent) {
 
-		ComboViewer comboViewer = new EnhancedComboViewer(parent, SWT.READ_ONLY);
+		ComboViewer comboViewer = new ComboViewer(parent, SWT.READ_ONLY);
 		Combo combo = comboViewer.getCombo();
 		comboViewer.setContentProvider(ArrayContentProvider.getInstance());
 		comboViewer.setLabelProvider(new AbstractLabelProvider() {

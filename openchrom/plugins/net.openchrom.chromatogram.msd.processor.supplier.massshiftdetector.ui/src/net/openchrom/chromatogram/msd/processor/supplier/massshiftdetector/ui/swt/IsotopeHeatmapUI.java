@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Lablicate GmbH.
+ * Copyright (c) 2017, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -19,7 +19,6 @@ import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
-import org.eclipse.chemclipse.support.ui.swt.EnhancedCombo;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.nebula.visualization.widgets.datadefinition.ColorMap;
 import org.eclipse.nebula.visualization.widgets.figures.IntensityGraphFigure;
@@ -137,7 +136,7 @@ public class IsotopeHeatmapUI extends Composite {
 
 	private void createMassShiftCombo(Composite parent) {
 
-		comboIsotopeLevel = EnhancedCombo.create(parent, SWT.READ_ONLY);
+		comboIsotopeLevel = new Combo(parent, SWT.READ_ONLY);
 		comboIsotopeLevel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		comboIsotopeLevel.addSelectionListener(new SelectionAdapter() {
 

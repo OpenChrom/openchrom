@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Lablicate GmbH.
+ * Copyright (c) 2022, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -19,7 +19,6 @@ import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
 import org.eclipse.chemclipse.support.ui.provider.AbstractLabelProvider;
-import org.eclipse.chemclipse.support.ui.swt.EnhancedComboViewer;
 import org.eclipse.chemclipse.support.updates.IUpdateListener;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -108,7 +107,7 @@ public class PositionAdjusterUI extends Composite {
 
 	private void createComboViewer(Composite parent) {
 
-		ComboViewer comboViewer = new EnhancedComboViewer(parent, SWT.READ_ONLY);
+		ComboViewer comboViewer = new ComboViewer(parent, SWT.READ_ONLY);
 		Combo combo = comboViewer.getCombo();
 		comboViewer.setContentProvider(ArrayContentProvider.getInstance());
 		comboViewer.setLabelProvider(new AbstractLabelProvider() {

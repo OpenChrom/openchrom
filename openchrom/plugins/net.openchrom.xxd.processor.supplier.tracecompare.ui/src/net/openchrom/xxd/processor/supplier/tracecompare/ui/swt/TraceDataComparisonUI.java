@@ -21,7 +21,6 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.rcp.ui.icons.core.ApplicationImageFactory;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImage;
 import org.eclipse.chemclipse.rcp.ui.icons.core.IApplicationImageProvider;
-import org.eclipse.chemclipse.support.ui.swt.EnhancedCombo;
 import org.eclipse.chemclipse.swt.ui.support.Colors;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -227,7 +226,7 @@ public class TraceDataComparisonUI extends Composite {
 
 	private void createComboSampleMeasurements(Composite parent) {
 
-		comboSampleMeasurements = EnhancedCombo.create(parent, SWT.READ_ONLY);
+		comboSampleMeasurements = new Combo(parent, SWT.READ_ONLY);
 		comboSampleMeasurements.setToolTipText("Sample Measurements");
 		comboSampleMeasurements.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		comboSampleMeasurements.setItems(new String[]{});
@@ -248,7 +247,7 @@ public class TraceDataComparisonUI extends Composite {
 
 	private void createComboSampleTracks(Composite parent) {
 
-		comboSampleTracks = EnhancedCombo.create(parent, SWT.READ_ONLY);
+		comboSampleTracks = new Combo(parent, SWT.READ_ONLY);
 		comboSampleTracks.setToolTipText("Sample Track");
 		comboSampleTracks.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		comboSampleTracks.setItems(new String[]{});
@@ -264,7 +263,7 @@ public class TraceDataComparisonUI extends Composite {
 
 	private void createComboReferenceMeasurements(Composite parent) {
 
-		comboReferenceMeasurements = EnhancedCombo.create(parent, SWT.READ_ONLY);
+		comboReferenceMeasurements = new Combo(parent, SWT.READ_ONLY);
 		comboReferenceMeasurements.setToolTipText("Reference Measurements");
 		comboReferenceMeasurements.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		comboReferenceMeasurements.setItems(new String[]{});
@@ -285,7 +284,7 @@ public class TraceDataComparisonUI extends Composite {
 
 	private void createComboReferenceTracks(Composite parent) {
 
-		comboReferenceTracks = EnhancedCombo.create(parent, SWT.READ_ONLY);
+		comboReferenceTracks = new Combo(parent, SWT.READ_ONLY);
 		comboReferenceTracks.setToolTipText("Reference Track");
 		comboReferenceTracks.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		comboReferenceTracks.setItems(new String[]{});
@@ -355,7 +354,7 @@ public class TraceDataComparisonUI extends Composite {
 
 	private void createComboWavelengths(Composite parent) {
 
-		comboWavelengths = EnhancedCombo.create(parent, SWT.READ_ONLY);
+		comboWavelengths = new Combo(parent, SWT.READ_ONLY);
 		comboWavelengths.setToolTipText("Selected Wavelength");
 		GridData gridData = new GridData();
 		gridData.widthHint = 150;
