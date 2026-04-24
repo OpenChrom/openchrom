@@ -96,7 +96,9 @@ public class FeatureCheck implements IStartup {
 			"net.openchrom.xxd.converter.supplier.tetrascience", //
 			"net.openchrom.vsd.converter.supplier.andor", //
 			"net.openchrom.csd.converter.supplier.chromatotec", //
-			"net.openchrom.msd.converter.supplier.pfeiffer.sbc" //
+			"net.openchrom.msd.converter.supplier.pfeiffer.sbc", //
+			"net.openchrom.msd.converter.supplier.shimadzu.gcd", //
+			"net.openchrom.wsd.converter.supplier.thermo.sfd", //
 	};
 
 	@Override
