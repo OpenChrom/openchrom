@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Lablicate GmbH.
+ * Copyright (c) 2023, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -113,34 +113,35 @@ public class FeatureCheck implements IStartup {
 		/*
 		 * Show dialog on demand.
 		 */
-		if(PreferenceSupplier.getProprietaryConverters().equals(MessageDialogWithToggle.ALWAYS)) {
-			try {
-				DisplayUtils.executeInUserInterfaceThread(() -> {
+		if(!PreferenceSupplier.getProprietaryConverters().equals(MessageDialogWithToggle.ALWAYS)) {
+			return;
+		}
+		try {
+			DisplayUtils.executeInUserInterfaceThread(() -> {
 
-					MessageDialogWithToggle dialog = MessageDialogWithToggle.openYesNoQuestion(DisplayUtils.getShell(), "Vendor plugins missing", //
-							"You currently have no proprietary converters installed. These are required to open instrument vendor files. Do you want to install converter plug-ins now?", //
-							"Don't ask again.", false, Activator.getDefault().getPreferenceStore(), PreferenceSupplier.P_PROPRIETARY_CONVERTERS);
-					/*
-					 * Process the decision
-					 */
-					PreferenceSupplier.setProprietaryConverters(dialog.getToggleState() ? MessageDialogWithToggle.NEVER : MessageDialogWithToggle.ALWAYS);
-					if(dialog.getReturnCode() == IDialogConstants.YES_ID) {
-						try {
-							IPluginInstallJob installJob = new PrepareInstallProfileJob();
-							PluginDiscoveryWizard wizard = new PluginDiscoveryWizard(installJob);
-							WizardDialog wizardDialog = new WizardDialog(DisplayUtils.getShell(), wizard);
-							wizardDialog.open();
-						} catch(IllegalArgumentException e) {
-							logger.warn(e);
-						}
+				MessageDialogWithToggle dialog = MessageDialogWithToggle.openYesNoQuestion(DisplayUtils.getShell(), "Vendor plugins missing", //
+						"You currently have no proprietary converters installed. These are required to open instrument vendor files. Do you want to install converter plug-ins now?", //
+						"Don't ask again.", false, Activator.getDefault().getPreferenceStore(), PreferenceSupplier.P_PROPRIETARY_CONVERTERS);
+				/*
+				 * Process the decision
+				 */
+				PreferenceSupplier.setProprietaryConverters(dialog.getToggleState() ? MessageDialogWithToggle.NEVER : MessageDialogWithToggle.ALWAYS);
+				if(dialog.getReturnCode() == IDialogConstants.YES_ID) {
+					try {
+						IPluginInstallJob installJob = new PrepareInstallProfileJob();
+						PluginDiscoveryWizard wizard = new PluginDiscoveryWizard(installJob);
+						WizardDialog wizardDialog = new WizardDialog(DisplayUtils.getShell(), wizard);
+						wizardDialog.open();
+					} catch(IllegalArgumentException e) {
+						logger.warn(e);
 					}
-				});
-			} catch(InterruptedException e) {
-				Thread.currentThread().interrupt();
-				logger.warn(e);
-			} catch(ExecutionException e) {
-				logger.warn(e);
-			}
+				}
+			});
+		} catch(InterruptedException e) {
+			Thread.currentThread().interrupt();
+			logger.warn(e);
+		} catch(ExecutionException e) {
+			logger.warn(e);
 		}
 	}
 }
