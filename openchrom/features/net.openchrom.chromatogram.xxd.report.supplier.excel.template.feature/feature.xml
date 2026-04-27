@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.chromatogram.xxd.report.supplier.excel.template.feature"
       label="Excel Template Report"
-      version="1.6.14.qualifier"
+      version="1.6.15.qualifier"
       provider-name="OpenChrom"
       plugin="net.openchrom.feature.branding"
       license-feature="org.eclipse.license"
