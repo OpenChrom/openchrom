@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Lablicate GmbH.
+ * Copyright (c) 2021, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -98,15 +98,15 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 
 		int dateReference = 0;
 		for(int c = 0; c < cvReferences.length; c++) {
-			if(cvReferences[c].accession == 1000747 && cvReferences[c].name.equals("completion time")) {
+			if(cvReferences[c].getAccession() == 1000747 && cvReferences[c].getName().equals("completion time")) {
 				dateReference = c;
 			}
 		}
 		for(CVParam cvParam : cvParams) {
-			if(cvParam.cvRefID == dateReference) {
+			if(cvParam.getControlledVocabularyReferenceID() == dateReference) {
 				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd+hh:mm");
 				try {
-					Date date = format.parse(cvParam.value);
+					Date date = format.parse(cvParam.getValue());
 					chromatogram.setDate(date);
 				} catch(ParseException e) {
 					logger.warn(e);
@@ -133,19 +133,19 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 		double[] selectedIon = new double[spectrumIndex.length];
 		int p = 0;
 		for(CVParam cvParam : cvParams) {
-			if(scanStartTimeReference >= 0 && cvParam.cvRefID == scanStartTimeReference) {
-				CVReference unit = cvReferences[cvParam.uRefID];
-				retentionTimes[p] = Math.round(Float.parseFloat(cvParam.value) * getTimeMultiplicator(unit));
+			if(scanStartTimeReference >= 0 && cvParam.getControlledVocabularyReferenceID() == scanStartTimeReference) {
+				CVReference unit = cvReferences[cvParam.getUnitReferenceID()];
+				retentionTimes[p] = Math.round(Float.parseFloat(cvParam.getValue()) * getTimeMultiplicator(unit));
 				p++;
 			}
-			if(spectrumTitleReferenceID >= 0 && cvParam.cvRefID == spectrumTitleReferenceID) {
-				spectrumTitles[p] = cvParam.value;
+			if(spectrumTitleReferenceID >= 0 && cvParam.getControlledVocabularyReferenceID() == spectrumTitleReferenceID) {
+				spectrumTitles[p] = cvParam.getValue();
 			}
-			if(massSpectrumLevelReferenceID >= 0 && cvParam.cvRefID == massSpectrumLevelReferenceID) {
-				msLevels[p] = Short.parseShort(cvParam.value);
+			if(massSpectrumLevelReferenceID >= 0 && cvParam.getControlledVocabularyReferenceID() == massSpectrumLevelReferenceID) {
+				msLevels[p] = Short.parseShort(cvParam.getValue());
 			}
-			if(selectedIonRefID >= 0 && cvParam.cvRefID == selectedIonRefID) {
-				selectedIon[p] = Double.parseDouble(cvParam.value);
+			if(selectedIonRefID >= 0 && cvParam.getControlledVocabularyReferenceID() == selectedIonRefID) {
+				selectedIon[p] = Double.parseDouble(cvParam.getValue());
 			}
 		}
 		try {
@@ -187,8 +187,8 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 		int timeMultiplicator = 1; // miliseconds
 		for(CVParam cvParam : cvParams) {
 			int timeArrayRefID = getTimeArrayReference(cvReferences);
-			if(timeArrayRefID >= 0 && cvParam.cvRefID == timeArrayRefID) {
-				CVReference unit = cvReferences[cvParam.uRefID];
+			if(timeArrayRefID >= 0 && cvParam.getControlledVocabularyReferenceID() == timeArrayRefID) {
+				CVReference unit = cvReferences[cvParam.getUnitReferenceID()];
 				timeMultiplicator = getTimeMultiplicator(unit);
 			}
 		}
@@ -199,7 +199,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 
 		int msLevelReference = -1;
 		for(int c = 0; c < cvReferences.length; c++) {
-			if(cvReferences[c].accession == 1000511 && cvReferences[c].name.equals("ms level")) {
+			if(cvReferences[c].getAccession() == 1000511 && cvReferences[c].getName().equals("ms level")) {
 				msLevelReference = c;
 			}
 		}
@@ -210,7 +210,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 
 		int spectrumTitleReference = -1;
 		for(int c = 0; c < cvReferences.length; c++) {
-			if(cvReferences[c].accession == 1000796 && cvReferences[c].name.equals("spectrum title")) {
+			if(cvReferences[c].getAccession() == 1000796 && cvReferences[c].getName().equals("spectrum title")) {
 				spectrumTitleReference = c;
 			}
 		}
@@ -221,7 +221,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 
 		int scanStartTime = -1;
 		for(int c = 0; c < cvReferences.length; c++) {
-			if(cvReferences[c].accession == 1000016 && cvReferences[c].name.equals("scan start time")) {
+			if(cvReferences[c].getAccession() == 1000016 && cvReferences[c].getName().equals("scan start time")) {
 				scanStartTime = c;
 			}
 		}
@@ -232,7 +232,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 
 		int scanStartTime = -1;
 		for(int c = 0; c < cvReferences.length; c++) {
-			if(cvReferences[c].accession == 1000595 && cvReferences[c].name.equals("time array")) {
+			if(cvReferences[c].getAccession() == 1000595 && cvReferences[c].getName().equals("time array")) {
 				scanStartTime = c;
 			}
 		}
@@ -242,10 +242,10 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 	private int getTimeMultiplicator(CVReference unit) {
 
 		int multiplicator = 1; // to milisecond
-		if(unit.accession == 10 && unit.name.equals("second")) {
+		if(unit.getAccession() == 10 && unit.getName().equals("second")) {
 			multiplicator = (int)IChromatogramOverview.SECOND_CORRELATION_FACTOR;
 		}
-		if(unit.accession == 31 && unit.name.equals("minute")) {
+		if(unit.getAccession() == 31 && unit.getName().equals("minute")) {
 			multiplicator = (int)IChromatogramOverview.MINUTE_CORRELATION_FACTOR;
 		}
 		return multiplicator;
@@ -254,8 +254,8 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 	private boolean isMultiStageMassSpectrum(CVParam[] cvParams, CVReference[] cvReferences) {
 
 		for(CVParam cvParam : cvParams) {
-			if(cvParam.cvRefID == getMassSpectrumLevelReference(cvReferences)) {
-				if(Short.parseShort(cvParam.value) > 1) {
+			if(cvParam.getControlledVocabularyReferenceID() == getMassSpectrumLevelReference(cvReferences)) {
+				if(Short.parseShort(cvParam.getValue()) > 1) {
 					return true;
 				}
 			}
@@ -267,7 +267,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 
 		int selectedIonRef = -1;
 		for(int c = 0; c < cvReferences.length; c++) {
-			if(cvReferences[c].accession == 1000744 && cvReferences[c].name.equals("selected ion m/z")) {
+			if(cvReferences[c].getAccession() == 1000744 && cvReferences[c].getName().equals("selected ion m/z")) {
 				selectedIonRef = c;
 			}
 		}

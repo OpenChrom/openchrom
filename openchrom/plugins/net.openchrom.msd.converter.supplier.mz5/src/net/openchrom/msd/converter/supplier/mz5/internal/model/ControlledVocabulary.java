@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Lablicate GmbH.
+ * Copyright (c) 2021, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -14,8 +14,48 @@ package net.openchrom.msd.converter.supplier.mz5.internal.model;
 
 public class ControlledVocabulary {
 
-	String uri;
-	String fullname;
-	String id;
-	String version;
+	private String uri;
+	private String fullname;
+	private String id;
+	private String version;
+
+	public String getUri() {
+
+		return uri;
+	}
+
+	public void setUri(String uri) {
+
+		this.uri = uri;
+	}
+
+	public String getFullname() {
+
+		return fullname;
+	}
+
+	public void setFullname(String fullname) {
+
+		this.fullname = fullname;
+	}
+
+	public String getId() {
+
+		return id;
+	}
+
+	public void setId(String id) {
+
+		this.id = id;
+	}
+
+	public String getVersion() {
+
+		return version;
+	}
+
+	public void setVersion(String version) {
+
+		this.version = version;
+	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Lablicate GmbH.
+ * Copyright (c) 2023, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -103,9 +103,9 @@ public class ChromatogramWriter extends AbstractChromatogramWriter implements IC
 	private int addUnitMinute() {
 
 		CVReference cvReference = new CVReference();
-		cvReference.accession = 31;
-		cvReference.name = "minute";
-		cvReference.prefix = "UO";
+		cvReference.setAccession(31);
+		cvReference.setName("minute");
+		cvReference.setPrefix("UO");
 		cvReferences.add(cvReference);
 		return cvReferences.size() - 1;
 	}
@@ -113,9 +113,9 @@ public class ChromatogramWriter extends AbstractChromatogramWriter implements IC
 	private int addUnitSecond() {
 
 		CVReference cvReference = new CVReference();
-		cvReference.accession = 10;
-		cvReference.name = "second";
-		cvReference.prefix = "UO";
+		cvReference.setAccession(10);
+		cvReference.setName("second");
+		cvReference.setPrefix("UO");
 		cvReferences.add(cvReference);
 		return cvReferences.size() - 1;
 	}
@@ -123,9 +123,9 @@ public class ChromatogramWriter extends AbstractChromatogramWriter implements IC
 	private int addUnitDetectorCount() {
 
 		CVReference cvReference = new CVReference();
-		cvReference.accession = 1000131;
-		cvReference.name = "number of detector counts";
-		cvReference.prefix = "MS";
+		cvReference.setAccession(1000131);
+		cvReference.setName("number of detector counts");
+		cvReference.setPrefix("MS");
 		cvReferences.add(cvReference);
 		return cvReferences.size() - 1;
 	}
@@ -133,27 +133,27 @@ public class ChromatogramWriter extends AbstractChromatogramWriter implements IC
 	private void addTimeArray(int timeArrayRefID, int unitMinuteRefID) {
 
 		CVParam cvParam = new CVParam();
-		cvParam.cvRefID = timeArrayRefID;
-		cvParam.uRefID = unitMinuteRefID;
-		cvParam.value = "";
+		cvParam.setControlledVocabularyReferenceID(timeArrayRefID);
+		cvParam.setUnitReferenceID(unitMinuteRefID);
+		cvParam.setValue("");
 		cvParams.add(cvParam);
 	}
 
 	private void addIntensityArray(int intensityArrayRefID, int unitMinuteRefID) {
 
 		CVParam cvParam = new CVParam();
-		cvParam.cvRefID = intensityArrayRefID;
-		cvParam.uRefID = unitMinuteRefID;
-		cvParam.value = "";
+		cvParam.setControlledVocabularyReferenceID(intensityArrayRefID);
+		cvParam.setUnitReferenceID(unitMinuteRefID);
+		cvParam.setValue("");
 		cvParams.add(cvParam);
 	}
 
 	private int addTimeArrayReference() {
 
 		CVReference cvReference = new CVReference();
-		cvReference.accession = 1000595;
-		cvReference.name = "time array";
-		cvReference.prefix = "MS";
+		cvReference.setAccession(1000595);
+		cvReference.setName("time array");
+		cvReference.setPrefix("MS");
 		cvReferences.add(cvReference);
 		return cvReferences.size() - 1;
 	}
@@ -161,9 +161,9 @@ public class ChromatogramWriter extends AbstractChromatogramWriter implements IC
 	private int addIntensityArrayReference() {
 
 		CVReference cvReference = new CVReference();
-		cvReference.accession = 1000515;
-		cvReference.name = "intensity array";
-		cvReference.prefix = "MS";
+		cvReference.setAccession(1000515);
+		cvReference.setName("intensity array");
+		cvReference.setPrefix("MS");
 		cvReferences.add(cvReference);
 		return cvReferences.size() - 1;
 	}
@@ -171,9 +171,9 @@ public class ChromatogramWriter extends AbstractChromatogramWriter implements IC
 	private int addSpectrumTitleReference() {
 
 		CVReference cvReference = new CVReference();
-		cvReference.accession = 1000796;
-		cvReference.name = "spectrum title";
-		cvReference.prefix = "MS";
+		cvReference.setAccession(1000796);
+		cvReference.setName("spectrum title");
+		cvReference.setPrefix("MS");
 		cvReferences.add(cvReference);
 		return cvReferences.size() - 1;
 	}
@@ -181,9 +181,9 @@ public class ChromatogramWriter extends AbstractChromatogramWriter implements IC
 	private int addDateReference() {
 
 		CVReference cvReference = new CVReference();
-		cvReference.accession = 1000747;
-		cvReference.name = "completion time";
-		cvReference.prefix = "MS";
+		cvReference.setAccession(1000747);
+		cvReference.setName("completion time");
+		cvReference.setPrefix("MS");
 		cvReferences.add(cvReference);
 		return cvReferences.size() - 1;
 	}
@@ -191,9 +191,9 @@ public class ChromatogramWriter extends AbstractChromatogramWriter implements IC
 	private int addScanStartTimeReference() {
 
 		CVReference cvReference = new CVReference();
-		cvReference.accession = 1000016;
-		cvReference.name = "scan start time";
-		cvReference.prefix = "MS";
+		cvReference.setAccession(1000016);
+		cvReference.setName("scan start time");
+		cvReference.setPrefix("MS");
 		cvReferences.add(cvReference);
 		return cvReferences.size() - 1;
 	}
@@ -201,9 +201,9 @@ public class ChromatogramWriter extends AbstractChromatogramWriter implements IC
 	private int addMassSpectrometerLevelReference() {
 
 		CVReference cvReference = new CVReference();
-		cvReference.accession = 1000511;
-		cvReference.name = "ms level";
-		cvReference.prefix = "MS";
+		cvReference.setAccession(1000511);
+		cvReference.setName("ms level");
+		cvReference.setPrefix("MS");
 		cvReferences.add(cvReference);
 		return cvReferences.size() - 1;
 	}
@@ -214,9 +214,9 @@ public class ChromatogramWriter extends AbstractChromatogramWriter implements IC
 			return;
 		}
 		CVParam cvParam = new CVParam();
-		cvParam.cvRefID = addDateReference();
+		cvParam.setControlledVocabularyReferenceID(addDateReference());
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd+hh:mm");
-		cvParam.value = simpleDateFormat.format(chromatogram.getDate());
+		cvParam.setValue(simpleDateFormat.format(chromatogram.getDate()));
 		cvParams.add(cvParam);
 	}
 
@@ -226,17 +226,17 @@ public class ChromatogramWriter extends AbstractChromatogramWriter implements IC
 			return;
 		}
 		CVParam cvParam = new CVParam();
-		cvParam.cvRefID = spectrumTitleRefID;
-		cvParam.value = scan.getIdentifier();
+		cvParam.setControlledVocabularyReferenceID(spectrumTitleRefID);
+		cvParam.setValue(scan.getIdentifier());
 		cvParams.add(cvParam);
 	}
 
 	private void addRetentionTime(IScan scan, int scanStartTimeRefID, int unitSecondRefID) {
 
 		CVParam cvParam = new CVParam();
-		cvParam.cvRefID = scanStartTimeRefID;
-		cvParam.uRefID = unitSecondRefID;
-		cvParam.value = Float.toString(scan.getRetentionTime() / (float)IChromatogramOverview.SECOND_CORRELATION_FACTOR);
+		cvParam.setControlledVocabularyReferenceID(scanStartTimeRefID);
+		cvParam.setUnitReferenceID(unitSecondRefID);
+		cvParam.setValue(Float.toString(scan.getRetentionTime() / (float)IChromatogramOverview.SECOND_CORRELATION_FACTOR));
 		cvParams.add(cvParam);
 	}
 
@@ -244,8 +244,8 @@ public class ChromatogramWriter extends AbstractChromatogramWriter implements IC
 
 		if(chromatogram.getScan(0) instanceof IRegularMassSpectrum massSpectrum) {
 			CVParam cvParam = new CVParam();
-			cvParam.cvRefID = msLevelRefID;
-			cvParam.value = Short.toString(massSpectrum.getMassSpectrometer());
+			cvParam.setControlledVocabularyReferenceID(msLevelRefID);
+			cvParam.setValue(Short.toString(massSpectrum.getMassSpectrometer()));
 			cvParams.add(cvParam);
 		}
 	}

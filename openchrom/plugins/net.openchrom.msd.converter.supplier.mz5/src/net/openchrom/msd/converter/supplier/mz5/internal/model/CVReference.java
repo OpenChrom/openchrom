@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Lablicate GmbH.
+ * Copyright (c) 2021, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -14,7 +14,37 @@ package net.openchrom.msd.converter.supplier.mz5.internal.model;
 
 public class CVReference {
 
-	public String name;
-	public String prefix;
-	public int accession; // actually unsigned
+	private String name;
+	private String prefix;
+	private int accession; // actually unsigned
+
+	public String getName() {
+
+		return name;
+	}
+
+	public void setName(String name) {
+
+		this.name = name;
+	}
+
+	public String getPrefix() {
+
+		return prefix;
+	}
+
+	public void setPrefix(String prefix) {
+
+		this.prefix = prefix;
+	}
+
+	public int getAccession() {
+
+		return accession;
+	}
+
+	public void setAccession(int accession) {
+
+		this.accession = accession;
+	}
 }
