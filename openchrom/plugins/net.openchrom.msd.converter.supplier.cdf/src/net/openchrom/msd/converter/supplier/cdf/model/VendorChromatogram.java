@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2025 Lablicate GmbH.
+ * Copyright (c) 2013, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -22,10 +22,10 @@ public class VendorChromatogram extends AbstractChromatogramMSD implements IVend
 	private Date dateOfExperiment = new Date();
 
 	public VendorChromatogram() {
+
 		super();
 	}
 
-	// ---------------------------------------------ICDFChromatogram
 	@Override
 	public Date getDateOfExperiment() {
 
@@ -36,12 +36,5 @@ public class VendorChromatogram extends AbstractChromatogramMSD implements IVend
 	public void setDateOfExperiment(Date dateOfExperiment) {
 
 		this.dateOfExperiment = dateOfExperiment;
-	}
-
-	// ---------------------------------------------ICDFChromatogram
-	@Override
-	public String getName() {
-
-		return extractNameFromFile("CDFChromatogram");
 	}
 }

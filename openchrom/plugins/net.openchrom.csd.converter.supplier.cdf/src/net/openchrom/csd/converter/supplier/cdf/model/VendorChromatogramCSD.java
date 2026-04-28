@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2025 Lablicate GmbH.
+ * Copyright (c) 2014, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -17,10 +17,4 @@ import org.eclipse.chemclipse.csd.model.core.AbstractChromatogramCSD;
 public class VendorChromatogramCSD extends AbstractChromatogramCSD implements IVendorChromatogram {
 
 	private static final long serialVersionUID = -6926563810219491966L;
-
-	@Override
-	public String getName() {
-
-		return extractNameFromFile("XYChromatogramFID");
-	}
 }
