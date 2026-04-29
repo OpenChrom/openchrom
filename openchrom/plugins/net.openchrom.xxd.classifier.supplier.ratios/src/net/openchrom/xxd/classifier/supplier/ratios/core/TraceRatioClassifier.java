@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Lablicate GmbH.
+ * Copyright (c) 2019, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -52,7 +52,7 @@ public class TraceRatioClassifier extends AbstractRatioClassifier {
 			settings = PreferenceSupplier.getSettingsTrace();
 		}
 
-		IProcessingInfo<IChromatogramClassifierResult> processingInfo = validate(chromatogramSelection, chromatogramClassifierSettings);
+		IProcessingInfo<IChromatogramClassifierResult> processingInfo = validate(chromatogramSelection);
 		if(!processingInfo.hasErrorMessages()) {
 			/*
 			 * Calculate the result.

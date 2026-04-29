@@ -40,7 +40,7 @@ public class QualRatioClassifier extends AbstractRatioClassifier {
 	@Override
 	public IProcessingInfo<IChromatogramClassifierResult> applyClassifier(IChromatogramSelection chromatogramSelection, IChromatogramClassifierSettings chromatogramClassifierSettings, IProgressMonitor monitor) {
 
-		IProcessingInfo<IChromatogramClassifierResult> processingInfo = validate(chromatogramSelection, chromatogramClassifierSettings);
+		IProcessingInfo<IChromatogramClassifierResult> processingInfo = validate(chromatogramSelection);
 		if(!processingInfo.hasErrorMessages()) {
 			/*
 			 * Calculate the peak quality
