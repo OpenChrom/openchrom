@@ -87,6 +87,7 @@ Contributors:
    </configurations>
 
    <repositories>
+      <repository location="https://update.openchrom.net/1.6.15/" name="OpenChrom" enabled="true" />
       <repository location="https://converter.openchrom.net/1.6.15/" name="Converter" enabled="true" />
       <repository location="https://plugins.openchrom.net/xident/1.6.15/" name="ChromIdent" enabled="true" />
       <repository location="https://plugins.openchrom.net/mcrar/1.6.15/" name="MCR-AR" enabled="true" />
