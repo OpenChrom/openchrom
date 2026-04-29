@@ -99,6 +99,8 @@ public class FeatureCheck implements IStartup {
 			"net.openchrom.msd.converter.supplier.pfeiffer.sbc", //
 			"net.openchrom.msd.converter.supplier.shimadzu.gcd", //
 			"net.openchrom.wsd.converter.supplier.thermo.sfd", //
+			"net.openchrom.msd.converter.supplier.bruker.evoq", //
+			"net.openchrom.msd.converter.supplier.tofwerk.h5", //
 	};
 
 	@Override
