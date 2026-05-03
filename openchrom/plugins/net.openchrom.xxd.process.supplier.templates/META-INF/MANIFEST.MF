@@ -44,7 +44,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.zeroset;bundle-version="0.9.0",
  org.eclipse.chemclipse.chromatogram.xxd.edit.supplier.snip;bundle-version="0.9.0",
  org.eclipse.chemclipse.chromatogram.xxd.baseline.detector;bundle-version="0.9.0",
- org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.baselinesubtract;bundle-version="0.9.0"
+ org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.baselinesubtract;bundle-version="0.9.0",
+ org.eclipse.chemclipse.chromatogram.xxd.integrator.supplier.trapezoid;bundle-version="0.9.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.xxd.process.supplier.templates.chromatogram,

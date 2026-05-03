@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2025 Lablicate GmbH.
+ * Copyright (c) 2018, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -23,6 +23,8 @@ import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 public class PeakDetectorLabelProvider extends AbstractTemplateLabelProvider {
 
 	public static final int INDEX_OPTIMIZE_RANGE = 5;
+	public static final int INDEX_AUTO_ADJUST_SCAN_RANGE = 9;
+	public static final int INDEX_AUTO_ADJUST_DETECTOR_RANGE = 10;
 
 	public static final String[] TITLES = { //
 			POSITION_START, //
@@ -32,7 +34,10 @@ public class PeakDetectorLabelProvider extends AbstractTemplateLabelProvider {
 			TRACES, //
 			OPTIMIZE_RANGE, //
 			POSITION_RELATIVE_PEAK_NAME, //
-			NAME //
+			NAME, //
+			CLASSIFIER, //
+			AUTO_ADJUST_SCAN_RANGE, //
+			AUTO_ADJUST_DETECTOR_RANGE //
 	};
 	public static final int[] BOUNDS = { //
 			100, //
@@ -42,7 +47,10 @@ public class PeakDetectorLabelProvider extends AbstractTemplateLabelProvider {
 			100, //
 			30, //
 			150, //
-			150 //
+			150, //
+			150, //
+			30, //
+			30 //
 	};
 
 	@Override
@@ -55,7 +63,18 @@ public class PeakDetectorLabelProvider extends AbstractTemplateLabelProvider {
 				String fileName = (setting.isOptimizeRange()) ? IApplicationImage.IMAGE_SELECTED : IApplicationImage.IMAGE_DESELECTED;
 				return ApplicationImageFactory.getInstance().getImage(fileName, IApplicationImageProvider.SIZE_16x16);
 			}
+		} else if(columnIndex == INDEX_AUTO_ADJUST_SCAN_RANGE) {
+			if(element instanceof DetectorSetting setting) {
+				String fileName = (setting.isAutoAdjustScanRange()) ? IApplicationImage.IMAGE_SELECTED : IApplicationImage.IMAGE_DESELECTED;
+				return ApplicationImageFactory.getInstance().getImage(fileName, IApplicationImageProvider.SIZE_16x16);
+			}
+		} else if(columnIndex == INDEX_AUTO_ADJUST_DETECTOR_RANGE) {
+			if(element instanceof DetectorSetting setting) {
+				String fileName = (setting.isAutoAdjustDetectorRange()) ? IApplicationImage.IMAGE_SELECTED : IApplicationImage.IMAGE_DESELECTED;
+				return ApplicationImageFactory.getInstance().getImage(fileName, IApplicationImageProvider.SIZE_16x16);
+			}
 		}
+
 		return null;
 	}
 
@@ -88,6 +107,15 @@ public class PeakDetectorLabelProvider extends AbstractTemplateLabelProvider {
 					break;
 				case 7:
 					text = setting.getName();
+					break;
+				case 8:
+					text = setting.getClassifier();
+					break;
+				case 9:
+					text = "";
+					break;
+				case 10:
+					text = "";
 					break;
 				default:
 					text = "n.v.";

@@ -49,6 +49,15 @@ public class PeakDetectorComparator extends AbstractRecordTableComparator {
 				case 7:
 					sortOrder = setting2.getName().compareTo(setting1.getName());
 					break;
+				case 8:
+					sortOrder = setting2.getClassifier().compareTo(setting1.getClassifier());
+					break;
+				case 9:
+					sortOrder = Boolean.compare(setting2.isAutoAdjustScanRange(), setting1.isAutoAdjustScanRange());
+					break;
+				case 10:
+					sortOrder = Boolean.compare(setting2.isAutoAdjustDetectorRange(), setting1.isAutoAdjustDetectorRange());
+					break;
 				default:
 					sortOrder = 0;
 			}

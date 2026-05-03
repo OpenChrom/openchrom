@@ -33,6 +33,9 @@ public class PeakDetectorValidator extends AbstractTemplateValidator {
 	private boolean optimizeRange = true;
 	private String referenceIdentifier = "";
 	private String name = "";
+	private String classifier = "";
+	private boolean autoAdjustScanRange = false;
+	private boolean autoAdjustDetectorRange = false;
 
 	@Override
 	public IStatus validate(Object value) {
@@ -64,6 +67,9 @@ public class PeakDetectorValidator extends AbstractTemplateValidator {
 						referenceIdentifier = parseString(values, 5, "");
 						name = parseString(values, 6, "");
 						positionDirective = parsePositionDirective(parseString(values, 7));
+						classifier = parseString(values, 8, "");
+						autoAdjustScanRange = parseBoolean(values, 9, false);
+						autoAdjustDetectorRange = parseBoolean(values, 10, false);
 						/*
 						 * Validations
 						 */
@@ -107,6 +113,9 @@ public class PeakDetectorValidator extends AbstractTemplateValidator {
 		setting.setReferenceIdentifier(referenceIdentifier);
 		setting.setName(name);
 		setting.setPositionDirective(positionDirective);
+		setting.setClassifier(classifier);
+		setting.setAutoAdjustScanRange(autoAdjustScanRange);
+		setting.setAutoAdjustDetectorRange(autoAdjustDetectorRange);
 
 		return setting;
 	}

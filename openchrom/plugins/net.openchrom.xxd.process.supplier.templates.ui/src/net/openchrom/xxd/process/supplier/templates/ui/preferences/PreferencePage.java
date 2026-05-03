@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2025 Lablicate GmbH.
+ * Copyright (c) 2018, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -48,11 +48,6 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 		addField(new LabelFieldEditor("Identifier", getFieldEditorParent()));
 		addField(new FloatFieldEditor(PreferenceSupplier.P_LIMIT_MATCH_FACTOR_IDENTIFIER, "Limit Match Factor", PreferenceSupplier.MIN_FACTOR, PreferenceSupplier.MAX_FACTOR, getFieldEditorParent()));
 		addField(new FloatFieldEditor(PreferenceSupplier.P_MATCH_QUALITY_IDENTIFIER, "Match Quality", PreferenceSupplier.MIN_FACTOR, PreferenceSupplier.MAX_FACTOR, getFieldEditorParent()));
-
-		addField(new SpacerFieldEditor(getFieldEditorParent()));
-		addField(new LabelFieldEditor("Detector", getFieldEditorParent()));
-		addField(new BooleanFieldEditor(PreferenceSupplier.P_AUTO_ADJUST_SCAN_RANGE, "Auto Adjust Scan Range (Experimental)", getFieldEditorParent()));
-		addField(new BooleanFieldEditor(PreferenceSupplier.P_AUTO_ADJUST_DETECTOR_RANGE, "Auto Adjust Detector Range (Experimental)", getFieldEditorParent()));
 
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_SORT_IMPORT_TEMPLATE, "Sort Import Template", getFieldEditorParent()));

@@ -522,6 +522,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 					/*
 					 * General Settings
 					 */
+					boolean autoAdjustScanRange = false;
 					String traces = detectorRange.getTraces();
 					PeakType detectorType = detectorRange.getDetectorType();
 					if(PeakType.MM.equals(detectorType) || PeakType.CB.equals(detectorType)) {
@@ -555,7 +556,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 								}
 							}
 							PeakSupport peakSupport = new PeakSupport();
-							peak = peakSupport.extractPeakByRetentionTime(chromatogram, startRetentionTime, stopRetentionTime, startIntensity, stopIntensity, traces);
+							peak = peakSupport.extractPeakByRetentionTime(chromatogram, startRetentionTime, stopRetentionTime, startIntensity, stopIntensity, traces, autoAdjustScanRange);
 						}
 					} else {
 						/*
@@ -564,7 +565,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 						PeakSupport peakSupport = new PeakSupport();
 						boolean includeBackground = detectorRange.isIncludeBackground();
 						boolean optimizeRange = detectorRange.isOptimizeRange();
-						peak = peakSupport.extractPeakByRetentionTime(chromatogram, startRetentionTime, stopRetentionTime, includeBackground, optimizeRange, traces);
+						peak = peakSupport.extractPeakByRetentionTime(chromatogram, startRetentionTime, stopRetentionTime, includeBackground, optimizeRange, traces, autoAdjustScanRange);
 					}
 				}
 			}
