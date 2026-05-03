@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2025 Lablicate GmbH.
+ * Copyright (c) 2018, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -46,6 +46,12 @@ public class PeakDetectorEditingSupport extends AbstractTemplateEditingSupport {
 						return setting.getReferenceIdentifier();
 					case AbstractTemplateLabelProvider.NAME:
 						return setting.getName();
+					case AbstractTemplateLabelProvider.CLASSIFIER:
+						return setting.getClassifier();
+					case AbstractTemplateLabelProvider.AUTO_ADJUST_SCAN_RANGE:
+						return setting.isAutoAdjustScanRange();
+					case AbstractTemplateLabelProvider.AUTO_ADJUST_DETECTOR_RANGE:
+						return setting.isAutoAdjustDetectorRange();
 				}
 			}
 		}
@@ -81,6 +87,15 @@ public class PeakDetectorEditingSupport extends AbstractTemplateEditingSupport {
 					break;
 				case AbstractTemplateLabelProvider.NAME:
 					setting.setName(((String)value).trim());
+					break;
+				case AbstractTemplateLabelProvider.CLASSIFIER:
+					setting.setClassifier(((String)value).trim());
+					break;
+				case AbstractTemplateLabelProvider.AUTO_ADJUST_SCAN_RANGE:
+					setting.setAutoAdjustScanRange((boolean)value);
+					break;
+				case AbstractTemplateLabelProvider.AUTO_ADJUST_DETECTOR_RANGE:
+					setting.setAutoAdjustDetectorRange((boolean)value);
 					break;
 			}
 

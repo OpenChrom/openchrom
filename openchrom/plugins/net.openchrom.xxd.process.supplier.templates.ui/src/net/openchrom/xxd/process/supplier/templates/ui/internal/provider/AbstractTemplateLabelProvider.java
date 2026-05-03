@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Lablicate GmbH.
+ * Copyright (c) 2022, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -39,6 +39,9 @@ public abstract class AbstractTemplateLabelProvider extends AbstractChemClipseLa
 	public static final String CONCENTRATION = "Concentration";
 	public static final String CONCENTRATION_UNIT = "Concentration Unit";
 	public static final String COMPENSATION_FACTOR = "Compensation Factor";
+	public static final String CLASSIFIER = "Classifier";
+	public static final String AUTO_ADJUST_SCAN_RANGE = "Auto Adjust Scan Range";
+	public static final String AUTO_ADJUST_DETECTOR_RANGE = "Auto Adjust Detector Range";
 
 	public static final String PLACEHOLDER = "--";
 

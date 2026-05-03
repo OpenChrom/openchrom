@@ -319,7 +319,8 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 			traces = getTraces(peakSource, numberTraces);
 		}
 
-		IChromatogramPeak peakSink = peakSupport.extractPeakByRetentionTime(chromatogramSink, startRetentionTime, stopRetentionTime, includeBackground, optimizeRange, traces);
+		boolean autoAdjustScanRange = false;
+		IChromatogramPeak peakSink = peakSupport.extractPeakByRetentionTime(chromatogramSink, startRetentionTime, stopRetentionTime, includeBackground, optimizeRange, traces, autoAdjustScanRange);
 		if(peakSink != null) {
 			adjustPeakIntensity(peakSink, percentageIntensity, peakTransferSettings);
 			transferTargets(peakSource, peakSink, peakTransferSettings);

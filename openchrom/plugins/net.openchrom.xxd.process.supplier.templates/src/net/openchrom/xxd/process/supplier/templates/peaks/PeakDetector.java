@@ -41,13 +41,12 @@ import org.eclipse.core.runtime.SubMonitor;
 
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
 import net.openchrom.xxd.process.supplier.templates.model.RetentionTimeRange;
-import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
 import net.openchrom.xxd.process.supplier.templates.support.PeakSupport;
 
 public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorMSD, IPeakDetectorCSD, IPeakDetectorWSD {
 
-	private PeakSupport peakSupport = new PeakSupport(PreferenceSupplier.isAutoAdjustScanRange());
+	private PeakSupport peakSupport = new PeakSupport();
 
 	@Override
 	public IProcessingInfo<?> detect(IChromatogramSelectionMSD chromatogramSelection, IPeakDetectorSettingsMSD settings, IProgressMonitor monitor) {
@@ -93,7 +92,6 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 		 */
 		List<DetectorSetting> detectorSettingsWithoutReferenceIdentifier = new ArrayList<>();
 		List<DetectorSetting> detectorSettingsWithReferenceIdentifier = new ArrayList<>();
-
 		for(DetectorSetting detectorSetting : detectorSettings) {
 			if(detectorSetting.getReferenceIdentifier().isEmpty()) {
 				detectorSettingsWithoutReferenceIdentifier.add(detectorSetting);
@@ -125,7 +123,7 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 		int startScan = PeakSupport.getStartScan(chromatogram, retentionTimeRange.getStartRetentionTime());
 		int stopScan = PeakSupport.getStopScan(chromatogram, retentionTimeRange.getStopRetentionTime());
 		int deltaScan = stopScan - startScan;
-		if(PreferenceSupplier.isAutoAdjustDetectorRange()) {
+		if(detectorSetting.isAutoAdjustDetectorRange()) {
 			if(deltaScan <= 2) {
 				/*
 				 * Use the full range
@@ -140,14 +138,15 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 		 * At least 3 scans must be available.
 		 */
 		if(deltaScan > 2) {
+			boolean autoAdjustScanRange = detectorSetting.isAutoAdjustScanRange();
 			IChromatogramPeak peak;
 			if(detectorSetting.getPeakType().equals(PeakType.CB)) {
 				IBaselineModel baselineModel = chromatogram.getBaselineModel();
 				float startIntensity = baselineModel.getBackground(chromatogram.getScan(startScan).getRetentionTime());
 				float stopIntensity = baselineModel.getBackground(chromatogram.getScan(stopScan).getRetentionTime());
-				peak = peakSupport.extractPeakByScanRange(chromatogram, startScan, stopScan, startIntensity, stopIntensity, detectorSetting.getTraces());
+				peak = peakSupport.extractPeakByScanRange(chromatogram, startScan, stopScan, startIntensity, stopIntensity, detectorSetting.getTraces(), autoAdjustScanRange);
 			} else {
-				peak = peakSupport.extractPeakByScanRange(chromatogram, startScan, stopScan, detectorSetting.isIncludeBackground(), detectorSetting.isOptimizeRange(), detectorSetting.getTraces());
+				peak = peakSupport.extractPeakByScanRange(chromatogram, startScan, stopScan, detectorSetting.isIncludeBackground(), detectorSetting.isOptimizeRange(), detectorSetting.getTraces(), autoAdjustScanRange);
 			}
 			/*
 			 * Handle
@@ -157,11 +156,18 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 				 * Add an identification on demand.
 				 */
 				String name = detectorSetting.getName();
-				if(name != null && !name.isEmpty()) {
+				if(name != null && !name.isBlank()) {
 					IIdentificationTarget identificationTarget = IIdentificationTarget.createDefaultTarget(name, "", PeakDetectorSettings.DETECTOR_DESCRIPTION);
 					if(identificationTarget != null) {
 						peak.getTargets().add(identificationTarget);
 					}
+				}
+				/*
+				 * Classifier
+				 */
+				String classifier = detectorSetting.getClassifier();
+				if(classifier != null && !classifier.isBlank()) {
+					peak.addClassifier(classifier);
 				}
 				/*
 				 * Add the peak.
