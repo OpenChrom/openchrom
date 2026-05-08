@@ -1000,19 +1000,6 @@
 
       <pluginDescriptor
             categoryId="com.lablicate.openchrom.converters.proprietary"
-            description="Reads Axcend FocusLC AXR chromatograms (*.axr)."
-            groupId="net.openchrom.wsd.converter"
-            id="net.openchrom.wsd.converter.supplier.axr.feature"
-            kind="converter"
-            license="Converter License Terms"
-            name="Axcend FocusLC HPLC-UV"
-            provider="Lablicate"
-            summary="Free extension exclusively for OpenChrom®"
-            icon="icons/32x32/OpenChrom.png">
-      </pluginDescriptor>
-
-      <pluginDescriptor
-            categoryId="com.lablicate.openchrom.converters.proprietary"
             description="Reads *.Chrom files."
             groupId="net.openchrom.csd.converter"
             id="net.openchrom.csd.converter.supplier.chromatotec.feature"
