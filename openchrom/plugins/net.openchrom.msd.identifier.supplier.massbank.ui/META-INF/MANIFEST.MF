@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.msd.converter.supplier.pkf.ui
 Bundle-ManifestVersion: 2
 Bundle-Name: MassBank UI
 Bundle-SymbolicName: net.openchrom.msd.identifier.supplier.massbank.ui;singleton:=true
-Bundle-Version: 1.6.15.qualifier
+Bundle-Version: 1.6.16.qualifier
 Bundle-Activator: net.openchrom.msd.identifier.supplier.massbank.ui.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.ui,
