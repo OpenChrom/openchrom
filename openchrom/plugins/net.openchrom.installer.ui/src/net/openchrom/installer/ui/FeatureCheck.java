@@ -49,6 +49,7 @@ public class FeatureCheck implements IStartup {
 			"net.openchrom.msd.converter.supplier.masshunter", //
 			"net.openchrom.wsd.converter.supplier.masshunter", //
 			"net.openchrom.msd.converter.supplier.waters", //
+			"net.openchrom.csd.converter.supplier.chromtech", //
 			"net.openchrom.msd.converter.supplier.chromtech", //
 			"net.openchrom.msd.converter.supplier.agilent.hp", //
 			"net.openchrom.msd.converter.supplier.agilent.icp", //

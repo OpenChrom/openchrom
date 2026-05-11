@@ -379,6 +379,19 @@
 
       <pluginDescriptor
             categoryId="com.lablicate.openchrom.converters.proprietary"
+            description="Reads *.chr files."
+            groupId="net.openchrom.csd.converter"
+            id="net.openchrom.csd.converter.supplier.chromtech.feature"
+            kind="converter"
+            license="Converter License Terms"
+            name="ChromTech GC-FID"
+            provider="Lablicate"
+            summary="Free extension exclusively for OpenChrom®"
+            icon="icons/32x32/ChromTech.png">
+      </pluginDescriptor>
+
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.converters.proprietary"
             description="Reads *.dat files."
             groupId="net.openchrom.msd.converter"
             id="net.openchrom.msd.converter.supplier.chromtech.feature"
