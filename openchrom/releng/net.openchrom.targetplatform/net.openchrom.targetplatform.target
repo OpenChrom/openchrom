@@ -155,7 +155,7 @@
 			<dependency>
 				<groupId>uk.ac.ebi.beam</groupId>
 				<artifactId>beam-core</artifactId>
-				<version>1.3.5</version>
+				<version>1.3.10</version>
 				<type>jar</type>
 			</dependency>
 		</dependencies>
