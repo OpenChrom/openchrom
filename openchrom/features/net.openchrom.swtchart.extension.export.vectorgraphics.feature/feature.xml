@@ -4,7 +4,9 @@
       label="VectorGraphics 2D"
       version="1.6.16.qualifier"
       provider-name="OpenChrom"
-      plugin="net.openchrom.feature.branding">
+      plugin="net.openchrom.feature.branding"
+      license-feature="org.eclipse.license"
+      license-feature-version="2.0.2.qualifier">
 
    <description url="https://projects.eclipse.org/projects/science.eavp">
       This is a SWTChart Extensions to support SVG, EPS and PDF export.

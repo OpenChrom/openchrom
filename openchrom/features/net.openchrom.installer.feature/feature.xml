@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="net.openchrom.installer.feature"
-      label="Plugin Installer"
+      label="OpenChrom Plugin Installer"
       version="1.6.16.qualifier"
-      provider-name="OpenChrom">
+      provider-name="OpenChrom"
+      license-feature="org.eclipse.license"
+      license-feature-version="2.0.2.qualifier">
 
    <description url="http://www.openchrom.net">
       This is the OpenChrom plugin installer feature.
