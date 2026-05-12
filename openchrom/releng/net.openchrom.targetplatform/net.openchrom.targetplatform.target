@@ -93,7 +93,7 @@
 			<dependency>
 				<groupId>dk.brics</groupId>
 				<artifactId>automaton</artifactId>
-				<version>1.12-1</version>
+				<version>1.12-4</version>
 				<type>jar</type>
 			</dependency>
 		</dependencies>
