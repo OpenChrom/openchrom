@@ -37,7 +37,7 @@ public class ChromatogramImportConverter_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.TESTFILE);
+		File file = new File("testData/files/import/test.mz5");
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramMSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();

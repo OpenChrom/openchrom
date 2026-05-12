@@ -24,7 +24,6 @@ import org.junit.jupiter.api.Test;
 
 import net.openchrom.msd.converter.supplier.cms.io.MassSpectrumReader;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
-import net.openchrom.msd.process.supplier.cms.TestPathHelper;
 
 public class MassSpectraDecomposition_1_ITest {
 
@@ -36,13 +35,13 @@ public class MassSpectraDecomposition_1_ITest {
 		/*
 		 * argon, nitrogen, oxygen, ethane, ethylene
 		 */
-		File scanFile = new File(TestPathHelper.TESTFILE_IMPORT_TEST_2_SCAN_SPECTRA);
+		File scanFile = new File("testData/files/import/test1/scan_42211.cms");
 		MassSpectrumReader massSpectrumReader = new MassSpectrumReader();
 		IMassSpectra scanSpectra = massSpectrumReader.read(scanFile, new NullProgressMonitor());
 		/*
 		 * argon, nitrogen, oxygen, ethane, ethylene
 		 */
-		File libraryFile = new File(TestPathHelper.TESTFILE_IMPORT_TEST_1_LIBRARY_SPECTRA);
+		File libraryFile = new File("testData/files/import/test1/LibrarySpectra.cms");
 		IMassSpectra librarySpectra = massSpectrumReader.read(libraryFile, new NullProgressMonitor());
 		for(IScanMSD libSpectrum : librarySpectra.getList()) {
 			if(libSpectrum instanceof ICalibratedVendorLibraryMassSpectrum calibratedVendorLibraryMassSpectrum) {

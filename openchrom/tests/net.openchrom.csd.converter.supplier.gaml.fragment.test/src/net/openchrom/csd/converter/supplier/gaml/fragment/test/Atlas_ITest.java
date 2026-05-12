@@ -35,7 +35,7 @@ public class Atlas_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.ATLAS);
+		File file = new File("testData/files/import/TLS_Atlas.gaml");
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramCSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();

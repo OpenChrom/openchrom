@@ -11,8 +11,4 @@ package net.openchrom.wsd.converter.supplier.axr.fragment.test;
 
 public class TestPathHelper {
 
-	public static final String VALID_AXR = "testdata/files/import/valid.axr";
-	public static final String INVALID_AXR = "testdata/files/import/invalid.axr";
-	public static final String MISSING_X_AXR = "testdata/files/import/missing-x.axr";
-	public static final String REAL_AXR = "testdata/files/import/Moses_Lake_Low_Focus9_006.axr";
 }

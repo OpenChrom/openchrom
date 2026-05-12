@@ -35,7 +35,7 @@ public class SOLV001_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.SOLV001);
+		File file = new File("testData/PerkinElmer/SOLV001.CDF");
 		ChromatogramImportConverterCSD importConverter = new ChromatogramImportConverterCSD();
 		IProcessingInfo<IChromatogramCSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();

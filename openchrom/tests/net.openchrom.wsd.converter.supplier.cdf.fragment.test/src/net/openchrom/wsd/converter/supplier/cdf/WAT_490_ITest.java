@@ -35,7 +35,7 @@ public class WAT_490_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.WAT_490);
+		File file = new File("testData/Waters/WAT_490.CDF");
 		ChromatogramImportConverterWSD importConverter = new ChromatogramImportConverterWSD();
 		IProcessingInfo<IChromatogramWSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();

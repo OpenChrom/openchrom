@@ -30,7 +30,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
-import net.openchrom.msd.converter.supplier.muf.TestPathHelper;
 import net.openchrom.msd.converter.supplier.muf.converter.model.ICultivationConditions;
 import net.openchrom.msd.converter.supplier.muf.converter.model.ISpectraMultiFileMassSpectra;
 import net.openchrom.msd.converter.supplier.muf.converter.model.ITaxonomicInformation;
@@ -43,7 +42,7 @@ public class MassSpectrumImportConverter_RKI_Ring_Trial_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.TESTFILE_IMPORT_RKI_RING_TRIAL);
+		File file = new File("data/RKI-ring-trial-spectra.muf");
 		MassSpectrumImportConverter importConverter = new MassSpectrumImportConverter();
 		IProcessingInfo<IMassSpectra> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		for(IProcessingMessage message : processingInfo.getMessages()) {

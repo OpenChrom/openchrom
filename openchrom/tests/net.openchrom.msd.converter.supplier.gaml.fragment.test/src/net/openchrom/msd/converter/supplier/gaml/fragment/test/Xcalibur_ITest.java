@@ -36,7 +36,7 @@ public class Xcalibur_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.XCALIBUR);
+		File file = new File("testData/files/import/TF_Xcalibur.gaml");
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramMSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();

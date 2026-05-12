@@ -35,7 +35,7 @@ public class CAL_3_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.CAL_3);
+		File file = new File("testData/CAL_3.CDF");
 		ChromatogramImportConverterCSD importConverter = new ChromatogramImportConverterCSD();
 		IProcessingInfo<IChromatogramCSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();

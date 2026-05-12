@@ -35,7 +35,7 @@ public class WATERS4_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.WATERS4);
+		File file = new File("testData/Waters/WATERS4.CDF");
 		ChromatogramImportConverterCSD importConverter = new ChromatogramImportConverterCSD();
 		IProcessingInfo<IChromatogramCSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();

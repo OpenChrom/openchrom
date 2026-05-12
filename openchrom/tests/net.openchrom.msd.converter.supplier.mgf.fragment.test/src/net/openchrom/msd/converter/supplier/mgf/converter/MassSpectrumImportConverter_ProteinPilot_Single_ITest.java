@@ -26,8 +26,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
-import net.openchrom.msd.converter.supplier.mgf.TestPathHelper;
-
 @TestInstance(Lifecycle.PER_CLASS)
 public class MassSpectrumImportConverter_ProteinPilot_Single_ITest {
 
@@ -36,7 +34,7 @@ public class MassSpectrumImportConverter_ProteinPilot_Single_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.TESTFILE_IMPORT_PROTEINPILOT_SINGLE_ELEMENT);
+		File file = new File("testData/files/import/proteinpilot/singleElement.mgf");
 		DatabaseImportConverter importConverter = new DatabaseImportConverter();
 		IProcessingInfo<IMassSpectra> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		massSpectra = processingInfo.getProcessingResult();

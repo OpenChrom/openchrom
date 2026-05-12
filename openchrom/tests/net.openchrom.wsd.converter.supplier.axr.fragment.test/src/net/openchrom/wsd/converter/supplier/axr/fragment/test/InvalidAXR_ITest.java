@@ -13,8 +13,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.File;
 
-import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
+import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@ public class InvalidAXR_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.INVALID_AXR);
+		File file = new File("testdata/files/import/invalid.axr");
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramWSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();

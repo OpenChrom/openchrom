@@ -35,7 +35,7 @@ public class ICI_21_2_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.ICI_21_2);
+		File file = new File("testData/ICI_21_2.CDF");
 		ChromatogramImportConverterWSD importConverter = new ChromatogramImportConverterWSD();
 		IProcessingInfo<IChromatogramWSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();

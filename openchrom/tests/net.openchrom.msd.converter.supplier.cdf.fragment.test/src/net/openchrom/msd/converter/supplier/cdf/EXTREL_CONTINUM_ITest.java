@@ -35,7 +35,7 @@ public class EXTREL_CONTINUM_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.EXTREL_CONTINUM);
+		File file = new File("testData/EXTREL/CONTINUM.CDF");
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramMSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();

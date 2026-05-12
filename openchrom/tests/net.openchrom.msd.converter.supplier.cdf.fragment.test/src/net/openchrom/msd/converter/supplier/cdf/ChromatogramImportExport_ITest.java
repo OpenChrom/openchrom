@@ -48,14 +48,14 @@ public class ChromatogramImportExport_ITest {
 		/*
 		 * Export/Reimport
 		 */
-		File directory = new File(TestPathHelper.DIRECTORY_EXPORT_TEST);
+		File directory = new File("testData/export");
 		directory.mkdir();
 		String pathExport = directory.getAbsolutePath() + File.separator + "Test.cdf";
 		String extensionPointExportReimport = "net.openchrom.msd.converter.supplier.cdf";
 		/*
 		 * Import the chromatogram.
 		 */
-		File fileImport = new File(TestPathHelper.TESTFILE_IMPORT_CHROMATOGRAM_2);
+		File fileImport = new File("testData/Chromatogram2.ocb");
 		IProcessingInfo<IChromatogramMSD> processingInfoImport = ChromatogramConverterMSD.getInstance().convert(fileImport, extensionPointImport, new NullProgressMonitor());
 		chromatogramImport = processingInfoImport.getProcessingResult();
 		for(IProcessingMessage message : processingInfoImport.getMessages()) {

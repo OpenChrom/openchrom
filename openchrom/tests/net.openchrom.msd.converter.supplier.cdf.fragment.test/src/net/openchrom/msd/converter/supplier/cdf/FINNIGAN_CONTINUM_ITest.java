@@ -35,7 +35,7 @@ public class FINNIGAN_CONTINUM_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.FINNIGAN_CONTINUM);
+		File file = new File("testData/FINNIGAN/CONTINUM.CDF");
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramMSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();

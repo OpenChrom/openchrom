@@ -35,7 +35,7 @@ public class EXAMPLE1_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.EXAMPLE1);
+		File file = new File("testData/EXAMPLE1.CDF");
 		ChromatogramImportConverterCSD importConverter = new ChromatogramImportConverterCSD();
 		IProcessingInfo<IChromatogramCSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();

@@ -35,7 +35,7 @@ public class TGNTHPGC_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.TGNTHPGC);
+		File file = new File("testData/Thru-Put Systems/tgnthpgc.cdf");
 		ChromatogramImportConverterCSD importConverter = new ChromatogramImportConverterCSD();
 		IProcessingInfo<IChromatogramCSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();
