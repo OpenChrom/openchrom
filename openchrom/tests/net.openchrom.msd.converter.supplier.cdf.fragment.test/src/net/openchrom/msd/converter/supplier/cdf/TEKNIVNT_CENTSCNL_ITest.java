@@ -35,7 +35,7 @@ public class TEKNIVNT_CENTSCNL_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.TEKNIVNT_CENTSCNL);
+		File file = new File("testData/TEKNIVNT/CENTSCNL.CDF");
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramMSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();

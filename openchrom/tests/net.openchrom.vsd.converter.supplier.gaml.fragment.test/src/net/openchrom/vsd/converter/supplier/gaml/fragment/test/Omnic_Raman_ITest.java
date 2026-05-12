@@ -35,7 +35,7 @@ public class Omnic_Raman_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.TN_OMNIC_RAMAN);
+		File file = new File("testData/files/import/TN_OMNIC_Raman.gaml");
 		ScanImportConverter importConverter = new ScanImportConverter();
 		IProcessingInfo<ISpectrumVSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		spectrumVSD = processingInfo.getProcessingResult();

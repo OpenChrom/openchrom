@@ -35,7 +35,7 @@ public class QD_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.QD);
+		File file = new File("testData/TEST/QD.CDF");
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramMSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();

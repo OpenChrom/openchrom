@@ -29,7 +29,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
-import net.openchrom.msd.converter.supplier.cms.TestPathHelper;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
 
@@ -47,7 +46,7 @@ public class ReImportConverter_2_ITest {
 		/*
 		 * Import
 		 */
-		File importFile = new File(TestPathHelper.TESTFILE_IMPORT_MASS_SPECTRA_5);
+		File importFile = new File("testData/files/import/MassSpectra5.cms");
 		IProcessingInfo<IMassSpectra> processingInfoImport = importConverter.convert(importFile, new NullProgressMonitor());
 		massSpectra1 = processingInfoImport.getProcessingResult();
 		// calculate and subtract signal zero offset
@@ -62,13 +61,13 @@ public class ReImportConverter_2_ITest {
 		/*
 		 * Export
 		 */
-		File exportFolder = new File(TestPathHelper.TESTFILE_DIR_EXPORT);
-		exportFile = new File(exportFolder, File.separator + TestPathHelper.TESTFILE_MASS_SPECTRA_2);
+		File exportFolder = new File("testData/files/export");
+		exportFile = new File(exportFolder, File.separator + "MassSpectraExport2.CMS");
 		exportConverter.convert(exportFile, massSpectra1, false, new NullProgressMonitor());
 		/*
 		 * Re-Import
 		 */
-		File reImportFile = new File(exportFolder, File.separator + TestPathHelper.TESTFILE_MASS_SPECTRA_2);
+		File reImportFile = new File(exportFolder, File.separator + "MassSpectraExport2.CMS");
 		IProcessingInfo<IMassSpectra> processingInfoReImport = importConverter.convert(reImportFile, new NullProgressMonitor());
 		massSpectra2 = processingInfoReImport.getProcessingResult();
 	}

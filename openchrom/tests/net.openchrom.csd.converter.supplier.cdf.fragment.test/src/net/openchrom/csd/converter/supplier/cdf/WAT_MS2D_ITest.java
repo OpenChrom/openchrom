@@ -35,7 +35,7 @@ public class WAT_MS2D_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.WAT_MS2D);
+		File file = new File("testData/Waters/WAT_MS2D.CDF");
 		ChromatogramImportConverterCSD importConverter = new ChromatogramImportConverterCSD();
 		IProcessingInfo<IChromatogramCSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();

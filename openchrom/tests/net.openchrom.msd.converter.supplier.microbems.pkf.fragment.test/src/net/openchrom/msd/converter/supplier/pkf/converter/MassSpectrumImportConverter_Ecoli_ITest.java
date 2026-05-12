@@ -29,7 +29,6 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import net.openchrom.msd.converter.supplier.microbems.pkf.converter.DatabaseImportConverter;
-import net.openchrom.msd.converter.supplier.pkf.TestPathHelper;
 
 @TestInstance(Lifecycle.PER_CLASS)
 public class MassSpectrumImportConverter_Ecoli_ITest {
@@ -39,7 +38,7 @@ public class MassSpectrumImportConverter_Ecoli_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.TESTFILE_IMPORT_ECOLI);
+		File file = new File("data/ecoli-peaklist-oct16.pkf");
 		DatabaseImportConverter importConverter = new DatabaseImportConverter();
 		IProcessingInfo<IMassSpectra> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		massSpectra = processingInfo.getProcessingResult();

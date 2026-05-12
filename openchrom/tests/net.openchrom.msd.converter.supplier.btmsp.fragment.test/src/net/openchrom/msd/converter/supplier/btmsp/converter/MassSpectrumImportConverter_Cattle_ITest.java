@@ -29,7 +29,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
-import net.openchrom.msd.converter.supplier.btmsp.TestPathHelper;
 import net.openchrom.msd.converter.supplier.btmsp.converter.model.IMainSpectraProjection;
 import net.openchrom.msd.converter.supplier.btmsp.converter.model.MainSpectraProjection;
 
@@ -41,7 +40,7 @@ public class MassSpectrumImportConverter_Cattle_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.TESTFILE_IMPORT_CATTLE);
+		File file = new File("data/cattle.btmsp");
 		DatabaseImportConverter importConverter = new DatabaseImportConverter();
 		IProcessingInfo<IMassSpectra> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		massSpectra = processingInfo.getProcessingResult();

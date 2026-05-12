@@ -35,7 +35,7 @@ public class FISONS_A_CENTSIDH_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.FISONS_A_CENTSIDH);
+		File file = new File("testData/FISONS_A/CENTSIDH.CDF");
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramMSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();

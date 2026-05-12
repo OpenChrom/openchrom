@@ -36,7 +36,7 @@ public class FISONS_A_CONTINUM_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.FISONS_A_CONTINUM);
+		File file = new File("testData/FISONS_A/CONTINUM.CDF");
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramMSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();

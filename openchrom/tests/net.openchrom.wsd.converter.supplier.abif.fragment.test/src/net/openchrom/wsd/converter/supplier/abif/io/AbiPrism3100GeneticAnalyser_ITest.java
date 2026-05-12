@@ -37,7 +37,7 @@ public class AbiPrism3100GeneticAnalyser_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File fileImport = new File(ABIF.TESTFILE_IMPORT_3100_AB1);
+		File fileImport = new File("testdata/files/import/3100.ab1");
 		IProcessingInfo<IChromatogramWSD> processingInfo = ChromatogramConverterWSD.getInstance().convert(fileImport, ABIF.EXTENSION_POINT_ID, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();
 	}

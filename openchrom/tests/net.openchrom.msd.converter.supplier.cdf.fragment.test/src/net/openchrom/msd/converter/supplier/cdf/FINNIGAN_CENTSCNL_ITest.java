@@ -35,7 +35,7 @@ public class FINNIGAN_CENTSCNL_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.FINNIGAN_CENTSCNL);
+		File file = new File("testData/FINNIGAN/CENTSCNL.CDF");
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramMSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();

@@ -35,7 +35,7 @@ public class VARIAN3_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.VARIAN3);
+		File file = new File("testData/Varian/VARIAN3.CDF");
 		ChromatogramImportConverterWSD importConverter = new ChromatogramImportConverterWSD();
 		IProcessingInfo<IChromatogramWSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();

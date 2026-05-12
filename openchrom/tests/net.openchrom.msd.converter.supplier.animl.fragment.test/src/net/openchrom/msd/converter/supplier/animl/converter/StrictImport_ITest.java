@@ -28,8 +28,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
-import net.openchrom.msd.converter.supplier.animl.TestPathHelper;
-
 @TestInstance(Lifecycle.PER_CLASS)
 public class StrictImport_ITest {
 
@@ -38,7 +36,7 @@ public class StrictImport_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.TESTFILE_IMPORT_MS_STRICT);
+		File file = new File("testData/files/import/MS_STRICT.animl");
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramMSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();

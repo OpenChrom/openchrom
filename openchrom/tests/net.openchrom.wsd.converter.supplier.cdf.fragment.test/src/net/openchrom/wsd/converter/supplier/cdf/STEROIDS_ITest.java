@@ -35,7 +35,7 @@ public class STEROIDS_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.STEROIDS);
+		File file = new File("testData/STEROIDS.CDF");
 		ChromatogramImportConverterWSD importConverter = new ChromatogramImportConverterWSD();
 		IProcessingInfo<IChromatogramWSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();

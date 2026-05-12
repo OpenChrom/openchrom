@@ -35,7 +35,7 @@ public class HP_CH_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.HP_CH);
+		File file = new File("testData/Hewlett Packard/HP-CH.CDF");
 		ChromatogramImportConverterWSD importConverter = new ChromatogramImportConverterWSD();
 		IProcessingInfo<IChromatogramWSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();

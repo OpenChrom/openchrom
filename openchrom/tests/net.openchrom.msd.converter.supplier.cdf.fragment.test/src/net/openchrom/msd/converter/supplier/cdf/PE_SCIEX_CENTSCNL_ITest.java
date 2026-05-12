@@ -35,7 +35,7 @@ public class PE_SCIEX_CENTSCNL_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.PE_SCIEX_CENTSCNL);
+		File file = new File("testData/PE_SCIEX/CENTSCNL.CDF");
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramMSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();

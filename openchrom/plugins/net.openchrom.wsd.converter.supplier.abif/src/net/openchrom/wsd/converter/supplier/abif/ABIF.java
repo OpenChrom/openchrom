@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2026 Lablicate GmbH.
+ * Copyright (c) 2016, 2026 Matthias Mailänder, Philip Wenig.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -9,12 +9,11 @@
  * 
  * Contributors:
  * Matthias Mailänder - initial API and implementation
- * Philip Wenig - refactoring vibrational spectroscopy
+ * Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.vsd.converter.supplier.gaml.fragment.test;
+package net.openchrom.wsd.converter.supplier.abif;
 
-public class TestPathHelper {
+public class ABIF {
 
-	public static final String TN_OMNIC_FTIR = "testData/files/import/TN_OMNIC_FTIR.gaml";
-	public static final String TN_OMNIC_RAMAN = "testData/files/import/TN_OMNIC_Raman.gaml";
+	public static final String EXTENSION_POINT_ID = "net.openchrom.wsd.converter.supplier.ab1";
 }

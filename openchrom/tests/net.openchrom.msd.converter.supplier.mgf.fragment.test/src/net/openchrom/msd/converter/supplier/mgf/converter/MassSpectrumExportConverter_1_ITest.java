@@ -29,17 +29,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
-import net.openchrom.msd.converter.supplier.mgf.TestPathHelper;
-
 @TestInstance(Lifecycle.PER_CLASS)
 public class MassSpectrumExportConverter_1_ITest {
 
 	@Test
 	public void test() {
 
-		File directory = new File(TestPathHelper.TESTDIR_EXPORT);
+		File directory = new File("testData/files/export");
 		directory.mkdir();
-		File exportFile = new File(directory, File.separator + TestPathHelper.TESTFILE_EXPORT_MS_1);
+		File exportFile = new File(directory, File.separator + "MS1.mgf");
 		DatabaseExportConverter exportConverter = new DatabaseExportConverter();
 
 		IScanMSD massSpectrum = new ScanMSD();

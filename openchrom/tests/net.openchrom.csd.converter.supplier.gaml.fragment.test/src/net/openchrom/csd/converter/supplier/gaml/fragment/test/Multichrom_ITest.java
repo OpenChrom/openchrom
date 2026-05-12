@@ -35,7 +35,7 @@ public class Multichrom_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.MULTICHROM);
+		File file = new File("testData/files/import/TLS_Multichrom.gaml");
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramCSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();

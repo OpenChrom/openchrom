@@ -35,7 +35,7 @@ public class SHIMADZU_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.SHIMADZU);
+		File file = new File("testData/Shimadzu/SHIMADZU.CDF"); // optical detector
 		ChromatogramImportConverterCSD importConverter = new ChromatogramImportConverterCSD();
 		IProcessingInfo<IChromatogramCSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();

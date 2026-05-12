@@ -36,7 +36,7 @@ public class TEKNIVNT_CONTINUM_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.TEKNIVNT_CONTINUM);
+		File file = new File("testData/TEKNIVNT/CONTINUM.CDF");
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramMSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();

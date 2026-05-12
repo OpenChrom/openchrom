@@ -30,8 +30,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
-import net.openchrom.msd.converter.supplier.animl.TestPathHelper;
-
 @TestInstance(Lifecycle.PER_CLASS)
 public class ChromatogramImportExport_ITest {
 
@@ -48,14 +46,14 @@ public class ChromatogramImportExport_ITest {
 		/*
 		 * Export/Reimport
 		 */
-		File directory = new File(TestPathHelper.DIRECTORY_EXPORT_TEST);
+		File directory = new File("testData/files/export");
 		directory.mkdir();
 		String pathExport = directory.getAbsolutePath() + File.separator + "Test.animl";
 		String extensionPointExportReimport = "net.openchrom.msd.converter.supplier.animl.chromatogram";
 		/*
 		 * Import the chromatogram.
 		 */
-		File fileImport = new File(TestPathHelper.TESTFILE_IMPORT_CHROMATOGRAM_2);
+		File fileImport = new File("testData/files/import/Chromatogram2.ocb");
 		IProcessingInfo<IChromatogramMSD> processingInfoImport = ChromatogramConverterMSD.getInstance().convert(fileImport, extensionPointImport, new NullProgressMonitor());
 		IChromatogramMSD chromatogramImport = processingInfoImport.getProcessingResult();
 		for(IProcessingMessage message : processingInfoImport.getMessages()) {

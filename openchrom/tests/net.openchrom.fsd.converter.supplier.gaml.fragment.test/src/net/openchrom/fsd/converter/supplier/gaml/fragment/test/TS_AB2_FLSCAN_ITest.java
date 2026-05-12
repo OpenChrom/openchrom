@@ -35,7 +35,7 @@ public class TS_AB2_FLSCAN_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.TS_AB2_FLSCAN_HELIOS);
+		File file = new File("testData/files/import/TS_AB2_FLSCAN.gaml");
 		ScanImportConverter importConverter = new ScanImportConverter();
 		IProcessingInfo<ISpectrumFSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		spectrumFSD = processingInfo.getProcessingResult();

@@ -35,7 +35,7 @@ public class TurbochromGC_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.TURBOCHROM_GC);
+		File file = new File("testData/files/import/PE_Turbochrom_GC.gaml");
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramCSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();

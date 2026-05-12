@@ -38,7 +38,7 @@ public class BrukerXWinNMR1D_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.BRUKER_XWINNMR_1D);
+		File file = new File("testData/files/import/Bruker_XWINNMR_1D.gaml");
 		ScanImportConverter importConverter = new ScanImportConverter();
 		IProcessingInfo<ISpectrumNMR> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		complexSignals = processingInfo.getProcessingResult().getComplexSignalMeasurements();

@@ -35,7 +35,7 @@ public class MassLynx_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.MASSLYNX);
+		File file = new File("testData/files/import/Micromass_Masslynx.gaml");
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramWSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();

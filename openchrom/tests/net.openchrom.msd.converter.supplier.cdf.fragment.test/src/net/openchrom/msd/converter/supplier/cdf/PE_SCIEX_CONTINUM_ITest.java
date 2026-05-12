@@ -35,7 +35,7 @@ public class PE_SCIEX_CONTINUM_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.PE_SCIEX_CONTINUM);
+		File file = new File("testData/PE_SCIEX/CONTINUM.CDF");
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramMSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();

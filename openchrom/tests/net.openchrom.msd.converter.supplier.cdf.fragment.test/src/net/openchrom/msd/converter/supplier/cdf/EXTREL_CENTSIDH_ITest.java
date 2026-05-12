@@ -35,7 +35,7 @@ public class EXTREL_CENTSIDH_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File file = new File(TestPathHelper.EXTREL_CENTSIDH);
+		File file = new File("testData/EXTREL/CENTSIDH.CDF");
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramMSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();

@@ -36,7 +36,7 @@ public class InvalidData_ITest {
 	@BeforeAll
 	public void setUp() {
 
-		File fileImport = new File(ABIF.TESTFILE_IMPORT_FAKE_AB1);
+		File fileImport = new File("testdata/files/import/fake.ab1");
 		IProcessingInfo<IChromatogramWSD> processingInfo = ChromatogramConverterWSD.getInstance().convert(fileImport, ABIF.EXTENSION_POINT_ID, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();
 	}
