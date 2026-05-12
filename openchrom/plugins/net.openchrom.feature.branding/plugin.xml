@@ -11,6 +11,10 @@
 
    <extension id="net.openchrom.feature.branding.pgpkeys"
          point="org.eclipse.equinox.p2.engine.pgp">
+         <trustedKeys path="trustedkeys/chemclipse.asc"/>
+   </extension>
+   <extension id="net.openchrom.feature.branding.pgpkeys"
+         point="org.eclipse.equinox.p2.engine.pgp">
          <trustedKeys path="trustedkeys/lablicate.asc"/>
    </extension>
    <extension id="net.openchrom.feature.branding.pgpkeys"
