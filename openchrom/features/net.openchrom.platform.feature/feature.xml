@@ -72,10 +72,6 @@
          version="0.0.0"/>
 
    <includes
-         id="net.openchrom.swtchart.extension.export.vectorgraphics.feature"
-         version="0.0.0"/>
-
-   <includes
          id="net.openchrom.chromatogram.xxd.report.supplier.excel.template.feature"
          version="0.0.0"/>
 

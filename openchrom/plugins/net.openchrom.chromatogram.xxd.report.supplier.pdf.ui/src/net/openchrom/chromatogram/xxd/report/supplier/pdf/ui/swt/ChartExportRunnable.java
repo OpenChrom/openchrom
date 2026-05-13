@@ -39,6 +39,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtchart.ILineSeries.PlotSymbolType;
 import org.eclipse.swtchart.LineStyle;
+import org.eclipse.swtchart.export.menu.vector.PDFExportHandler;
+import org.eclipse.swtchart.export.vector.model.PageSizeOption;
 import org.eclipse.swtchart.extensions.core.BaseChart;
 import org.eclipse.swtchart.extensions.core.IChartSettings;
 import org.eclipse.swtchart.extensions.core.IExtendedChart;
@@ -47,9 +49,6 @@ import org.eclipse.swtchart.extensions.linecharts.ILineSeriesData;
 import org.eclipse.swtchart.extensions.linecharts.ILineSeriesSettings;
 import org.eclipse.swtchart.extensions.model.ICustomSeries;
 import org.eclipse.swtchart.extensions.model.TextElement;
-
-import net.openchrom.swtchart.extension.export.vectorgraphics.core.PDFExportHandler;
-import net.openchrom.swtchart.extension.export.vectorgraphics.model.PageSizeOption;
 
 public class ChartExportRunnable implements Runnable {
 
