@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Lablicate GmbH.
+ * Copyright (c) 2024, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -11,6 +11,9 @@
  * Lorenz Gerber - initial API and implementation
  *******************************************************************************/
 package net.openchrom.xxd.base.ui.support;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.chemclipse.model.types.DataType;
 
@@ -33,5 +36,23 @@ public class AnalysisSegmentSupport {
 		}
 
 		return null;
+	}
+
+	public static List<IAnalysisSegmentService> getAnalysisSegmentServices(DataType dataType) {
+
+		List<IAnalysisSegmentService> result = new ArrayList<>();
+
+		Object[] services = Activator.getDefault().getAnalysisSegmentServices();
+		if(services != null) {
+			for(Object service : services) {
+				if(service instanceof IAnalysisSegmentService analysisSegmentService) {
+					if(dataType.equals(analysisSegmentService.getDataType())) {
+						result.add(analysisSegmentService);
+					}
+				}
+			}
+		}
+
+		return result;
 	}
 }
