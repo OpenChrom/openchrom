@@ -20,5 +20,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.msd.converter.supplier.microbems.pkf.converter,
  net.openchrom.msd.converter.supplier.microbems.pkf.converter.io,
- net.openchrom.msd.converter.supplier.microbems.pkf.converter.model,
- net.openchrom.msd.converter.supplier.pkf
+ net.openchrom.msd.converter.supplier.microbems.pkf.converter.model
