@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.msd.converter.supplier.cms.ui
 Bundle-ManifestVersion: 2
 Bundle-Name: CMS Supplier UI
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.cms.ui;singleton:=true
-Bundle-Version: 1.6.16.qualifier
+Bundle-Version: 1.6.17.qualifier
 Bundle-Activator: net.openchrom.msd.converter.supplier.cms.ui.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.ui,
