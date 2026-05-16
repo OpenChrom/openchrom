@@ -107,7 +107,7 @@ public class ImageConverter {
 				.withZoom(2.0) //
 				.withBackgroundColor(TRANSPARENT); //
 
-		if(PreferencesSupport.isDarkTheme()) {
+		if(Display.getCurrent() != null && PreferencesSupport.isDarkTheme()) {
 			if(PreferenceSupplier.isColorAtoms()) {
 				depictionGenerator = depictionGenerator.withParam(StandardGenerator.AtomColor.class, new IAtomColorer() {
 
