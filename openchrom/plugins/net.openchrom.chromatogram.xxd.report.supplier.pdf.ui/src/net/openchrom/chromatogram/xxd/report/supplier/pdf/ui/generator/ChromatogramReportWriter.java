@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Lablicate GmbH.
+ * Copyright (c) 2019, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.multipdf.LayerUtility;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -32,6 +33,7 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.PDPageContentStream.AppendMode;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.Standard14Fonts.FontName;
 import org.apache.pdfbox.pdmodel.graphics.form.PDFormXObject;
 import org.apache.pdfbox.util.Matrix;
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
@@ -116,7 +118,7 @@ public class ChromatogramReportWriter {
 	private void printPageBrandingHeader(PageUtil pageUtil) throws IOException {
 
 		URL logoURL = FileLocator.find(Activator.getDefault().getBundle(), new Path("icons/logo.pdf"));
-		PDDocument logoDocument = PDDocument.load(logoURL.openStream());
+		PDDocument logoDocument = Loader.loadPDF(logoURL.openStream().readAllBytes());
 		LayerUtility layerUtility = new LayerUtility(pageUtil.getDocument());
 		PDFormXObject logo = layerUtility.importPageAsForm(logoDocument, 0);
 		try (PDPageContentStream contentStream = new PDPageContentStream(pageUtil.getDocument(), pageUtil.getPage(), AppendMode.APPEND, false)) {
@@ -128,7 +130,7 @@ public class ChromatogramReportWriter {
 		 * Wordmark and Slogan
 		 */
 		pageUtil.printText(new TextElement(LEFT_BORDER + 18, TOP_BORDER, MAX_WIDTH_PORTRAIT).setText("OPEN") //
-				.setFontSize(32f).setColor(OPENCHROM_RED).setFont(PDType1Font.HELVETICA_BOLD));
+				.setFontSize(32f).setColor(OPENCHROM_RED).setFont(new PDType1Font(FontName.HELVETICA_BOLD)));
 		pageUtil.printText(new TextElement(LEFT_BORDER + 50, TOP_BORDER, MAX_WIDTH_PORTRAIT).setText("Chrom").setFontSize(32));
 		pageUtil.printText(new TextElement(LEFT_BORDER + 84, TOP_BORDER - 4, MAX_WIDTH_PORTRAIT).setText("®").setFontSize(20).setColor(Color.GRAY));
 		printText(pageUtil, 24f, "The Open Source Alternative for Chromatography and Spectrometry");
@@ -176,7 +178,7 @@ public class ChromatogramReportWriter {
 	private int printCharts(ChartExportRunnable chartExportRunnable, PDDocument document, int page) throws IOException {
 
 		for(File chromatogramFile : chartExportRunnable.getChromatogramFiles()) {
-			PDDocument documentChart = PDDocument.load(chromatogramFile);
+			PDDocument documentChart = Loader.loadPDF(chromatogramFile);
 			for(PDPage pageChart : documentChart.getPages()) {
 				document.addPage(pageChart);
 				page++;
