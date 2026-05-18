@@ -1284,6 +1284,19 @@
             summary="Free extension exclusively for OpenChrom®"
             icon="icons/32x32/TOFWERK.png">
       </pluginDescriptor>
+      
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.converters.proprietary"
+            description="Reads *.h5 files."
+            groupId="net.openchrom.csd.converter"
+            id="net.openchrom.csd.converter.supplier.hummex.feature"
+            kind="converter"
+            license="Converter License Terms"
+            name="Hummex X-ECD"
+            provider="Lablicate"
+            summary="Free extension exclusively for OpenChrom®"
+            icon="icons/32x32/Hummex.png">
+      </pluginDescriptor>      
 
    </extension>
 </plugin>
