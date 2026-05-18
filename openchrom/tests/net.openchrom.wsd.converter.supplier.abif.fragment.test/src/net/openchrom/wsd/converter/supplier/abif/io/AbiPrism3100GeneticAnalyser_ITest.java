@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.File;
 
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
-import org.eclipse.chemclipse.wsd.converter.chromatogram.ChromatogramConverterWSD;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.chemclipse.wsd.model.core.IScanWSD;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -27,7 +26,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
-import net.openchrom.wsd.converter.supplier.abif.ABIF;
+import net.openchrom.wsd.converter.supplier.abif.core.ChromatogramImportConverter;
 
 @TestInstance(Lifecycle.PER_CLASS)
 public class AbiPrism3100GeneticAnalyser_ITest {
@@ -38,7 +37,8 @@ public class AbiPrism3100GeneticAnalyser_ITest {
 	public void setUp() {
 
 		File fileImport = new File("testdata/files/import/3100.ab1");
-		IProcessingInfo<IChromatogramWSD> processingInfo = ChromatogramConverterWSD.getInstance().convert(fileImport, ABIF.EXTENSION_POINT_ID, new NullProgressMonitor());
+		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
+		IProcessingInfo<IChromatogramWSD> processingInfo = importConverter.convert(fileImport, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();
 	}
 
