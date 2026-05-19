@@ -4,6 +4,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: mzMLb
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.mzmlb;singleton:=true
 Bundle-Version: 1.6.17.qualifier
+Export-Package: net.openchrom.msd.converter.supplier.mzmlb.converter
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.msd.converter;bundle-version="0.8.0",
