@@ -23,35 +23,4 @@
   		</plugin>
   	</plugins>
   </build>
-  <profiles>
-		<profile>
-			<id>gpg-sign</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.eclipse.tycho</groupId>
-						<artifactId>tycho-gpg-plugin</artifactId>
-						<version>${tycho.version}</version>
-						<configuration>
-							<keyname>${gpg-keyname}</keyname>
-							<signer>bc</signer>
-							<skipIfJarsigned>false</skipIfJarsigned>
-							<skipIfJarsignedAndAnchored>true</skipIfJarsignedAndAnchored>
-						</configuration>
-						<executions>
-							<execution>
-								<phase>package</phase>
-								<goals>
-									<goal>sign-p2-artifacts</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
 </project>
