@@ -10,7 +10,6 @@
             id="org.eclipse.chemclipse.msd.converter.supplier.btmsp"
             importConverter="net.openchrom.msd.converter.supplier.btmsp.converter.DatabaseImportConverter"
             importMagicNumberMatcher="net.openchrom.msd.converter.supplier.btmsp.converter.MagicNumberMatcherDatabase"
-            exportConverter="net.openchrom.msd.converter.supplier.btmsp.converter.DatabaseExportConverter"
             isExportable="false"
             isImportable="true">
       </DatabaseSupplier>
