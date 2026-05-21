@@ -3,7 +3,7 @@
 <target name="OpenChrom" sequenceNumber="43">
 <locations>
 	<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-		<repository location="https://download.eclipse.org/releases/2026-03/"/>
+		<repository location="https://mirror.lablicate.com/eclipse/releases/2026-03/"/>
 		<unit id="org.eclipse.equinox.sdk.feature.group"/>
 		<unit id="org.eclipse.platform.feature.group"/>
 		<unit id="org.eclipse.jdt.junit6.runtime"/>
@@ -13,7 +13,7 @@
 		<unit id="org.apache.aries.spifly.dynamic.bundle"/>
 	</location>
 	<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-		<repository location="https://download.eclipse.org/cbi/updates/license/"/>
+		<repository location="https://mirror.lablicate.com/eclipse/cbi/updates/license/"/>
 		<unit id="org.eclipse.license.feature.group"/>
 	</location>
 	<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
@@ -31,7 +31,7 @@
 		<unit id="net.openchrom.thirdparty.inchi.feature.feature.group"/>
 	</location>
 	<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-		<repository location="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2026-03"/>
+		<repository location="https://mirror.lablicate.com/eclipse/tools/orbit/simrel/orbit-aggregation/2026-03"/>
 		<unit id="org.apache.commons.commons-csv"/>
 		<unit id="org.apache.poi"/>
 		<unit id="org.apache.poi.ooxml"/>
