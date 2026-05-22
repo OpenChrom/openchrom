@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.chromatogram.xxd.report.supplier.pdf.ui.feature"
       label="PDF Report"
-      version="1.6.17.qualifier"
+      version="1.6.18.qualifier"
       provider-name="https://www.openchrom.net"
       plugin="net.openchrom.feature.branding"
       license-feature="org.eclipse.license"

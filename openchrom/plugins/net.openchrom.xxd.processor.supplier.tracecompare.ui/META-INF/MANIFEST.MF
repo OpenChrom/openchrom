@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.xxd.processor.supplier.tracecompare.ui
 Bundle-ManifestVersion: 2
 Bundle-Name: Trace Compare (UI)
 Bundle-SymbolicName: net.openchrom.xxd.processor.supplier.tracecompare.ui;singleton:=true
-Bundle-Version: 1.6.17.qualifier
+Bundle-Version: 1.6.18.qualifier
 Bundle-Activator: net.openchrom.xxd.processor.supplier.tracecompare.ui.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.ui,
