@@ -12,11 +12,7 @@
  *******************************************************************************/
 package net.openchrom.installer.ui.handlers;
 
-import java.io.IOException;
 import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,6 +25,7 @@ import org.eclipse.equinox.p2.core.IProvisioningAgent;
 import org.eclipse.equinox.p2.engine.ProvisioningContext;
 import org.eclipse.equinox.p2.operations.ProvisioningSession;
 import org.eclipse.equinox.p2.operations.UpdateOperation;
+import org.eclipse.equinox.p2.repository.IRepositoryManager;
 import org.eclipse.equinox.p2.repository.metadata.IMetadataRepositoryManager;
 import org.eclipse.equinox.p2.ui.ProvisioningUI;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -45,15 +42,9 @@ import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.Version;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
-import net.openchrom.installer.ui.model.CurrentVersion;
+import net.openchrom.installer.model.CurrentVersion;
 
 public class CheckForUpdatesHander {
-
-	private static final String URL_STR = "https://marketplace.lablicate.com/api/download/1/current_element_version";
 
 	@Execute
 	public void execute(@Active Shell shell) {
@@ -62,7 +53,7 @@ public class CheckForUpdatesHander {
 		boolean updateAvailable = false;
 		Version availableVersion = null;
 
-		CurrentVersion latestVersion = getLatestVersion();
+		CurrentVersion latestVersion = CurrentVersion.getLatestVersion();
 		if(latestVersion != null) {
 			availableVersion = new Version(latestVersion.getVersion());
 			if(availableVersion.compareTo(bundleVersion) > 0) {
@@ -105,20 +96,6 @@ public class CheckForUpdatesHander {
 
 	}
 
-	private CurrentVersion getLatestVersion() {
-
-		try (HttpClient client = HttpClient.newHttpClient()) {
-			HttpRequest request = HttpRequest.newBuilder().uri(URI.create(URL_STR)).GET().build();
-			HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-			Gson gson = new Gson();
-			JsonObject data = JsonParser.parseString(response.body()).getAsJsonObject().getAsJsonObject("data");
-			return gson.fromJson(data, CurrentVersion.class);
-		} catch(IOException | InterruptedException e) {
-			// can't determine latest version
-		}
-		return null;
-	}
-
 	private boolean canPerformUpdate(UpdateOperation op) {
 
 		IStatus status = op.resolveModal(new NullProgressMonitor());
@@ -151,7 +128,7 @@ public class CheckForUpdatesHander {
 
 		IMetadataRepositoryManager metaManager = agent.getService(IMetadataRepositoryManager.class);
 
-		URI[] known = metaManager.getKnownRepositories(IMetadataRepositoryManager.REPOSITORIES_ALL);
+		URI[] known = metaManager.getKnownRepositories(IRepositoryManager.REPOSITORIES_ALL);
 		Set<URI> newUris = new HashSet<>();
 		for(URI uri : known) {
 			URI newUri = replaceVersion(uri, toVersion.toString());
