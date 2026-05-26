@@ -9,19 +9,19 @@
  *******************************************************************************/
 package net.openchrom.wsd.converter.supplier.axr.io;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
+import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.wsd.converter.io.AbstractChromatogramWSDReader;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
-import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonToken;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
 
 import net.openchrom.wsd.converter.supplier.axr.model.IVendorChromatogram;
 import net.openchrom.wsd.converter.supplier.axr.model.VendorChromatogram;
@@ -49,30 +49,34 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 		chromatogram.setFile(file);
 		Metadata metadata = new Metadata();
 		int dataPoints = 0;
-		try (JsonReader jsonReader = new JsonReader(new BufferedReader(new FileReader(file)))) {
-			jsonReader.beginObject();
-			while(jsonReader.hasNext()) {
-				String name = jsonReader.nextName();
+		try (JsonParser jsonParser = new JsonFactory().createParser(file)) {
+			if(jsonParser.nextToken() != JsonToken.START_OBJECT) {
+				throw new FileIsNotReadableException("Invalid AXR JSON structure.");
+			}
+
+			while(jsonParser.nextToken() != JsonToken.END_OBJECT) {
+				String name = jsonParser.currentName();
+				jsonParser.nextToken();
+
 				switch(name) {
 					case "user":
-						metadata.operator = nextString(jsonReader);
+						metadata.operator = nextString(jsonParser);
 						break;
 					case "meta":
-						readMeta(jsonReader, metadata);
+						readMeta(jsonParser, metadata);
 						break;
 					case "data":
 						if(includeData) {
-							dataPoints = readDataArray(jsonReader, chromatogram);
+							dataPoints = readDataArray(jsonParser, chromatogram);
 						} else {
-							jsonReader.skipValue();
+							jsonParser.skipChildren();
 						}
 						break;
 					default:
-						jsonReader.skipValue();
+						jsonParser.skipChildren();
 				}
 			}
-			jsonReader.endObject();
-		} catch(IllegalStateException e) {
+		} catch(JsonParseException e) {
 			throw new FileIsNotReadableException("Invalid AXR JSON structure.");
 		}
 		applyMetadata(chromatogram, metadata);
@@ -82,68 +86,70 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 		return chromatogram;
 	}
 
-	private void readMeta(JsonReader jsonReader, Metadata metadata) throws IOException {
+	private void readMeta(JsonParser jsonParser, Metadata metadata) throws IOException {
 
-		if(jsonReader.peek() != JsonToken.BEGIN_OBJECT) {
-			jsonReader.skipValue();
+		if(jsonParser.currentToken() != JsonToken.START_OBJECT) {
+			jsonParser.skipChildren();
 			return;
 		}
-		jsonReader.beginObject();
-		while(jsonReader.hasNext()) {
-			String key = jsonReader.nextName();
+		while(jsonParser.nextToken() != JsonToken.END_OBJECT) {
+			String key = jsonParser.currentName();
+			jsonParser.nextToken();
 			switch(key) {
 				case "sample":
-					metadata.sampleName = nextString(jsonReader);
+					metadata.sampleName = nextString(jsonParser);
 					break;
 				case "file":
-					metadata.fileName = nextString(jsonReader);
+					metadata.fileName = nextString(jsonParser);
 					break;
 				case "note":
-					metadata.note = nextString(jsonReader);
+					metadata.note = nextString(jsonParser);
 					break;
 				default:
-					jsonReader.skipValue();
+					jsonParser.skipChildren();
 			}
 		}
-		jsonReader.endObject();
 	}
 
-	private int readDataArray(JsonReader jsonReader, IVendorChromatogram chromatogram) throws IOException {
+	private int readDataArray(JsonParser jsonParser, IVendorChromatogram chromatogram) throws IOException {
 
-		if(jsonReader.peek() != JsonToken.BEGIN_ARRAY) {
-			jsonReader.skipValue();
+		if(jsonParser.currentToken() != JsonToken.START_ARRAY) {
+			jsonParser.skipChildren();
 			return 0;
 		}
 		int scans = 0;
 		int firstRetentionTime = -1;
 		int previousRetentionTime = -1;
 		int scanInterval = 0;
-		jsonReader.beginArray();
-		while(jsonReader.hasNext()) {
+
+		while(jsonParser.nextToken() != JsonToken.END_ARRAY) {
 			Double signal = null;
 			Double retentionMinutes = null;
-			if(jsonReader.peek() != JsonToken.BEGIN_OBJECT) {
-				jsonReader.skipValue();
+
+			if(jsonParser.currentToken() != JsonToken.START_OBJECT) {
+				jsonParser.skipChildren();
 				continue;
 			}
-			jsonReader.beginObject();
-			while(jsonReader.hasNext()) {
-				String name = jsonReader.nextName();
+
+			while(jsonParser.nextToken() != JsonToken.END_OBJECT) {
+				String name = jsonParser.currentName();
+				jsonParser.nextToken(); // move to value
 				switch(name) {
 					case "x":
-						retentionMinutes = nextDouble(jsonReader);
+						retentionMinutes = nextDouble(jsonParser);
 						break;
 					case "y":
-						signal = nextDouble(jsonReader);
+						signal = nextDouble(jsonParser);
 						break;
 					default:
-						jsonReader.skipValue();
+						jsonParser.skipChildren();
 				}
 			}
-			jsonReader.endObject();
+
 			if(signal == null) {
 				continue;
 			}
+
 			int retentionTime = previousRetentionTime;
 			if(retentionMinutes != null) {
 				retentionTime = (int)Math.round(retentionMinutes * MINUTES_TO_MILLISECONDS);
@@ -152,9 +158,11 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 			} else if(scanInterval > 0) {
 				retentionTime += scanInterval;
 			}
+
 			VendorScan scan = new VendorScan(signal.floatValue());
 			scan.setRetentionTime(retentionTime);
 			chromatogram.addScan(scan);
+
 			if(firstRetentionTime < 0) {
 				firstRetentionTime = retentionTime;
 			}
@@ -167,7 +175,7 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 			previousRetentionTime = retentionTime;
 			scans++;
 		}
-		jsonReader.endArray();
+
 		if(firstRetentionTime >= 0) {
 			chromatogram.setScanDelay(firstRetentionTime);
 		}
@@ -193,31 +201,32 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 		}
 	}
 
-	private String nextString(JsonReader jsonReader) throws IOException {
+	private String nextString(JsonParser jsonParser) throws IOException {
 
-		JsonToken token = jsonReader.peek();
+		JsonToken token = jsonParser.currentToken();
 		switch(token) {
-			case STRING:
-				return jsonReader.nextString();
-			case NUMBER:
-				return Double.toString(jsonReader.nextDouble());
-			case NULL:
-				jsonReader.nextNull();
+			case VALUE_STRING:
+				return jsonParser.getText();
+			case VALUE_NUMBER_INT:
+			case VALUE_NUMBER_FLOAT:
+				return jsonParser.getNumberValue().toString();
+			case VALUE_NULL:
 				return null;
 			default:
-				jsonReader.skipValue();
+				jsonParser.skipChildren();
 				return null;
 		}
 	}
 
-	private Double nextDouble(JsonReader jsonReader) throws IOException {
+	private Double nextDouble(JsonParser jsonParser) throws IOException {
 
-		JsonToken token = jsonReader.peek();
+		JsonToken token = jsonParser.currentToken();
 		switch(token) {
-			case NUMBER:
-				return jsonReader.nextDouble();
-			case STRING:
-				String value = jsonReader.nextString();
+			case VALUE_NUMBER_INT:
+			case VALUE_NUMBER_FLOAT:
+				return jsonParser.getDoubleValue();
+			case VALUE_STRING:
+				String value = jsonParser.getText();
 				if(value == null || value.isBlank()) {
 					return null;
 				}
@@ -226,11 +235,10 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 				} catch(NumberFormatException e) {
 					return null;
 				}
-			case NULL:
-				jsonReader.nextNull();
+			case VALUE_NULL:
 				return null;
 			default:
-				jsonReader.skipValue();
+				jsonParser.skipChildren();
 				return null;
 		}
 	}
