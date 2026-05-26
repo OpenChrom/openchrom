@@ -91,6 +91,7 @@ Contributors:
       <repository location="https://converter.openchrom.net/1.6.18/" name="Converter" enabled="true" />
       <repository location="https://plugins.openchrom.net/xident/1.6.18/" name="ChromIdent" enabled="true" />
       <repository location="https://plugins.openchrom.net/mcrar/1.6.18/" name="MCR-AR" enabled="true" />
+      <repository location="https://plugins.openchrom.net/amdis/1.6.18/" name="AMDIS" enabled="true" />
       <repository location="https://plugins.openchrom.net/quantitation/1.6.18/" name="Quantitation" enabled="true" />
       <repository location="https://plugins.openchrom.net/nist/1.6.18/" name="NIST" enabled="true" />
       <repository location="https://plugins.openchrom.net/powertools/1.6.18/" name="PowerTools" enabled="true" />
