@@ -1289,7 +1289,7 @@
             categoryId="com.lablicate.openchrom.converters.proprietary"
             description="Reads *.h5 files."
             groupId="net.openchrom.csd.converter"
-            id="net.openchrom.csd.converter.supplier.hummex.feature"
+            id="net.openchrom.csd.converter.supplier.hummex.h5.feature"
             kind="converter"
             license="Converter License Terms"
             name="Hummex X-ECD"
