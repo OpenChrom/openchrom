@@ -4,7 +4,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: AXR WSD Converter
 Bundle-SymbolicName: net.openchrom.wsd.converter.supplier.axr;singleton:=true
 Bundle-Version: 1.6.18.qualifier
-Bundle-Activator: net.openchrom.wsd.converter.supplier.axr.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.converter;bundle-version="0.8.0",
@@ -17,9 +16,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.support.ui;bundle-version="0.8.0",
  org.eclipse.chemclipse.ux.extension.ui;bundle-version="0.8.0",
  org.eclipse.chemclipse.ux.extension.xxd.ui;bundle-version="0.8.0",
- org.eclipse.ui,
- org.eclipse.ui.ide,
- org.eclipse.core.resources,
  com.google.gson;bundle-version="2.13.2"
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
