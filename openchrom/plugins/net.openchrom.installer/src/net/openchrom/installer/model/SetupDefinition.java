@@ -11,17 +11,15 @@
  * Alexander Kurtakov - initial API and implementation
  * Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.installer.ui.model;
+package net.openchrom.installer.model;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class SetupDefinition {
 
@@ -38,12 +36,15 @@ public class SetupDefinition {
 	public List<String> getFeatures(File file) throws IOException {
 
 		List<String> features = new ArrayList<>();
+
 		if(file != null && file.exists()) {
-			try (FileReader fileReader = new FileReader(file)) {
-				JsonObject jsonObject = JsonParser.parseReader(fileReader).getAsJsonObject();
-				JsonArray jsonArray = jsonObject.getAsJsonArray(IDENTIFIER_FEATURES);
-				if(jsonArray != null && !jsonArray.isEmpty()) {
-					jsonArray.forEach(f -> features.add(f.getAsString() + P2_FEATURE_GROUP_SUFFIX));
+			ObjectMapper objectMapper = new ObjectMapper();
+			JsonNode root = objectMapper.readTree(file);
+			JsonNode jsonArray = root.get(IDENTIFIER_FEATURES);
+
+			if(jsonArray != null && jsonArray.isArray() && jsonArray.size() > 0) {
+				for(JsonNode f : jsonArray) {
+					features.add(f.asText() + P2_FEATURE_GROUP_SUFFIX);
 				}
 			}
 		}
