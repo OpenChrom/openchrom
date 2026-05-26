@@ -1088,7 +1088,21 @@
             name="MCR-AR"
             provider="Lablicate"
             summary="Commercial product. Requires a valid license."
-            url="https://lablicate.com/marketplace/extensions/mcr-ar"
+            url="https://lablicate.com/marketplace/extensions/deconvolution"
+            icon="icons/32x32/OpenChrom.png">
+      </pluginDescriptor>
+
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.extensions.commercial"
+            description="Automated mass spectrometry deconvolution"
+            groupId="com.lablicate.xxd.peak.detector"
+            id="com.lablicate.msd.peak.detector.supplier.amdis.feature"
+            kind="extension"
+            license="Commercial License Terms"
+            name="AMDIS"
+            provider="Lablicate"
+            summary="Commercial product. Requires a valid license."
+            url="https://lablicate.com/marketplace/extensions/deconvolution"
             icon="icons/32x32/OpenChrom.png">
       </pluginDescriptor>
 
