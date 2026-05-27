@@ -13,10 +13,16 @@
  *******************************************************************************/
 package net.openchrom.installer.ui;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import org.apache.commons.lang3.Strings;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.support.ui.workbench.DisplayUtils;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
@@ -24,6 +30,10 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IStartup;
 import org.osgi.framework.Bundle;
 
+import net.openchrom.installer.model.IPluginDescriptor;
+import net.openchrom.installer.model.PluginDescriptor;
+import net.openchrom.installer.model.PluginDescriptorKind;
+import net.openchrom.installer.model.PluginDiscoveryExtensionReader;
 import net.openchrom.installer.preferences.PreferenceSupplier;
 import net.openchrom.installer.ui.discovery.IPluginInstallJob;
 import net.openchrom.installer.ui.discovery.PrepareInstallProfileJob;
@@ -32,83 +42,11 @@ import net.openchrom.installer.ui.wizards.PluginDiscoveryWizard;
 public class FeatureCheck implements IStartup {
 
 	private static final Logger logger = Logger.getLogger(FeatureCheck.class);
-	private static final String[] features = new String[]{ // without .feature suffix
-			"net.openchrom.msd.converter.supplier.finnigan.itds", //
-			"net.openchrom.msd.converter.supplier.finnigan.its40", //
-			"net.openchrom.msd.converter.supplier.shimadzu.qgd", //
-			"net.openchrom.msd.converter.supplier.shimadzu.spc", //
-			"net.openchrom.msd.converter.supplier.varian.sms", //
-			"net.openchrom.msd.converter.supplier.varian.xms", //
-			"net.openchrom.msd.converter.supplier.finnigan.raw", //
-			"net.openchrom.csd.converter.supplier.agilent", //
-			"net.openchrom.csd.converter.supplier.openlab", //
-			"net.openchrom.msd.converter.supplier.vg", //
-			"net.openchrom.msd.converter.supplier.bruker.flex", //
-			"net.openchrom.msd.converter.supplier.finnigan.mat", //
-			"net.openchrom.csd.converter.supplier.masshunter", //
-			"net.openchrom.msd.converter.supplier.masshunter", //
-			"net.openchrom.wsd.converter.supplier.masshunter", //
-			"net.openchrom.msd.converter.supplier.waters", //
-			"net.openchrom.csd.converter.supplier.chromtech", //
-			"net.openchrom.msd.converter.supplier.chromtech", //
-			"net.openchrom.msd.converter.supplier.agilent.hp", //
-			"net.openchrom.msd.converter.supplier.agilent.icp", //
-			"net.openchrom.wsd.converter.supplier.agilent", //
-			"net.openchrom.msd.converter.supplier.absciex", //
-			"net.openchrom.msd.converter.supplier.sciex.t2d", //
-			"net.openchrom.wsd.converter.supplier.absciex", //
-			"net.openchrom.csd.converter.supplier.shimadzu.gcd", //
-			"net.openchrom.msd.converter.supplier.finnigan.icis", //
-			"net.openchrom.csd.converter.supplier.finnigan.dat", //
-			"net.openchrom.csd.converter.supplier.varian", //
-			"net.openchrom.csd.converter.supplier.perkinelmer", //
-			"net.openchrom.csd.converter.supplier.shimadzu.gc10", //
-			"net.openchrom.msd.converter.supplier.finnigan.cgm", //
-			"net.openchrom.csd.converter.supplier.finnigan.raw", //
-			"net.openchrom.msd.converter.supplier.finnigan.element", //
-			"net.openchrom.xxd.converter.supplier.massfinder", //
-			"net.openchrom.msd.converter.supplier.shimadzu.qp5000", //
-			"net.openchrom.msd.converter.supplier.shimadzu.lcd", //
-			"net.openchrom.xxd.converter.supplier.dataapex", //
-			"net.openchrom.msd.converter.supplier.leco.peg", //
-			"net.openchrom.msd.converter.supplier.leco.smp.1d", //
-			"net.openchrom.msd.converter.supplier.leco.smp.2d", //
-			"net.openchrom.csd.converter.supplier.ezchrom", //
-			"net.openchrom.wsd.converter.supplier.camag", //
-			"net.openchrom.csd.converter.supplier.moduvision", //
-			"net.openchrom.csd.converter.supplier.labjack", //
-			"net.openchrom.vsd.converter.supplier.nicolet", //
-			"net.openchrom.nmr.converter.supplier.bruker", //
-			"net.openchrom.pcr.converter.supplier.ixo", //
-			"net.openchrom.pcr.converter.supplier.egu", //
-			"net.openchrom.msd.converter.supplier.masslib", //
-			"net.openchrom.msd.converter.supplier.metalign", //
-			"net.openchrom.csd.converter.supplier.waters.empower", //
-			"net.openchrom.msd.converter.supplier.waters.empower", //
-			"net.openchrom.wsd.converter.supplier.waters.empower", //
-			"net.openchrom.wsd.converter.supplier.chromulan", //
-			"net.openchrom.tsd.converter.supplier.gas", //
-			"net.openchrom.wsd.converter.supplier.hsa", //
-			"net.openchrom.csd.converter.supplier.thermo.atlas", //
-			"net.openchrom.csd.converter.supplier.thermo.raw", //
-			"net.openchrom.csd.converter.supplier.peaksimple", //
-			"net.openchrom.csd.converter.supplier.igraphx", //
-			"net.openchrom.msd.converter.supplier.markes.lsc", //
-			"net.openchrom.xxd.converter.supplier.tetrascience", //
-			"net.openchrom.vsd.converter.supplier.andor", //
-			"net.openchrom.csd.converter.supplier.chromatotec", //
-			"net.openchrom.msd.converter.supplier.pfeiffer.sbc", //
-			"net.openchrom.msd.converter.supplier.shimadzu.gcd", //
-			"net.openchrom.wsd.converter.supplier.thermo.sfd", //
-			"net.openchrom.msd.converter.supplier.bruker.evoq", //
-			"net.openchrom.msd.converter.supplier.tofwerk.h5", //
-			"net.openchrom.csd.converter.supplier.hummex.h5" //
-	};
 
 	@Override
 	public void earlyStartup() {
 
-		for(String feature : features) {
+		for(String feature : getConverterFeatures()) {
 			Bundle bundle = Platform.getBundle(feature);
 			if(bundle != null) {
 				return;
@@ -147,5 +85,25 @@ public class FeatureCheck implements IStartup {
 		} catch(ExecutionException e) {
 			logger.warn(e);
 		}
+	}
+
+	private List<String> getConverterFeatures() {
+
+		List<String> features = new ArrayList<>();
+		PluginDiscoveryExtensionReader extensionReader = new PluginDiscoveryExtensionReader();
+		IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(PluginDiscoveryExtensionReader.EXTENSION_POINT_ID);
+		IExtension[] extensions = extensionPoint.getExtensions();
+		for(IExtension extension : extensions) {
+			IConfigurationElement[] elements = extension.getConfigurationElements();
+			for(IConfigurationElement element : elements) {
+				if(PluginDiscoveryExtensionReader.PLUGIN_DESCRIPTOR.equals(element.getName())) {
+					IPluginDescriptor descriptor = extensionReader.readConnectorDescriptor(element, PluginDescriptor.class);
+					if(descriptor.getKind().contains(PluginDescriptorKind.CONVERTER)) {
+						features.add(Strings.CS.removeEnd(descriptor.getInstallableUnit(), ".feature"));
+					}
+				}
+			}
+		}
+		return features;
 	}
 }
