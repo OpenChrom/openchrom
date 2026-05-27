@@ -12,12 +12,12 @@
  *******************************************************************************/
 package net.openchrom.installer.ui.handlers;
 
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.e4.core.contexts.Active;
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
@@ -29,6 +29,7 @@ import org.eclipse.equinox.p2.repository.IRepositoryManager;
 import org.eclipse.equinox.p2.repository.metadata.IMetadataRepositoryManager;
 import org.eclipse.equinox.p2.ui.ProvisioningUI;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.program.Program;
@@ -70,7 +71,7 @@ public class CheckForUpdatesHander {
 
 					boolean performUpdate = Boolean.getBoolean("openchrom.update");
 					UpdateOperation op = getUpdateOperation(toVersion);
-					if(performUpdate && canPerformUpdate(op)) {
+					if(performUpdate && canPerformUpdate(op, parent.getShell())) {
 						Link link = new Link(parent, SWT.NONE);
 						link.setText("Experimental: <a href=\"https://openchrom.net/download\">Perform Update</a>");
 						link.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
@@ -96,9 +97,17 @@ public class CheckForUpdatesHander {
 
 	}
 
-	private boolean canPerformUpdate(UpdateOperation op) {
+	private boolean canPerformUpdate(UpdateOperation op, Shell shell) {
 
-		IStatus status = op.resolveModal(new NullProgressMonitor());
+		try {
+			new ProgressMonitorDialog(shell).run(true, true, monitor -> op.resolveModal(monitor));
+		} catch(InvocationTargetException e) {
+			return false;
+		} catch(InterruptedException e) {
+			Thread.currentThread().interrupt();
+			return false;
+		}
+		IStatus status = op.getResolutionResult();
 		if(status.isOK() && op.getPossibleUpdates().length > 0) {
 			return true;
 		}
