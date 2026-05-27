@@ -18,6 +18,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -25,14 +26,10 @@ public class CurrentVersion {
 
 	private static final String URL_STR = "https://marketplace.lablicate.com/api/download/1/current_element_version";
 
-	private final String version;
-	private final String createdAt;
-
-	public CurrentVersion(JsonNode data) {
-
-		version = data.get("version").asText();
-		createdAt = data.get("created_at").asText();
-	}
+	@JsonProperty("version")
+	private String version;
+	@JsonProperty("created_at")
+	private String createdAt;
 
 	public String getVersion() {
 
@@ -46,8 +43,7 @@ public class CurrentVersion {
 
 	public static CurrentVersion getLatestVersion() {
 
-		try {
-			HttpClient client = HttpClient.newHttpClient(); //
+		try (HttpClient client = HttpClient.newHttpClient()) {
 			HttpRequest request = HttpRequest.newBuilder() //
 					.uri(URI.create(URL_STR)) //
 					.GET() //

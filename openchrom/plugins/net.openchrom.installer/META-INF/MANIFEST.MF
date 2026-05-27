@@ -22,3 +22,4 @@ Export-Package: net.openchrom.installer.model,
  net.openchrom.installer.preferences,
  net.openchrom.installer.util
 Service-Component: OSGI-INF/net.openchrom.installer.model.PluginsDS.xml
+Import-Package: com.fasterxml.jackson.annotation;version="[2.21.0,3.0.0)"
