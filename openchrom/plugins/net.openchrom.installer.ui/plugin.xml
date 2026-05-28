@@ -132,6 +132,19 @@
 
       <pluginDescriptor
             categoryId="com.lablicate.openchrom.converters.proprietary"
+            description="Reads *.cmbx files."
+            groupId="net.openchrom.xxd.converter"
+            id="net.openchrom.xxd.converter.supplier.thermo.cmbx.feature"
+            kind="converter"
+            license="Converter License Terms"
+            name="Thermo Chromeleon Container"
+            provider="Lablicate"
+            summary="Free extension exclusively for OpenChrom®"
+            icon="icons/32x32/Thermo.png">
+      </pluginDescriptor>
+
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.converters.proprietary"
             description="Reads *.txt files."
             groupId="net.openchrom.csd.converter"
             id="net.openchrom.csd.converter.supplier.igraphx.feature"
