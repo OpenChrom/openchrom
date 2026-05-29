@@ -5,6 +5,11 @@ updates:
   schedule:
     interval: daily
   open-pull-requests-limit: 10
+  groups:
+    tycho:
+      patterns:
+        - "org.eclipse.tycho*"
+        - "tycho.version"
 - package-ecosystem: github-actions
   directory: "/"
   schedule:
