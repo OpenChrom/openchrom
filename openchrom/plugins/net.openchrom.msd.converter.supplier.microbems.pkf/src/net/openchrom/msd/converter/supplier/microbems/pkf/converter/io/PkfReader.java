@@ -20,7 +20,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.model.identifier.PeakLibraryInformation;
 import org.eclipse.chemclipse.msd.converter.io.AbstractMassSpectraReader;
-import org.eclipse.chemclipse.msd.converter.io.IMassSpectraReader;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.implementation.Ion;
 import org.eclipse.chemclipse.msd.model.implementation.MassSpectra;
@@ -34,7 +33,7 @@ import us.hebi.matlab.mat.types.MatFile;
 import us.hebi.matlab.mat.types.Matrix;
 import us.hebi.matlab.mat.types.Struct;
 
-public class PkfReader extends AbstractMassSpectraReader implements IMassSpectraReader {
+public class PkfReader extends AbstractMassSpectraReader {
 
 	@Override
 	public IMassSpectra read(File file, IProgressMonitor monitor) throws IOException {

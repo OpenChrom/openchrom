@@ -24,7 +24,6 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IMassSpectrumPeak;
 import org.eclipse.chemclipse.model.core.MassSpectrumPeak;
 import org.eclipse.chemclipse.msd.converter.io.AbstractMassSpectraReader;
-import org.eclipse.chemclipse.msd.converter.io.IMassSpectraReader;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IStandaloneMassSpectrum;
@@ -43,7 +42,7 @@ import ch.systemsx.cisd.hdf5.HDF5MDDataBlock;
 import ch.systemsx.cisd.hdf5.IHDF5Reader;
 
 // https://wiki-ms.microbe-ms.com/index.php?title=Format_of_Spectral_Multifiles
-public class MassSpectrumReader extends AbstractMassSpectraReader implements IMassSpectraReader {
+public class MassSpectrumReader extends AbstractMassSpectraReader {
 
 	private static final Logger logger = Logger.getLogger(MassSpectrumReader.class);
 
