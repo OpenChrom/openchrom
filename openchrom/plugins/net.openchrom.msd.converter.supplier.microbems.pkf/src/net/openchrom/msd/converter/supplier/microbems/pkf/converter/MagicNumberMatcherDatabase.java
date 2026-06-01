@@ -19,10 +19,9 @@ import java.nio.file.Files;
 import java.util.Arrays;
 
 import org.eclipse.chemclipse.converter.core.AbstractMagicNumberMatcher;
-import org.eclipse.chemclipse.converter.core.IMagicNumberMatcher;
 import org.eclipse.chemclipse.logging.core.Logger;
 
-public class MagicNumberMatcherDatabase extends AbstractMagicNumberMatcher implements IMagicNumberMatcher {
+public class MagicNumberMatcherDatabase extends AbstractMagicNumberMatcher {
 
 	private static final byte[] PKF_HEADER = "MATLAB 5.0 MAT-file".getBytes();
 	private static final int PKF_HEADER_SIZE = PKF_HEADER.length;

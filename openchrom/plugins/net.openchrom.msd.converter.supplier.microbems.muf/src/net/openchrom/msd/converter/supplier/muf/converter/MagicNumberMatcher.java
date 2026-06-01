@@ -19,10 +19,9 @@ import java.nio.file.Files;
 import java.util.Arrays;
 
 import org.eclipse.chemclipse.converter.core.AbstractMagicNumberMatcher;
-import org.eclipse.chemclipse.converter.core.IMagicNumberMatcher;
 import org.eclipse.chemclipse.logging.core.Logger;
 
-public class MagicNumberMatcher extends AbstractMagicNumberMatcher implements IMagicNumberMatcher {
+public class MagicNumberMatcher extends AbstractMagicNumberMatcher {
 
 	private static final byte[] MUF_HEADER = "MATLAB 7.3 MAT-file".getBytes();
 	private static final int MUF_HEADER_SIZE = MUF_HEADER.length;
