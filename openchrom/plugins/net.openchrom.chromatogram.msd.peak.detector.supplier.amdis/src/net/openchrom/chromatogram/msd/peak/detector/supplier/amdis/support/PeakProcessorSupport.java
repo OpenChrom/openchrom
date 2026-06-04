@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2025 Lablicate GmbH.
+ * Copyright (c) 2014, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -62,9 +62,7 @@ public class PeakProcessorSupport {
 	public static IProcessingResult<Void> insertPeaks(IChromatogramSelectionMSD chromatogramSelection, List<IPeakMSD> peaks, IProcessSettings processSettings, IProgressMonitor monitor) {
 
 		DefaultProcessingResult<Void> result = new DefaultProcessingResult<>();
-		IChromatogramMSD chromatogram = chromatogramSelection.getChromatogram();
-		int startRetentionTime = chromatogramSelection.getStartRetentionTime();
-		int stopRetentionTime = chromatogramSelection.getStopRetentionTime();
+
 		ModelPeakOption modelPeakOption = processSettings.getModelPeakOption();
 		String modelPeakMarker = "MP" + modelPeakOption.value();
 
@@ -87,9 +85,10 @@ public class PeakProcessorSupport {
 				 * Add only peaks above the given minSignalToNoiseRatio and within the
 				 * chromatogram selection.
 				 */
+				IChromatogramMSD chromatogram = chromatogramSelection.getChromatogram();
 				IChromatogramPeakMSD chromatogramPeakMSD = new ChromatogramPeakMSD(peakModelMSD, chromatogram);
 				chromatogramPeakMSD.setDetectorDescription(DETECTOR_DESCRIPTION);
-				if(isValidPeak(chromatogramPeakMSD, startRetentionTime, stopRetentionTime, processSettings)) {
+				if(isValidPeak(chromatogramPeakMSD, chromatogramSelection, processSettings)) {
 					/*
 					 * Pre-check
 					 */
@@ -135,7 +134,7 @@ public class PeakProcessorSupport {
 		return result;
 	}
 
-	private static boolean isValidPeak(IChromatogramPeakMSD peak, int startRetentionTime, int stopRetentionTime, IProcessSettings processSettings) {
+	private static boolean isValidPeak(IChromatogramPeakMSD peak, IChromatogramSelectionMSD chromatogramSelection, IProcessSettings processSettings) {
 
 		/*
 		 * Null
@@ -146,9 +145,16 @@ public class PeakProcessorSupport {
 
 		IPeakModel peakModel = peak.getPeakModel();
 		/*
+		 * Chromatogram Bounds Check
+		 */
+		IChromatogramMSD chromatogram = chromatogramSelection.getChromatogram();
+		if(peakModel.getStartRetentionTime() < chromatogram.getStartRetentionTime() || peakModel.getStopRetentionTime() > chromatogram.getStopRetentionTime()) {
+			return false;
+		}
+		/*
 		 * Chromatogram Selection Check
 		 */
-		if(peakModel.getStartRetentionTime() < startRetentionTime || peakModel.getStopRetentionTime() > stopRetentionTime) {
+		if(peakModel.getStartRetentionTime() < chromatogramSelection.getStartRetentionTime() || peakModel.getStopRetentionTime() > chromatogramSelection.getStopRetentionTime()) {
 			return false;
 		}
 		/*
