@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.wsd.converter.supplier.axr.fragment.test
 Bundle-ManifestVersion: 2
 Bundle-Name: AXR WSD Converter Test
 Bundle-SymbolicName: net.openchrom.wsd.converter.supplier.axr.fragment.test
-Bundle-Version: 1.6.18.qualifier
+Bundle-Version: 1.6.19.qualifier
 Bundle-Vendor: OpenChrom
 Fragment-Host: net.openchrom.wsd.converter.supplier.axr
 Import-Package: org.junit.jupiter.api;version="[6.0.0,7.0.0)"

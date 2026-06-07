@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.vsd.converter.supplier.gaml.fragment.test
 Bundle-ManifestVersion: 2
 Bundle-Name: GAML Vibrational Spectroscopy Test
 Bundle-SymbolicName: net.openchrom.vsd.converter.supplier.gaml.fragment.test
-Bundle-Version: 1.6.18.qualifier
+Bundle-Version: 1.6.19.qualifier
 Bundle-Vendor: OpenChrom
 Fragment-Host: net.openchrom.vsd.converter.supplier.gaml;bundle-version="1.6.13"
 Import-Package: org.junit.jupiter.api;version="[6.0.0,7.0.0)"
