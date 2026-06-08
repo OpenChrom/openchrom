@@ -18,7 +18,6 @@ import org.eclipse.chemclipse.support.ui.provider.ListContentProvider;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.widgets.Composite;
 
-import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.AbstractTemplateLabelProvider;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.StandardsReferencerComparator;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.StandardsReferencerEditingSupport;
 import net.openchrom.xxd.process.supplier.templates.ui.internal.provider.StandardsReferencerFilter;
@@ -62,7 +61,7 @@ public class StandardsReferencerListUI extends AbstractTemplateListUI {
 		for(int i = 0; i < tableViewerColumns.size(); i++) {
 			TableViewerColumn tableViewerColumn = tableViewerColumns.get(i);
 			String label = tableViewerColumn.getColumn().getText();
-			if(!label.equals(AbstractTemplateLabelProvider.NAME)) {
+			if(!label.equals(StandardsReferencerLabelProvider.NAME_ISTD)) {
 				tableViewerColumn.setEditingSupport(new StandardsReferencerEditingSupport(this, label));
 			}
 		}
