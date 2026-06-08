@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Lablicate GmbH.
+ * Copyright (c) 2022, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -49,7 +49,9 @@ public abstract class AbstractTemplateEditingSupport extends EditingSupport {
 		this.column = column;
 		EnumLabelProvider enumLabelProvider = new EnumLabelProvider();
 
-		if(column.equals(AbstractTemplateLabelProvider.OPTIMIZE_RANGE)) {
+		if(column.equals(AbstractTemplateLabelProvider.OPTIMIZE_RANGE) //
+				|| column.equals(AbstractTemplateLabelProvider.AUTO_ADJUST_SCAN_RANGE) //
+				|| column.equals(AbstractTemplateLabelProvider.AUTO_ADJUST_DETECTOR_RANGE)) {
 			this.cellEditor = new CheckboxCellEditor(tableViewer.getTable());
 		} else if(column.equals(AbstractTemplateLabelProvider.PEAK_TYPE)) {
 			ComboBoxViewerCellEditor editor = new ComboBoxViewerCellEditor((Composite)tableViewer.getControl());
