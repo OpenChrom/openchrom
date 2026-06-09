@@ -19,7 +19,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -98,9 +98,8 @@ public class MassSpectrumReader extends AbstractMassSpectraReader {
 
 	private IMassSpectra parseFile(File file) throws IOException {
 
-		Charset charSet = Charset.forName("US-ASCII");
 		BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(file));
-		InputStreamReader inputStreamReader = new InputStreamReader(bufferedInputStream, charSet);
+		InputStreamReader inputStreamReader = new InputStreamReader(bufferedInputStream, StandardCharsets.US_ASCII);
 		BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 		String line;
 		int parseState = 0; // 0==searching for NAME or SCAN, 1==adding parameters & searching for NUM_PEAKS, 2==adding mass/signal pairs
