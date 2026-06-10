@@ -63,20 +63,20 @@ public class CheckForUpdatesHander {
 		}
 
 		if(updateAvailable) {
-			Version toVersion = availableVersion;
-			MessageDialog dialog = new MessageDialog(shell, "Check for Updates", null, "New version available -" + toVersion.toString(), MessageDialog.INFORMATION, new String[]{"OK"}, 0) {
+			Version newVersion = availableVersion;
+			MessageDialog dialog = new MessageDialog(shell, "Check for Updates", null, "New version available -" + newVersion.toString(), MessageDialog.INFORMATION, new String[]{"OK"}, 0) {
 
 				@Override
 				protected Control createCustomArea(Composite parent) {
 
 					boolean performUpdate = Boolean.getBoolean("openchrom.update");
-					UpdateOperation op = getUpdateOperation(toVersion);
-					if(performUpdate && canPerformUpdate(op, parent.getShell())) {
+					UpdateOperation updateOperation = getUpdateOperation(newVersion);
+					if(performUpdate && canPerformUpdate(updateOperation, parent.getShell())) {
 						Link link = new Link(parent, SWT.NONE);
-						link.setText("Experimental: <a href=\"https://openchrom.net/download\">Perform Update</a>");
+						link.setText("Experimental (may require license updates): <a href=\"https://openchrom.net/download\">Perform Update</a>");
 						link.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
 							this.close();
-							ProvisioningUI.getDefaultUI().openUpdateWizard(false, op, null);
+							ProvisioningUI.getDefaultUI().openUpdateWizard(false, updateOperation, null);
 						}));
 						return link;
 					} else {
