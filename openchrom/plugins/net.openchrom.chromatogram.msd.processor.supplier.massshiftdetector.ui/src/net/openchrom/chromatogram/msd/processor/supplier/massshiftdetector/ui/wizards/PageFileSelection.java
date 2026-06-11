@@ -123,7 +123,6 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 		label.setLayoutData(gridDataLabel);
 
 		referenceChromatogramText = new Text(parent, SWT.BORDER);
-		referenceChromatogramText.setText("");
 		referenceChromatogramText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		Button button = new Button(parent, SWT.PUSH);
@@ -155,7 +154,6 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 		label.setLayoutData(gridDataLabel);
 
 		isotopeChromatogramText = new Text(parent, SWT.BORDER);
-		isotopeChromatogramText.setText("");
 		isotopeChromatogramText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		Button button = new Button(parent, SWT.PUSH);

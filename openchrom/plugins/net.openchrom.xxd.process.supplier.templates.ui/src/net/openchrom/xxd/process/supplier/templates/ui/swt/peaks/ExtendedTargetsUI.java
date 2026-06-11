@@ -408,7 +408,6 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 	private Button createButtonTargetAdd(Composite parent) {
 
 		Button button = new Button(parent, SWT.PUSH);
-		button.setText("");
 		button.setToolTipText("Add the target.");
 		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
@@ -439,7 +438,6 @@ public class ExtendedTargetsUI extends Composite implements IExtendedPartUI {
 	private Button createButtonTargetDelete(Composite parent) {
 
 		Button button = new Button(parent, SWT.PUSH);
-		button.setText("");
 		button.setToolTipText("Delete the selected targets.");
 		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DELETE, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {

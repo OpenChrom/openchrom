@@ -113,7 +113,6 @@ public class ResultsEditorUI extends Composite {
 	private void createResultsText(Composite parent) {
 
 		textResults = new Text(parent, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
-		textResults.setText("");
 		GridData gridData = getGridData(GridData.FILL_HORIZONTAL, 3);
 		gridData.heightHint = 100;
 		textResults.setLayoutData(gridData);
@@ -123,7 +122,6 @@ public class ResultsEditorUI extends Composite {
 	private void createNotesText(Composite parent) {
 
 		textNotes = new Text(parent, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
-		textNotes.setText("");
 		GridData gridData = getGridData(GridData.FILL_HORIZONTAL, 3);
 		gridData.heightHint = 100;
 		textNotes.setLayoutData(gridData);
@@ -164,7 +162,6 @@ public class ResultsEditorUI extends Composite {
 		});
 
 		Button buttonExpandAll = new Button(parent, SWT.PUSH);
-		buttonExpandAll.setText("");
 		buttonExpandAll.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EXPAND_ALL, IApplicationImageProvider.SIZE_16x16));
 		buttonExpandAll.addSelectionListener(new SelectionAdapter() {
 
@@ -176,7 +173,6 @@ public class ResultsEditorUI extends Composite {
 		});
 
 		Button buttonCollapseAll = new Button(parent, SWT.PUSH);
-		buttonCollapseAll.setText("");
 		buttonCollapseAll.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_COLLAPSE_ALL, IApplicationImageProvider.SIZE_16x16));
 		buttonCollapseAll.addSelectionListener(new SelectionAdapter() {
 

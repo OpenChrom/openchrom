@@ -250,7 +250,6 @@ public class CompositeLibrarySpectraUI extends Composite {
 	private void addButtonSelect(Composite parent) {
 
 		buttonLibFileSelect = new Button(parent, SWT.NONE);
-		buttonLibFileSelect.setText("");
 		buttonLibFileSelect.setToolTipText("Select the *.cms library file.");
 		buttonLibFileSelect.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_FILE, IApplicationImageProvider.SIZE_16x16));
 		buttonLibFileSelect.addSelectionListener(new SelectionAdapter() {

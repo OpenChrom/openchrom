@@ -120,9 +120,7 @@ public class DecompositionResultUI extends Composite {
 
 	private void addButtonDecompose(Composite parent) {
 
-		Button buttonDecompose;
-		buttonDecompose = new Button(parent, SWT.NONE);
-		buttonDecompose.setText("");
+		Button buttonDecompose = new Button(parent, SWT.NONE);
 		buttonDecompose.setToolTipText("Decompose the selected CMS spectra.");
 		buttonDecompose.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImageProvider.SIZE_16x16));
 		buttonDecompose.addSelectionListener(new SelectionAdapter() {
@@ -215,9 +213,7 @@ public class DecompositionResultUI extends Composite {
 
 	private void addButtonSelect(Composite parent) {
 
-		Button buttonSelect;
-		buttonSelect = new Button(parent, SWT.NONE);
-		buttonSelect.setText("");
+		Button buttonSelect = new Button(parent, SWT.NONE);
 		buttonSelect.setToolTipText("Select the *.cms spectra.");
 		buttonSelect.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_FILE, IApplicationImageProvider.SIZE_16x16));
 		buttonSelect.addSelectionListener(new SelectionAdapter() {
@@ -247,9 +243,7 @@ public class DecompositionResultUI extends Composite {
 
 	private void addButtonSettings(Composite parent) {
 
-		Button buttonSettings;
-		buttonSettings = new Button(parent, SWT.NONE);
-		buttonSettings.setText("");
+		Button buttonSettings = new Button(parent, SWT.NONE);
 		buttonSettings.setToolTipText("Edit the CMS settings.");
 		buttonSettings.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CONFIGURE, IApplicationImageProvider.SIZE_16x16));
 		buttonSettings.addSelectionListener(new SelectionAdapter() {
@@ -287,7 +281,6 @@ public class DecompositionResultUI extends Composite {
 		labelTextLeftETimes.setLayoutData(labelGridData);
 
 		textLeftETimes = new Text(compositeLeftRangeSelect, SWT.RIGHT | SWT.BORDER);
-		textLeftETimes.setText("");
 		GridData textLeftETimesGridData = new GridData(SWT.FILL, SWT.CENTER, true, true);
 		textLeftETimes.setLayoutData(textLeftETimesGridData);
 
@@ -333,7 +326,6 @@ public class DecompositionResultUI extends Composite {
 		labelTextRightETimes.setLayoutData(labelGridData);
 
 		textRightETimes = new Text(compositeRightRangeSelect, SWT.RIGHT | SWT.BORDER);
-		textRightETimes.setText("");
 		GridData textRightETimesGridData = new GridData(SWT.FILL, SWT.CENTER, true, true);
 		textRightETimes.setLayoutData(textRightETimesGridData);
 
@@ -383,7 +375,6 @@ public class DecompositionResultUI extends Composite {
 		compositeTopRow.setLayoutData(topRowCompositeGridData);
 		// CMS Path and Buttons
 		textCmsSpectraPath = new Text(compositeTopRow, SWT.BORDER);
-		textCmsSpectraPath.setText("");
 		GridData textCmsSpectraPathGridData = new GridData(SWT.FILL, SWT.CENTER, true, true);
 		textCmsSpectraPath.setLayoutData(textCmsSpectraPathGridData);
 

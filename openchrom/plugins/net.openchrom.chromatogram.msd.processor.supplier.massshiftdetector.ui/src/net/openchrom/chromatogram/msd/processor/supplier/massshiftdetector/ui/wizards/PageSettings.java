@@ -210,7 +210,6 @@ public class PageSettings extends AbstractExtendedWizardPage {
 		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		numberHighestIntensityMZText = new Text(parent, SWT.BORDER);
-		numberHighestIntensityMZText.setText("");
 		numberHighestIntensityMZText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		numberHighestIntensityMZText.addModifyListener(e -> validateData());
 	}
