@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2025 Lablicate GmbH.
+ * Copyright (c) 2020, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -136,7 +136,6 @@ public class ExtendedPeakReviewUI extends Composite implements IExtendedPartUI {
 	private void createMarkPeakButton(Composite parent) {
 
 		Button button = new Button(parent, SWT.PUSH);
-		button.setText("");
 		button.setToolTipText("Edit the status of the selected peak");
 		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_VALIDATE, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
@@ -152,7 +151,6 @@ public class ExtendedPeakReviewUI extends Composite implements IExtendedPartUI {
 	private void createDeletePeakButton(Composite parent) {
 
 		Button button = new Button(parent, SWT.PUSH);
-		button.setText("");
 		button.setToolTipText("Delete the selected peaks");
 		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DELETE, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
@@ -168,7 +166,6 @@ public class ExtendedPeakReviewUI extends Composite implements IExtendedPartUI {
 	private void createDeletePeaksButton(Composite parent) {
 
 		Button button = new Button(parent, SWT.PUSH);
-		button.setText("");
 		button.setToolTipText("Delete all peaks");
 		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DELETE_ALL, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {

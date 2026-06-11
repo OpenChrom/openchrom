@@ -138,7 +138,6 @@ public class PageSettingsSelection extends AbstractExtendedWizardPage {
 		Shell shell = Display.getDefault().getActiveShell();
 
 		textSampleDirectory = new Text(parent, SWT.BORDER);
-		textSampleDirectory.setText("");
 		textSampleDirectory.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		textSampleDirectory.addModifyListener(e -> validateData());
 
@@ -184,7 +183,6 @@ public class PageSettingsSelection extends AbstractExtendedWizardPage {
 		Shell shell = Display.getDefault().getActiveShell();
 
 		textReferenceDirectory = new Text(parent, SWT.BORDER);
-		textReferenceDirectory.setText("");
 		textReferenceDirectory.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		textReferenceDirectory.addModifyListener(e -> validateData());
 

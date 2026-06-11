@@ -219,7 +219,6 @@ public class IsotopeHeatmapUI extends Composite {
 	private void createButtonDecreaseThreshold(Composite parent) {
 
 		Button buttonDecreaseThreshold = new Button(parent, SWT.PUSH);
-		buttonDecreaseThreshold.setText("");
 		buttonDecreaseThreshold.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImageProvider.SIZE_16x16));
 		buttonDecreaseThreshold.addSelectionListener(new SelectionAdapter() {
 
@@ -256,7 +255,6 @@ public class IsotopeHeatmapUI extends Composite {
 	private void createButtonIncreaseThreshold(Composite parent) {
 
 		Button buttonIncreaseThreshold = new Button(parent, SWT.PUSH);
-		buttonIncreaseThreshold.setText("");
 		buttonIncreaseThreshold.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImageProvider.SIZE_16x16));
 		buttonIncreaseThreshold.addSelectionListener(new SelectionAdapter() {
 

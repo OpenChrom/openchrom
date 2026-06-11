@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2025 Lablicate GmbH.
+ * Copyright (c) 2020, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -106,7 +106,6 @@ public class ExtendedPeakDetectorUI extends Composite {
 	private void createDeletePeakButton(Composite parent) {
 
 		Button button = new Button(parent, SWT.PUSH);
-		button.setText("");
 		button.setToolTipText("Delete the selected peaks");
 		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DELETE, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
@@ -122,7 +121,6 @@ public class ExtendedPeakDetectorUI extends Composite {
 	private void createDeletePeaksButton(Composite parent) {
 
 		Button button = new Button(parent, SWT.PUSH);
-		button.setText("");
 		button.setToolTipText("Delete all peaks");
 		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DELETE_ALL, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {

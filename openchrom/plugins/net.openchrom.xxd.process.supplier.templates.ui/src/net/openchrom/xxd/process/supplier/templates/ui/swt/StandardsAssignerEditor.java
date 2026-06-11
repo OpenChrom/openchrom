@@ -267,7 +267,6 @@ public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUICon
 	private Button createButtonAdd(Composite parent) {
 
 		Button button = new Button(parent, SWT.PUSH);
-		button.setText("");
 		button.setToolTipText(ADD_TOOLTIP);
 		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_ADD, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
@@ -293,7 +292,6 @@ public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUICon
 	private Button createButtonEdit(Composite parent) {
 
 		Button button = new Button(parent, SWT.PUSH);
-		button.setText("");
 		button.setToolTipText(EDIT_TOOLTIP);
 		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EDIT, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
@@ -324,7 +322,6 @@ public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUICon
 	private Button createButtonRemove(Composite parent) {
 
 		Button button = new Button(parent, SWT.PUSH);
-		button.setText("");
 		button.setToolTipText(REMOVE_TOOLTIP);
 		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DELETE, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
@@ -342,7 +339,6 @@ public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUICon
 	private Button createButtonRemoveAll(Composite parent) {
 
 		Button button = new Button(parent, SWT.PUSH);
-		button.setText("");
 		button.setToolTipText(REMOVE_ALL_TOOLTIP);
 		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DELETE_ALL, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
@@ -363,7 +359,6 @@ public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUICon
 	private Button createButtonImport(Composite parent) {
 
 		Button button = new Button(parent, SWT.PUSH);
-		button.setText("");
 		button.setToolTipText(IMPORT_TITLE);
 		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_IMPORT, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
@@ -392,7 +387,6 @@ public class StandardsAssignerEditor implements SettingsUIProvider.SettingsUICon
 	private Button createButtonExport(Composite parent) {
 
 		Button button = new Button(parent, SWT.PUSH);
-		button.setText("");
 		button.setToolTipText(EXPORT_TITLE);
 		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EXPORT, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {

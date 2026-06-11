@@ -196,7 +196,6 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 	private void createButtonImportSetupDefinition(Composite parent) {
 
 		Button button = new Button(parent, SWT.PUSH);
-		button.setText("");
 		button.setToolTipText("Select a list of add-ons to be installed.");
 		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_IMPORT, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {

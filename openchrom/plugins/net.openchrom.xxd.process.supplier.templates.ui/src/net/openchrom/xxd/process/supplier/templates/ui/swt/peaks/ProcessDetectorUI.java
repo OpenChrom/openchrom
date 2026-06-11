@@ -198,7 +198,6 @@ public class ProcessDetectorUI extends Composite implements IExtendedPartUI {
 	private void createButtonToggleBaseline(Composite parent) {
 
 		Button button = new Button(parent, SWT.TOGGLE);
-		button.setText("");
 		updateBaselineButton(button);
 
 		button.addSelectionListener(new SelectionAdapter() {
@@ -224,7 +223,6 @@ public class ProcessDetectorUI extends Composite implements IExtendedPartUI {
 	private void createButtonToggleTargetInput(Composite parent) {
 
 		Button button = new Button(parent, SWT.TOGGLE);
-		button.setText("");
 		updateTargetButton(button);
 
 		button.addSelectionListener(new SelectionAdapter() {
@@ -283,7 +281,6 @@ public class ProcessDetectorUI extends Composite implements IExtendedPartUI {
 	private Button createButtonReplacePeak(Composite parent) {
 
 		Button button = new Button(parent, SWT.PUSH);
-		button.setText("");
 		updateReplacePeakButton(button);
 
 		button.addSelectionListener(new SelectionAdapter() {

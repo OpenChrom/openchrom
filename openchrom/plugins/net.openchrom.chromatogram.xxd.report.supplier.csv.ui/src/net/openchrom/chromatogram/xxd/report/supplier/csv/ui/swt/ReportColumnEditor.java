@@ -203,7 +203,6 @@ public class ReportColumnEditor extends Composite implements IChangeListener {
 	private Text createTextSearch(Composite parent) {
 
 		Text text = new Text(parent, SWT.BORDER | SWT.SEARCH | SWT.ICON_CANCEL | SWT.ICON_SEARCH);
-		text.setText("");
 		text.setToolTipText("Type to filter available columns.");
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		text.addKeyListener(new KeyAdapter() {

@@ -195,7 +195,6 @@ public class ProcessReviewUI extends Composite implements IExtendedPartUI {
 	private void createButtonToggleBaseline(Composite parent) {
 
 		Button button = new Button(parent, SWT.TOGGLE);
-		button.setText("");
 		updateBaselineButton(button);
 
 		button.addSelectionListener(new SelectionAdapter() {
@@ -221,7 +220,6 @@ public class ProcessReviewUI extends Composite implements IExtendedPartUI {
 	private Button createButtonVisibilityDetails(Composite parent) {
 
 		Button button = new Button(parent, SWT.PUSH);
-		button.setText("");
 		adjustButtonVisibilityDetails(button);
 
 		button.addSelectionListener(new SelectionAdapter() {
@@ -297,7 +295,6 @@ public class ProcessReviewUI extends Composite implements IExtendedPartUI {
 	private Button createButtonReplacePeak(Composite parent) {
 
 		Button button = new Button(parent, SWT.PUSH);
-		button.setText("");
 		adjustDetectorButton(button);
 
 		button.addSelectionListener(new SelectionAdapter() {
@@ -328,7 +325,6 @@ public class ProcessReviewUI extends Composite implements IExtendedPartUI {
 	private void createSettingsButton(Composite parent) {
 
 		Button button = new Button(parent, SWT.PUSH);
-		button.setText("");
 		button.setToolTipText("Open the Settings");
 		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CONFIGURE, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {

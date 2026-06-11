@@ -168,7 +168,6 @@ public class IdentifierSettingsPage extends WizardPage implements IExtendedPartU
 	private Text createText(Composite parent) {
 
 		Text text = new Text(parent, SWT.BORDER);
-		text.setText("");
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		return text;

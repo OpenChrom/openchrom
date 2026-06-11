@@ -211,7 +211,6 @@ public class TraceDataComparisonUI extends Composite {
 	private void createButtonPreviousTrack(Composite parent) {
 
 		Button button = new Button(parent, SWT.PUSH);
-		button.setText("");
 		button.setToolTipText("Select the previous track.");
 		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_PREVIOUS_YELLOW, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
@@ -301,7 +300,6 @@ public class TraceDataComparisonUI extends Composite {
 	private void createButtonNextTrack(Composite parent) {
 
 		Button button = new Button(parent, SWT.PUSH);
-		button.setText("");
 		button.setToolTipText("Select the next track.");
 		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_NEXT_YELLOW, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
@@ -337,7 +335,6 @@ public class TraceDataComparisonUI extends Composite {
 
 		labelDataStatus = new Label(parent, SWT.NONE);
 		labelDataStatus.setToolTipText("Indicates whether the data has been modified or not.");
-		labelDataStatus.setText("");
 		labelDataStatus.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 	}
 
@@ -374,7 +371,6 @@ public class TraceDataComparisonUI extends Composite {
 	private void createButtonToggleComments(Composite parent) {
 
 		Button button = new Button(parent, SWT.PUSH);
-		button.setText("");
 		button.setToolTipText("Show/Hide Comments");
 		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EDIT_DEFAULT, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
@@ -399,7 +395,6 @@ public class TraceDataComparisonUI extends Composite {
 	private void createButtonCreateSnapshot(Composite parent) {
 
 		buttonCreateSnapshot = new Button(parent, SWT.PUSH);
-		buttonCreateSnapshot.setText("");
 		buttonCreateSnapshot.setToolTipText("Create a snapshot.");
 		buttonCreateSnapshot.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CREATE_SNAPSHOT, IApplicationImageProvider.SIZE_16x16));
 		buttonCreateSnapshot.addSelectionListener(new SelectionAdapter() {
@@ -441,7 +436,6 @@ public class TraceDataComparisonUI extends Composite {
 	private void createButtonIsMatched(Composite parent) {
 
 		buttonIsMatched = new Button(parent, SWT.PUSH);
-		buttonIsMatched.setText("");
 		buttonIsMatched.setToolTipText("Flag as matched");
 		buttonIsMatched.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_DESELECTED, IApplicationImageProvider.SIZE_16x16));
 		buttonIsMatched.addSelectionListener(new SelectionAdapter() {
@@ -462,7 +456,6 @@ public class TraceDataComparisonUI extends Composite {
 	private void createButtonIsSkipped(Composite parent) {
 
 		buttonIsSkipped = new Button(parent, SWT.PUSH);
-		buttonIsSkipped.setText("");
 		buttonIsSkipped.setToolTipText("Flag as skipped.");
 		buttonIsSkipped.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_SKIP, IApplicationImageProvider.SIZE_16x16));
 		buttonIsSkipped.addSelectionListener(new SelectionAdapter() {
@@ -480,7 +473,6 @@ public class TraceDataComparisonUI extends Composite {
 	private void createButtonIsEvaluated(Composite parent) {
 
 		buttonIsEvaluated = new Button(parent, SWT.PUSH);
-		buttonIsEvaluated.setText("");
 		buttonIsEvaluated.setToolTipText("Flag as evaluated.");
 		buttonIsEvaluated.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_EVALUATE, IApplicationImageProvider.SIZE_16x16));
 		buttonIsEvaluated.addSelectionListener(new SelectionAdapter() {
@@ -514,7 +506,6 @@ public class TraceDataComparisonUI extends Composite {
 
 		Button button = new Button(parent, SWT.PUSH);
 		button.setToolTipText("Open the Settings");
-		button.setText("");
 		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_CONFIGURE, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
@@ -545,7 +536,6 @@ public class TraceDataComparisonUI extends Composite {
 
 		Button button = new Button(parent, SWT.PUSH);
 		button.setToolTipText("Reset the chart");
-		button.setText("");
 		button.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_RESET, IApplicationImageProvider.SIZE_16x16));
 		button.addSelectionListener(new SelectionAdapter() {
 
@@ -560,7 +550,6 @@ public class TraceDataComparisonUI extends Composite {
 	private void createCommentsSection(Composite parent) {
 
 		notesText = new Text(parent, SWT.BORDER | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL | SWT.H_SCROLL);
-		notesText.setText("");
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.heightHint = 80;
 		gridData.horizontalIndent = HORIZONTAL_INDENT;
