@@ -57,7 +57,8 @@ public class NameReplacementsEditingSupport extends EditingSupport {
 					return setting.getSynonym();
 			}
 		}
-		return false;
+		// only TextCellEditor thus "" to match type
+		return "";
 	}
 
 	@Override
