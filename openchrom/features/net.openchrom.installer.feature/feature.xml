@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.installer.feature"
       label="OpenChrom Plugin Installer"
-      version="1.6.19.qualifier"
+      version="1.6.20.qualifier"
       provider-name="OpenChrom"
       license-feature="org.eclipse.license"
       license-feature-version="2.0.2.qualifier">
