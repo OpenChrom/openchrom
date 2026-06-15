@@ -48,12 +48,6 @@
          </themeid>
       </stylesheet>
       <stylesheet
-            uri="stylesheets/classic.css">
-         <themeid
-               refid="org.eclipse.e4.ui.css.theme.e4_classic">
-         </themeid>
-      </stylesheet>
-      <stylesheet
             uri="stylesheets/dark.css">
          <themeid
                refid="org.eclipse.e4.ui.css.theme.e4_dark">
