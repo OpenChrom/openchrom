@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2025 Lablicate GmbH.
+ * Copyright (c) 2018, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -35,7 +35,7 @@ public class StandardsReferencerSettings extends AbstractPeakQuantifierSettings 
 	 * 10.52 | 10.63 | Toluene | Styrene
 	 */
 	@JsonProperty(value = "Referencer Settings", defaultValue = "")
-	@JsonPropertyDescription(value = "Example: '" + StandardsReferencerListUtil.EXAMPLE_SINGLE + "'")
+	@JsonPropertyDescription(value = "Example: '" + StandardsReferencerListUtil.EXAMPLE + "'")
 	@StringSettingsProperty(regExp = RE_START + //
 			RE_NUMBER + // Start RT
 			RE_SEPARATOR + //
@@ -43,7 +43,7 @@ public class StandardsReferencerSettings extends AbstractPeakQuantifierSettings 
 			RE_SEPARATOR + //
 			RE_TEXT + // ISTD
 			RE_SEPARATOR + //
-			RE_TEXT, // Identifier
+			RE_TEXT, // Identifier (Target or Blank)
 			isMultiLine = true)
 	private String referencerSettings = "";
 

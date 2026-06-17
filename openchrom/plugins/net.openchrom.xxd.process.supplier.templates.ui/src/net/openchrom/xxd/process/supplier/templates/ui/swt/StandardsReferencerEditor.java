@@ -88,8 +88,6 @@ public class StandardsReferencerEditor implements SettingsUIProvider.SettingsUIC
 	private AtomicReference<PositionAdjusterUI> toolbarAdjuster = new AtomicReference<>();
 	private AtomicReference<StandardsReferencerListUI> listControl = new AtomicReference<>();
 
-	private Composite control;
-
 	private static final String DELETE = "Delete";
 
 	private Listener listener;
@@ -103,6 +101,8 @@ public class StandardsReferencerEditor implements SettingsUIProvider.SettingsUIC
 
 	private AssignerReferences settings = new AssignerReferences();
 	private IProcessorPreferences<StandardsReferencerSettings> preferences;
+
+	private Composite control;
 
 	public StandardsReferencerEditor(Composite parent, IProcessorPreferences<StandardsReferencerSettings> preferences, StandardsReferencerSettings settings) {
 
@@ -276,7 +276,7 @@ public class StandardsReferencerEditor implements SettingsUIProvider.SettingsUIC
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				InputDialog dialog = new InputDialog(e.display.getActiveShell(), DIALOG_TITLE, MESSAGE_ADD, StandardsReferencerListUtil.EXAMPLE_SINGLE, new StandardsReferencerInputValidator(settings.keySet()));
+				InputDialog dialog = new InputDialog(e.display.getActiveShell(), DIALOG_TITLE, MESSAGE_ADD, StandardsReferencerListUtil.EXAMPLE, new StandardsReferencerInputValidator(settings));
 				if(IDialogConstants.OK_ID == dialog.open()) {
 					String item = dialog.getValue();
 					AssignerReference setting = settings.extractSettingInstance(item);
@@ -307,7 +307,7 @@ public class StandardsReferencerEditor implements SettingsUIProvider.SettingsUIC
 					Set<String> keySetEdit = new HashSet<>();
 					keySetEdit.addAll(settings.keySet());
 					keySetEdit.remove(setting.getIdentifier());
-					InputDialog dialog = new InputDialog(e.display.getActiveShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSetting(setting), new StandardsReferencerInputValidator(keySetEdit));
+					InputDialog dialog = new InputDialog(e.display.getActiveShell(), DIALOG_TITLE, MESSAGE_EDIT, settings.extractSetting(setting), new StandardsReferencerInputValidator(settings));
 					if(IDialogConstants.OK_ID == dialog.open()) {
 						String item = dialog.getValue();
 						AssignerReference settingNew = settings.extractSettingInstance(item);

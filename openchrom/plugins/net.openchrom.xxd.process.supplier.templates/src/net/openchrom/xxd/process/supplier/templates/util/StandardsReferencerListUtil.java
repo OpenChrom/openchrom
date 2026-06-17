@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2025 Lablicate GmbH.
+ * Copyright (c) 2018, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -14,10 +14,10 @@ package net.openchrom.xxd.process.supplier.templates.util;
 
 public class StandardsReferencerListUtil extends AbstractTemplateListUtil<StandardsReferencerValidator> {
 
-	public static final String EXAMPLE_SINGLE = "10.52 | 10.63 | Toluene | Styrene";
-	public static final String EXAMPLE_MULTIPLE = "10.52 | 10.63 | Toluene | Styrene; 10.71 | 10.76 | Toluene | Benzene";
+	public static final String EXAMPLE = "10.52 | 10.63 | Toluene (ISTD) | Styrene (Target or Empty)";
 
 	public StandardsReferencerListUtil() {
+
 		super(new StandardsReferencerValidator());
 	}
 }
