@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2025 Lablicate GmbH.
+ * Copyright (c) 2018, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -12,8 +12,8 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.templates.ui.internal.provider;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.IInputValidator;
@@ -24,12 +24,12 @@ import net.openchrom.xxd.process.supplier.templates.util.StandardsReferencerVali
 public class StandardsReferencerInputValidator implements IInputValidator {
 
 	private StandardsReferencerValidator validator = new StandardsReferencerValidator();
-	private Set<String> identifiers = new HashSet<>();
+	private List<AssignerReference> assignerReferences = new ArrayList<>();
 
-	public StandardsReferencerInputValidator(Set<String> identifiers) {
+	public StandardsReferencerInputValidator(List<AssignerReference> assignerReferences) {
 
-		if(identifiers != null) {
-			this.identifiers = identifiers;
+		if(assignerReferences != null) {
+			this.assignerReferences.addAll(assignerReferences);
 		}
 	}
 
@@ -38,10 +38,9 @@ public class StandardsReferencerInputValidator implements IInputValidator {
 
 		IStatus status = validator.validate(target);
 		if(status.isOK()) {
-			AssignerReference setting = validator.getSetting();
-			String identifier = setting.getIdentifier();
-			if(identifiers.contains(identifier)) {
-				return "The element already exists.";
+			AssignerReference assignerReference = validator.getSetting();
+			if(assignerReferences.contains(assignerReference)) {
+				return "The assigner reference exists already.";
 			}
 		} else {
 			return status.getMessage();

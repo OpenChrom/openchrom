@@ -20,7 +20,7 @@ import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
 
 public class StandardsReferencerValidator extends AbstractTemplateValidator {
 
-	private static final String ERROR_ENTRY = "Please enter an item, e.g.: '" + StandardsReferencerListUtil.EXAMPLE_SINGLE + "'";
+	private static final String ERROR_ENTRY = "Please enter an item, e.g.: '" + StandardsReferencerListUtil.EXAMPLE + "'";
 
 	private PositionDirective positionDirective = PositionDirective.RETENTION_TIME_MIN;
 	private double positionStart = 0;
@@ -50,11 +50,11 @@ public class StandardsReferencerValidator extends AbstractTemplateValidator {
 						/*
 						 * Evaluation
 						 */
-						positionStart = parseDouble(values, 0);
-						positionStop = parseDouble(values, 1);
-						internalStandard = parseString(values, 2);
-						identifier = parseString(values, 3);
-						positionDirective = parsePositionDirective(parseString(values, 4));
+						positionStart = parseDouble(values, 0, 0);
+						positionStop = parseDouble(values, 1, 0);
+						internalStandard = parseString(values, 2, "");
+						identifier = parseString(values, 3, "");
+						positionDirective = parsePositionDirective(parseString(values, 4, ""));
 						/*
 						 * Validations
 						 */
