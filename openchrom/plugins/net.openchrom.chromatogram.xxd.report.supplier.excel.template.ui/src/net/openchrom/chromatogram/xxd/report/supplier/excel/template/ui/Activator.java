@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2025 Lablicate GmbH.
+ * Copyright (c) 2012, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -22,17 +22,10 @@ import net.openchrom.chromatogram.xxd.report.supplier.excel.template.preferences
 
 public class Activator extends AbstractActivatorUI {
 
-	/*
-	 * Instance
-	 */
 	private static Activator plugin;
 
 	private DataUpdateSupport dataUpdateSupport;
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
-	 */
 	@Override
 	public void start(BundleContext context) throws Exception {
 
@@ -43,10 +36,6 @@ public class Activator extends AbstractActivatorUI {
 		initialize(dataUpdateSupport);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
-	 */
 	@Override
 	public void stop(BundleContext context) throws Exception {
 
@@ -54,11 +43,6 @@ public class Activator extends AbstractActivatorUI {
 		super.stop(context);
 	}
 
-	/**
-	 * Returns the shared instance
-	 * 
-	 * @return the shared instance
-	 */
 	public static Activator getDefault() {
 
 		return plugin;
