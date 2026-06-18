@@ -49,14 +49,9 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
 		setTitle("Excel Template Chromatogram Reports");
-		setDescription("Allows user customizable report based on *.xlst Excel Templates.");
+		setDescription("Allows user customizable report based on *.xltx Excel Templates.");
 	}
 
-	/**
-	 * Creates the field editors. Field editors are abstractions of the common
-	 * GUI blocks needed to manipulate various types of preferences. Each field
-	 * editor knows how to save and restore itself.
-	 */
 	@Override
 	public void createFieldEditors() {
 
@@ -64,11 +59,6 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 		createPlaceholderExportButton(getFieldEditorParent());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
-	 */
 	@Override
 	public void init(IWorkbench workbench) {
 
