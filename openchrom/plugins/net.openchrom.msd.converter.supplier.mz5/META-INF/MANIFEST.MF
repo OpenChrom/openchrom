@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.msd.converter.supplier.mz5
 Bundle-ManifestVersion: 2
 Bundle-Name: mz5
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.mz5;singleton:=true
-Bundle-Version: 1.6.20.qualifier
+Bundle-Version: 1.6.21.qualifier
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.msd.converter;bundle-version="0.8.0",

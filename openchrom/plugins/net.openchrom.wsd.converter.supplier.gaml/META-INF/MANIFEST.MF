@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.wsd.converter.supplier.gaml
 Bundle-ManifestVersion: 2
 Bundle-Name: GAML HPLC-DAD
 Bundle-SymbolicName: net.openchrom.wsd.converter.supplier.gaml;singleton:=true
-Bundle-Version: 1.6.20.qualifier
+Bundle-Version: 1.6.21.qualifier
 Export-Package: net.openchrom.wsd.converter.supplier.gaml.converter
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
