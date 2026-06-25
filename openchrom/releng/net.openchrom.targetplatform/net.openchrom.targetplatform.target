@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
-<target name="OpenChrom" sequenceNumber="43">
+<target name="OpenChrom" sequenceNumber="44">
 <locations>
 	<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 		<repository location="https://mirror.lablicate.com/eclipse/releases/2026-06/"/>
@@ -10,6 +10,8 @@
 		<unit id="com.google.protobuf"/>
 		<unit id="org.jdom2"/>
 		<unit id="org.apache.aries.spifly.dynamic.bundle"/>
+		<unit id="org.glassfish.hk2.osgi-resource-locator"/>
+		<unit id="jakarta.xml.bind-api"/>
 	</location>
 	<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 		<repository location="https://mirror.lablicate.com/eclipse/cbi/updates/license/"/>
@@ -36,6 +38,16 @@
 		<unit id="org.apache.poi.ooxml"/>
 		<unit id="org.apache.poi.ooxml.schemas"/>
 		<unit id="org.apache.xmlbeans"/>
+	</location>
+	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="false" label="com.sun.xml.bind.jaxb-osgi" missingManifest="error" type="Maven">
+		<dependencies>
+			<dependency>
+				<groupId>com.sun.xml.bind</groupId>
+				<artifactId>jaxb-osgi</artifactId>
+				<version>4.0.9</version>
+				<type>jar</type>
+			</dependency>
+		</dependencies>
 	</location>
 	<location includeDependencyDepth="none" includeDependencyScopes="compile" missingManifest="generate" type="Maven">
 		<dependencies>
