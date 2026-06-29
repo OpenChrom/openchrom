@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.wsd.converter.supplier.axr
 Bundle-ManifestVersion: 2
 Bundle-Name: AXR WSD Converter
 Bundle-SymbolicName: net.openchrom.wsd.converter.supplier.axr;singleton:=true
-Bundle-Version: 1.6.21.qualifier
+Bundle-Version: 1.6.22.qualifier
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.converter;bundle-version="0.8.0",

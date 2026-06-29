@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.wsd.converter.supplier.abif.fragment.test
 Bundle-ManifestVersion: 2
 Bundle-Name: ab1 Converter Test
 Bundle-SymbolicName: net.openchrom.wsd.converter.supplier.abif.fragment.test
-Bundle-Version: 1.6.21.qualifier
+Bundle-Version: 1.6.22.qualifier
 Bundle-Vendor: OpenChrom
 Fragment-Host: net.openchrom.wsd.converter.supplier.abif;bundle-version="1.6.13"
 Import-Package: org.junit.jupiter.api;version="[6.0.0,7.0.0)"
