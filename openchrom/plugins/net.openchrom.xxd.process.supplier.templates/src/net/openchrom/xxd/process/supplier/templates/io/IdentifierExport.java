@@ -15,13 +15,11 @@ package net.openchrom.xxd.process.supplier.templates.io;
 import java.io.File;
 import java.util.List;
 
-import org.eclipse.chemclipse.converter.chromatogram.AbstractChromatogramExportConverter;
 import org.eclipse.chemclipse.model.core.IChromatogram;
-import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.core.IPeak;
-import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
+import org.eclipse.chemclipse.model.support.RetentionIndexMap;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -31,7 +29,7 @@ import net.openchrom.xxd.process.supplier.templates.model.IdentifierSettings;
 import net.openchrom.xxd.process.supplier.templates.model.PositionDirective;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 
-public class IdentifierExport extends AbstractChromatogramExportConverter implements ITemplateExport {
+public class IdentifierExport extends AbstractTemplateExport {
 
 	private static final String DESCRIPTION = "Identifier Template Export";
 
@@ -41,19 +39,17 @@ public class IdentifierExport extends AbstractChromatogramExportConverter implem
 		IProcessingInfo<File> processingInfo = new ProcessingInfo<>();
 		List<? extends IPeak> peaks = chromatogram.getPeaks();
 		IdentifierSettings identifierSettings = new IdentifierSettings();
-
-		int deltaLeft = PreferenceSupplier.getExportDeltaLeftMillisecondsIdentifier();
-		int deltaRight = PreferenceSupplier.getExportDeltaRightMillisecondsIdentifier();
+		PositionDirective positionDirective = PreferenceSupplier.getExportPositionDirectiveIdentifier();
+		double deltaLeft = PreferenceSupplier.getExportDeltaLeftCoordinateIdentifier();
+		double deltaRight = PreferenceSupplier.getExportDeltaRightCoordinateIdentifier();
 		int numberTraces = PreferenceSupplier.getExportNumberTracesIdentifier();
+		RetentionIndexMap retentionIndexMap = new RetentionIndexMap(chromatogram);
 
 		for(IPeak peak : peaks) {
-			IPeakModel peakModel = peak.getPeakModel();
 			ILibraryInformation libraryInformation = IIdentificationTarget.getLibraryInformation(peak);
 			if(libraryInformation != null) {
 				IdentifierSetting setting = new IdentifierSetting();
-				setting.setPositionDirective(PositionDirective.RETENTION_TIME_MIN);
-				setting.setPositionStart((peakModel.getStartRetentionTime() - deltaLeft) / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
-				setting.setPositionStop((peakModel.getStopRetentionTime() + deltaRight) / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
+				setPosition(peak, retentionIndexMap, setting, positionDirective, deltaLeft, deltaRight);
 				setting.setName(libraryInformation.getName());
 				setting.setCasNumber(libraryInformation.getCasNumber());
 				setting.setComments(libraryInformation.getComments());

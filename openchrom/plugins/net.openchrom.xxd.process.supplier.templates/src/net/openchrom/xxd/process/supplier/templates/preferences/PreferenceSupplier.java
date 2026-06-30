@@ -46,6 +46,8 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier {
 	public static final double MAX_DELTA_POSITION = 120000;
 	public static final int MIN_DELTA_MILLISECONDS = 0; // 0 Minutes
 	public static final int MAX_DELTA_MILLISECONDS = 120000; // 2 Minutes
+	public static final double MIN_DELTA_COORDINATE = 0;
+	public static final double MAX_DELTA_COORDINATE = 120000;
 	public static final int MIN_NUMBER_TRACES = 0; // 0 = TIC
 	public static final int MAX_NUMBER_TRACES = Integer.MAX_VALUE;
 	public static final int MIN_OFFSET_Y = 0; // %
@@ -115,10 +117,12 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier {
 	 */
 	public static final String P_EXPORT_NUMBER_TRACES_IDENTIFIER = "exportNumberTracesIdentifier";
 	public static final int DEF_EXPORT_NUMBER_TRACES_IDENTIFIER = 2;
-	public static final String P_EXPORT_DELTA_LEFT_MILLISECONDS_IDENTIFIER = "exportDeltaLeftMillisecondsIdentifier";
-	public static final int DEF_EXPORT_DELTA_LEFT_MILLISECONDS_IDENTIFIER = 0;
-	public static final String P_EXPORT_DELTA_RIGHT_MILLISECONDS_IDENTIFIER = "exportDeltaRightMillisecondsIdentifier";
-	public static final int DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_IDENTIFIER = 0;
+	public static final String P_EXPORT_POSITION_DIRECTIVE_IDENTIFIER = "exportPositionDirectiveIdentifier";
+	public static final String DEF_EXPORT_POSITION_DIRECTIVE_IDENTIFIER = PositionDirective.RETENTION_TIME_MIN.name();
+	public static final String P_EXPORT_DELTA_LEFT_COORDINATE_IDENTIFIER = "exportDeltaLeftCoordinateIdentifier";
+	public static final double DEF_EXPORT_DELTA_LEFT_COORDINATE_IDENTIFIER = 0;
+	public static final String P_EXPORT_DELTA_RIGHT_COORDINATE_IDENTIFIER = "exportDeltaRightCoordinateIdentifier";
+	public static final double DEF_EXPORT_DELTA_RIGHT_COORDINATE_IDENTIFIER = 0;
 
 	public static final String P_LIMIT_MATCH_FACTOR_IDENTIFIER = "limitMatchFactorIdentifier";
 	public static final float DEF_LIMIT_MATCH_FACTOR_IDENTIFIER = 80.0f;
@@ -309,8 +313,9 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier {
 		putDefault(P_EXPORT_PEAK_TYPE_DETECTOR, DEF_EXPORT_PEAK_TYPE_DETECTOR);
 
 		putDefault(P_EXPORT_NUMBER_TRACES_IDENTIFIER, Integer.toString(DEF_EXPORT_NUMBER_TRACES_IDENTIFIER));
-		putDefault(P_EXPORT_DELTA_LEFT_MILLISECONDS_IDENTIFIER, Integer.toString(DEF_EXPORT_DELTA_LEFT_MILLISECONDS_IDENTIFIER));
-		putDefault(P_EXPORT_DELTA_RIGHT_MILLISECONDS_IDENTIFIER, Integer.toString(DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_IDENTIFIER));
+		putDefault(P_EXPORT_POSITION_DIRECTIVE_IDENTIFIER, DEF_EXPORT_POSITION_DIRECTIVE_IDENTIFIER);
+		putDefault(P_EXPORT_DELTA_LEFT_COORDINATE_IDENTIFIER, DEF_EXPORT_DELTA_LEFT_COORDINATE_IDENTIFIER);
+		putDefault(P_EXPORT_DELTA_RIGHT_COORDINATE_IDENTIFIER, DEF_EXPORT_DELTA_RIGHT_COORDINATE_IDENTIFIER);
 		putDefault(P_LIMIT_MATCH_FACTOR_IDENTIFIER, Float.toString(DEF_LIMIT_MATCH_FACTOR_IDENTIFIER));
 		putDefault(P_MATCH_QUALITY_IDENTIFIER, Float.toString(DEF_MATCH_QUALITY_IDENTIFIER));
 
@@ -503,24 +508,34 @@ public class PreferenceSupplier extends AbstractPreferenceSupplier {
 		INSTANCE().put(P_EXPORT_PEAK_TYPE_DETECTOR, peakType.name());
 	}
 
-	public static int getExportDeltaLeftMillisecondsIdentifier() {
+	public static PositionDirective getExportPositionDirectiveIdentifier() {
 
-		return INSTANCE().getInteger(P_EXPORT_DELTA_LEFT_MILLISECONDS_IDENTIFIER, DEF_EXPORT_DELTA_LEFT_MILLISECONDS_IDENTIFIER);
+		return getPositionDirective(P_EXPORT_POSITION_DIRECTIVE_IDENTIFIER, DEF_EXPORT_POSITION_DIRECTIVE_IDENTIFIER);
 	}
 
-	public static void setExportDeltaLeftMillisecondsIdentifier(int deltaMilliseconds) {
+	public static void setExportPositionDirectiveIdentifier(PositionDirective positionDirective) {
 
-		INSTANCE().putInteger(P_EXPORT_DELTA_LEFT_MILLISECONDS_IDENTIFIER, deltaMilliseconds);
+		putPositionDirective(P_EXPORT_POSITION_DIRECTIVE_IDENTIFIER, positionDirective);
 	}
 
-	public static int getExportDeltaRightMillisecondsIdentifier() {
+	public static double getExportDeltaLeftCoordinateIdentifier() {
 
-		return INSTANCE().getInteger(P_EXPORT_DELTA_RIGHT_MILLISECONDS_IDENTIFIER, DEF_EXPORT_DELTA_RIGHT_MILLISECONDS_IDENTIFIER);
+		return INSTANCE().getDouble(P_EXPORT_DELTA_LEFT_COORDINATE_IDENTIFIER, DEF_EXPORT_DELTA_LEFT_COORDINATE_IDENTIFIER);
 	}
 
-	public static void setExportDeltaRightMillisecondsIdentifier(int deltaMilliseconds) {
+	public static void setExportDeltaLeftCoordinateIdentifier(double deltaCoordinate) {
 
-		INSTANCE().putInteger(P_EXPORT_DELTA_RIGHT_MILLISECONDS_IDENTIFIER, deltaMilliseconds);
+		INSTANCE().putDouble(P_EXPORT_DELTA_LEFT_COORDINATE_IDENTIFIER, deltaCoordinate);
+	}
+
+	public static double getExportDeltaRightCoordinateIdentifier() {
+
+		return INSTANCE().getDouble(P_EXPORT_DELTA_RIGHT_COORDINATE_IDENTIFIER, DEF_EXPORT_DELTA_RIGHT_COORDINATE_IDENTIFIER);
+	}
+
+	public static void setExportDeltaRightCoordinateIdentifier(double deltaCoordinate) {
+
+		INSTANCE().putDouble(P_EXPORT_DELTA_RIGHT_COORDINATE_IDENTIFIER, deltaCoordinate);
 	}
 
 	public static float getLimitMatchFactorIdentifier() {
