@@ -1336,7 +1336,20 @@
             provider="Lablicate"
             summary="Free extension exclusively for OpenChrom®"
             icon="icons/32x32/Hummex.png">
-      </pluginDescriptor>      
+      </pluginDescriptor>
+      
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.converters.proprietary"
+            description="Reads *.datx files."
+            groupId="net.openchrom.xxd.converter"
+            id="net.openchrom.xxd.converter.supplier.advion.feature"
+            kind="converter"
+            license="Converter License Terms"
+            name="Advion"
+            provider="Lablicate"
+            summary="Free extension exclusively for OpenChrom®"
+            icon="icons/32x32/Advion.png">
+      </pluginDescriptor>            
 
    </extension>
 </plugin>
