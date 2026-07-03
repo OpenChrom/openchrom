@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.xxd.converter.supplier.animl.feature"
       label="AnIML"
-      version="1.6.22.qualifier"
+      version="1.6.23.qualifier"
       provider-name="OpenChrom"
       plugin="net.openchrom.feature.branding"
       license-feature="org.eclipse.license"
