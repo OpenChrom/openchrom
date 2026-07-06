@@ -12,10 +12,10 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.animl.model;
 
-import org.eclipse.chemclipse.msd.model.core.AbstractRegularMassSpectrum;
+import org.eclipse.chemclipse.msd.model.core.AbstractScanMSD;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 
-public class VendorScan extends AbstractRegularMassSpectrum {
+public class VendorScan extends AbstractScanMSD {
 
 	private static final long serialVersionUID = -2505351146336950677L;
 

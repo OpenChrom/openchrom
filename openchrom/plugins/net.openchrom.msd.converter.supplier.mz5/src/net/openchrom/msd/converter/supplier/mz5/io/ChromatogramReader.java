@@ -24,7 +24,7 @@ import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.msd.converter.io.IChromatogramMSDReader;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IIon;
-import org.eclipse.chemclipse.msd.model.core.IRegularMassSpectrum;
+import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.mz5.internal.model.CVParam;
@@ -86,7 +86,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 		double[] totalIntensities = reader.readDoubleArray(Mz5.CHROMATOGRAM_INTENSITY);
 		int[] chromatogramIndex = reader.readIntArray(Mz5.CHROMATOGRAM_INDEX);
 		for(int i = 0; i < chromatogramIndex[0]; i++) {
-			IRegularMassSpectrum scan = new VendorScan();
+			IScanMSD scan = new VendorScan();
 			VendorIon ion = new VendorIon(IIon.TIC_ION, (float)totalIntensities[i]);
 			scan.addIon(ion, false);
 			scan.setRetentionTime((int)Math.round(retentionTimes[i] * timeMultiplicator));
