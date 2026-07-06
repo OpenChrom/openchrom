@@ -114,22 +114,22 @@ public class ChromatogramReaderMSD extends AbstractChromatogramMSDReader {
 
 		VendorChromatogram chromatogram;
 		VendorScan massSpectrum;
-		NetcdfFile cdfChromatogram = NetcdfFiles.open(file.getAbsolutePath());
-		CDFChromtogramArrayReader in = new CDFChromtogramArrayReader(cdfChromatogram);
-		chromatogram = new VendorChromatogram();
-		setChromatogramEntries(chromatogram, in, file);
+		try (NetcdfFile cdfChromatogram = NetcdfFiles.open(file.getAbsolutePath())) {
+			CDFChromtogramArrayReader in = new CDFChromtogramArrayReader(cdfChromatogram);
+			chromatogram = new VendorChromatogram();
+			setChromatogramEntries(chromatogram, in, file);
 
-		monitor.beginTask(ConverterMessages.importScan, in.getNumberOfScans());
-		for(int i = 1; i <= in.getNumberOfScans(); i++) {
-			try {
-				massSpectrum = in.getMassSpectrum(i);
-				chromatogram.addScan(massSpectrum);
-			} catch(NoSuchScanStored e) {
-				logger.warn(e);
+			monitor.beginTask(ConverterMessages.importScan, in.getNumberOfScans());
+			for(int i = 1; i <= in.getNumberOfScans(); i++) {
+				try {
+					massSpectrum = in.getMassSpectrum(i);
+					chromatogram.addScan(massSpectrum);
+				} catch(NoSuchScanStored e) {
+					logger.warn(e);
+				}
+				monitor.worked(1);
 			}
-			monitor.worked(1);
 		}
-		cdfChromatogram.close();
 		return chromatogram;
 	}
 
@@ -146,23 +146,23 @@ public class ChromatogramReaderMSD extends AbstractChromatogramMSDReader {
 	 */
 	private VendorChromatogram readChromatogramOverview(File file, IProgressMonitor monitor) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
 
-		NetcdfFile cdfChromatogram = NetcdfFiles.open(file.getAbsolutePath());
-		CDFChromatogramOverviewArrayReader in = new CDFChromatogramOverviewArrayReader(cdfChromatogram);
-		VendorChromatogram chromatogram = new VendorChromatogram();
-		setChromatogramEntries(chromatogram, in, file);
+		try (NetcdfFile cdfChromatogram = NetcdfFiles.open(file.getAbsolutePath())) {
+			CDFChromatogramOverviewArrayReader in = new CDFChromatogramOverviewArrayReader(cdfChromatogram);
+			VendorChromatogram chromatogram = new VendorChromatogram();
+			setChromatogramEntries(chromatogram, in, file);
 
-		monitor.beginTask(ConverterMessages.importScan, in.getNumberOfScans());
-		for(int i = 1; i <= in.getNumberOfScans(); i++) {
-			VendorScan massSpectrum = new VendorScan();
-			massSpectrum.setRetentionTime(in.getScanAcquisitionTime(i));
-			VendorIon ion = new VendorIon(IIon.TIC_ION);
-			ion.setAbundance(in.getTotalSignal(i));
-			massSpectrum.addIon(ion);
-			chromatogram.addScan(massSpectrum);
-			monitor.worked(1);
+			monitor.beginTask(ConverterMessages.importScan, in.getNumberOfScans());
+			for(int i = 1; i <= in.getNumberOfScans(); i++) {
+				VendorScan massSpectrum = new VendorScan();
+				massSpectrum.setRetentionTime(in.getScanAcquisitionTime(i));
+				VendorIon ion = new VendorIon(IIon.TIC_ION);
+				ion.setAbundance(in.getTotalSignal(i));
+				massSpectrum.addIon(ion);
+				chromatogram.addScan(massSpectrum);
+				monitor.worked(1);
+			}
+			return chromatogram;
 		}
-		cdfChromatogram.close();
-		return chromatogram;
 	}
 
 	/**

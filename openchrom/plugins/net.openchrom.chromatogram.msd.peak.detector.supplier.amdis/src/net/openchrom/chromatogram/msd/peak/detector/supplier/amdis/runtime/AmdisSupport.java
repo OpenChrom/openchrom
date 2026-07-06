@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2025 Lablicate GmbH.
+ * Copyright (c) 2014, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -40,35 +40,30 @@ public class AmdisSupport implements IAmdisSupport {
 
 		try {
 			File nistSettings = new File(getOnsiteIniFile());
-			FileReader fileReader = new FileReader(nistSettings);
-			BufferedReader bufferedReader = new BufferedReader(fileReader);
-			// Writer
 			File nistSettingsTmp = new File(PathHelper.getStoragePath() + File.separator + IAmdisSupport.ONSITE_INI_FILE);
-			PrintWriter printWriter = new PrintWriter(nistSettingsTmp);
-			String line;
-			while((line = bufferedReader.readLine()) != null) {
-				/*
-				 * Get the original or the modified line.
-				 */
-				printWriter.println(onsiteSettings.getLine(line));
+			try (FileReader fileReader = new FileReader(nistSettings);
+					BufferedReader bufferedReader = new BufferedReader(fileReader);
+					PrintWriter printWriter = new PrintWriter(nistSettingsTmp)) {
+				String line;
+				while((line = bufferedReader.readLine()) != null) {
+					/*
+					 * Get the original or the modified line.
+					 */
+					printWriter.println(onsiteSettings.getLine(line));
+				}
+				printWriter.flush();
 			}
-			// Close the streams.
-			printWriter.flush();
-			printWriter.close();
-			bufferedReader.close();
-			fileReader.close();
 			/*
 			 * Copy the temporary file.
 			 */
-			FileReader in = new FileReader(nistSettingsTmp);
-			FileWriter out = new FileWriter(nistSettings);
-			int b;
-			while((b = in.read()) != -1) {
-				out.write(b);
+			try (FileReader in = new FileReader(nistSettingsTmp);
+					FileWriter out = new FileWriter(nistSettings)) {
+				int b;
+				while((b = in.read()) != -1) {
+					out.write(b);
+				}
+				out.flush();
 			}
-			in.close();
-			out.flush();
-			out.close();
 		} catch(IOException e) {
 			logger.warn(e);
 		}

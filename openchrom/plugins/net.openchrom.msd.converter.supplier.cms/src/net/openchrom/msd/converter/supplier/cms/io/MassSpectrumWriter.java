@@ -66,17 +66,17 @@ public class MassSpectrumWriter extends AbstractMassSpectraWriter {
 	@Override
 	public void write(File file, IScanMSD massSpectrum, boolean append, IProgressMonitor monitor) throws FileIsNotWriteableException, IOException {
 
-		FileWriter fileWriter = new FileWriter(file, append);
-		writeMassSpectrum(fileWriter, massSpectrum);
-		fileWriter.close();
+		try (FileWriter fileWriter = new FileWriter(file, append)) {
+			writeMassSpectrum(fileWriter, massSpectrum);
+		}
 	}
 
 	@Override
 	public void write(File file, IMassSpectra massSpectra, boolean append, IProgressMonitor monitor) throws FileIsNotWriteableException, IOException {
 
-		FileWriter fileWriter = new FileWriter(file, append);
-		writeMassSpectra(fileWriter, massSpectra);
-		fileWriter.close();
+		try (FileWriter fileWriter = new FileWriter(file, append)) {
+			writeMassSpectra(fileWriter, massSpectra);
+		}
 	}
 
 	private void writeMassSpectrum(FileWriter fileWriter, IScanMSD massSpectrum) throws IOException {
