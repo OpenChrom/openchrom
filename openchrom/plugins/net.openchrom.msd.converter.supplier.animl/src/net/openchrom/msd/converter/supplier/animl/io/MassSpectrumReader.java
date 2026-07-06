@@ -21,7 +21,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.converter.io.AbstractMassSpectraReader;
-import org.eclipse.chemclipse.msd.model.core.AbstractIon;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IStandaloneMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.MassSpectrumType;
@@ -120,9 +119,7 @@ public class MassSpectrumReader extends AbstractMassSpectraReader {
 				}
 			}
 			for(int i = 0; i < length; i++) {
-				double intensity = intensities[i];
-				double mz = AbstractIon.getIon(mzs[i]);
-				IVendorIon ion = new VendorIon(mz, (float)intensity);
+				IVendorIon ion = new VendorIon(mzs[i], intensities[i]);
 				massSpectrum.addIon(ion, false);
 			}
 		} catch(SAXException e) {

@@ -31,7 +31,6 @@ import org.eclipse.chemclipse.model.implementation.IdentificationTarget;
 import org.eclipse.chemclipse.model.support.IScanRange;
 import org.eclipse.chemclipse.model.support.ScanRange;
 import org.eclipse.chemclipse.msd.converter.io.AbstractChromatogramMSDReader;
-import org.eclipse.chemclipse.msd.model.core.AbstractIon;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IIon;
@@ -203,7 +202,7 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader {
 					IRegularMassSpectrum scan = new VendorScan();
 					VendorIon ion = new VendorIon(IIon.TIC_ION, signals.get(i));
 					scan.addIon(ion, false);
-					scan.setRetentionTime(Math.round(retentionTimes.get(i)));
+					scan.setRetentionTime(retentionTimes.get(i));
 					chromatogram.addScan(scan);
 				}
 			}
@@ -327,9 +326,7 @@ public class ChromatogramReader extends AbstractChromatogramMSDReader {
 				IScanMSD scan = chromatogram.getScan(spectra);
 				int length = Math.min(mzs.length, intensities.length);
 				for(int i = 0; i < length; i++) {
-					float intensity = intensities[i];
-					double mz = AbstractIon.getIon(mzs[i]);
-					IVendorIon ion = new VendorIon(mz, intensity);
+					IVendorIon ion = new VendorIon(mzs[i], intensities[i]);
 					scan.addIon(ion, false);
 				}
 			}
