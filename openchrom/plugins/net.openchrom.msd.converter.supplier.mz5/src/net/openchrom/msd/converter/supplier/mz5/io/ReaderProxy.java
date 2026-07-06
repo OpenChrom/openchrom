@@ -22,8 +22,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.mz5.io.support.IScanMarker;
 import net.openchrom.msd.converter.supplier.mz5.model.IVendorIon;
+import net.openchrom.msd.converter.supplier.mz5.model.IVendorIonMSn;
 import net.openchrom.msd.converter.supplier.mz5.model.IVendorScanProxy;
 import net.openchrom.msd.converter.supplier.mz5.model.VendorIon;
+import net.openchrom.msd.converter.supplier.mz5.model.VendorIonMSn;
 
 public class ReaderProxy implements IReaderProxy {
 
@@ -39,14 +41,14 @@ public class ReaderProxy implements IReaderProxy {
 			for(int o = start; o < offset; o++) {
 				float intensity = spectrumIntensity[o];
 				mz += mzs[o]; // first m/z value and then deltas
-				IVendorIon ion = null;
 				if(massSpectrum.getPrecursorIon() != 0) {
 					IIonTransition ionTransition = new IonTransition(massSpectrum.getPrecursorIon(), mz, 0, 1, 1, 0);
-					ion = new VendorIon(mz, intensity, ionTransition);
+					IVendorIonMSn ion = new VendorIonMSn(mz, intensity, ionTransition);
+					massSpectrum.addIon(ion, false);
 				} else {
-					ion = new VendorIon(mz, intensity);
+					IVendorIon ion = new VendorIon(mz, intensity);
+					massSpectrum.addIon(ion, false);
 				}
-				massSpectrum.addIon(ion, false);
 			}
 		} catch(OutOfMemoryError e) {
 			logger.error(e);

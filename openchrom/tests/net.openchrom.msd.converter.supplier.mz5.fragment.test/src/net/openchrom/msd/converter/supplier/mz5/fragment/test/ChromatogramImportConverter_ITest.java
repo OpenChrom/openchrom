@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.io.File;
 
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
-import org.eclipse.chemclipse.msd.model.core.IIon;
+import org.eclipse.chemclipse.msd.model.core.IIonMSn;
 import org.eclipse.chemclipse.msd.model.core.IRegularMassSpectrum;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -62,7 +62,7 @@ public class ChromatogramImportConverter_ITest {
 
 		IRegularMassSpectrum massSpectrum = (IRegularMassSpectrum)chromatogram.getScan(3);
 		assertEquals(367.201873779297, massSpectrum.getPrecursorIon(), 0);
-		IIon ion = massSpectrum.getIons().get(0);
+		IIonMSn ion = (IIonMSn)massSpectrum.getIons().get(0);
 		assertEquals(367, ion.getIonTransition().getQ1Ion());
 		assertEquals(112.1d, ion.getIonTransition().getQ3Ion(), 0);
 	}

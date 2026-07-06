@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Lablicate GmbH.
+ * Copyright (c) 2017, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -17,6 +17,7 @@ import java.io.IOException;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.model.core.AbstractRegularMassSpectrumProxy;
 import org.eclipse.chemclipse.msd.model.core.IIon;
+import org.eclipse.chemclipse.msd.model.core.IIonMSn;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.mz5.internal.io.ProxyReader;
@@ -72,10 +73,16 @@ public class VendorScanProxy extends AbstractRegularMassSpectrumProxy implements
 		 * Make a deep copy of all ions.
 		 */
 		for(IIon ion : getIons()) {
-			IVendorIon vendorIon = new VendorIon(ion.getIon(), ion.getAbundance(), ion.getIonTransition());
-			massSpectrum.addIon(vendorIon);
+			if(ion instanceof IIonMSn ionMSn) {
+				IVendorIonMSn vendorIon = new VendorIonMSn(ionMSn.getIon(), ionMSn.getAbundance(), ionMSn.getIonTransition());
+				massSpectrum.addIon(vendorIon);
+			} else {
+				IVendorIon vendorIon = new VendorIon(ion.getIon(), ion.getAbundance());
+				massSpectrum.addIon(vendorIon);
+			}
 		}
 		return massSpectrum;
+
 	}
 
 	@Override
