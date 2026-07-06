@@ -115,26 +115,25 @@ public class ChromatogramReaderCSD extends AbstractChromatogramCSDReader {
 	private VendorChromatogramCSD readChromatogram(File file, IProgressMonitor monitor) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
 
 		monitor.subTask(ConverterMessages.importChromatogram);
-		NetcdfFile cdfChromatogram = NetcdfFiles.open(file.getAbsolutePath());
-		CDFChromtogramArrayReader in = new CDFChromtogramArrayReader(cdfChromatogram);
-		VendorChromatogramCSD chromatogram = new VendorChromatogramCSD();
-		setChromatogramEntries(chromatogram, in, file);
-		monitor.subTask(ConverterMessages.importScan);
-		int retentionTime = in.getScanDelay();
-		int scans = in.getNumberOfScans();
-		for(int i = 0; i < scans; i++) {
-			VendorScan scan = new VendorScan(in.getIntensity(i));
-			scan.setRetentionTime(retentionTime);
-			retentionTime += in.getScanInterval();
-			chromatogram.addScan(scan);
+		try (NetcdfFile cdfChromatogram = NetcdfFiles.open(file.getAbsolutePath())) {
+			CDFChromtogramArrayReader in = new CDFChromtogramArrayReader(cdfChromatogram);
+			VendorChromatogramCSD chromatogram = new VendorChromatogramCSD();
+			setChromatogramEntries(chromatogram, in, file);
+			monitor.subTask(ConverterMessages.importScan);
+			int retentionTime = in.getScanDelay();
+			int scans = in.getNumberOfScans();
+			for(int i = 0; i < scans; i++) {
+				VendorScan scan = new VendorScan(in.getIntensity(i));
+				scan.setRetentionTime(retentionTime);
+				retentionTime += in.getScanInterval();
+				chromatogram.addScan(scan);
+			}
+			/*
+			 * Peak Table
+			 */
+			in.readPeakTable(chromatogram);
+			return chromatogram;
 		}
-		/*
-		 * Peak Table
-		 */
-		in.readPeakTable(chromatogram);
-		cdfChromatogram.close();
-
-		return chromatogram;
 	}
 
 	/**
