@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.msd.extensions.cdk.feature"
       label="CDK Mass Spectrometry"
-      version="1.6.23.qualifier"
+      version="1.6.24.qualifier"
       provider-name="OpenChrom"
       license-feature="org.eclipse.license"
       license-feature-version="2.0.2.qualifier">

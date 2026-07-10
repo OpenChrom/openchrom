@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.xxd.identifier.supplier.tgsc.feature"
       label="The Good Scent Company"
-      version="1.6.23.qualifier"
+      version="1.6.24.qualifier"
       provider-name="OpenChrom"
       plugin="net.openchrom.feature.branding"
       license-feature="org.eclipse.license"
