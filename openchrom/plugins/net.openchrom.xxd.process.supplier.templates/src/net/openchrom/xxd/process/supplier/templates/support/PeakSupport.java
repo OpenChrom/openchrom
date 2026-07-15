@@ -23,7 +23,6 @@ import java.util.Set;
 
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.supplier.firstderivative.core.PeakDetectorCSD;
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.supplier.firstderivative.settings.PeakDetectorSettingsCSD;
-import org.eclipse.chemclipse.chromatogram.msd.filter.supplier.xpass.filter.XPassFilter;
 import org.eclipse.chemclipse.chromatogram.peak.detector.model.Threshold;
 import org.eclipse.chemclipse.chromatogram.xxd.edit.supplier.snip.core.BaselineDetector;
 import org.eclipse.chemclipse.chromatogram.xxd.edit.supplier.snip.settings.BaselineDetectorSettings;
@@ -58,14 +57,15 @@ import org.eclipse.chemclipse.model.support.IScanRange;
 import org.eclipse.chemclipse.model.support.RetentionIndexMap;
 import org.eclipse.chemclipse.model.support.RetentionIndexMath;
 import org.eclipse.chemclipse.model.support.ScanRange;
-import org.eclipse.chemclipse.msd.model.core.AbstractIon;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.core.support.PeakBuilderMSD;
 import org.eclipse.chemclipse.msd.model.implementation.ChromatogramPeakMSD;
+import org.eclipse.chemclipse.msd.model.support.CondenseOption;
 import org.eclipse.chemclipse.msd.model.support.HighResolutionSupport;
+import org.eclipse.chemclipse.msd.model.support.TandemDataSupport;
 import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
@@ -154,7 +154,7 @@ public class PeakSupport {
 					isPeakRelevant = true;
 					IScanMSD scanMSD = peakMSD.getPeakModel().getPeakMassSpectrum();
 					IExtractedIonSignal extractedIonSignal = scanMSD.getExtractedIonSignal();
-					Set<Integer> traceSet = getTraceSet(traces);
+					Set<Integer> traceSet = getTraceSet(traces); // TODO
 					exitloop:
 					for(int trace : traceSet) {
 						float abundance = extractedIonSignal.getAbundance(trace);
@@ -304,28 +304,19 @@ public class PeakSupport {
 	private IChromatogramPeak extractPeakByScanRange(IChromatogram chromatogram, IScanRange scanRange, IntensityRange intensityRange, boolean includeBackground, String traces, boolean autoAdjustScanRange) {
 
 		IChromatogramPeak peak = null;
-
+		/*
+		 * Template
+		 */
 		int startScan = scanRange.getStartScan();
 		int stopScan = scanRange.getStopScan();
 		if(startScan > 0 && startScan < stopScan) {
 			try {
-				/*
-				 * Try to optimize the used scan range by using the first derivative detector.
-				 */
-				if(autoAdjustScanRange) {
-					PeakSelectionCriterion peakSelectionCriterion = PeakSelectionCriterion.HEIGHT_HIGHEST;
-					PeakSelectionChoice peakSelectionChoice = PeakSelectionChoice.FIRST;
-					scanRange = getScanRangeOptimizedByPeakDetector(chromatogram, scanRange, traces, peakSelectionCriterion, peakSelectionChoice);
-				}
-				/*
-				 * Template
-				 */
 				if(chromatogram instanceof IChromatogramCSD chromatogramCSD) {
-					peak = extractChromatogramPeakCSD(chromatogramCSD, scanRange, intensityRange, includeBackground);
+					peak = extractChromatogramPeakCSD(chromatogramCSD, scanRange, intensityRange, includeBackground, autoAdjustScanRange);
 				} else if(chromatogram instanceof IChromatogramMSD chromatogramMSD) {
-					peak = extractChromatogramPeakMSD(chromatogramMSD, scanRange, traces, intensityRange, includeBackground);
+					peak = extractChromatogramPeakMSD(chromatogramMSD, scanRange, traces, intensityRange, includeBackground, autoAdjustScanRange);
 				} else if(chromatogram instanceof IChromatogramWSD chromatogramWSD) {
-					peak = extractChromatogramPeakWSD(chromatogramWSD, scanRange, traces, intensityRange, includeBackground);
+					peak = extractChromatogramPeakWSD(chromatogramWSD, scanRange, traces, intensityRange, includeBackground, autoAdjustScanRange);
 				} else if(chromatogram instanceof IChromatogramVSD) {
 				}
 			} catch(PeakException e) {
@@ -339,6 +330,20 @@ public class PeakSupport {
 			peak.setDetectorDescription(PeakDetectorSettings.DETECTOR_DESCRIPTION);
 		}
 		return peak;
+	}
+
+	private IScanRange getScanRangeOptimizedByPeakDetector(IChromatogram chromatogram, IScanRange scanRange, String traces, boolean autoAdjustScanRange) {
+
+		/*
+		 * Try to optimize the used scan range by using the first derivative detector.
+		 */
+		if(autoAdjustScanRange) {
+			PeakSelectionCriterion peakSelectionCriterion = PeakSelectionCriterion.HEIGHT_HIGHEST; // TODO
+			PeakSelectionChoice peakSelectionChoice = PeakSelectionChoice.FIRST; // TODO
+			return getScanRangeOptimizedByPeakDetector(chromatogram, scanRange, traces, peakSelectionCriterion, peakSelectionChoice);
+		}
+
+		return scanRange;
 	}
 
 	/*
@@ -499,13 +504,31 @@ public class PeakSupport {
 				DetectorType detectorType = DetectorType.MSD;
 				Class<? extends ITrace> clazz = TraceFactory.getTraceType(traces, detectorType);
 				if(clazz.equals(TraceHighResMSD.class)) {
-					/*
-					 * TODO HighResMS
-					 */
+					Set<TraceHighResMSD> tracesHighResMS = new HashSet<>(TraceFactory.parseTraces(traces, TraceHighResMSD.class));
+					boolean enforceFullTimeRange = true;
+					boolean separateTraces = false;
+					List<IChromatogramMSD> chromatograms = HighResolutionSupport.extractHighResolutionData(chromatogramMSD, HeaderField.DATA_NAME, enforceFullTimeRange, tracesHighResMS, separateTraces);
+					if(!chromatograms.isEmpty()) {
+						IChromatogramMSD chromatogramHighResolutionMSD = chromatograms.get(0);
+						for(IScan scan : chromatogramHighResolutionMSD.getScans()) {
+							IScanCSD scanCopy = new ScanCSD(scan.getTotalSignal());
+							scanCopy.setRetentionTime(scan.getRetentionTime());
+							chromatogramCopy.addScan(scanCopy);
+						}
+					}
 				} else if(clazz.equals(TraceTandemMSD.class)) {
-					/*
-					 * TODO TandemMS
-					 */
+					Set<TraceTandemMSD> tracesTandemMS = new HashSet<>(TraceFactory.parseTraces(traces, TraceTandemMSD.class));
+					boolean enforceFullTimeRange = true;
+					boolean separateTraces = false;
+					List<IChromatogramMSD> chromatograms = TandemDataSupport.extractTandemData(chromatogramMSD, HeaderField.DATA_NAME, CondenseOption.STANDARD, enforceFullTimeRange, tracesTandemMS, separateTraces);
+					if(!chromatograms.isEmpty()) {
+						IChromatogramMSD chromatogramHighResolutionMSD = chromatograms.get(0);
+						for(IScan scan : chromatogramHighResolutionMSD.getScans()) {
+							IScanCSD scanCopy = new ScanCSD(scan.getTotalSignal());
+							scanCopy.setRetentionTime(scan.getRetentionTime());
+							chromatogramCopy.addScan(scanCopy);
+						}
+					}
 				} else {
 					Set<Integer> ions = getTraceSet(traces);
 					for(IScan scan : chromatogramMSD.getScans()) {
@@ -633,9 +656,11 @@ public class PeakSupport {
 		return processingInfo;
 	}
 
-	private IChromatogramPeak extractChromatogramPeakCSD(IChromatogramCSD chromatogram, IScanRange scanRange, IntensityRange intensityRange, boolean includeBackground) {
+	private IChromatogramPeak extractChromatogramPeakCSD(IChromatogramCSD chromatogram, IScanRange scanRange, IntensityRange intensityRange, boolean includeBackground, boolean autoAdjustScanRange) {
 
 		IChromatogramPeak peak = null;
+
+		scanRange = getScanRangeOptimizedByPeakDetector(chromatogram, scanRange, "", autoAdjustScanRange);
 		if(intensityRange != null) {
 			peak = PeakBuilderCSD.createPeak(chromatogram, scanRange, intensityRange.getStartIntensity(), intensityRange.getStopIntensity());
 		} else {
@@ -645,7 +670,7 @@ public class PeakSupport {
 		return peak;
 	}
 
-	private IChromatogramPeak extractChromatogramPeakMSD(IChromatogramMSD chromatogram, IScanRange scanRange, String traces, IntensityRange intensityRange, boolean includeBackground) {
+	private IChromatogramPeak extractChromatogramPeakMSD(IChromatogramMSD chromatogram, IScanRange scanRange, String traces, IntensityRange intensityRange, boolean includeBackground, boolean autoAdjustScanRange) {
 
 		IChromatogramPeak peak = null;
 		if(!traces.isEmpty()) {
@@ -655,16 +680,18 @@ public class PeakSupport {
 				/*
 				 * HighResMS
 				 */
-				peak = extractPeakByScanRangeHighResolutionMS(chromatogram, scanRange, traces, intensityRange, includeBackground);
+				peak = extractPeakByScanRangeHighResolutionMS(chromatogram, scanRange, traces, intensityRange, includeBackground, autoAdjustScanRange);
 			} else if(clazz.equals(TraceTandemMSD.class)) {
 				/*
-				 * TODO TandemMS
+				 * TandemMS
 				 */
+				peak = extractPeakByScanRangeTandemMS(chromatogram, scanRange, traces, intensityRange, includeBackground, autoAdjustScanRange);
 			} else {
 				/*
 				 * NominalMS
 				 * Must be called with 'exclude' mode, so given ions will be 'excluded' from AbstractScan#removeIons.
 				 */
+				scanRange = getScanRangeOptimizedByPeakDetector(chromatogram, scanRange, traces, autoAdjustScanRange);
 				if(intensityRange != null) {
 					peak = PeakBuilderMSD.createPeak(chromatogram, scanRange, intensityRange.getStartIntensity(), intensityRange.getStopIntensity(), getTraceSet(traces), MarkedTraceModus.EXCLUDE);
 				} else {
@@ -672,6 +699,7 @@ public class PeakSupport {
 				}
 			}
 		} else {
+			scanRange = getScanRangeOptimizedByPeakDetector(chromatogram, scanRange, traces, autoAdjustScanRange);
 			if(intensityRange != null) {
 				peak = PeakBuilderMSD.createPeak(chromatogram, scanRange, intensityRange.getStartIntensity(), intensityRange.getStopIntensity());
 			} else {
@@ -682,9 +710,11 @@ public class PeakSupport {
 		return peak;
 	}
 
-	private IChromatogramPeak extractChromatogramPeakWSD(IChromatogramWSD chromatogram, IScanRange scanRange, String traces, IntensityRange intensityRange, boolean includeBackground) {
+	private IChromatogramPeak extractChromatogramPeakWSD(IChromatogramWSD chromatogram, IScanRange scanRange, String traces, IntensityRange intensityRange, boolean includeBackground, boolean autoAdjustScanRange) {
 
 		IChromatogramPeak peak = null;
+
+		// scanRange = getScanRangeOptimizedByPeakDetector(chromatogram, scanRange, traces, autoAdjustScanRange); // TODO
 		if(!traces.isEmpty()) {
 			if(intensityRange != null) {
 				Set<Integer> traceSet = getTraceSet(traces);
@@ -703,31 +733,76 @@ public class PeakSupport {
 		return peak;
 	}
 
-	private IChromatogramPeak extractPeakByScanRangeHighResolutionMS(IChromatogramMSD chromatogram, IScanRange scanRange, String traces, IntensityRange intensityRange, boolean includeBackground) {
+	private IChromatogramPeak extractPeakByScanRangeHighResolutionMS(IChromatogramMSD chromatogram, IScanRange scanRange, String traces, IntensityRange intensityRange, boolean includeBackground, boolean autoAdjustScanRange) {
 
 		IChromatogramPeak peak = null;
+		int retentionTimeStart = chromatogram.getScan(scanRange.getStartScan()).getRetentionTime();
+		int retentionTimeStop = chromatogram.getScan(scanRange.getStopScan()).getRetentionTime();
 		Set<TraceHighResMSD> tracesHighResolution = new HashSet<>(TraceFactory.parseTraces(traces, TraceHighResMSD.class));
 		boolean enforceFullTimeRange = true;
 		boolean separateTraces = false;
 		List<IChromatogramMSD> chromatograms = HighResolutionSupport.extractHighResolutionData(chromatogram, HeaderField.DATA_NAME, enforceFullTimeRange, tracesHighResolution, separateTraces);
-		if(chromatograms.size() == 1) {
+		if(!chromatograms.isEmpty()) {
+			/*
+			 * Scan Range
+			 * Recalculate as the number of scans may have been altered.
+			 */
 			IChromatogramMSD chromatogramMSD = chromatograms.get(0);
-			for(IScan scan : chromatogramMSD.getScans()) {
-				if(scan instanceof IScanMSD massSpectrum) {
-					XPassFilter.nominalize(massSpectrum);
-				}
-			}
-			Set<Integer> traceSet = new HashSet<>();
-			for(TraceHighResMSD traceHighResMSD : tracesHighResolution) {
-				traceSet.add(AbstractIon.getIon(traceHighResMSD.getValue()));
-			}
+			int startScan = chromatogramMSD.getScanNumber(retentionTimeStart);
+			int stopScan = chromatogramMSD.getScanNumber(retentionTimeStop);
+			IScanRange scanRangeHighRes = new ScanRange(startScan, stopScan);
 			/*
 			 * Must be called with 'exclude' mode, so given ions will be 'excluded' from AbstractScan#removeIons.
+			 * Empty traces "" is important as the chromatogram has been extracted already.
 			 */
+			scanRange = getScanRangeOptimizedByPeakDetector(chromatogramMSD, scanRangeHighRes, "", autoAdjustScanRange);
 			if(intensityRange != null) {
-				peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, intensityRange.getStartIntensity(), intensityRange.getStopIntensity(), traceSet, MarkedTraceModus.EXCLUDE);
+				peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, intensityRange.getStartIntensity(), intensityRange.getStopIntensity());
 			} else {
-				peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, includeBackground, traceSet, MarkedTraceModus.EXCLUDE);
+				peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, includeBackground);
+			}
+			/*
+			 * Remove the reference chromatogram / free memory
+			 */
+			if(peak != null) {
+				if(peak instanceof ChromatogramPeakMSD peakMSD) {
+					peakMSD.setChromatogram(chromatogram);
+				}
+			}
+			chromatogram.getReferencedChromatograms().remove(chromatogramMSD);
+			chromatogramMSD = null;
+		}
+
+		return peak;
+	}
+
+	private IChromatogramPeak extractPeakByScanRangeTandemMS(IChromatogramMSD chromatogram, IScanRange scanRange, String traces, IntensityRange intensityRange, boolean includeBackground, boolean autoAdjustScanRange) {
+
+		IChromatogramPeak peak = null;
+		int retentionTimeStart = chromatogram.getScan(scanRange.getStartScan()).getRetentionTime();
+		int retentionTimeStop = chromatogram.getScan(scanRange.getStopScan()).getRetentionTime();
+		Set<TraceTandemMSD> tracesTandem = new HashSet<>(TraceFactory.parseTraces(traces, TraceTandemMSD.class));
+		boolean enforceFullTimeRange = true;
+		boolean separateTraces = false;
+		List<IChromatogramMSD> chromatograms = TandemDataSupport.extractTandemData(chromatogram, HeaderField.DATA_NAME, CondenseOption.STANDARD, enforceFullTimeRange, tracesTandem, separateTraces);
+		if(!chromatograms.isEmpty()) {
+			/*
+			 * Scan Range
+			 * Recalculate as the number of scans may have been altered.
+			 */
+			IChromatogramMSD chromatogramMSD = chromatograms.get(0);
+			int startScan = chromatogramMSD.getScanNumber(retentionTimeStart);
+			int stopScan = chromatogramMSD.getScanNumber(retentionTimeStop);
+			IScanRange scanRangeTandem = new ScanRange(startScan, stopScan);
+			/*
+			 * Must be called with 'exclude' mode, so given ions will be 'excluded' from AbstractScan#removeIons.
+			 * Empty traces "" is important as the chromatogram has been extracted already.
+			 */
+			scanRange = getScanRangeOptimizedByPeakDetector(chromatogramMSD, scanRangeTandem, "", autoAdjustScanRange);
+			if(intensityRange != null) {
+				peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRangeTandem, intensityRange.getStartIntensity(), intensityRange.getStopIntensity());
+			} else {
+				peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRangeTandem, includeBackground);
 			}
 			/*
 			 * Remove the reference chromatogram / free memory
