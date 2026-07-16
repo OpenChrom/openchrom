@@ -1,1 +1,9 @@
 *.gaml linguist-vendored
+
+# Enforce line ending normalization on Windows
+*.java eol=lf
+*.xml eol=lf
+*.MF eol=lf
+*.yml eol=lf
+*.html eol=lf
+* text=lf
