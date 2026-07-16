@@ -26,6 +26,8 @@ public class DetectorSetting extends AbstractSetting {
 	private String name = ""; // Used to set a simple identification ... but rather use the peak identifier
 	private String classifier = "";
 	private boolean autoAdjustScanRange = false;
+	private PeakSelectionCriterion peakSelectionCriterion = PeakSelectionCriterion.HEIGHT_HIGHEST;
+	private PeakSelectionChoice peakSelectionChoice = PeakSelectionChoice.FIRST;
 	private boolean autoAdjustDetectorRange = false;
 
 	public void copyFrom(DetectorSetting setting) {
@@ -41,6 +43,8 @@ public class DetectorSetting extends AbstractSetting {
 			setName(setting.getName());
 			setClassifier(setting.getClassifier());
 			setAutoAdjustScanRange(setting.isAutoAdjustScanRange());
+			setPeakSelectionCriterion(setting.getPeakSelectionCriterion());
+			setPeakSelectionChoice(setting.getPeakSelectionChoice());
 			setAutoAdjustDetectorRange(setting.isAutoAdjustDetectorRange());
 		}
 	}
@@ -120,6 +124,26 @@ public class DetectorSetting extends AbstractSetting {
 		this.autoAdjustScanRange = autoAdjustScanRange;
 	}
 
+	public PeakSelectionCriterion getPeakSelectionCriterion() {
+
+		return peakSelectionCriterion;
+	}
+
+	public void setPeakSelectionCriterion(PeakSelectionCriterion peakSelectionCriterion) {
+
+		this.peakSelectionCriterion = peakSelectionCriterion;
+	}
+
+	public PeakSelectionChoice getPeakSelectionChoice() {
+
+		return peakSelectionChoice;
+	}
+
+	public void setPeakSelectionChoice(PeakSelectionChoice peakSelectionChoice) {
+
+		this.peakSelectionChoice = peakSelectionChoice;
+	}
+
 	public boolean isAutoAdjustDetectorRange() {
 
 		return autoAdjustDetectorRange;
@@ -155,6 +179,6 @@ public class DetectorSetting extends AbstractSetting {
 	@Override
 	public String toString() {
 
-		return "DetectorSetting [peakType=" + peakType + ", traces=" + traces + ", optimizeRange=" + optimizeRange + ", referenceIdentifier=" + referenceIdentifier + ", name=" + name + ", classifier=" + classifier + ", autoAdjustScanRange=" + autoAdjustScanRange + ", autoAdjustDetectorRange=" + autoAdjustDetectorRange + "]";
+		return "DetectorSetting [peakType=" + peakType + ", traces=" + traces + ", optimizeRange=" + optimizeRange + ", referenceIdentifier=" + referenceIdentifier + ", name=" + name + ", classifier=" + classifier + ", autoAdjustScanRange=" + autoAdjustScanRange + ", peakSelectionCriterion=" + peakSelectionCriterion + ", peakSelectionChoice=" + peakSelectionChoice + ", autoAdjustDetectorRange=" + autoAdjustDetectorRange + "]";
 	}
 }
