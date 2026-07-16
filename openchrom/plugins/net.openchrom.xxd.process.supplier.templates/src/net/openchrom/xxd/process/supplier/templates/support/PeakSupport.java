@@ -265,21 +265,21 @@ public class PeakSupport {
 		return new RetentionTimeRange(startRetentionTime, stopRetentionTime);
 	}
 
-	public IChromatogramPeak extractPeakByRetentionTime(IChromatogram chromatogram, int startRetentionTime, int stopRetentionTime, boolean includeBackground, boolean optimizeRange, String traces, boolean autoAdjustScanRange) {
+	public IChromatogramPeak extractPeakByRetentionTime(IChromatogram chromatogram, int startRetentionTime, int stopRetentionTime, boolean includeBackground, boolean optimizeRange, String traces, boolean autoAdjustScanRange, PeakSelectionCriterion peakSelectionCriterion, PeakSelectionChoice peakSelectionChoice) {
 
 		int startScan = getStartScan(chromatogram, startRetentionTime);
 		int stopScan = getStopScan(chromatogram, stopRetentionTime);
-		return extractPeakByScanRange(chromatogram, startScan, stopScan, includeBackground, optimizeRange, traces, autoAdjustScanRange);
+		return extractPeakByScanRange(chromatogram, startScan, stopScan, includeBackground, optimizeRange, traces, autoAdjustScanRange, peakSelectionCriterion, peakSelectionChoice);
 	}
 
-	public IPeak extractPeakByRetentionTime(IChromatogram chromatogram, int startRetentionTime, int stopRetentionTime, float startIntensity, float stopIntensity, String traces, boolean autoAdjustScanRange) {
+	public IPeak extractPeakByRetentionTime(IChromatogram chromatogram, int startRetentionTime, int stopRetentionTime, float startIntensity, float stopIntensity, String traces, boolean autoAdjustScanRange, PeakSelectionCriterion peakSelectionCriterion, PeakSelectionChoice peakSelectionChoice) {
 
 		int startScan = getStartScan(chromatogram, startRetentionTime);
 		int stopScan = getStopScan(chromatogram, stopRetentionTime);
-		return extractPeakByScanRange(chromatogram, startScan, stopScan, startIntensity, stopIntensity, traces, autoAdjustScanRange);
+		return extractPeakByScanRange(chromatogram, startScan, stopScan, startIntensity, stopIntensity, traces, autoAdjustScanRange, peakSelectionCriterion, peakSelectionChoice);
 	}
 
-	public IChromatogramPeak extractPeakByScanRange(IChromatogram chromatogram, int startScan, int stopScan, boolean includeBackground, boolean optimizeRange, String traces, boolean autoAdjustScanRange) {
+	public IChromatogramPeak extractPeakByScanRange(IChromatogram chromatogram, int startScan, int stopScan, boolean includeBackground, boolean optimizeRange, String traces, boolean autoAdjustScanRange, PeakSelectionCriterion peakSelectionCriterion, PeakSelectionChoice peakSelectionChoice) {
 
 		/*
 		 * On purpose: intensityRange is null.
@@ -287,10 +287,10 @@ public class PeakSupport {
 		 */
 		IScanRange scanRange = optimizeRange ? optimizeRange(chromatogram, startScan, stopScan, traces) : new ScanRange(startScan, stopScan);
 		IntensityRange intensityRange = null;
-		return extractPeakByScanRange(chromatogram, scanRange, intensityRange, includeBackground, traces, autoAdjustScanRange);
+		return extractPeakByScanRange(chromatogram, scanRange, intensityRange, includeBackground, traces, autoAdjustScanRange, peakSelectionCriterion, peakSelectionChoice);
 	}
 
-	public IChromatogramPeak extractPeakByScanRange(IChromatogram chromatogram, int startScan, int stopScan, float startIntensity, float stopIntensity, String traces, boolean autoAdjustScanRange) {
+	public IChromatogramPeak extractPeakByScanRange(IChromatogram chromatogram, int startScan, int stopScan, float startIntensity, float stopIntensity, String traces, boolean autoAdjustScanRange, PeakSelectionCriterion peakSelectionCriterion, PeakSelectionChoice peakSelectionChoice) {
 
 		/*
 		 * On purpose: no optimization of the peak range
@@ -298,10 +298,10 @@ public class PeakSupport {
 		 */
 		IScanRange scanRange = new ScanRange(startScan, stopScan);
 		IntensityRange intensityRange = new IntensityRange(startIntensity, stopIntensity);
-		return extractPeakByScanRange(chromatogram, scanRange, intensityRange, false, traces, autoAdjustScanRange);
+		return extractPeakByScanRange(chromatogram, scanRange, intensityRange, false, traces, autoAdjustScanRange, peakSelectionCriterion, peakSelectionChoice);
 	}
 
-	private IChromatogramPeak extractPeakByScanRange(IChromatogram chromatogram, IScanRange scanRange, IntensityRange intensityRange, boolean includeBackground, String traces, boolean autoAdjustScanRange) {
+	private IChromatogramPeak extractPeakByScanRange(IChromatogram chromatogram, IScanRange scanRange, IntensityRange intensityRange, boolean includeBackground, String traces, boolean autoAdjustScanRange, PeakSelectionCriterion peakSelectionCriterion, PeakSelectionChoice peakSelectionChoice) {
 
 		IChromatogramPeak peak = null;
 		/*
@@ -312,9 +312,9 @@ public class PeakSupport {
 		if(startScan > 0 && startScan < stopScan) {
 			try {
 				if(chromatogram instanceof IChromatogramCSD chromatogramCSD) {
-					peak = extractChromatogramPeakCSD(chromatogramCSD, scanRange, intensityRange, includeBackground, autoAdjustScanRange);
+					peak = extractChromatogramPeakCSD(chromatogramCSD, scanRange, intensityRange, includeBackground, autoAdjustScanRange, peakSelectionCriterion, peakSelectionChoice);
 				} else if(chromatogram instanceof IChromatogramMSD chromatogramMSD) {
-					peak = extractChromatogramPeakMSD(chromatogramMSD, scanRange, traces, intensityRange, includeBackground, autoAdjustScanRange);
+					peak = extractChromatogramPeakMSD(chromatogramMSD, scanRange, traces, intensityRange, includeBackground, autoAdjustScanRange, peakSelectionCriterion, peakSelectionChoice);
 				} else if(chromatogram instanceof IChromatogramWSD chromatogramWSD) {
 					peak = extractChromatogramPeakWSD(chromatogramWSD, scanRange, traces, intensityRange, includeBackground, autoAdjustScanRange);
 				} else if(chromatogram instanceof IChromatogramVSD) {
@@ -332,14 +332,12 @@ public class PeakSupport {
 		return peak;
 	}
 
-	private IScanRange getScanRangeOptimizedByPeakDetector(IChromatogram chromatogram, IScanRange scanRange, String traces, boolean autoAdjustScanRange) {
+	private IScanRange getScanRangeOptimizedByPeakDetector(IChromatogram chromatogram, IScanRange scanRange, PeakSelectionCriterion peakSelectionCriterion, PeakSelectionChoice peakSelectionChoice, String traces, boolean autoAdjustScanRange) {
 
 		/*
 		 * Try to optimize the used scan range by using the first derivative detector.
 		 */
 		if(autoAdjustScanRange) {
-			PeakSelectionCriterion peakSelectionCriterion = PeakSelectionCriterion.HEIGHT_HIGHEST; // TODO
-			PeakSelectionChoice peakSelectionChoice = PeakSelectionChoice.FIRST; // TODO
 			return getScanRangeOptimizedByPeakDetector(chromatogram, scanRange, traces, peakSelectionCriterion, peakSelectionChoice);
 		}
 
@@ -656,11 +654,11 @@ public class PeakSupport {
 		return processingInfo;
 	}
 
-	private IChromatogramPeak extractChromatogramPeakCSD(IChromatogramCSD chromatogram, IScanRange scanRange, IntensityRange intensityRange, boolean includeBackground, boolean autoAdjustScanRange) {
+	private IChromatogramPeak extractChromatogramPeakCSD(IChromatogramCSD chromatogram, IScanRange scanRange, IntensityRange intensityRange, boolean includeBackground, boolean autoAdjustScanRange, PeakSelectionCriterion peakSelectionCriterion, PeakSelectionChoice peakSelectionChoice) {
 
 		IChromatogramPeak peak = null;
 
-		scanRange = getScanRangeOptimizedByPeakDetector(chromatogram, scanRange, "", autoAdjustScanRange);
+		scanRange = getScanRangeOptimizedByPeakDetector(chromatogram, scanRange, peakSelectionCriterion, peakSelectionChoice, "", autoAdjustScanRange);
 		if(intensityRange != null) {
 			peak = PeakBuilderCSD.createPeak(chromatogram, scanRange, intensityRange.getStartIntensity(), intensityRange.getStopIntensity());
 		} else {
@@ -670,7 +668,7 @@ public class PeakSupport {
 		return peak;
 	}
 
-	private IChromatogramPeak extractChromatogramPeakMSD(IChromatogramMSD chromatogram, IScanRange scanRange, String traces, IntensityRange intensityRange, boolean includeBackground, boolean autoAdjustScanRange) {
+	private IChromatogramPeak extractChromatogramPeakMSD(IChromatogramMSD chromatogram, IScanRange scanRange, String traces, IntensityRange intensityRange, boolean includeBackground, boolean autoAdjustScanRange, PeakSelectionCriterion peakSelectionCriterion, PeakSelectionChoice peakSelectionChoice) {
 
 		IChromatogramPeak peak = null;
 		if(!traces.isEmpty()) {
@@ -680,18 +678,18 @@ public class PeakSupport {
 				/*
 				 * HighResMS
 				 */
-				peak = extractPeakByScanRangeHighResolutionMS(chromatogram, scanRange, traces, intensityRange, includeBackground, autoAdjustScanRange);
+				peak = extractPeakByScanRangeHighResolutionMS(chromatogram, scanRange, peakSelectionCriterion, peakSelectionChoice, traces, intensityRange, includeBackground, autoAdjustScanRange);
 			} else if(clazz.equals(TraceTandemMSD.class)) {
 				/*
 				 * TandemMS
 				 */
-				peak = extractPeakByScanRangeTandemMS(chromatogram, scanRange, traces, intensityRange, includeBackground, autoAdjustScanRange);
+				peak = extractPeakByScanRangeTandemMS(chromatogram, scanRange, peakSelectionCriterion, peakSelectionChoice, traces, intensityRange, includeBackground, autoAdjustScanRange);
 			} else {
 				/*
 				 * NominalMS
 				 * Must be called with 'exclude' mode, so given ions will be 'excluded' from AbstractScan#removeIons.
 				 */
-				scanRange = getScanRangeOptimizedByPeakDetector(chromatogram, scanRange, traces, autoAdjustScanRange);
+				scanRange = getScanRangeOptimizedByPeakDetector(chromatogram, scanRange, peakSelectionCriterion, peakSelectionChoice, traces, autoAdjustScanRange);
 				if(intensityRange != null) {
 					peak = PeakBuilderMSD.createPeak(chromatogram, scanRange, intensityRange.getStartIntensity(), intensityRange.getStopIntensity(), getTraceSet(traces), MarkedTraceModus.EXCLUDE);
 				} else {
@@ -699,7 +697,7 @@ public class PeakSupport {
 				}
 			}
 		} else {
-			scanRange = getScanRangeOptimizedByPeakDetector(chromatogram, scanRange, traces, autoAdjustScanRange);
+			scanRange = getScanRangeOptimizedByPeakDetector(chromatogram, scanRange, peakSelectionCriterion, peakSelectionChoice, traces, autoAdjustScanRange);
 			if(intensityRange != null) {
 				peak = PeakBuilderMSD.createPeak(chromatogram, scanRange, intensityRange.getStartIntensity(), intensityRange.getStopIntensity());
 			} else {
@@ -733,7 +731,7 @@ public class PeakSupport {
 		return peak;
 	}
 
-	private IChromatogramPeak extractPeakByScanRangeHighResolutionMS(IChromatogramMSD chromatogram, IScanRange scanRange, String traces, IntensityRange intensityRange, boolean includeBackground, boolean autoAdjustScanRange) {
+	private IChromatogramPeak extractPeakByScanRangeHighResolutionMS(IChromatogramMSD chromatogram, IScanRange scanRange, PeakSelectionCriterion peakSelectionCriterion, PeakSelectionChoice peakSelectionChoice, String traces, IntensityRange intensityRange, boolean includeBackground, boolean autoAdjustScanRange) {
 
 		IChromatogramPeak peak = null;
 		int retentionTimeStart = chromatogram.getScan(scanRange.getStartScan()).getRetentionTime();
@@ -755,7 +753,7 @@ public class PeakSupport {
 			 * Must be called with 'exclude' mode, so given ions will be 'excluded' from AbstractScan#removeIons.
 			 * Empty traces "" is important as the chromatogram has been extracted already.
 			 */
-			scanRange = getScanRangeOptimizedByPeakDetector(chromatogramMSD, scanRangeHighRes, "", autoAdjustScanRange);
+			scanRange = getScanRangeOptimizedByPeakDetector(chromatogramMSD, scanRangeHighRes, peakSelectionCriterion, peakSelectionChoice, "", autoAdjustScanRange);
 			if(intensityRange != null) {
 				peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, intensityRange.getStartIntensity(), intensityRange.getStopIntensity());
 			} else {
@@ -776,7 +774,7 @@ public class PeakSupport {
 		return peak;
 	}
 
-	private IChromatogramPeak extractPeakByScanRangeTandemMS(IChromatogramMSD chromatogram, IScanRange scanRange, String traces, IntensityRange intensityRange, boolean includeBackground, boolean autoAdjustScanRange) {
+	private IChromatogramPeak extractPeakByScanRangeTandemMS(IChromatogramMSD chromatogram, IScanRange scanRange, PeakSelectionCriterion peakSelectionCriterion, PeakSelectionChoice peakSelectionChoice, String traces, IntensityRange intensityRange, boolean includeBackground, boolean autoAdjustScanRange) {
 
 		IChromatogramPeak peak = null;
 		int retentionTimeStart = chromatogram.getScan(scanRange.getStartScan()).getRetentionTime();
@@ -798,7 +796,7 @@ public class PeakSupport {
 			 * Must be called with 'exclude' mode, so given ions will be 'excluded' from AbstractScan#removeIons.
 			 * Empty traces "" is important as the chromatogram has been extracted already.
 			 */
-			scanRange = getScanRangeOptimizedByPeakDetector(chromatogramMSD, scanRangeTandem, "", autoAdjustScanRange);
+			scanRange = getScanRangeOptimizedByPeakDetector(chromatogramMSD, scanRangeTandem, peakSelectionCriterion, peakSelectionChoice, "", autoAdjustScanRange);
 			if(intensityRange != null) {
 				peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRangeTandem, intensityRange.getStartIntensity(), intensityRange.getStopIntensity());
 			} else {

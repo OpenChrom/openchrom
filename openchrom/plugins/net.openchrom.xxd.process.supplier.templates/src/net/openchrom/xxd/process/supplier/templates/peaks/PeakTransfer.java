@@ -63,6 +63,8 @@ import org.eclipse.chemclipse.numeric.core.Point;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import net.openchrom.xxd.process.supplier.templates.model.PeakSelectionChoice;
+import net.openchrom.xxd.process.supplier.templates.model.PeakSelectionCriterion;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakTransferSettings;
 import net.openchrom.xxd.process.supplier.templates.support.PeakSupport;
@@ -320,7 +322,9 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 		}
 
 		boolean autoAdjustScanRange = false;
-		IChromatogramPeak peakSink = peakSupport.extractPeakByRetentionTime(chromatogramSink, startRetentionTime, stopRetentionTime, includeBackground, optimizeRange, traces, autoAdjustScanRange);
+		PeakSelectionCriterion peakSelectionCriterion = PeakSelectionCriterion.HEIGHT_HIGHEST;
+		PeakSelectionChoice peakSelectionChoice = PeakSelectionChoice.FIRST;
+		IChromatogramPeak peakSink = peakSupport.extractPeakByRetentionTime(chromatogramSink, startRetentionTime, stopRetentionTime, includeBackground, optimizeRange, traces, autoAdjustScanRange, peakSelectionCriterion, peakSelectionChoice);
 		if(peakSink != null) {
 			adjustPeakIntensity(peakSink, percentageIntensity, peakTransferSettings);
 			transferTargets(peakSource, peakSink, peakTransferSettings);

@@ -40,6 +40,8 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 
 import net.openchrom.xxd.process.supplier.templates.model.DetectorSetting;
+import net.openchrom.xxd.process.supplier.templates.model.PeakSelectionChoice;
+import net.openchrom.xxd.process.supplier.templates.model.PeakSelectionCriterion;
 import net.openchrom.xxd.process.supplier.templates.model.RetentionTimeRange;
 import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSettings;
 import net.openchrom.xxd.process.supplier.templates.support.PeakSupport;
@@ -139,14 +141,16 @@ public class PeakDetector extends AbstractPeakDetector implements IPeakDetectorM
 		 */
 		if(deltaScan > 2) {
 			boolean autoAdjustScanRange = detectorSetting.isAutoAdjustScanRange();
+			PeakSelectionCriterion peakSelectionCriterion = detectorSetting.getPeakSelectionCriterion();
+			PeakSelectionChoice peakSelectionChoice = detectorSetting.getPeakSelectionChoice();
 			IChromatogramPeak peak;
 			if(detectorSetting.getPeakType().equals(PeakType.CB)) {
 				IBaselineModel baselineModel = chromatogram.getBaselineModel();
 				float startIntensity = baselineModel.getBackground(chromatogram.getScan(startScan).getRetentionTime());
 				float stopIntensity = baselineModel.getBackground(chromatogram.getScan(stopScan).getRetentionTime());
-				peak = peakSupport.extractPeakByScanRange(chromatogram, startScan, stopScan, startIntensity, stopIntensity, detectorSetting.getTraces(), autoAdjustScanRange);
+				peak = peakSupport.extractPeakByScanRange(chromatogram, startScan, stopScan, startIntensity, stopIntensity, detectorSetting.getTraces(), autoAdjustScanRange, peakSelectionCriterion, peakSelectionChoice);
 			} else {
-				peak = peakSupport.extractPeakByScanRange(chromatogram, startScan, stopScan, detectorSetting.isIncludeBackground(), detectorSetting.isOptimizeRange(), detectorSetting.getTraces(), autoAdjustScanRange);
+				peak = peakSupport.extractPeakByScanRange(chromatogram, startScan, stopScan, detectorSetting.isIncludeBackground(), detectorSetting.isOptimizeRange(), detectorSetting.getTraces(), autoAdjustScanRange, peakSelectionCriterion, peakSelectionChoice);
 			}
 			/*
 			 * Handle

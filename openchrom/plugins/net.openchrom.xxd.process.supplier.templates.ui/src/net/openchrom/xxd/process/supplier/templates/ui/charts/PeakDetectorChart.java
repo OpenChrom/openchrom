@@ -51,6 +51,8 @@ import org.eclipse.swtchart.extensions.core.IChartSettings;
 import org.eclipse.swtchart.extensions.core.ICustomSelectionHandler;
 import org.eclipse.swtchart.extensions.core.RangeRestriction;
 
+import net.openchrom.xxd.process.supplier.templates.model.PeakSelectionChoice;
+import net.openchrom.xxd.process.supplier.templates.model.PeakSelectionCriterion;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
 import net.openchrom.xxd.process.supplier.templates.support.PeakSupport;
 import net.openchrom.xxd.process.supplier.templates.ui.swt.peaks.DeltaRangePaintListener;
@@ -523,6 +525,8 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 					 * General Settings
 					 */
 					boolean autoAdjustScanRange = false;
+					PeakSelectionCriterion peakSelectionCriterion = PeakSelectionCriterion.HEIGHT_HIGHEST;
+					PeakSelectionChoice peakSelectionChoice = PeakSelectionChoice.FIRST;
 					String traces = detectorRange.getTraces();
 					PeakType detectorType = detectorRange.getDetectorType();
 					if(PeakType.MM.equals(detectorType) || PeakType.CB.equals(detectorType)) {
@@ -556,7 +560,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 								}
 							}
 							PeakSupport peakSupport = new PeakSupport();
-							peak = peakSupport.extractPeakByRetentionTime(chromatogram, startRetentionTime, stopRetentionTime, startIntensity, stopIntensity, traces, autoAdjustScanRange);
+							peak = peakSupport.extractPeakByRetentionTime(chromatogram, startRetentionTime, stopRetentionTime, startIntensity, stopIntensity, traces, autoAdjustScanRange, peakSelectionCriterion, peakSelectionChoice);
 						}
 					} else {
 						/*
@@ -565,7 +569,7 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 						PeakSupport peakSupport = new PeakSupport();
 						boolean includeBackground = detectorRange.isIncludeBackground();
 						boolean optimizeRange = detectorRange.isOptimizeRange();
-						peak = peakSupport.extractPeakByRetentionTime(chromatogram, startRetentionTime, stopRetentionTime, includeBackground, optimizeRange, traces, autoAdjustScanRange);
+						peak = peakSupport.extractPeakByRetentionTime(chromatogram, startRetentionTime, stopRetentionTime, includeBackground, optimizeRange, traces, autoAdjustScanRange, peakSelectionCriterion, peakSelectionChoice);
 					}
 				}
 			}
