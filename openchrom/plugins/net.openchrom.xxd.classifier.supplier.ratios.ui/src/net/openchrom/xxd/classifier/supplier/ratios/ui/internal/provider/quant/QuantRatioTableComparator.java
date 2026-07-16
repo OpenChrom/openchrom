@@ -33,6 +33,7 @@ public class QuantRatioTableComparator extends AbstractRecordTableComparator {
 		this.displayOption = displayOption;
 	}
 
+	@Override
 	public int compare(Viewer viewer, Object e1, Object e2) {
 
 		int result;

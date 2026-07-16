@@ -30,6 +30,7 @@ public enum PeakSelectionCriterion implements ILabel {
 		this.label = label;
 	}
 
+	@Override
 	public String label() {
 
 		return label;

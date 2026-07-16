@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2025 Walter Whitlock.
+ * Copyright (c) 2016, 2026 Walter Whitlock.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -32,6 +32,7 @@ public class GenIon implements Comparable<GenIon> {
 		ionAbundance = abundance;
 	}
 
+	@Override
 	public int compareTo(GenIon ion) {
 
 		if(this.ionMass < ion.ionMass)

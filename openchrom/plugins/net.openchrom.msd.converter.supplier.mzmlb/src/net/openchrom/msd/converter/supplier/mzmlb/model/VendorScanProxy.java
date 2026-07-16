@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Lablicate GmbH.
+ * Copyright (c) 2017, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -40,6 +40,7 @@ public class VendorScanProxy extends AbstractRegularMassSpectrumProxy implements
 		this.readerProxy = readerProxy;
 	}
 
+	@Override
 	public void setScanMarker(IScanMarker scanMarker) {
 
 		this.scanMarker = scanMarker;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2025 Lablicate GmbH.
+ * Copyright (c) 2018, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -32,6 +32,7 @@ public class PagePeakDetector extends FieldEditorPreferencePage implements IWork
 		setDescription("");
 	}
 
+	@Override
 	public void createFieldEditors() {
 
 		addField(new ExtendedIntegerFieldEditor(PreferenceSupplier.P_DETECTOR_DELTA_LEFT_MILLISECONDS, "Delta Left [ms]", PreferenceSupplier.MIN_DELTA_MILLISECONDS, PreferenceSupplier.MAX_DELTA_MILLISECONDS, getFieldEditorParent()));
@@ -47,6 +48,7 @@ public class PagePeakDetector extends FieldEditorPreferencePage implements IWork
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_DETECTOR_SHOW_TARGET_NAME_DIALOG, "Show Target Name Dialog", getFieldEditorParent()));
 	}
 
+	@Override
 	public void init(IWorkbench workbench) {
 
 	}
