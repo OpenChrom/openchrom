@@ -33,6 +33,7 @@ public class PageExportIdentifier extends FieldEditorPreferencePage implements I
 		setDescription("");
 	}
 
+	@Override
 	public void createFieldEditors() {
 
 		addField(new ExtendedIntegerFieldEditor(PreferenceSupplier.P_EXPORT_NUMBER_TRACES_IDENTIFIER, "Number Traces (0 = TIC)", PreferenceSupplier.MIN_NUMBER_TRACES, PreferenceSupplier.MAX_NUMBER_TRACES, getFieldEditorParent()));
@@ -41,6 +42,7 @@ public class PageExportIdentifier extends FieldEditorPreferencePage implements I
 		addField(new DoubleFieldEditor(PreferenceSupplier.P_EXPORT_DELTA_RIGHT_COORDINATE_IDENTIFIER, "Delta Right [Coordinate]", PreferenceSupplier.MIN_DELTA_COORDINATE, PreferenceSupplier.MAX_DELTA_COORDINATE, getFieldEditorParent()));
 	}
 
+	@Override
 	public void init(IWorkbench workbench) {
 
 	}

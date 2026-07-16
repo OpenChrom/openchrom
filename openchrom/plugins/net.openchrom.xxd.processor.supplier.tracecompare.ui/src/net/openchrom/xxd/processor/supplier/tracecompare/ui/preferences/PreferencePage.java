@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Lablicate GmbH.
+ * Copyright (c) 2017, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -40,6 +40,7 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 	 * GUI blocks needed to manipulate various types of preferences. Each field
 	 * editor knows how to save and restore itself.
 	 */
+	@Override
 	public void createFieldEditors() {
 
 		IntegerFieldEditor scanVelocityFieldEditor = new IntegerFieldEditor(PreferenceSupplier.P_SCAN_VELOCITY, "Scan velocity [mm/s]:", getFieldEditorParent());
@@ -77,11 +78,7 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 		addField(new IntegerFieldEditor(PreferenceSupplier.P_LINE_WIDTH_HIGHLIGHT, "Line Width Highlight:", getFieldEditorParent()));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
-	 */
+	@Override
 	public void init(IWorkbench workbench) {
 
 	}

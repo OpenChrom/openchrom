@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2025 Walter Whitlock, Philip Wenig.
+ * Copyright (c) 2016, 2026 Walter Whitlock, Philip Wenig.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -24,6 +24,7 @@ import net.openchrom.msd.converter.supplier.cms.ui.Activator;
 public class PreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	public PreferencePage() {
+
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
 		setDescription("CMS Settings.");
@@ -34,6 +35,7 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 	 * GUI blocks needed to manipulate various types of preferences. Each field
 	 * editor knows how to save and restore itself.
 	 */
+	@Override
 	public void createFieldEditors() {
 
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_USE_UNIT_MASS_RESOLUTION, "Use unit mass resolution", getFieldEditorParent()));
@@ -41,11 +43,7 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_NORMALIZE_INTENSITIES, "Normalize intensities", getFieldEditorParent()));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
-	 */
+	@Override
 	public void init(IWorkbench workbench) {
 
 	}

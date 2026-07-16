@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Lablicate GmbH.
+ * Copyright (c) 2017, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -23,6 +23,7 @@ import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.Ac
 public class PreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	public PreferencePage() {
+
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
 		setDescription("Mass Shift Detector");
@@ -33,17 +34,14 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 	 * GUI blocks needed to manipulate various types of preferences. Each field
 	 * editor knows how to save and restore itself.
 	 */
+	@Override
 	public void createFieldEditors() {
 
 		addField(new StringFieldEditor(PreferenceSupplier.P_FILTER_PATH_REFERENCE_CHROMATOGRAM, "Path Reference Chromatogram", getFieldEditorParent()));
 		addField(new StringFieldEditor(PreferenceSupplier.P_FILTER_PATH_ISOTOPE_CHROMATOGRAM, "Path Istope Chromatogram", getFieldEditorParent()));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
-	 */
+	@Override
 	public void init(IWorkbench workbench) {
 
 	}

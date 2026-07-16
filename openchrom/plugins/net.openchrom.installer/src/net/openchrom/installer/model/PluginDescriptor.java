@@ -225,11 +225,13 @@ public class PluginDescriptor implements IPluginDescriptor {
 		this.summary = summary;
 	}
 
+	@Override
 	public DiscoveryCategory getCategory() {
 
 		return category;
 	}
 
+	@Override
 	public void setCategory(DiscoveryCategory category) {
 
 		this.category = category;
@@ -251,11 +253,13 @@ public class PluginDescriptor implements IPluginDescriptor {
 	 * @param selected
 	 *            true if the item is selected, otherwise false
 	 */
+	@Override
 	public void setSelected(boolean selected) {
 
 		this.selected = selected;
 	}
 
+	@Override
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 
 		changeSupport.addPropertyChangeListener(listener);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Lablicate GmbH.
+ * Copyright (c) 2019, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -39,6 +39,7 @@ public class PagePeakTransfer extends FieldEditorPreferencePage implements IWork
 	 * GUI blocks needed to manipulate various types of preferences. Each field
 	 * editor knows how to save and restore itself.
 	 */
+	@Override
 	public void createFieldEditors() {
 
 		addField(new BooleanFieldEditor(PreferenceSupplier.P_TRANSFER_USE_IDENTIFIED_PEAKS_ONLY, "Transfer Identified Peaks Only", getFieldEditorParent()));
@@ -55,11 +56,7 @@ public class PagePeakTransfer extends FieldEditorPreferencePage implements IWork
 		addField(new SpinnerFieldEditor(PreferenceSupplier.P_TRANSFER_NUMBER_TRACES, "Number Traces (MSD)", PreferenceSupplier.MIN_NUMBER_TRACES, PreferenceSupplier.MAX_NUMBER_TRACES, getFieldEditorParent()));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
-	 */
+	@Override
 	public void init(IWorkbench workbench) {
 
 	}

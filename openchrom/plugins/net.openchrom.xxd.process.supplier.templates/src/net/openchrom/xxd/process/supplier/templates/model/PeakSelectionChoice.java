@@ -36,6 +36,7 @@ public enum PeakSelectionChoice implements ILabel {
 		this.index = index;
 	}
 
+	@Override
 	public String label() {
 
 		return label;
