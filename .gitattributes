@@ -1,1 +1,3 @@
 *.gaml linguist-vendored
+
+*.java text=auto eol=lf
