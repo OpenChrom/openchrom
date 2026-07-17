@@ -368,7 +368,20 @@
             id="net.openchrom.msd.converter.supplier.bruker.baf.feature"
             kind="converter"
             license="Converter License Terms"
-            name="Bruker GC-MS"
+            name="Bruker LC-MS"
+            provider="Lablicate"
+            summary="Free extension exclusively for OpenChrom®"
+            icon="icons/32x32/Bruker.png">
+      </pluginDescriptor>
+
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.converters.proprietary"
+            description="Reads *.sqlite files."
+            groupId="net.openchrom.wsd.converter"
+            id="net.openchrom.wsd.converter.supplier.bruker.hystar.feature"
+            kind="converter"
+            license="Converter License Terms"
+            name="Bruker HyStar HPLC-DAD"
             provider="Lablicate"
             summary="Free extension exclusively for OpenChrom®"
             icon="icons/32x32/Bruker.png">
