@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.msd.extensions.cdk
 Bundle-ManifestVersion: 2
 Bundle-Name: CDK Mass Spectrometry
 Bundle-SymbolicName: net.openchrom.msd.extensions.cdk;singleton:=true
-Bundle-Version: 1.6.24.qualifier
+Bundle-Version: 1.6.25.qualifier
 Export-Package: net.openchrom.msd.extensions.cdk.calculator,
  net.openchrom.msd.extensions.cdk.preferences
 Bundle-Vendor: OpenChrom

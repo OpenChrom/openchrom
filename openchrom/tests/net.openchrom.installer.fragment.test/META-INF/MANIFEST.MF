@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.installer.fragment.test
 Bundle-ManifestVersion: 2
 Bundle-Name: Installer Tests
 Bundle-SymbolicName: net.openchrom.installer.fragment.test
-Bundle-Version: 1.6.24.qualifier
+Bundle-Version: 1.6.25.qualifier
 Fragment-Host: net.openchrom.installer;bundle-version="1.6.18"
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Require-Bundle: junit-jupiter-api;bundle-version="5.12.2"

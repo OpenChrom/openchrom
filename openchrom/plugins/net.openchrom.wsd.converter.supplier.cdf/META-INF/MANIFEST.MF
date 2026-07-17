@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.csd.converter.supplier.cdf
 Bundle-ManifestVersion: 2
 Bundle-Name: NetCDF DAD
 Bundle-SymbolicName: net.openchrom.wsd.converter.supplier.cdf;singleton:=true
-Bundle-Version: 1.6.24.qualifier
+Bundle-Version: 1.6.25.qualifier
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.wsd.converter;bundle-version="0.8.0",
