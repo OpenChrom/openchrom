@@ -402,6 +402,19 @@
 
       <pluginDescriptor
             categoryId="com.lablicate.openchrom.converters.proprietary"
+            description="Reads *.d directories."
+            groupId="net.openchrom.msd.converter"
+            id="net.openchrom.xxd.converter.supplier.bruker.d.feature"
+            kind="converter"
+            license="Converter License Terms"
+            name="Bruker Data Set"
+            provider="Lablicate"
+            summary="Free extension exclusively for OpenChrom®"
+            icon="icons/32x32/Bruker.png">
+      </pluginDescriptor>
+
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.converters.proprietary"
             description="Reads *.chr files."
             groupId="net.openchrom.csd.converter"
             id="net.openchrom.csd.converter.supplier.chromtech.feature"
