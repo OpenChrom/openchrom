@@ -90,6 +90,19 @@
 
       <pluginDescriptor
             categoryId="com.lablicate.openchrom.converters.proprietary"
+            description="Reads *.d/data_#.ch files."
+            groupId="net.openchrom.csd.converter"
+            id="net.openchrom.csd.converter.supplier.hp.chemserver.feature"
+            kind="converter"
+            license="Converter License Terms"
+            name="HP ChemServer GC-FID"
+            provider="Lablicate"
+            summary="Free extension exclusively for OpenChrom®"
+            icon="icons/32x32/HP.png">
+      </pluginDescriptor>
+
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.converters.proprietary"
             description="Reads *.dat files."
             groupId="net.openchrom.csd.converter"
             id="net.openchrom.csd.converter.supplier.finnigan.dat.feature"
