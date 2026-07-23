@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="net.openchrom.csd.converter.supplier.arw.feature"
+      label="Waters Millenium FID .arw"
+      version="1.6.25.qualifier"
+      provider-name="OpenChrom"
+      plugin="net.openchrom.feature.branding"
+      license-feature="org.eclipse.license"
+      license-feature-version="2.0.2.qualifier">
+
+   <description url="https://www.openchrom.net">
+      This is an Arw FID chromatogram converter.
+   </description>
+
+   <copyright url="https://www.openchrom.net">
+      Copyright (c) 2014, 2026 Lablicate GmbH.
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <plugin
+         id="net.openchrom.csd.converter.supplier.arw"
+         version="0.0.0"/>
+
+</feature>
