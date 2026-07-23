@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.eclipse.chemclipse.wsd.converter.ui.converterPreferencePage"
+            class="net.openchrom.wsd.converter.supplier.arw.ui.preferences.PreferencePage"
+            id="org.eclipse.chemclipse.wsd.converter.supplier.arw.ui.preferences.converterPreferencePage"
+            name="ARW (HPLC-DAD)">
+      </page>
+   </extension>
+</plugin>
