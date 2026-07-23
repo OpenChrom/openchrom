@@ -670,7 +670,7 @@
             summary="Free extension exclusively for OpenChrom®"
             icon="icons/32x32/Shimadzu.png">
       </pluginDescriptor>
-      
+
       <pluginDescriptor
             categoryId="com.lablicate.openchrom.converters.proprietary"
             description="Reads *.gcd files."
@@ -682,7 +682,7 @@
             provider="Lablicate"
             summary="Free extension exclusively for OpenChrom®"
             icon="icons/32x32/Shimadzu.png">
-      </pluginDescriptor>      
+      </pluginDescriptor>
 
       <pluginDescriptor
             categoryId="com.lablicate.openchrom.converters.proprietary"
@@ -1321,7 +1321,7 @@
             url="https://lablicate.com/marketplace/extensions/handbook"
             icon="icons/32x32/OpenChrom.png">
       </pluginDescriptor>
-      
+
       <pluginDescriptor
             categoryId="com.lablicate.openchrom.converters.proprietary"
             description="Reads *.sbc files."
@@ -1334,7 +1334,7 @@
             summary="Free extension exclusively for OpenChrom®"
             icon="icons/32x32/Pfeiffer.png">
       </pluginDescriptor>
-      
+
       <pluginDescriptor
             categoryId="com.lablicate.openchrom.converters.proprietary"
             description="Reads *.qqq files."
@@ -1360,7 +1360,7 @@
             summary="Free extension exclusively for OpenChrom®"
             icon="icons/32x32/TOFWERK.png">
       </pluginDescriptor>
-      
+
       <pluginDescriptor
             categoryId="com.lablicate.openchrom.converters.proprietary"
             description="Reads *.h5 files."
@@ -1373,7 +1373,7 @@
             summary="Free extension exclusively for OpenChrom®"
             icon="icons/32x32/Hummex.png">
       </pluginDescriptor>
-      
+
       <pluginDescriptor
             categoryId="com.lablicate.openchrom.converters.proprietary"
             description="Reads *.datx files."
@@ -1385,7 +1385,7 @@
             provider="Lablicate"
             summary="Free extension exclusively for OpenChrom®"
             icon="icons/32x32/Advion.png">
-      </pluginDescriptor>            
+      </pluginDescriptor>
 
    </extension>
 </plugin>
