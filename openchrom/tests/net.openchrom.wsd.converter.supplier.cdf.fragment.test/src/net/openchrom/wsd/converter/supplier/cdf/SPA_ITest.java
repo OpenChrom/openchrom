@@ -48,6 +48,12 @@ public class SPA_ITest {
 	}
 
 	@Test
+	public void testOperator() {
+
+		assertEquals("RK", chromatogram.getOperator());
+	}
+
+	@Test
 	public void testScans() {
 
 		assertEquals(25204, chromatogram.getNumberOfScans());

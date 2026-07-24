@@ -48,6 +48,12 @@ public class FINNIGAN_CENTSCNH_ITest {
 	}
 
 	@Test
+	public void testOperator() {
+
+		assertEquals("Finnigan", chromatogram.getOperator());
+	}
+
+	@Test
 	public void testScans() {
 
 		assertEquals(100, chromatogram.getNumberOfScans());

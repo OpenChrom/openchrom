@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
+import java.time.Instant;
 
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
@@ -45,6 +46,18 @@ public class KRATOS_CENTSCNL_ITest {
 	public void testLoading() {
 
 		assertNotNull(chromatogram);
+	}
+
+	@Test
+	public void testDate() {
+
+		assertEquals(Instant.parse("1993-09-09T13:41:55Z"), chromatogram.getDate().toInstant());
+	}
+
+	@Test
+	public void testOperator() {
+
+		assertEquals("David Anderson", chromatogram.getOperator());
 	}
 
 	@Test

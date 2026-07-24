@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
+import java.time.Instant;
 
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
@@ -39,6 +40,18 @@ public class ICI_21_2_ITest {
 		ChromatogramImportConverterWSD importConverter = new ChromatogramImportConverterWSD();
 		IProcessingInfo<IChromatogramWSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();
+	}
+
+	@Test
+	public void testDate() {
+
+		assertEquals(Instant.parse("1992-01-15T17:00:00Z"), chromatogram.getDate().toInstant());
+	}
+
+	@Test
+	public void testOperator() {
+
+		assertEquals("John Bryan Malone", chromatogram.getOperator());
 	}
 
 	@Test
