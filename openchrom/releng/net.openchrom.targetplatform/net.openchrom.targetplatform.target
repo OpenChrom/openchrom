@@ -114,20 +114,20 @@
 			<dependency>
 				<groupId>edu.ucar</groupId>
 				<artifactId>cdm-core</artifactId>
-				<version>5.9.1</version>
+				<version>5.10.0</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>edu.ucar</groupId>
 				<artifactId>udunits</artifactId>
-				<version>5.9.1</version>
+				<version>5.10.0</version>
 				<type>jar</type>
 			</dependency>
 		</dependencies>
 		<repositories>
 			<repository>
 				<id>Unidata Releases</id>
-				<url>https://mirror.openchrom.net/ucar/unidata-releases/</url>
+				<url>https://artifacts.unidata.ucar.edu/repository/unidata-releases/</url>
 			</repository>
 		</repositories>
 	</location>
