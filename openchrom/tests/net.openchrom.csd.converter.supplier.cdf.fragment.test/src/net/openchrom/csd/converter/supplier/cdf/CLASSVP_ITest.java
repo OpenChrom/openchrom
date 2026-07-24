@@ -48,6 +48,12 @@ public class CLASSVP_ITest {
 	}
 
 	@Test
+	public void testOperator() {
+
+		assertEquals("DF", chromatogram.getOperator());
+	}
+
+	@Test
 	public void testScans() {
 
 		assertEquals(1440, chromatogram.getNumberOfScans());

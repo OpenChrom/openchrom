@@ -12,9 +12,11 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cdf;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
+import java.time.Instant;
 
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
@@ -40,6 +42,18 @@ public class TEKNIVNT_CONTINUM_ITest {
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramMSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();
+	}
+
+	@Test
+	public void testDate() {
+
+		assertEquals(Instant.parse("1997-01-28T19:58:23Z"), chromatogram.getDate().toInstant());
+	}
+
+	@Test
+	public void testOperator() {
+
+		assertEquals("Unknown", chromatogram.getOperator());
 	}
 
 	@Test

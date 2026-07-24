@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
+import java.time.Instant;
 
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
@@ -47,6 +48,18 @@ public class FINNIGAN_LIBRARY_ITest {
 	public void testLoading() {
 
 		assertNotNull(chromatogram);
+	}
+
+	@Test
+	public void testDate() {
+
+		assertEquals(Instant.parse("1997-01-28T19:58:23Z"), chromatogram.getDate().toInstant());
+	}
+
+	@Test
+	public void testOperator() {
+
+		assertEquals("Unknown", chromatogram.getOperator());
 	}
 
 	@Test

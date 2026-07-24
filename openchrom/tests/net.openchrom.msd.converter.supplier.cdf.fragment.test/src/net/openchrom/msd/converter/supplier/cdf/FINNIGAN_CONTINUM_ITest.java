@@ -48,6 +48,12 @@ public class FINNIGAN_CONTINUM_ITest {
 	}
 
 	@Test
+	public void testOperator() {
+
+		assertEquals("iain", chromatogram.getOperator());
+	}
+
+	@Test
 	public void testScans() {
 
 		assertEquals(4, chromatogram.getNumberOfScans());

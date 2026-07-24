@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
+import java.time.Instant;
 
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
@@ -45,6 +46,18 @@ public class PK_SUM01N01_ITest {
 	public void testLoading() {
 
 		assertNotNull(chromatogram);
+	}
+
+	@Test
+	public void testDate() {
+
+		assertEquals(Instant.parse("1990-08-06T15:42:29Z"), chromatogram.getDate().toInstant());
+	}
+
+	@Test
+	public void testOperator() {
+
+		assertEquals("FLD", chromatogram.getOperator());
 	}
 
 	@Test

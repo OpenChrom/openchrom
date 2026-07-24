@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
+import java.time.Instant;
 
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
@@ -45,6 +46,18 @@ public class VARIAN4_ITest {
 	public void testLoading() {
 
 		assertNotNull(chromatogram);
+	}
+
+	@Test
+	public void testDate() {
+
+		assertEquals(Instant.parse("1988-08-26T01:41:18Z"), chromatogram.getDate().toInstant());
+	}
+
+	@Test
+	public void testOperator() {
+
+		assertEquals("MEA", chromatogram.getOperator());
 	}
 
 	@Test
