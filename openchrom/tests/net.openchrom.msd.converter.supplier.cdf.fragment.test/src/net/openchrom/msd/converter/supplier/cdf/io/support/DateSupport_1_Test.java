@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2025 Lablicate GmbH.
+ * Copyright (c) 2013, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -18,34 +18,19 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.TimeZone;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.util.DefaultTimeZone;
 
+@DefaultTimeZone("CET")
 @TestInstance(Lifecycle.PER_CLASS)
 public class DateSupport_1_Test {
-
-	private TimeZone defaultTimeZone;
-
-	@BeforeAll
-	public void setUp() {
-
-		defaultTimeZone = TimeZone.getDefault();
-	}
-
-	@AfterAll
-	public void tearDown() {
-
-		TimeZone.setDefault(defaultTimeZone); // restore
-	}
 
 	@Test
 	public void testGetActualDate_1() {
 
 		// 12 Nov 2008 7:41 ! CET > +0100
-		TimeZone.setDefault(TimeZone.getTimeZone("CET"));
 		Date date = new Date(1226472095160l);
 		assertEquals("20081112074135+0100", DateSupport.getDate(date), "12 Nov 08 7:41");
 	}
@@ -55,7 +40,6 @@ public class DateSupport_1_Test {
 
 		// 12 Jan 2006 18:47 ! CET > +0100
 		String agilentDate = "20060112184700+0100";
-		TimeZone.setDefault(TimeZone.getTimeZone("CET"));
 		Date test = new Date(1137088020000l);
 		Date date = DateSupport.getDate(agilentDate);
 		assertEquals(test, date, agilentDate);
@@ -66,7 +50,6 @@ public class DateSupport_1_Test {
 
 		// 18 Feb 2006 16:18 ! CET > +0100
 		String agilentDate = "20060218161800+0100";
-		TimeZone.setDefault(TimeZone.getTimeZone("CET"));
 		Date test = new Date(1140275880000l);
 		Date date = DateSupport.getDate(agilentDate);
 		assertEquals(test, date, agilentDate);
@@ -77,7 +60,6 @@ public class DateSupport_1_Test {
 
 		// 3 Mar 2006 14:26 ! CET > +0100
 		String agilentDate = "20060303142600+0100";
-		TimeZone.setDefault(TimeZone.getTimeZone("CET"));
 		Date test = new Date(1141392360000l);
 		Date date = DateSupport.getDate(agilentDate);
 		assertEquals(test, date, agilentDate);
@@ -165,7 +147,6 @@ public class DateSupport_1_Test {
 
 		// 9 Nov 2008 20:34 ! CET > +0100
 		String agilentDate = "20081109203400+0100";
-		TimeZone.setDefault(TimeZone.getTimeZone("CET"));
 		Date test = new Date(1226259240000l);
 		Date date = DateSupport.getDate(agilentDate);
 		assertEquals(test, date, agilentDate);
@@ -176,7 +157,6 @@ public class DateSupport_1_Test {
 
 		// 22 Dec 2007 6:51 ! CET > +0100
 		String agilentDate = "20071222065100+0100";
-		TimeZone.setDefault(TimeZone.getTimeZone("CET"));
 		Date test = new Date(1198302660000l);
 		Date date = DateSupport.getDate(agilentDate);
 		assertEquals(test, date, agilentDate);
