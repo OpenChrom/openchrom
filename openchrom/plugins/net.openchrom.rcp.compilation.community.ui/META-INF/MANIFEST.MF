@@ -6,7 +6,6 @@ Bundle-SymbolicName: net.openchrom.rcp.compilation.community.ui;singleton:=true
 Bundle-Version: 1.6.25.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-Vendor: OpenChrom
-Eclipse-BundleShape: dir
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui;bundle-version="3.105.0"
 Import-Package: jakarta.annotation;version="2.1.1",

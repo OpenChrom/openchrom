@@ -13,3 +13,4 @@ Automatic-Module-Name: net.openchrom.feature.branding
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-Vendor: OpenChrom
+Eclipse-BundleShape: dir
