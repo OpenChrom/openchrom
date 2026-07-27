@@ -138,7 +138,7 @@ public class CompositeCompositionsUI extends Composite {
 
 	private enum Yunits {
 		PP, MF, LF // Partial Pressure, Mol Fraction, Library Fraction
-	};
+	}
 
 	private static final Logger logger = Logger.getLogger(DecompositionResultUI.class);
 	private Button buttonLF; // select library fraction
@@ -164,7 +164,7 @@ public class CompositeCompositionsUI extends Composite {
 	private double[] xDataTraceComposition;
 	private XYGraph xyGraphComposition;
 	private int xyGraphCompositionNumberOfPoints = 0; // if xyGraphCompositionNumberOfPoints > 0, then remainder of xyGraphComposition data items are valid
-	private Yunits yUnits = Yunits.PP;;
+	private Yunits yUnits = Yunits.PP;
 
 	public CompositeCompositionsUI(Composite parent, int style) {
 
