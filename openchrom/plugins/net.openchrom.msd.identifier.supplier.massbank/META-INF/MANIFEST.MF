@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.msd.identifier.supplier.massbank
 Bundle-ManifestVersion: 2
 Bundle-Name: MassBank Identifier
 Bundle-SymbolicName: net.openchrom.msd.identifier.supplier.massbank;singleton:=true
-Bundle-Version: 1.6.25.qualifier
+Bundle-Version: 1.6.26.qualifier
 Export-Package: net.openchrom.msd.identifier.supplier.massbank.preferences
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,

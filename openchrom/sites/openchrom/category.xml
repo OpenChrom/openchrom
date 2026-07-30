@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature id="net.openchrom.platform.feature" version="1.6.25.qualifier">
+   <feature id="net.openchrom.platform.feature" version="1.6.26.qualifier">
       <category name="net.openchrom.update"/>
    </feature>
    <category-def name="net.openchrom.update" label="OpenChrom">

@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.msd.converter.supplier.pkf
 Bundle-ManifestVersion: 2
 Bundle-Name: MicrobeMS spectral multifiles
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.microbems.muf;singleton:=true
-Bundle-Version: 1.6.25.qualifier
+Bundle-Version: 1.6.26.qualifier
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.msd.converter;bundle-version="0.8.0",
