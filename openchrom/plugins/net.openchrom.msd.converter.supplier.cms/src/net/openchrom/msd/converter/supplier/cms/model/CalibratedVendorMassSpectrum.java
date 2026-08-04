@@ -20,15 +20,16 @@ import java.util.Random;
 import java.util.Set;
 
 import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IMarkedTraces;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.msd.model.core.AbstractScanMSD;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IIonBounds;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.core.MassSpectrumType;
-import org.eclipse.chemclipse.msd.model.core.support.IMarkedIons;
 import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
 import org.eclipse.chemclipse.support.model.SeparationColumnType;
+import org.eclipse.chemclipse.support.traces.ITrace;
 
 // public class CalibratedVendorMassSpectrum implements IRegularLibraryMassSpectrum {
 public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpectrum implements ICalibratedVendorMassSpectrum {
@@ -547,7 +548,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	}
 
 	@Override
-	public float getTotalSignal(IMarkedIons excludedIons) {
+	public float getTotalSignal(IMarkedTraces<ITrace> excludedIons) {
 
 		return 0;
 	}
@@ -631,7 +632,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	}
 
 	@Override
-	public AbstractScanMSD removeIons(IMarkedIons excludedIons) {
+	public AbstractScanMSD removeIons(IMarkedTraces<ITrace> excludedIons) {
 
 		return null;
 	}
@@ -672,7 +673,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	}
 
 	@Override
-	public IScanMSD getMassSpectrum(IMarkedIons excludedIons) {
+	public IScanMSD getMassSpectrum(IMarkedTraces<ITrace> excludedIons) {
 
 		return null;
 	}

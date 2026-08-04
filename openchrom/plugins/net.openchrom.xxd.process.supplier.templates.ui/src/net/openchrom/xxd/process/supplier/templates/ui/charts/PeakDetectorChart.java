@@ -313,12 +313,16 @@ public class PeakDetectorChart extends ChromatogramPeakChart {
 				String traces = detectorRange.getTraces();
 				if(showTracesMSD(chromatogram, traces)) {
 					ChromatogramSelectionMSD chromatogramSelectionMSD = new ChromatogramSelectionMSD((IChromatogramMSD)chromatogram);
-					chromatogramSelectionMSD.getSelectedIons().add(TracesUtil.getTraces(traces));
+					for(int trace : TracesUtil.getTraces(traces)) {
+						chromatogramSelectionMSD.getSelectedIons().add(new TraceNominalMSD(trace));
+					}
 					chromatogramSelection = chromatogramSelectionMSD;
 					showTraces = true;
 				} else if(showTracesWSD(chromatogram, traces)) {
 					ChromatogramSelectionWSD chromatogramSelectionWSD = new ChromatogramSelectionWSD((IChromatogramWSD)chromatogram);
-					chromatogramSelectionWSD.getSelectedWavelengths().add(TracesUtil.getTraces(traces));
+					for(int trace : TracesUtil.getTraces(traces)) {
+						chromatogramSelectionWSD.getSelectedWavelengths().add(new TraceRasteredWSD(trace));
+					}
 					chromatogramSelection = chromatogramSelectionWSD;
 					showTraces = true;
 				} else {
