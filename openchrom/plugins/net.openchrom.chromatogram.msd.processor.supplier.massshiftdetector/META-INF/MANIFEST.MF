@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.chromatogram.msd.processor.supplier.massshi
 Bundle-ManifestVersion: 2
 Bundle-Name: Mass Shift Detector (Model)
 Bundle-SymbolicName: net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector
-Bundle-Version: 1.6.26.qualifier
+Bundle-Version: 1.6.27.qualifier
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.msd.model;bundle-version="0.8.0",
