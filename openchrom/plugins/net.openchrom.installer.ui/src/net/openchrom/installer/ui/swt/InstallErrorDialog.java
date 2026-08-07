@@ -12,15 +12,15 @@
  *******************************************************************************/
 package net.openchrom.installer.ui.swt;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.progress.core.InfoType;
 import org.eclipse.chemclipse.progress.core.StatusLineLogger;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
@@ -42,14 +42,35 @@ public class InstallErrorDialog {
 		logger.error(e);
 	}
 
-	private static MultiStatus createMultiStatus(Throwable t) {
+	static MultiStatus createMultiStatus(Throwable t) {
 
-		List<IStatus> childStatuses = new ArrayList<>();
-		StackTraceElement[] stackTraces = Thread.currentThread().getStackTrace();
-		for(StackTraceElement stackTrace : stackTraces) {
-			IStatus status = Status.error(stackTrace.toString());
-			childStatuses.add(status);
+		IStatus[] children = (t instanceof CoreException coreException) ? coreException.getStatus().getChildren() : new IStatus[0];
+		String reason = (t instanceof CoreException coreException) ? buildReason(coreException.getStatus()) : t.getMessage();
+		return new MultiStatus("net.openchrom.installer.ui", IStatus.ERROR, children, reason, t);
+	}
+
+	/**
+	 * p2 buries the actual explanation of a resolution failure deep inside a tree of generic wrapper statuses
+	 * (e.g. "Operation details", "Cannot satisfy dependency:"). Only the leaves of that tree (statuses without
+	 * children) ever carry concrete facts ("Missing requirement: ...", "From: ...", "To: ...", conflicting IU
+	 * names, ...), so collect those and skip every wrapper in between.
+	 */
+	private static String buildReason(IStatus status) {
+
+		Set<String> lines = new LinkedHashSet<>();
+		collectReasonLines(status, lines);
+		return lines.isEmpty() ? status.getMessage() : String.join("\n", lines);
+	}
+
+	private static void collectReasonLines(IStatus status, Set<String> lines) {
+
+		IStatus[] children = status.getChildren();
+		if(children.length == 0) {
+			lines.add(status.getMessage());
+			return;
 		}
-		return new MultiStatus("net.openchrom.installer.ui", IStatus.ERROR, childStatuses.toArray(new Status[]{}), t.toString(), t);
+		for(IStatus child : children) {
+			collectReasonLines(child, lines);
+		}
 	}
 }
