@@ -20,12 +20,8 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        java: ['21', '25']
-
     container:
-      image: maven:3.9-eclipse-temurin-${{ matrix.java }}
+      image: maven:3.9-eclipse-temurin-25
 
 
     steps:
