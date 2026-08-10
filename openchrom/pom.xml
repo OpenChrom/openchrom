@@ -36,7 +36,7 @@
 	<repositories>
 		<repository>
 			<id>jre-updates</id>
-			<url>https://mirror.lablicate.com/eclipse/justj/jres/21/updates/release/latest/</url>
+			<url>https://mirror.lablicate.com/eclipse/justj/jres/25/updates/release/latest/</url>
 			<layout>p2</layout>
 		</repository>
 	</repositories>
