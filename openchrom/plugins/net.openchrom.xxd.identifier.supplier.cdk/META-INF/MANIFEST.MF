@@ -18,7 +18,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.chromatogram.xxd.identifier;bundle-version="0.9.0",
  javax.vecmath;bundle-version="1.5.2",
  org.apache.logging.log4j.api;bundle-version="[2.25.3,3.0.0)
-Bundle-RequiredExecutionEnvironment: JavaSE-21
+Bundle-RequiredExecutionEnvironment: JavaSE-25
 Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.xxd.identifier.supplier.cdk.converter,
  net.openchrom.xxd.identifier.supplier.cdk.core,
