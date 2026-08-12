@@ -30,6 +30,7 @@
 		<unit id="net.openchrom.thirdparty.jhdf5.feature.feature.group"/>
 		<unit id="net.openchrom.thirdparty.cdk.feature.feature.group"/>
 		<unit id="net.openchrom.thirdparty.inchi.feature.feature.group"/>
+		<unit id="net.openchrom.thirdparty.beam.feature.feature.group"/>
 	</location>
 	<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 		<repository location="https://mirror.lablicate.com/eclipse/tools/orbit/simrel/orbit-aggregation/2026-06"/>
