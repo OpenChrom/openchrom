@@ -39,7 +39,7 @@
 		<unit id="org.apache.poi.ooxml.schemas"/>
 		<unit id="org.apache.xmlbeans"/>
 	</location>
-	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="false" label="com.sun.xml.bind.jaxb-osgi" missingManifest="error" type="Maven">
+	<location includeDependencyDepth="none" includeDependencyScopes="compile" label="com.sun.xml.bind.jaxb-osgi" missingManifest="error" type="Maven">
 		<dependencies>
 			<dependency>
 				<groupId>com.sun.xml.bind</groupId>
@@ -144,29 +144,9 @@
 	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
 		<dependencies>
 			<dependency>
-				<groupId>javax.vecmath</groupId>
-				<artifactId>vecmath</artifactId>
-				<version>1.5.2</version>
-				<type>jar</type>
-			</dependency>
-		</dependencies>
-	</location>
-	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
-		<dependencies>
-			<dependency>
 				<groupId>net.sourceforge.jmol</groupId>
 				<artifactId>jmol</artifactId>
 				<version>14.31.10</version>
-				<type>jar</type>
-			</dependency>
-		</dependencies>
-	</location>
-	<location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
-		<dependencies>
-			<dependency>
-				<groupId>uk.ac.ebi.beam</groupId>
-				<artifactId>beam-core</artifactId>
-				<version>1.3.10</version>
 				<type>jar</type>
 			</dependency>
 		</dependencies>
