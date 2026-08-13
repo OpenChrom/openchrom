@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.xxd.classifier.supplier.ratios
 Bundle-ManifestVersion: 2
 Bundle-Name: Ratio Calculator
 Bundle-SymbolicName: net.openchrom.xxd.classifier.supplier.ratios;singleton:=true
-Bundle-Version: 1.6.27.qualifier
+Bundle-Version: 1.6.28.qualifier
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.msd.model;bundle-version="0.8.0",

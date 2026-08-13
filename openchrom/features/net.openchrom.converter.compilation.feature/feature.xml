@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.converter.compilation.feature"
       label="Converter Compilation"
-      version="1.6.27.qualifier"
+      version="1.6.28.qualifier"
       provider-name="OpenChrom"
       plugin="net.openchrom.feature.branding"
       license-feature="org.eclipse.license"
