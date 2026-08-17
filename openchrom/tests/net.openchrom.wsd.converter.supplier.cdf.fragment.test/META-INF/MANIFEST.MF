@@ -5,6 +5,6 @@ Bundle-Name: NetCDF DAD Tests
 Bundle-SymbolicName: net.openchrom.wsd.converter.supplier.cdf.fragment.test
 Bundle-Version: 1.6.28.qualifier
 Fragment-Host: net.openchrom.wsd.converter.supplier.cdf;bundle-version="1.6.13"
-Bundle-RequiredExecutionEnvironment: JavaSE-21
+Bundle-RequiredExecutionEnvironment: JavaSE-25
 Require-Bundle: junit-jupiter-api;bundle-version="5.12.2"
 Bundle-Vendor: OpenChrom

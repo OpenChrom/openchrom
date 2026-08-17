@@ -6,6 +6,6 @@ Bundle-SymbolicName: net.openchrom.msd.process.supplier.cms.fragment.test
 Bundle-Version: 1.6.28.qualifier
 Bundle-Vendor: OpenChrom
 Fragment-Host: net.openchrom.msd.process.supplier.cms;bundle-version="1.6.13"
-Bundle-RequiredExecutionEnvironment: JavaSE-21
+Bundle-RequiredExecutionEnvironment: JavaSE-25
 Import-Package: org.junit.jupiter.api;version="[6.0.0,7.0.0)"
 Require-Bundle: net.openchrom.msd.converter.supplier.cms;bundle-version="1.6.13"

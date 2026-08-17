@@ -16,5 +16,5 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.e4.core.services;bundle-version="2.3.400",
  net.openchrom.chromatogram.xxd.report.supplier.excel.template;bundle-version="1.6.13",
  org.eclipse.chemclipse.logging;bundle-version="0.9.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-21
+Bundle-RequiredExecutionEnvironment: JavaSE-25
 Bundle-ActivationPolicy: lazy

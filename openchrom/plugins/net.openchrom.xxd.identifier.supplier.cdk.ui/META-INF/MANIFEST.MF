@@ -19,5 +19,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-25
 Bundle-ActivationPolicy: lazy
 Import-Package: jakarta.inject;version="2.0.1",
  org.osgi.service.event;version="1.3.0"
-Service-Component: OSGI-INF/net.openchrom.xxd.identifier.supplier.cdk.ui.services.MoleculeImageService.xml
 Export-Package: net.openchrom.xxd.identifier.supplier.cdk.ui.converter
+Service-Component: OSGI-INF/net.openchrom.xxd.identifier.supplier.cdk.ui.services.MoleculeImageService.xml

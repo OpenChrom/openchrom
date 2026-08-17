@@ -34,7 +34,7 @@ public class StandardsAssignerSettingsAdapterFactory implements IAdapterFactory 
 
 	private static SettingsUIProvider<StandardsAssignerSettings> createSettingsUIProvider(StandardsAssignerSettings adaptedSettings) {
 
-		return (parent, preferences, showProfileToolbar) -> {
+		return (parent, preferences, _) -> {
 
 			StandardsAssignerSettings userSettings = preferences.getUserSettings();
 			return new StandardsAssignerEditor(parent, preferences, userSettings == null ? adaptedSettings : userSettings);

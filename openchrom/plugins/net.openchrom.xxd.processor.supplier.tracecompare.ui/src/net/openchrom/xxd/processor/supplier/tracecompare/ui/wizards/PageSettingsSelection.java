@@ -139,7 +139,7 @@ public class PageSettingsSelection extends AbstractExtendedWizardPage {
 
 		textSampleDirectory = new Text(parent, SWT.BORDER);
 		textSampleDirectory.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		textSampleDirectory.addModifyListener(e -> validateData());
+		textSampleDirectory.addModifyListener(_ -> validateData());
 
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("Select");
@@ -184,7 +184,7 @@ public class PageSettingsSelection extends AbstractExtendedWizardPage {
 
 		textReferenceDirectory = new Text(parent, SWT.BORDER);
 		textReferenceDirectory.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		textReferenceDirectory.addModifyListener(e -> validateData());
+		textReferenceDirectory.addModifyListener(_ -> validateData());
 
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("Select");
@@ -245,7 +245,7 @@ public class PageSettingsSelection extends AbstractExtendedWizardPage {
 		GridData gridData = new GridData(GridData.FILL_BOTH);
 		gridData.horizontalSpan = 2;
 		textGeneralNotes.setLayoutData(gridData);
-		textGeneralNotes.addModifyListener(e -> validateData());
+		textGeneralNotes.addModifyListener(_ -> validateData());
 	}
 
 	private void validateData() {

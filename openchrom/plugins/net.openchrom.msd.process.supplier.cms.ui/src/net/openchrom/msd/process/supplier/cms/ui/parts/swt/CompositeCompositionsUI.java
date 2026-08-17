@@ -322,7 +322,7 @@ public class CompositeCompositionsUI extends Composite {
 		textLogScaleOffset.setText("");
 		GridData textLogScaleOffsetGridData = new GridData(SWT.FILL, SWT.CENTER, true, true);
 		textLogScaleOffset.setLayoutData(textLogScaleOffsetGridData);
-		textLogScaleOffset.addModifyListener(e -> {
+		textLogScaleOffset.addModifyListener(_ -> {
 
 			if(!txtLogScaleOffsetIgnoreEvent && usingOffsetLogScale) {
 				updateXYGraph();

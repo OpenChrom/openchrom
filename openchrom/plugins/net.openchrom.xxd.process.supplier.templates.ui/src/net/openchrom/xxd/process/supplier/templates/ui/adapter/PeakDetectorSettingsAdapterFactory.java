@@ -34,7 +34,7 @@ public class PeakDetectorSettingsAdapterFactory implements IAdapterFactory {
 
 	private static SettingsUIProvider<PeakDetectorSettings> createSettingsUIProvider(PeakDetectorSettings adaptedSettings) {
 
-		return (parent, preferences, showProfileToolbar) -> {
+		return (parent, preferences, _) -> {
 
 			PeakDetectorSettings userSettings = preferences.getUserSettings();
 			return new TemplatePeakListEditor(parent, preferences, userSettings == null ? adaptedSettings : userSettings);

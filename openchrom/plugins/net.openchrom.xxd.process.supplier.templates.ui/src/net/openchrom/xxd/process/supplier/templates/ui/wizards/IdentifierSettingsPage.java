@@ -99,7 +99,7 @@ public class IdentifierSettingsPage extends WizardPage implements IExtendedPartU
 			}
 		};
 		ControlDecoration controlDecoration = new ControlDecoration(text, SWT.LEFT | SWT.TOP);
-		text.addModifyListener(e -> {
+		text.addModifyListener(_ -> {
 
 			if(identifierSetting != null) {
 				identifierSetting.setName(text.getText().trim());
@@ -117,7 +117,7 @@ public class IdentifierSettingsPage extends WizardPage implements IExtendedPartU
 		Text text = createText(parent);
 		CasValidator casValidator = new CasValidator(true);
 		ControlDecoration controlDecoration = new ControlDecoration(text, SWT.LEFT | SWT.TOP);
-		text.addModifyListener(e -> {
+		text.addModifyListener(_ -> {
 
 			if(identifierSetting != null) {
 				identifierSetting.setCasNumber(text.getText().trim());
@@ -133,7 +133,7 @@ public class IdentifierSettingsPage extends WizardPage implements IExtendedPartU
 		createLabel(parent, "Reference Identifier", "Enter e.g. an internal tracking number.");
 
 		Text text = createText(parent);
-		text.addModifyListener(e -> {
+		text.addModifyListener(_ -> {
 
 			if(identifierSetting != null) {
 				identifierSetting.setReferenceIdentifier(text.getText().trim());
@@ -148,7 +148,7 @@ public class IdentifierSettingsPage extends WizardPage implements IExtendedPartU
 		createLabel(parent, "Comments", "Enter e.g. an analysis hint.");
 
 		Text text = createText(parent);
-		text.addModifyListener(e -> {
+		text.addModifyListener(_ -> {
 
 			if(identifierSetting != null) {
 				identifierSetting.setComments(text.getText().trim());

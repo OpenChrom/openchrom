@@ -141,7 +141,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 		initializeImages();
 		initializeFonts();
 		Composite container = new Composite(parent, SWT.NULL);
-		container.addDisposeListener(e -> refreshJob.cancel());
+		container.addDisposeListener(_ -> refreshJob.cancel());
 		container.setLayout(new GridLayout(1, false));
 
 		{ // header
@@ -159,12 +159,12 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 				GridDataFactory.fillDefaults().grab(true, false).applyTo(textFilterContainer);
 				GridLayoutFactory.fillDefaults().numColumns(2).applyTo(textFilterContainer);
 				filterText = new Text(textFilterContainer, SWT.SINGLE | SWT.BORDER | SWT.SEARCH | SWT.ICON_SEARCH | SWT.ICON_CANCEL);
-				filterText.addModifyListener(e -> refreshDisplayedIUs());
+				filterText.addModifyListener(_ -> refreshDisplayedIUs());
 				GridDataFactory.fillDefaults().grab(true, false).span(2, 1).applyTo(filterText);
 				createButtonImportSetupDefinition(filterContainer);
 				Button refresh = new Button(filterContainer, SWT.PUSH);
 				refresh.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_REFRESH, IApplicationImageProvider.SIZE_16x16));
-				refresh.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+				refresh.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
 					importedFeatures = null;
 					installableConnectors.clear();
 					filterText.setText("");
@@ -176,7 +176,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 				 */
 				Button availableSoftware = new Button(filterContainer, SWT.PUSH);
 				availableSoftware.setImage(ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_MARKETPLACE, IApplicationImageProvider.SIZE_16x16));
-				availableSoftware.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+				availableSoftware.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
 
 					getShell().close();
 					ProvisioningUI provisioningUI = ProvisioningUI.getDefaultUI();
@@ -564,7 +564,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 				Link link = new Link(container, SWT.WRAP);
 				link.setFont(container.getFont());
 				link.setText("There are no matching plugins.  Please <a>clear the filter text</a> or try again later.");
-				link.addListener(SWT.Selection, event -> {
+				link.addListener(SWT.Selection, _ -> {
 
 					clearFilterText();
 					filterText.setFocus();

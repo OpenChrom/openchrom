@@ -143,7 +143,7 @@ public class PageSettings extends AbstractExtendedWizardPage {
 		startShiftLevelSpinner.setMinimum(MassShiftDetector.MIN_ISOTOPE_LEVEL);
 		startShiftLevelSpinner.setMaximum(MassShiftDetector.MAX_ISOTOPE_LEVEL);
 		startShiftLevelSpinner.setIncrement(MassShiftDetector.INCREMENT_ISOTOPE_LEVEL);
-		startShiftLevelSpinner.addModifyListener(e -> validateData());
+		startShiftLevelSpinner.addModifyListener(_ -> validateData());
 	}
 
 	private void createStopShiftLevelSection(Composite parent) {
@@ -157,7 +157,7 @@ public class PageSettings extends AbstractExtendedWizardPage {
 		stopShiftLevelSpinner.setMinimum(MassShiftDetector.MIN_ISOTOPE_LEVEL);
 		stopShiftLevelSpinner.setMaximum(MassShiftDetector.MAX_ISOTOPE_LEVEL);
 		stopShiftLevelSpinner.setIncrement(MassShiftDetector.INCREMENT_ISOTOPE_LEVEL);
-		stopShiftLevelSpinner.addModifyListener(e -> validateData());
+		stopShiftLevelSpinner.addModifyListener(_ -> validateData());
 	}
 
 	private void createNormalizeDataSection(Composite parent) {
@@ -211,7 +211,7 @@ public class PageSettings extends AbstractExtendedWizardPage {
 
 		numberHighestIntensityMZText = new Text(parent, SWT.BORDER);
 		numberHighestIntensityMZText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		numberHighestIntensityMZText.addModifyListener(e -> validateData());
+		numberHighestIntensityMZText.addModifyListener(_ -> validateData());
 	}
 
 	private void createUsePeaksSection(Composite parent) {

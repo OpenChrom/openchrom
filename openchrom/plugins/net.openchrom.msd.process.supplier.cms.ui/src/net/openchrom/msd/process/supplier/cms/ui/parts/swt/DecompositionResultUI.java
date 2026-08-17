@@ -296,7 +296,7 @@ public class DecompositionResultUI extends Composite {
 		GridData spinnerLeftScanNumberGridData = new GridData(SWT.RIGHT, SWT.CENTER, false, true);
 		spinnerLeftScanNumberGridData.widthHint = 32;
 		spinnerLeftScanNumber.setLayoutData(spinnerLeftScanNumberGridData);
-		spinnerLeftScanNumber.addModifyListener(e -> {
+		spinnerLeftScanNumber.addModifyListener(_ -> {
 
 			if(spinnersIgnoreChange) {
 				return;
@@ -341,7 +341,7 @@ public class DecompositionResultUI extends Composite {
 		GridData spinnerRightScanNumberGridData = new GridData(SWT.RIGHT, SWT.CENTER, false, true);
 		spinnerRightScanNumberGridData.widthHint = 32;
 		spinnerRightScanNumber.setLayoutData(spinnerRightScanNumberGridData);
-		spinnerRightScanNumber.addModifyListener(e -> {
+		spinnerRightScanNumber.addModifyListener(_ -> {
 
 			if(spinnersIgnoreChange) {
 				return;

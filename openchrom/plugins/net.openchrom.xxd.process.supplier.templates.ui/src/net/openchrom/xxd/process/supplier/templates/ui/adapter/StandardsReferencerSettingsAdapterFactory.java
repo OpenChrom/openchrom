@@ -34,7 +34,7 @@ public class StandardsReferencerSettingsAdapterFactory implements IAdapterFactor
 
 	private static SettingsUIProvider<StandardsReferencerSettings> createSettingsUIProvider(StandardsReferencerSettings adaptedSettings) {
 
-		return (parent, preferences, showProfileToolbar) -> {
+		return (parent, preferences, _) -> {
 
 			StandardsReferencerSettings userSettings = preferences.getUserSettings();
 			return new StandardsReferencerEditor(parent, preferences, userSettings == null ? adaptedSettings : userSettings);

@@ -16,7 +16,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.poi.ooxml.schemas;bundle-version="4.1.1",
  org.apache.xmlbeans;bundle-version="3.1.0",
  org.apache.commons.commons-compress;bundle-version="1.28.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-21
+Bundle-RequiredExecutionEnvironment: JavaSE-25
 Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.chromatogram.xxd.report.supplier.excel.template.core,
  net.openchrom.chromatogram.xxd.report.supplier.excel.template.io,

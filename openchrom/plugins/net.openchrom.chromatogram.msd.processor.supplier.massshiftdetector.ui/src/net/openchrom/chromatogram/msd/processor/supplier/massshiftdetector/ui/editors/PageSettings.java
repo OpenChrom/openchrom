@@ -430,7 +430,7 @@ public class PageSettings extends AbstractExtendedEditorPage {
 		GridData gridData = new GridData(GridData.FILL_BOTH);
 		gridData.heightHint = 300;
 		descriptionText.setLayoutData(gridData);
-		descriptionText.addModifyListener(e -> {
+		descriptionText.addModifyListener(_ -> {
 
 			ProcessorData processorData = editorProcessor.getProcessorData();
 			processorData.getProcessorModel().setDescription(descriptionText.getText().trim());

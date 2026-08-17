@@ -173,7 +173,7 @@ public class CompositeLibrarySpectraUI extends Composite {
 							// The control that will be the editor must be a child of the Table
 							Text newEditor = new Text(tableCmsComponents, SWT.NONE);
 							newEditor.setText(item.getText(COLUMN_0));
-							newEditor.addModifyListener(e -> {
+							newEditor.addModifyListener(_ -> {
 
 								Text text = (Text)tableEditor.getEditor();
 								if(isValidDoubleString(text.getText())) {

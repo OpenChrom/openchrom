@@ -33,7 +33,7 @@ public class TraceRatioSettingsAdapterFactory implements IAdapterFactory {
 
 	private static SettingsUIProvider<TraceRatioSettings> createSettingsUIProvider(TraceRatioSettings adaptedSettings) {
 
-		return (parent, preferences, showProfileToolbar) -> {
+		return (parent, preferences, _) -> {
 
 			TraceRatioSettings userSettings = preferences.getUserSettings();
 			return new TraceRatioListEditor(parent, preferences, userSettings == null ? adaptedSettings : userSettings);
