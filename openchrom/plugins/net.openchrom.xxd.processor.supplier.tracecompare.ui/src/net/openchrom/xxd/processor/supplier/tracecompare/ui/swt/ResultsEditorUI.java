@@ -116,7 +116,7 @@ public class ResultsEditorUI extends Composite {
 		GridData gridData = getGridData(GridData.FILL_HORIZONTAL, 3);
 		gridData.heightHint = 100;
 		textResults.setLayoutData(gridData);
-		textResults.addModifyListener(e -> processorModel.setCalculatedResult(textResults.getText().trim()));
+		textResults.addModifyListener(_ -> processorModel.setCalculatedResult(textResults.getText().trim()));
 	}
 
 	private void createNotesText(Composite parent) {
@@ -125,7 +125,7 @@ public class ResultsEditorUI extends Composite {
 		GridData gridData = getGridData(GridData.FILL_HORIZONTAL, 3);
 		gridData.heightHint = 100;
 		textNotes.setLayoutData(gridData);
-		textNotes.addModifyListener(e -> processorModel.setGeneralNotes(textNotes.getText().trim()));
+		textNotes.addModifyListener(_ -> processorModel.setGeneralNotes(textNotes.getText().trim()));
 	}
 
 	private void createSearchField(Composite parent) {

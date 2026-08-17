@@ -16,7 +16,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.commons.commons-io;bundle-version="2.6.0",
  org.apache.commons.lang3;bundle-version="3.1.0",
  wrapped.us.hebi.matlab.mat.mfl-core;bundle-version="0.5.8"
-Bundle-RequiredExecutionEnvironment: JavaSE-21
+Bundle-RequiredExecutionEnvironment: JavaSE-25
 Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.msd.converter.supplier.microbems.pkf.converter,
  net.openchrom.msd.converter.supplier.microbems.pkf.converter.io,

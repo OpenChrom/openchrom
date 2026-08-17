@@ -5,7 +5,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Lablicate Installer
 Bundle-SymbolicName: net.openchrom.installer;singleton:=true
 Bundle-Version: 1.6.28.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-21
+Bundle-RequiredExecutionEnvironment: JavaSE-25
 Bundle-Vendor: Lablicate GmbH
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui;bundle-version="3.105.0",
@@ -21,5 +21,5 @@ Require-Bundle: org.eclipse.core.runtime,
 Export-Package: net.openchrom.installer.model,
  net.openchrom.installer.preferences,
  net.openchrom.installer.util
-Service-Component: OSGI-INF/net.openchrom.installer.model.PluginsDS.xml
 Import-Package: com.fasterxml.jackson.annotation;version="[2.21.0,3.0.0)"
+Service-Component: OSGI-INF/net.openchrom.installer.model.PluginsDS.xml

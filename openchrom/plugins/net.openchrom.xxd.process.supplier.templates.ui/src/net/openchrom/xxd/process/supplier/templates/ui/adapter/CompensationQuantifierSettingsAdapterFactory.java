@@ -34,7 +34,7 @@ public class CompensationQuantifierSettingsAdapterFactory implements IAdapterFac
 
 	private static SettingsUIProvider<CompensationQuantifierSettings> createSettingsUIProvider(CompensationQuantifierSettings adaptedSettings) {
 
-		return (parent, preferences, showProfileToolbar) -> {
+		return (parent, preferences, _) -> {
 
 			CompensationQuantifierSettings userSettings = preferences.getUserSettings();
 			return new CompensationQuantifierEditor(parent, preferences, userSettings == null ? adaptedSettings : userSettings);

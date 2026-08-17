@@ -33,7 +33,7 @@ public class ReviewSettingsAdapterFactory implements IAdapterFactory {
 
 	private static SettingsUIProvider<PeakReviewSettings> createSettingsUIProvider(PeakReviewSettings adaptedSettings) {
 
-		return (parent, preferences, showProfileToolbar) -> {
+		return (parent, preferences, _) -> {
 
 			PeakReviewSettings userSettings = preferences.getUserSettings();
 			return new TemplateReviewEditor(parent, preferences, userSettings == null ? adaptedSettings : userSettings);

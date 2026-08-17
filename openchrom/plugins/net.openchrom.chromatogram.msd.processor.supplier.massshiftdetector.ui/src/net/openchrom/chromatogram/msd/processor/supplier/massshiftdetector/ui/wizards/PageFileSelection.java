@@ -188,7 +188,7 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 2;
 		notesText.setLayoutData(gridData);
-		notesText.addModifyListener(e -> validateData());
+		notesText.addModifyListener(_ -> validateData());
 	}
 
 	private void createDescriptionSection(Composite parent) {
@@ -203,7 +203,7 @@ public class PageFileSelection extends AbstractExtendedWizardPage {
 		GridData gridData = new GridData(GridData.FILL_BOTH);
 		gridData.horizontalSpan = 2;
 		descriptionText.setLayoutData(gridData);
-		descriptionText.addModifyListener(e -> validateData());
+		descriptionText.addModifyListener(_ -> validateData());
 	}
 
 	private void validateData() {

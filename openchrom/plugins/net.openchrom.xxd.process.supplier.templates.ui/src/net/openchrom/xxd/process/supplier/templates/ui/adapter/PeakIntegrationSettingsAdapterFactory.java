@@ -34,7 +34,7 @@ public class PeakIntegrationSettingsAdapterFactory implements IAdapterFactory {
 
 	private static SettingsUIProvider<PeakIntegrationSettings> createSettingsUIProvider(PeakIntegrationSettings adaptedSettings) {
 
-		return (parent, preferences, showProfileToolbar) -> {
+		return (parent, preferences, _) -> {
 
 			PeakIntegrationSettings userSettings = preferences.getUserSettings();
 			return new TemplatePeakIntegrationEditor(parent, preferences, userSettings == null ? adaptedSettings : userSettings);

@@ -33,7 +33,7 @@ public class QuantRatioSettingsAdapterFactory implements IAdapterFactory {
 
 	private static SettingsUIProvider<QuantRatioSettings> createSettingsUIProvider(QuantRatioSettings adaptedSettings) {
 
-		return (parent, preferences, showProfileToolbar) -> {
+		return (parent, preferences, _) -> {
 
 			QuantRatioSettings userSettings = preferences.getUserSettings();
 			return new QuantRatioListEditor(parent, preferences, userSettings == null ? adaptedSettings : userSettings);

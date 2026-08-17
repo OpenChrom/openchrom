@@ -554,7 +554,7 @@ public class TraceDataComparisonUI extends Composite {
 		gridData.heightHint = 80;
 		gridData.horizontalIndent = HORIZONTAL_INDENT;
 		notesText.setLayoutData(gridData);
-		notesText.addModifyListener(e -> {
+		notesText.addModifyListener(_ -> {
 
 			if(trackModel != null) {
 				trackModel.setNotes(notesText.getText().trim());

@@ -33,7 +33,7 @@ public class TimeRatioSettingsAdapterFactory implements IAdapterFactory {
 
 	private static SettingsUIProvider<TimeRatioSettings> createSettingsUIProvider(TimeRatioSettings adaptedSettings) {
 
-		return (parent, preferences, showProfileToolbar) -> {
+		return (parent, preferences, _) -> {
 
 			TimeRatioSettings userSettings = preferences.getUserSettings();
 			return new TimeRatioListEditor(parent, preferences, userSettings == null ? adaptedSettings : userSettings);

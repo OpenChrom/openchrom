@@ -74,7 +74,7 @@ public class CheckForUpdatesHander {
 					if(performUpdate && canPerformUpdate(updateOperation, parent.getShell())) {
 						Link link = new Link(parent, SWT.NONE);
 						link.setText("Experimental (may require license updates): <a href=\"https://openchrom.net/download\">Perform Update</a>");
-						link.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+						link.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
 							this.close();
 							ProvisioningUI.getDefaultUI().openUpdateWizard(false, updateOperation, null);
 						}));

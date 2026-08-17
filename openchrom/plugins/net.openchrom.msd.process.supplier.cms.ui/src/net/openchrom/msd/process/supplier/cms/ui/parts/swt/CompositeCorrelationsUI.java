@@ -87,7 +87,7 @@ public class CompositeCorrelationsUI extends Composite {
 		GridData spinnerLeftScanNumberGridData = new GridData(SWT.RIGHT, SWT.CENTER, false, true);
 		spinnerLeftScanNumberGridData.widthHint = 32;
 		spinnerTopSelect.setLayoutData(spinnerLeftScanNumberGridData);
-		spinnerTopSelect.addModifyListener(e -> {
+		spinnerTopSelect.addModifyListener(_ -> {
 
 			maxTop = spinnerTopSelect.getSelection();
 			updateXYGraph();
