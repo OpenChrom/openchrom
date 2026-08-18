@@ -18,35 +18,20 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.ui.PlatformUI;
-import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
 public class EventDataHolder {
 
-	private static ConcurrentHashMap<String, Object> eventDataMap; // key is topic name string, value is data object for that event
-	private static IEventBroker eventBroker;
+	private static final ConcurrentHashMap<String, Object> eventDataMap = new ConcurrentHashMap<>(); // key is topic name string, value is data object for that event
 
-	static {
-		eventDataMap = new ConcurrentHashMap<>();
-		eventBroker = PlatformUI.getWorkbench().getService(IEventBroker.class);
-	}
+	public static void addSubscriber(IEventBroker eventBroker, String topic) {
 
-	public static void addSubscriber(String topic) {
-
-		if(eventBroker instanceof IEventBroker) {
+		if(eventBroker != null) {
 			eventBroker.subscribe(topic, eventHandler);
 		}
 	}
 
-	private static EventHandler eventHandler = new EventHandler() {
-
-		@Override
-		public void handleEvent(Event event) {
-
-			setData(event.getTopic(), event.getProperty(IEventBroker.DATA));
-		}
-	};
+	private static EventHandler eventHandler = event -> setData(event.getTopic(), event.getProperty(IEventBroker.DATA));
 
 	private static void setData(String topic, Object data) {
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Lablicate GmbH.
+ * Copyright (c) 2017, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -31,6 +31,7 @@ import org.eclipse.chemclipse.support.updates.IUpdateListener;
 import org.eclipse.chemclipse.ux.extension.msd.ui.support.DatabaseImportRunnable;
 import org.eclipse.chemclipse.ux.extension.ui.editors.IChemClipseEditor;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.Persist;
 import org.eclipse.e4.ui.model.application.MApplication;
@@ -77,6 +78,8 @@ public class CmsLibraryEditor implements IChemClipseEditor {
 	private MApplication application;
 	@Inject
 	private EModelService modelService;
+	@Inject
+	private IEventBroker eventBroker;
 	/*
 	 * Mass spectrum selection and the GUI element.
 	 */
@@ -280,7 +283,7 @@ public class CmsLibraryEditor implements IChemClipseEditor {
 			}
 		});
 
-		EventDataHolder.addSubscriber(IChemClipseEvents.TOPIC_SCAN_XXD_UPDATE_SELECTION);
+		EventDataHolder.addSubscriber(eventBroker, IChemClipseEvents.TOPIC_SCAN_XXD_UPDATE_SELECTION);
 
 		tabItem.setControl(cmsLibraryUI.getControl());
 	}
