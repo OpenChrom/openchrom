@@ -13,54 +13,47 @@
 package net.openchrom.wsd.converter.supplier.gaml.converter;
 
 import java.io.File;
-import java.util.List;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 import javax.xml.XMLConstants;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamReader;
 
 import org.eclipse.chemclipse.converter.core.AbstractFileContentMatcher;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-
-import net.openchrom.xxd.converter.supplier.gaml.io.Reader;
-import net.openchrom.xxd.converter.supplier.gaml.v120.model.GAML;
-import net.openchrom.xxd.converter.supplier.gaml.v120.model.ObjectFactory;
-import net.openchrom.xxd.converter.supplier.gaml.v120.model.Technique;
-import net.openchrom.xxd.converter.supplier.gaml.v120.model.Trace;
-
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.Unmarshaller;
 
 public class FileContentMatcherSpectrum extends AbstractFileContentMatcher {
 
 	@Override
 	public boolean checkFileFormat(File file) {
 
-		boolean isValidFormat = false;
-		try {
-			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-			documentBuilderFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-			documentBuilderFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-			documentBuilderFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-			documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-			documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+		XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+		xmlInputFactory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
+		xmlInputFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
+		xmlInputFactory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
 
-			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-			Document document = documentBuilder.parse(file);
-			NodeList nodeList = document.getElementsByTagName(Reader.NODE_GAML);
+		try (InputStream fileInputStream = new FileInputStream(file)) {
+			XMLStreamReader reader = xmlInputFactory.createXMLStreamReader(fileInputStream);
 
-			JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
-			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-			GAML gaml = (GAML)unmarshaller.unmarshal(nodeList.item(0));
-			List<Trace> traces = gaml.getExperiment().get(0).getTrace();
-			Technique technique = traces.get(0).getTechnique();
-			if(technique == Technique.UVVIS) {
-				isValidFormat = true;
+			int events = 0;
+
+			while(reader.hasNext() && events < 1000) {
+				int event = reader.next();
+				if(event == XMLStreamConstants.START_ELEMENT) {
+					String localName = reader.getLocalName();
+					if("trace".equals(localName)) {
+						String technique = reader.getAttributeValue(null, "technique");
+						if(technique != null && "UVVIS".equalsIgnoreCase(technique.trim())) {
+							return true;
+						}
+					}
+				}
+				events++;
 			}
-		} catch(Exception e) {
+		} catch(Exception _) {
 			// fail silently
 		}
-		return isValidFormat;
+		return false;
 	}
 }

@@ -13,15 +13,15 @@
 package net.openchrom.csd.converter.supplier.gaml.converter;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 import javax.xml.XMLConstants;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamReader;
 
 import org.eclipse.chemclipse.converter.core.AbstractFileContentMatcher;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 import net.openchrom.xxd.converter.supplier.gaml.io.Reader;
 
@@ -30,39 +30,42 @@ public class FileContentMatcher extends AbstractFileContentMatcher {
 	@Override
 	public boolean checkFileFormat(File file) {
 
-		try {
-			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-			documentBuilderFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-			documentBuilderFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-			documentBuilderFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-			documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-			documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+		XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+		xmlInputFactory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
+		xmlInputFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
+		xmlInputFactory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
 
-			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-			Document document = documentBuilder.parse(file);
+		try (InputStream fileInputStream = new FileInputStream(file)) {
+			XMLStreamReader reader = xmlInputFactory.createXMLStreamReader(fileInputStream);
 
-			NodeList root = document.getElementsByTagName(Reader.NODE_GAML);
-			if(root.getLength() != 1) {
-				return false;
-			}
+			boolean foundGaml = false;
+			boolean isChromatography = false;
+			boolean otherTechnique = false;
 
-			NodeList experimentsList = document.getElementsByTagName("experiment");
-			for(int e = 0; e < experimentsList.getLength(); e++) {
-				Element experimentElem = (Element)experimentsList.item(e);
+			int events = 0;
 
-				NodeList traceList = experimentElem.getElementsByTagName("trace");
-				if(traceList.getLength() != 1) {
-					return false;
-				}
-				for(int t = 0; t < traceList.getLength(); t++) {
-					Element traceElement = (Element)traceList.item(t);
-					String technique = traceElement.getAttribute("technique");
-					if(technique != null && "CHROM".equalsIgnoreCase(technique.trim())) {
-						return true;
+			while(reader.hasNext() && events < 100000) {
+				int event = reader.next();
+				if(event == XMLStreamConstants.START_ELEMENT) {
+					String localName = reader.getLocalName();
+					if(Reader.NODE_GAML.equals(localName)) {
+						foundGaml = true;
+					}
+					if("trace".equals(localName)) {
+						String technique = reader.getAttributeValue(null, "technique");
+						if(technique != null) {
+							if("CHROM".equalsIgnoreCase(technique.trim())) {
+								isChromatography = true;
+							} else {
+								otherTechnique = true;
+							}
+						}
 					}
 				}
+				events++;
 			}
-		} catch(Exception ex) {
+			return foundGaml && isChromatography && !otherTechnique;
+		} catch(Exception _) {
 			// fail silently
 		}
 		return false;
