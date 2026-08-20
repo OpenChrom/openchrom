@@ -371,21 +371,21 @@ public class ChromatogramReportWriter {
 
 	private int printTablePage(PDDocument document, PDTable pdTable, String title, String chromatogramName, int page, int pages, boolean landscape) throws IOException {
 
-		PageUtil pageUtil = new PageUtil(document, new PageSettings(PDRectangle.A4, PageBase.TOP_LEFT, Unit.MM, landscape));
-		printPageBrandingHeader(pageUtil);
+		try (PageUtil pageUtil = new PageUtil(document, new PageSettings(PDRectangle.A4, PageBase.TOP_LEFT, Unit.MM, landscape))) {
+			printPageBrandingHeader(pageUtil);
 
-		pageUtil.printText(new TextElement(LEFT_BORDER, 45.0f, MAX_WIDTH_PORTRAIT).setText("Chromatogram: " + chromatogramName));
-		pageUtil.printText(new TextElement(LEFT_BORDER, 50.0f, MAX_WIDTH_PORTRAIT).setText(getTableHeaderText(pdTable, title)));
+			pageUtil.printText(new TextElement(LEFT_BORDER, 45.0f, MAX_WIDTH_PORTRAIT).setText("Chromatogram: " + chromatogramName));
+			pageUtil.printText(new TextElement(LEFT_BORDER, 50.0f, MAX_WIDTH_PORTRAIT).setText(getTableHeaderText(pdTable, title)));
 
-		TableElement tableElement = new TableElement(LEFT_BORDER, 60.0f, LINE_HEIGHT);
-		tableElement.setTextOffsetX(TEXT_OFFSET_X);
-		tableElement.setTextOffsetY(TEXT_OFFSET_Y);
-		tableElement.setLineWidth(LINE_WIDTH);
-		tableElement.setPDTable(pdTable);
-		pageUtil.printTable(tableElement);
+			TableElement tableElement = new TableElement(LEFT_BORDER, 60.0f, LINE_HEIGHT);
+			tableElement.setTextOffsetX(TEXT_OFFSET_X);
+			tableElement.setTextOffsetY(TEXT_OFFSET_Y);
+			tableElement.setLineWidth(LINE_WIDTH);
+			tableElement.setPDTable(pdTable);
+			pageUtil.printTable(tableElement);
 
-		printPageFooter(pageUtil, page, pages, landscape);
-		pageUtil.close();
+			printPageFooter(pageUtil, page, pages, landscape);
+		}
 
 		return ++page;
 	}
