@@ -108,6 +108,7 @@ Contributors:
       <repository location="https://plugins.openchrom.net/drm/1.6.29/" name="DRM" enabled="true" />
       <repository location="https://plugins.openchrom.net/freebies/1.6.29/" name="Freebies" enabled="true" />
       <repository location="https://plugins.openchrom.net/documentation/1.6.29/" name="Documentation" enabled="true" />
+      <repository location="https://plugins.openchrom.net/mabritec/1.6.29/" name="Mabritec" enabled="true" />
    </repositories>
 
    <preferencesInfo>
