@@ -1387,5 +1387,19 @@
             icon="icons/32x32/Advion.png">
       </pluginDescriptor>
 
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.extensions.commercial"
+            description="In silico bacterial ID by MALDI-TOF MS"
+            groupId="net.openchrom.chromatogram.msd.identifier.spectrum"
+            id="com.lablicate.msd.identifier.supplier.mabritec.feature"
+            kind="extension"
+            license="Commercial License Terms"
+            name="MabritecCentral"
+            provider="Mabritec"
+            summary="Commercial product. Requires a valid license."
+            url="https://mabriteccentral.com/"
+            icon="icons/32x32/Mabritec.svg">
+      </pluginDescriptor>
+
    </extension>
 </plugin>
