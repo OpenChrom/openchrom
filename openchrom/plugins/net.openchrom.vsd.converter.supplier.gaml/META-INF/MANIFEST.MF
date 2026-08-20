@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.vsd.converter.supplier.gaml
 Bundle-ManifestVersion: 2
 Bundle-Name: GAML Vibrational Spectroscopy
 Bundle-SymbolicName: net.openchrom.vsd.converter.supplier.gaml;singleton:=true
-Bundle-Version: 1.6.28.qualifier
+Bundle-Version: 1.6.29.qualifier
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.converter;bundle-version="0.8.0",

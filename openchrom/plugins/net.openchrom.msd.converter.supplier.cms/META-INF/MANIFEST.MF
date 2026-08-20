@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.msd.converter.supplier.cms
 Bundle-ManifestVersion: 2
 Bundle-Name: CMS Converter
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.cms;singleton:=true
-Bundle-Version: 1.6.28.qualifier
+Bundle-Version: 1.6.29.qualifier
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.msd.model;bundle-version="0.8.0",
