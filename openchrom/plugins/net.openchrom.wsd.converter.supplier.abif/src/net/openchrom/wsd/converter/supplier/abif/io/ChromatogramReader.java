@@ -117,7 +117,6 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 		in.resetPosition();
 		int directoryDataOffset = dataOffset;
 		in.seek(directoryDataOffset);
-		int position = in.getPosition();
 		// temporary data storage as we need to reorder later
 		int scans = 0;
 		short downSamplingFactor = 0;
@@ -160,7 +159,7 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 						in.skipBytes(4);
 						continue;
 					}
-					position = in.getPosition();
+					int position = in.getPosition();
 					in.resetPosition();
 					in.seek(dataOffset);
 					// C-style string (null terminated).
