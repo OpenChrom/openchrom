@@ -15,6 +15,7 @@
 package net.openchrom.msd.converter.supplier.cms.converter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
 import java.util.List;
@@ -24,30 +25,35 @@ import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.IIonMeasurement;
 
 @TestInstance(Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ImportConverter_3_ITest {
 
 	private IMassSpectra massSpectra;
 
-	@BeforeAll
-	public void setUp() {
+	@Test
+	@Order(1)
+	public void testImport() {
 
 		File importFile = new File("testData/files/import/MassSpectra3.cms");
 		IDatabaseImportConverter importConverter = new DatabaseImportConverter();
 		IProcessingInfo<IMassSpectra> processingInfo = importConverter.convert(importFile, new NullProgressMonitor());
 		massSpectra = processingInfo.getProcessingResult();
+		assertNotNull(massSpectra);
 	}
 
 	@Test
-	public void test_1() {
+	public void test1() {
 
 		assertEquals(1, massSpectra.size());
 		IScanMSD massSpectrum = massSpectra.getMassSpectrum(1);

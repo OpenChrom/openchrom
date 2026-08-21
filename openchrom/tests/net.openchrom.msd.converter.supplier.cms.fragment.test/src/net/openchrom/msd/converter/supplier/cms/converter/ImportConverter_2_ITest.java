@@ -15,6 +15,7 @@
 package net.openchrom.msd.converter.supplier.cms.converter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
 
@@ -24,35 +25,40 @@ import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 
 @TestInstance(Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ImportConverter_2_ITest {
 
 	private IMassSpectra massSpectra;
 
-	@BeforeAll
-	public void setUp() {
+	@Test
+	@Order(1)
+	public void testImport() {
 
 		File importFile = new File("testData/files/import/MassSpectra2.cms");
 		IDatabaseImportConverter importConverter = new DatabaseImportConverter();
 		IProcessingInfo<IMassSpectra> processingInfo = importConverter.convert(importFile, new NullProgressMonitor());
 		massSpectra = processingInfo.getProcessingResult();
+		assertNotNull(massSpectra);
 	}
 
 	@Test
-	public void test_1() {
+	public void test1() {
 
 		assertEquals(5, massSpectra.size());
 	}
 
 	@Test
-	public void test_2() {
+	public void test2() {
 
 		IScanMSD massSpectrum = massSpectra.getMassSpectrum(1);
 		ILibraryMassSpectrum libraryMassSpectrum = (ILibraryMassSpectrum)massSpectrum;
@@ -76,7 +82,7 @@ public class ImportConverter_2_ITest {
 	}
 
 	@Test
-	public void test_3() {
+	public void test3() {
 
 		IScanMSD massSpectrum = massSpectra.getMassSpectrum(2);
 		ILibraryMassSpectrum libraryMassSpectrum = (ILibraryMassSpectrum)massSpectrum;
@@ -92,7 +98,7 @@ public class ImportConverter_2_ITest {
 	}
 
 	@Test
-	public void test_4() {
+	public void test4() {
 
 		IScanMSD massSpectrum = massSpectra.getMassSpectrum(3);
 		ILibraryMassSpectrum libraryMassSpectrum = (ILibraryMassSpectrum)massSpectrum;
@@ -107,7 +113,7 @@ public class ImportConverter_2_ITest {
 	}
 
 	@Test
-	public void test_5() {
+	public void test5() {
 
 		IScanMSD massSpectrum = massSpectra.getMassSpectrum(4);
 		ILibraryMassSpectrum libraryMassSpectrum = (ILibraryMassSpectrum)massSpectrum;
@@ -134,7 +140,7 @@ public class ImportConverter_2_ITest {
 	}
 
 	@Test
-	public void test_6() {
+	public void test6() {
 
 		IScanMSD massSpectrum = massSpectra.getMassSpectrum(5);
 		ILibraryMassSpectrum libraryMassSpectrum = (ILibraryMassSpectrum)massSpectrum;

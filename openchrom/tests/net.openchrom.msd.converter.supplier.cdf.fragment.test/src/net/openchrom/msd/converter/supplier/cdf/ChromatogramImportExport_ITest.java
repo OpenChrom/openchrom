@@ -26,20 +26,24 @@ import org.eclipse.chemclipse.processing.core.IProcessingMessage;
 import org.eclipse.chemclipse.xxd.converter.supplier.ocx.versions.VersionConstants;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.TestMethodOrder;
 
 @TestInstance(Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ChromatogramImportExport_ITest {
 
 	private IChromatogramMSD chromatogram;
 	private IChromatogramMSD chromatogramImport;
 	private File fileExport;
 
-	@BeforeAll
-	public void setUp() {
+	@Test
+	@Order(1)
+	public void testReImport() {
 
 		/*
 		 * Import
@@ -58,6 +62,7 @@ public class ChromatogramImportExport_ITest {
 		File fileImport = new File("testData/Chromatogram2.ocb");
 		IProcessingInfo<IChromatogramMSD> processingInfoImport = ChromatogramConverterMSD.getInstance().convert(fileImport, extensionPointImport, new NullProgressMonitor());
 		chromatogramImport = processingInfoImport.getProcessingResult();
+		assertNotNull(chromatogramImport);
 		for(IProcessingMessage message : processingInfoImport.getMessages()) {
 			System.out.println(message.getMessage());
 		}
@@ -67,6 +72,7 @@ public class ChromatogramImportExport_ITest {
 		fileExport = new File(pathExport);
 		IProcessingInfo<File> processingInfoExport = ChromatogramConverterMSD.getInstance().convert(fileExport, chromatogramImport, extensionPointExportReimport, new NullProgressMonitor());
 		fileExport = processingInfoExport.getProcessingResult();
+		assertTrue(fileExport.exists());
 		for(IProcessingMessage message : processingInfoExport.getMessages()) {
 			System.out.println(message.getMessage());
 		}
@@ -78,31 +84,14 @@ public class ChromatogramImportExport_ITest {
 		for(IProcessingMessage message : processingInfo.getMessages()) {
 			System.out.println(message.getMessage());
 		}
+		assertNotNull(chromatogram);
+		assertEquals(5726, chromatogram.getNumberOfScans());
+		assertEquals(930401, chromatogram.getNumberOfScanIons());
 	}
 
 	@AfterAll
 	public void tearDown() {
 
 		fileExport.delete();
-	}
-
-	@Test
-	public void testImport() {
-
-		assertNotNull(chromatogramImport);
-	}
-
-	@Test
-	public void testExport() {
-
-		assertTrue(fileExport.exists());
-	}
-
-	@Test
-	public void testReimport() {
-
-		assertNotNull(chromatogram);
-		assertEquals(5726, chromatogram.getNumberOfScans());
-		assertEquals(930401, chromatogram.getNumberOfScanIons());
 	}
 }

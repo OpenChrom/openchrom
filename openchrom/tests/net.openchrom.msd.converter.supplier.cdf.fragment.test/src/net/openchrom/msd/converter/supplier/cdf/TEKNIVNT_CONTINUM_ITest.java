@@ -21,27 +21,32 @@ import java.time.Instant;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import net.openchrom.msd.converter.supplier.cdf.converter.ChromatogramImportConverter;
 
 @Disabled("Fails to load.") // TODO
 @TestInstance(Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TEKNIVNT_CONTINUM_ITest {
 
 	private IChromatogramMSD chromatogram;
 
-	@BeforeAll
-	public void setUp() {
+	@Test
+	@Order(1)
+	public void testImport() {
 
 		File file = new File("testData/TEKNIVNT/CONTINUM.CDF");
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramMSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();
+		assertNotNull(chromatogram);
 	}
 
 	@Test
