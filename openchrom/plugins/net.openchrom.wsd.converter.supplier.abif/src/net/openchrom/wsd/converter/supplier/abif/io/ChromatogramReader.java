@@ -107,8 +107,8 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 		if(!tagName.equals("tdir")) {
 			throw new FileIsNotReadableException("Can't find ABIF directory entry.");
 		}
-		int expectedDataSize = elements * elementSize; // legacy libraries may have reserved additional space in the directory
-		if(dataSize != expectedDataSize) {
+		int expectedDataSize = elements * elementSize;
+		if(dataSize < expectedDataSize) { // legacy libraries may have reserved additional space in the directory
 			logger.warn("Invalid data size " + dataSize + " in ABIF file detected. Expected " + expectedDataSize + ".");
 		}
 		/*
