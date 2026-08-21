@@ -243,7 +243,7 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 				short signal = channel[s];
 				float abundance = signal;
 				if(downSamplingFactor > 0) {
-					abundance = signal / downSamplingFactor;
+					abundance = signal / (float)downSamplingFactor;
 				}
 				scanSignal.setAbsorbance(abundance);
 				scan.addScanSignal(scanSignal);
