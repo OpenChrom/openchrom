@@ -21,18 +21,22 @@ import java.io.File;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.TestMethodOrder;
 
 @TestInstance(Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class MassSpectrumImportConverter_MS1_ITest {
 
 	private IMassSpectra massSpectra;
 
-	@BeforeAll
-	public void setUp() {
+	@Test
+	@Order(1)
+	public void testImport() {
 
 		File file = new File("testData/files/import/MS1.mgf");
 		DatabaseImportConverter importConverter = new DatabaseImportConverter();

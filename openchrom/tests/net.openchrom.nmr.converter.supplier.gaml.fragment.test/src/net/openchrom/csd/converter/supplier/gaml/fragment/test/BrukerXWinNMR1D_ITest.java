@@ -23,31 +23,35 @@ import org.eclipse.chemclipse.model.core.IComplexSignalMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.ISpectrumNMR;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import net.openchrom.nmr.converter.supplier.gaml.converter.ScanImportConverter;
 
 @TestInstance(Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class BrukerXWinNMR1D_ITest {
 
 	private Collection<IComplexSignalMeasurement<?>> complexSignals;
 
-	@BeforeAll
-	public void setUp() {
+	@Test
+	@Order(1)
+	public void testImport() {
 
 		File file = new File("testData/files/import/Bruker_XWINNMR_1D.gaml");
 		ScanImportConverter importConverter = new ScanImportConverter();
 		IProcessingInfo<ISpectrumNMR> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		complexSignals = processingInfo.getProcessingResult().getComplexSignalMeasurements();
+		assertNotNull(complexSignals);
 	}
 
 	@Test
 	public void testLoading() {
 
-		assertNotNull(complexSignals);
 		assertFalse(complexSignals.isEmpty());
 	}
 

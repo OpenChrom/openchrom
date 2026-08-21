@@ -20,30 +20,29 @@ import java.io.File;
 import org.eclipse.chemclipse.fsd.model.core.ISpectrumFSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import net.openchrom.fsd.converter.supplier.gaml.converter.ScanImportConverter;
 
 @TestInstance(Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TS_AB2_FLSCAN_ITest {
 
 	private ISpectrumFSD spectrumFSD;
 
-	@BeforeAll
-	public void setUp() {
+	@Test
+	@Order(1)
+	public void testImport() {
 
 		File file = new File("testData/files/import/TS_AB2_FLSCAN.gaml");
 		ScanImportConverter importConverter = new ScanImportConverter();
 		IProcessingInfo<ISpectrumFSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		spectrumFSD = processingInfo.getProcessingResult();
-	}
-
-	@Test
-	public void testLoading() {
-
 		assertNotNull(spectrumFSD);
 	}
 

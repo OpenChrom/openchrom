@@ -19,12 +19,9 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.util.DefaultTimeZone;
 
 @DefaultTimeZone("CET")
-@TestInstance(Lifecycle.PER_CLASS)
 public class DateSupport_1_Test {
 
 	@Test

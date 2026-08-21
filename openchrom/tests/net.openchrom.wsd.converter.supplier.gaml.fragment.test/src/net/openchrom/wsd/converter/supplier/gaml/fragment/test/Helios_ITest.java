@@ -21,13 +21,16 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.wsd.model.core.ISpectrumWSD;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import net.openchrom.wsd.converter.supplier.gaml.converter.ScanImportConverter;
 
 @TestInstance(Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class Helios_ITest {
 
 	private ISpectrumWSD spectrumWSD;
@@ -39,11 +42,6 @@ public class Helios_ITest {
 		ScanImportConverter importConverter = new ScanImportConverter();
 		IProcessingInfo<ISpectrumWSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		spectrumWSD = processingInfo.getProcessingResult();
-	}
-
-	@Test
-	public void testLoading() {
-
 		assertNotNull(spectrumWSD);
 	}
 

@@ -15,6 +15,7 @@
 package net.openchrom.msd.converter.supplier.cms.converter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
 
@@ -25,22 +26,26 @@ import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorLibraryMassSpectrum;
 import net.openchrom.msd.converter.supplier.cms.model.ICalibratedVendorMassSpectrum;
 
 @TestInstance(Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ReImportConverter_1_ITest {
 
 	private IMassSpectra massSpectra1, massSpectra2;
 	private File exportFile;
 
-	@BeforeAll
-	public void setUp() {
+	@Test
+	@Order(1)
+	public void testReImport() {
 
 		IDatabaseImportConverter importConverter = new DatabaseImportConverter();
 		IDatabaseExportConverter exportConverter = new DatabaseExportConverter();
@@ -50,6 +55,7 @@ public class ReImportConverter_1_ITest {
 		File importFile = new File("testData/files/import/MassSpectra2.cms");
 		IProcessingInfo<IMassSpectra> processingInfoImport = importConverter.convert(importFile, new NullProgressMonitor());
 		massSpectra1 = processingInfoImport.getProcessingResult();
+		assertNotNull(massSpectra1);
 		/*
 		 * Export
 		 */
@@ -62,7 +68,7 @@ public class ReImportConverter_1_ITest {
 		File reImportFile = new File(exportFolder, File.separator + "MassSpectraExport1.CMS");
 		IProcessingInfo<IMassSpectra> processingInfoReImport = importConverter.convert(reImportFile, new NullProgressMonitor());
 		massSpectra2 = processingInfoReImport.getProcessingResult();
-
+		assertNotNull(massSpectra2);
 	}
 
 	@AfterAll
@@ -75,7 +81,7 @@ public class ReImportConverter_1_ITest {
 	}
 
 	@Test
-	public void test_1() {
+	public void test1() {
 
 		assertEquals(massSpectra1.size(), massSpectra2.size());
 		for(int i = 1; i <= massSpectra1.size(); i++) {

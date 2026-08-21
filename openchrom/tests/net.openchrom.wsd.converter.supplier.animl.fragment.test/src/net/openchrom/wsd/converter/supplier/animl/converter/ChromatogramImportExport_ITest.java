@@ -25,20 +25,24 @@ import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.chemclipse.xxd.converter.supplier.ocx.versions.VersionConstants;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.TestMethodOrder;
 
 @TestInstance(Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ChromatogramImportExport_ITest {
 
 	private IChromatogramWSD chromatogramImport;
 	private IChromatogramWSD chromatogram;
 	private File fileExport;
 
-	@BeforeAll
-	public void setUp() {
+	@Test
+	@Order(1)
+	public void testReImport() {
 
 		/*
 		 * Import
@@ -78,19 +82,14 @@ public class ChromatogramImportExport_ITest {
 		for(IProcessingMessage message : processingInfo.getMessages()) {
 			System.out.println(message.getMessage());
 		}
+		assertNotNull(chromatogram);
+		assertEquals(4950, chromatogram.getNumberOfScans());
+		assertEquals(280f, chromatogram.getWavelengths().iterator().next(), 0);
 	}
 
 	@AfterAll
 	public void tearDown() {
 
 		fileExport.delete();
-	}
-
-	@Test
-	public void testReimport() {
-
-		assertNotNull(chromatogram);
-		assertEquals(4950, chromatogram.getNumberOfScans());
-		assertEquals(280f, chromatogram.getWavelengths().iterator().next(), 0);
 	}
 }

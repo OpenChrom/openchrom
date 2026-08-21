@@ -25,7 +25,6 @@ import org.eclipse.chemclipse.processing.core.IProcessingMessage;
 import org.eclipse.chemclipse.xxd.converter.supplier.ocx.versions.VersionConstants;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
@@ -36,8 +35,8 @@ public class ChromatogramImportExport_ITest {
 	private IChromatogramMSD chromatogram;
 	private File fileExport;
 
-	@BeforeAll
-	public void setUp() {
+	@Test
+	public void testReimport() {
 
 		/*
 		 * Import
@@ -76,19 +75,15 @@ public class ChromatogramImportExport_ITest {
 		for(IProcessingMessage message : processingInfo.getMessages()) {
 			System.out.println(message.getMessage());
 		}
+
+		assertNotNull(chromatogram);
+		assertEquals(5726, chromatogram.getNumberOfScans());
+		assertEquals(72, chromatogram.getPeaks().size());
 	}
 
 	@AfterAll
 	public void tearDown() {
 
 		fileExport.delete();
-	}
-
-	@Test
-	public void testReimport() {
-
-		assertNotNull(chromatogram);
-		assertEquals(5726, chromatogram.getNumberOfScans());
-		assertEquals(72, chromatogram.getPeaks().size());
 	}
 }

@@ -25,22 +25,26 @@ import org.eclipse.chemclipse.msd.model.core.IStandaloneMassSpectrum;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.IProcessingMessage;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import net.openchrom.msd.converter.supplier.muf.converter.model.ICultivationConditions;
 import net.openchrom.msd.converter.supplier.muf.converter.model.ISpectraMultiFileMassSpectra;
 import net.openchrom.msd.converter.supplier.muf.converter.model.ITaxonomicInformation;
 
 @TestInstance(Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class MassSpectrumImportConverter_RKI_Ring_Trial_ITest {
 
 	private IMassSpectra massSpectra;
 
-	@BeforeAll
-	public void setUp() {
+	@Test
+	@Order(1)
+	public void testImport() {
 
 		File file = new File("data/RKI-ring-trial-spectra.muf");
 		MassSpectrumImportConverter importConverter = new MassSpectrumImportConverter();
@@ -49,6 +53,7 @@ public class MassSpectrumImportConverter_RKI_Ring_Trial_ITest {
 			System.out.println(message.getMessage());
 		}
 		massSpectra = processingInfo.getProcessingResult();
+		assertNotNull(massSpectra);
 	}
 
 	@Test

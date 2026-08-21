@@ -21,13 +21,16 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import net.openchrom.wsd.converter.supplier.cdf.converter.ChromatogramImportConverterWSD;
 
 @TestInstance(Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class WAT_490_ITest {
 
 	private IChromatogramWSD chromatogram;
@@ -39,11 +42,6 @@ public class WAT_490_ITest {
 		ChromatogramImportConverterWSD importConverter = new ChromatogramImportConverterWSD();
 		IProcessingInfo<IChromatogramWSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();
-	}
-
-	@Test
-	public void testLoading() {
-
 		assertNotNull(chromatogram);
 	}
 
