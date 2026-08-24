@@ -23,6 +23,13 @@ import org.eclipse.chemclipse.dsd.model.core.IChromatogramDSD;
 import org.eclipse.chemclipse.dsd.model.core.Nucleobase;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
+import org.eclipse.chemclipse.model.identifier.ComparisonResult;
+import org.eclipse.chemclipse.model.identifier.IComparisonResult;
+import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
+import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
+import org.eclipse.chemclipse.model.identifier.LibraryInformation;
+import org.eclipse.chemclipse.model.implementation.IdentificationTarget;
+import org.eclipse.chemclipse.wsd.model.core.IScanWSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.wsd.converter.supplier.abif.internal.support.ChromatogramArrayReader;
@@ -126,6 +133,8 @@ public class ChromatogramReader extends AbstractChromatogramDSDReader {
 		// Loop through all relevant data
 		int directoryElements = elements;
 		char[] baseOrder = new char[4];
+		byte[] quality = new byte[0];
+		ArrayList<Integer> peakLocations = new ArrayList<>();
 		for(int n = 0; n < directoryElements; n++) {
 			readDirectory(in);
 			if(tagName.isEmpty()) {
@@ -173,6 +182,40 @@ public class ChromatogramReader extends AbstractChromatogramDSDReader {
 					// C-style string (null terminated).
 					String uneditedSequenceCharacters = in.readBytesAsString(dataSize);
 					chromatogram.setNucleotideSequence(uneditedSequenceCharacters);
+					in.resetPosition();
+					in.seek(position);
+					break;
+				/*
+				 * Read quality values.
+				 */
+				case "PCON":
+					// skip the user edited sequence
+					if(tagNumber != 1) {
+						in.skipBytes(4);
+						continue;
+					}
+					position = in.getPosition();
+					in.resetPosition();
+					in.seek(dataOffset);
+					quality = in.readBytes(dataSize);
+					in.resetPosition();
+					in.seek(position);
+					break;
+				/*
+				 * Read peak locations
+				 */
+				case "PLOC":
+					// skip the user edited sequence
+					if(tagNumber != 1) {
+						in.skipBytes(4);
+						continue;
+					}
+					position = in.getPosition();
+					in.resetPosition();
+					in.seek(dataOffset);
+					for(int i = 0; i < dataSize / Short.BYTES; i++) {
+						peakLocations.add(in.read2BUIntegerBE());
+					}
 					in.resetPosition();
 					in.seek(position);
 					break;
@@ -270,6 +313,23 @@ public class ChromatogramReader extends AbstractChromatogramDSDReader {
 				chromatogram.getWavelengthMapping().put((float)waveLengths[i], Nucleobase.THYMINE);
 			}
 		}
+
+		char[] nucleotides = chromatogram.getNucleotideSequence().toCharArray();
+		int i = 0;
+		for(int peakLocation : peakLocations) {
+			IScanWSD scan = chromatogram.getScan(peakLocation + 1);
+
+			ILibraryInformation libraryInformation = new LibraryInformation();
+			libraryInformation.setName(String.valueOf(nucleotides[i]));
+
+			byte q = quality[i];
+			IComparisonResult comparisonResult = new ComparisonResult(q, q, q, q); // TODO not the right field
+			IIdentificationTarget identificationTarget = new IdentificationTarget(libraryInformation, comparisonResult);
+			scan.getTargets().add(identificationTarget); // TODO add to scan signal rather than total signal
+
+			i++;
+		}
+
 		return chromatogram;
 	}
 }
