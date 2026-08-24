@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.io.File;
 
 import org.eclipse.chemclipse.dsd.model.core.IChromatogramDSD;
+import org.eclipse.chemclipse.dsd.model.core.Nucleobase;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.jupiter.api.MethodOrderer;
@@ -52,5 +53,22 @@ public class AbiPrism310GeneticAnalyser_ITest {
 	public void testVersion() {
 
 		assertEquals(101, ((IVendorChromatogram)chromatogram).getVersion());
+	}
+
+	@Test
+	public void testWavelengths() {
+
+		assertEquals(4, chromatogram.getWavelengthMapping().size());
+		assertEquals(540f, chromatogram.getScan(1).getScanSignal(0).getWavelength());
+		assertEquals(Nucleobase.GUANINE, chromatogram.getWavelengthMapping().get(540f));
+
+		assertEquals(568f, chromatogram.getScan(1).getScanSignal(1).getWavelength());
+		assertEquals(Nucleobase.ADENINE, chromatogram.getWavelengthMapping().get(568f));
+
+		assertEquals(595f, chromatogram.getScan(1).getScanSignal(2).getWavelength());
+		assertEquals(Nucleobase.THYMINE, chromatogram.getWavelengthMapping().get(595f));
+
+		assertEquals(615f, chromatogram.getScan(1).getScanSignal(3).getWavelength());
+		assertEquals(Nucleobase.CYTOSINE, chromatogram.getWavelengthMapping().get(615f));
 	}
 }

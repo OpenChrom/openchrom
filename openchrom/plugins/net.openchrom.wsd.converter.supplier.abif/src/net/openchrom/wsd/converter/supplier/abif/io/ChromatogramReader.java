@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
 import org.eclipse.chemclipse.dsd.converter.io.AbstractChromatogramDSDReader;
 import org.eclipse.chemclipse.dsd.model.core.IChromatogramDSD;
+import org.eclipse.chemclipse.dsd.model.core.Nucleobase;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -124,6 +125,7 @@ public class ChromatogramReader extends AbstractChromatogramDSDReader {
 		short[] waveLengths = backfallWaveLengths;
 		// Loop through all relevant data
 		int directoryElements = elements;
+		char[] baseOrder = new char[4];
 		for(int n = 0; n < directoryElements; n++) {
 			readDirectory(in);
 			if(tagName.isEmpty()) {
@@ -142,6 +144,12 @@ public class ChromatogramReader extends AbstractChromatogramDSDReader {
 					short wavelength = in.read2BShortBE();
 					waveLengths[tagNumber - 1] = wavelength;
 					in.skipBytes(2);
+					break;
+				/*
+				 * Read filter wheel order.
+				 */
+				case "FWO_":
+					baseOrder = in.readString(4).toCharArray(); // GATC
 					break;
 				/*
 				 * Injection time (s)
@@ -250,6 +258,18 @@ public class ChromatogramReader extends AbstractChromatogramDSDReader {
 			chromatogram.addScan(scan);
 		}
 		chromatogram.recalculateRetentionTimes();
+
+		for(int i = 0; i < waveLengths.length; i++) {
+			if(baseOrder[i] == Nucleobase.ADENINE.letter()) {
+				chromatogram.getWavelengthMapping().put((float)waveLengths[i], Nucleobase.ADENINE);
+			} else if(baseOrder[i] == Nucleobase.CYTOSINE.letter()) {
+				chromatogram.getWavelengthMapping().put((float)waveLengths[i], Nucleobase.CYTOSINE);
+			} else if(baseOrder[i] == Nucleobase.GUANINE.letter()) {
+				chromatogram.getWavelengthMapping().put((float)waveLengths[i], Nucleobase.GUANINE);
+			} else if(baseOrder[i] == Nucleobase.THYMINE.letter()) {
+				chromatogram.getWavelengthMapping().put((float)waveLengths[i], Nucleobase.THYMINE);
+			}
+		}
 		return chromatogram;
 	}
 }
