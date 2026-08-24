@@ -204,7 +204,7 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 					break;
 				case "DATA":
 					// ignore voltage, current, power, temperature etc.
-					if(tagNumber > waveLengths.length) {
+					if(tagNumber < 9 || tagNumber > 12) {
 						in.skipBytes(4);
 						continue;
 					}
