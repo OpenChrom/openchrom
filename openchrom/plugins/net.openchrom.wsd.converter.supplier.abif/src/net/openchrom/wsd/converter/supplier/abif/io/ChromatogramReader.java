@@ -155,7 +155,7 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 				 */
 				case "PBAS":
 					// skip the user edited sequence
-					if(tagNumber != 2) {
+					if(tagNumber != 1) {
 						in.skipBytes(4);
 						continue;
 					}
