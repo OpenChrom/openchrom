@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2025 Matthias Mailänder, Philip Wenig.
+ * Copyright (c) 2016, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -13,11 +13,11 @@
  *******************************************************************************/
 package net.openchrom.wsd.converter.supplier.abif.model;
 
-import org.eclipse.chemclipse.wsd.model.core.AbstractChromatogramWSD;
+import org.eclipse.chemclipse.dsd.model.core.AbstractChromatogramDSD;
 
-public class VendorChromatogram extends AbstractChromatogramWSD implements IVendorChromatogram {
+public class VendorChromatogram extends AbstractChromatogramDSD implements IVendorChromatogram {
 
-	private static final long serialVersionUID = -8350222823430985191L;
+	private static final long serialVersionUID = 99309012496579942L;
 	private short version;
 
 	@Override

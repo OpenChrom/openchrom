@@ -9,38 +9,48 @@
  * 
  * Contributors:
  * Matthias Mailänder - initial API and implementation
- * Alexander Kerner - Generics
+ * Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.wsd.converter.supplier.abif.io;
+package net.openchrom.dsd.converter.supplier.abif.io;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
 
+import org.eclipse.chemclipse.dsd.model.core.IChromatogramDSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
-import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import net.openchrom.wsd.converter.supplier.abif.core.ChromatogramImportConverter;
+import net.openchrom.wsd.converter.supplier.abif.model.IVendorChromatogram;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class InvalidData_ITest {
+public class AbiPrism310GeneticAnalyser_ITest {
 
-	private IChromatogramWSD chromatogram;
+	private IChromatogramDSD chromatogram;
 
-	@BeforeAll
-	public void setUp() {
+	@Test
+	@Order(1)
+	public void testImport() {
 
-		File fileImport = new File("testdata/files/import/fake.ab1");
+		File fileImport = new File("testdata/files/import/310.ab1");
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
-		IProcessingInfo<IChromatogramWSD> processingInfo = importConverter.convert(fileImport, new NullProgressMonitor());
+		IProcessingInfo<IChromatogramDSD> processingInfo = importConverter.convert(fileImport, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();
-		assertNull(chromatogram);
+		assertNotNull(chromatogram);
+	}
+
+	@Test
+	public void testVersion() {
+
+		assertEquals(101, ((IVendorChromatogram)chromatogram).getVersion());
 	}
 }

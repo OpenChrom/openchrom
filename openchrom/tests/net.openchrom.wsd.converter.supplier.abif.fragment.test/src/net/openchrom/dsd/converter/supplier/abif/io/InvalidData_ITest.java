@@ -9,20 +9,19 @@
  * 
  * Contributors:
  * Matthias Mailänder - initial API and implementation
+ * Alexander Kerner - Generics
  *******************************************************************************/
-package net.openchrom.wsd.converter.supplier.abif.io;
+package net.openchrom.dsd.converter.supplier.abif.io;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.File;
 
+import org.eclipse.chemclipse.dsd.model.core.IChromatogramDSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
-import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -31,30 +30,17 @@ import net.openchrom.wsd.converter.supplier.abif.core.ChromatogramImportConverte
 
 @TestInstance(Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class EmptyFile_ITest {
+public class InvalidData_ITest {
 
-	private IChromatogramWSD chromatogram;
+	private IChromatogramDSD chromatogram;
 
-	@Test
-	@Order(1)
-	public void testImport() {
+	@BeforeAll
+	public void setUp() {
 
-		File fileImport = new File("testdata/files/import/empty.ab1");
+		File fileImport = new File("testdata/files/import/fake.ab1");
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
-		IProcessingInfo<IChromatogramWSD> processingInfo = importConverter.convert(fileImport, new NullProgressMonitor());
+		IProcessingInfo<IChromatogramDSD> processingInfo = importConverter.convert(fileImport, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();
-		assertNotNull(chromatogram);
-	}
-
-	@Test
-	public void testEmptySequence() {
-
-		assertEquals("NNNNN", chromatogram.getMiscInfo());
-	}
-
-	@Test
-	public void testSampleName() {
-
-		assertEquals("226041_C-ME-19_pCAGseqF", chromatogram.getSampleName());
+		assertNull(chromatogram);
 	}
 }
