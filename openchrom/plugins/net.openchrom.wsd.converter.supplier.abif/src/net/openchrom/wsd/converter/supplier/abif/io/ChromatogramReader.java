@@ -18,10 +18,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
+import org.eclipse.chemclipse.dsd.converter.io.AbstractChromatogramDSDReader;
+import org.eclipse.chemclipse.dsd.model.core.IChromatogramDSD;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
-import org.eclipse.chemclipse.wsd.converter.io.AbstractChromatogramWSDReader;
-import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.wsd.converter.supplier.abif.internal.support.ChromatogramArrayReader;
@@ -32,12 +32,12 @@ import net.openchrom.wsd.converter.supplier.abif.model.VendorChromatogram;
 import net.openchrom.wsd.converter.supplier.abif.model.VendorScan;
 import net.openchrom.wsd.converter.supplier.abif.model.VendorScanSignalWSD;
 
-public class ChromatogramReader extends AbstractChromatogramWSDReader {
+public class ChromatogramReader extends AbstractChromatogramDSDReader {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramReader.class);
 
 	@Override
-	public IChromatogramWSD read(File file, IProgressMonitor monitor) throws IOException {
+	public IChromatogramDSD read(File file, IProgressMonitor monitor) throws IOException {
 
 		return readChromatogram(file);
 	}
@@ -73,7 +73,7 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 		}
 	}
 
-	private IChromatogramWSD readChromatogram(File file) throws IOException {
+	private IChromatogramDSD readChromatogram(File file) throws IOException {
 
 		IChromatogramArrayReader in = new ChromatogramArrayReader(file);
 		/*
@@ -164,7 +164,7 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 					in.seek(dataOffset);
 					// C-style string (null terminated).
 					String uneditedSequenceCharacters = in.readBytesAsString(dataSize);
-					chromatogram.setMiscInfo(uneditedSequenceCharacters);
+					chromatogram.setNucleotideSequence(uneditedSequenceCharacters);
 					in.resetPosition();
 					in.seek(position);
 					break;
