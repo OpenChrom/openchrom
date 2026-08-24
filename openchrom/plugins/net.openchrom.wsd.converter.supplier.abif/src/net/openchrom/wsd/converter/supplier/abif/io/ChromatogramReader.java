@@ -30,7 +30,7 @@ import net.openchrom.wsd.converter.supplier.abif.model.IVendorChromatogram;
 import net.openchrom.wsd.converter.supplier.abif.model.IVendorScan;
 import net.openchrom.wsd.converter.supplier.abif.model.VendorChromatogram;
 import net.openchrom.wsd.converter.supplier.abif.model.VendorScan;
-import net.openchrom.wsd.converter.supplier.abif.model.VendorScanSignalDAD;
+import net.openchrom.wsd.converter.supplier.abif.model.VendorScanSignalWSD;
 
 public class ChromatogramReader extends AbstractChromatogramWSDReader {
 
@@ -236,7 +236,7 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 			IVendorScan scan = new VendorScan();
 			for(int c = 0; c < waveLengths.length; c++) {
 				int waveLength = waveLengths[c];
-				VendorScanSignalDAD scanSignal = new VendorScanSignalDAD();
+				VendorScanSignalWSD scanSignal = new VendorScanSignalWSD();
 				scanSignal.setWavelength(waveLength);
 				short[] channel = channels.get(c);
 				short signal = channel[s];
