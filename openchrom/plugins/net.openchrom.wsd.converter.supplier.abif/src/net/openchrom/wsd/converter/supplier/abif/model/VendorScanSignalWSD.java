@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2025 Matthias Mailänder, Philip Wenig.
+ * Copyright (c) 2016, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -15,7 +15,7 @@ package net.openchrom.wsd.converter.supplier.abif.model;
 
 import org.eclipse.chemclipse.wsd.model.core.AbstractScanSignalWSD;
 
-public class VendorScanSignalDAD extends AbstractScanSignalWSD implements IVendorScanSignalDAD {
+public class VendorScanSignalWSD extends AbstractScanSignalWSD implements IVendorScanSignalWSD {
 
 	private static final long serialVersionUID = 334436896576846950L;
 }
