@@ -114,7 +114,7 @@ public abstract class AbstractPeakIdentifier {
 								libraryInformation.setComments(identifierSetting.getComments());
 								libraryInformation.setContributor(identifierSetting.getContributor());
 								libraryInformation.setReferenceIdentifier(identifierSetting.getReferenceIdentifier());
-								IComparisonResult comparisonResult = new ComparisonResult(matchFactor, matchFactor, matchFactor, matchFactor);
+								IComparisonResult comparisonResult = new ComparisonResult(matchFactor);
 								IIdentificationTarget identificationTarget = new IdentificationTarget(libraryInformation, comparisonResult);
 								identificationTarget.setIdentifier(PeakIdentifierSettings.IDENTIFIER_DESCRIPTION); // $NON-NLS-N$
 								peak.getTargets().add(identificationTarget);
