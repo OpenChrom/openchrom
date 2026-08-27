@@ -322,8 +322,7 @@ public class ChromatogramReader extends AbstractChromatogramDSDReader {
 			ILibraryInformation libraryInformation = new LibraryInformation();
 			libraryInformation.setName(String.valueOf(nucleotides[i]));
 
-			byte q = quality[i];
-			IComparisonResult comparisonResult = new ComparisonResult(q, q, q, q); // TODO not the right field
+			IComparisonResult comparisonResult = new ComparisonResult(quality[i]);
 			IIdentificationTarget identificationTarget = new IdentificationTarget(libraryInformation, comparisonResult);
 			scan.getTargets().add(identificationTarget); // TODO add to scan signal rather than total signal
 
