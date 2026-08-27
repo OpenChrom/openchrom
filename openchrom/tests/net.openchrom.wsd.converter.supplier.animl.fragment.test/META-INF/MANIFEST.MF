@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.wsd.converter.supplier.animl.fragment.test
 Bundle-ManifestVersion: 2
 Bundle-Name: AnIML WSD Test
 Bundle-SymbolicName: net.openchrom.wsd.converter.supplier.animl.fragment.test
-Bundle-Version: 1.6.29.qualifier
+Bundle-Version: 1.6.30.qualifier
 Bundle-Vendor: OpenChrom
 Fragment-Host: net.openchrom.wsd.converter.supplier.animl;bundle-version="1.6.13"
 Import-Package: org.junit.jupiter.api;version="[6.0.0,7.0.0)"

@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.chromatogram.msd.peak.detector.supplier.amd
 Bundle-ManifestVersion: 2
 Bundle-Name: AMDIS UI
 Bundle-SymbolicName: net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.ui;singleton:=true
-Bundle-Version: 1.6.29.qualifier
+Bundle-Version: 1.6.30.qualifier
 Bundle-Activator: net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.ui.Activator
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.ui,

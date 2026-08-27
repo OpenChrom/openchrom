@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.xxd.identifier.supplier.foodb.feature"
       label="FooDB"
-      version="1.6.29.qualifier"
+      version="1.6.30.qualifier"
       provider-name="OpenChrom"
       plugin="net.openchrom.feature.branding"
       license-feature="org.eclipse.license"
