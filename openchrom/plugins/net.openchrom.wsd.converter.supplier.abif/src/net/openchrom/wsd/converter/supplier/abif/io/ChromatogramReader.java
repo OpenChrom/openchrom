@@ -134,6 +134,7 @@ public class ChromatogramReader extends AbstractChromatogramDSDReader {
 		int directoryElements = elements;
 		char[] baseOrder = new char[4];
 		byte[] quality = new byte[0];
+		char[] nucleotides = new char[0];
 		ArrayList<Integer> peakLocations = new ArrayList<>();
 		for(int n = 0; n < directoryElements; n++) {
 			readDirectory(in);
@@ -180,8 +181,7 @@ public class ChromatogramReader extends AbstractChromatogramDSDReader {
 					in.resetPosition();
 					in.seek(dataOffset);
 					// C-style string (null terminated).
-					String uneditedSequenceCharacters = in.readBytesAsString(dataSize);
-					chromatogram.setNucleotideSequence(uneditedSequenceCharacters);
+					nucleotides = in.readBytesAsString(dataSize).toCharArray();
 					in.resetPosition();
 					in.seek(position);
 					break;
@@ -314,7 +314,6 @@ public class ChromatogramReader extends AbstractChromatogramDSDReader {
 			}
 		}
 
-		char[] nucleotides = chromatogram.getNucleotideSequence().toCharArray();
 		int i = 0;
 		for(int peakLocation : peakLocations) {
 			IScanWSD scan = chromatogram.getScan(peakLocation + 1);
