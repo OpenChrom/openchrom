@@ -14,4 +14,19 @@
             isImportable="true">
       </ChromatogramSupplier>
    </extension>
+<extension
+         point="org.eclipse.chemclipse.model.comparisonMetrics">
+      <Algorithm
+            id="abif"
+            label="Base Caller"
+            ratingSupplier="net.openchrom.wsd.converter.supplier.abif.metric.BaseCallerRatingSupplierFactory">
+         <Metric
+               id="abif.phred"
+               label="Phred quality score"
+               description="log-scaled error probability"
+               format="0.0"
+               order="descending">
+         </Metric>
+      </Algorithm>
+   </extension>
 </plugin>
