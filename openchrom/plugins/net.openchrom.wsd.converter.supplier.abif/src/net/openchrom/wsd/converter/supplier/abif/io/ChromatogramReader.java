@@ -34,6 +34,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.wsd.converter.supplier.abif.internal.support.ChromatogramArrayReader;
 import net.openchrom.wsd.converter.supplier.abif.internal.support.IChromatogramArrayReader;
+import net.openchrom.wsd.converter.supplier.abif.metric.BaseCallerMetrics;
 import net.openchrom.wsd.converter.supplier.abif.model.IVendorChromatogram;
 import net.openchrom.wsd.converter.supplier.abif.model.IVendorScan;
 import net.openchrom.wsd.converter.supplier.abif.model.VendorChromatogram;
@@ -321,7 +322,9 @@ public class ChromatogramReader extends AbstractChromatogramDSDReader {
 			ILibraryInformation libraryInformation = new LibraryInformation();
 			libraryInformation.setName(String.valueOf(nucleotides[i]));
 
-			IComparisonResult comparisonResult = new ComparisonResult(quality[i]);
+			IComparisonResult comparisonResult = new ComparisonResult(BaseCallerMetrics.ALGORITHM_ABIF);
+			comparisonResult.setMetric(BaseCallerMetrics.PHRED_QUALITY_SCORE, quality[i]);
+
 			IIdentificationTarget identificationTarget = new IdentificationTarget(libraryInformation, comparisonResult);
 			scan.getTargets().add(identificationTarget); // TODO add to scan signal rather than total signal
 
