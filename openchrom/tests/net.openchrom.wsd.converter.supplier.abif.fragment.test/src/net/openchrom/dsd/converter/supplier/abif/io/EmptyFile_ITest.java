@@ -50,7 +50,7 @@ public class EmptyFile_ITest {
 	@Test
 	public void testEmptySequence() {
 
-		assertEquals("NNNNN", chromatogram.getNucleotideSequence());
+		assertEquals("NNNNN", chromatogram.getNucleotideSequence().toString());
 	}
 
 	@Test
