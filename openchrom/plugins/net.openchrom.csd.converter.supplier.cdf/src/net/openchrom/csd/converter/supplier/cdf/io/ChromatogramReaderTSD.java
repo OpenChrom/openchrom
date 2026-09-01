@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Lablicate GmbH.
+ * Copyright (c) 2021, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -84,18 +84,11 @@ public class ChromatogramReaderTSD implements IImportConverterTSD {
 		IChromatogramTSD chromatogram = new VendorChromatogramTSD();
 		int offset = 0;
 		List<Float> signals = new ArrayList<>();
-
 		for(IScan scan : chromatogramCSD.getScans()) {
 			int retentionTime = scan.getRetentionTime();
-			float intensity = scan.getTotalSignal();
-
 			int delta = retentionTime - offset;
-			if(delta < modulationTime) {
-				float signal = intensity;
-				signals.add(signal);
-			} else {
-				float signal = intensity;
-				signals.add(signal);
+			signals.add(scan.getTotalSignal());
+			if(delta >= modulationTime) {
 				IScanTSD scanTSD = new ScanTSD();
 				scanTSD.setRetentionTime(retentionTime);
 				scanTSD.setSignals(getSignals(signals));
