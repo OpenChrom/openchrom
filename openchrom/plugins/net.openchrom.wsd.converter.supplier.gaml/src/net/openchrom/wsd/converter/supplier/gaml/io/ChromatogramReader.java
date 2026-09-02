@@ -23,6 +23,8 @@ import org.eclipse.chemclipse.wsd.converter.io.IChromatogramWSDReader;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import net.openchrom.xxd.converter.supplier.gaml.io.Reader100;
+import net.openchrom.xxd.converter.supplier.gaml.io.Reader110;
 import net.openchrom.xxd.converter.supplier.gaml.io.Reader120;
 
 public class ChromatogramReader extends AbstractChromatogramWSDReader {
@@ -39,6 +41,10 @@ public class ChromatogramReader extends AbstractChromatogramWSDReader {
 		final String header = new String(charBuffer);
 		if(header.contains(Reader120.VERSION)) {
 			chromatogramReader = new ChromatogramReaderVersion120();
+		} else if(header.contains(Reader110.VERSION)) {
+			chromatogramReader = new ChromatogramReaderVersion110();
+		} else if(header.contains(Reader100.VERSION)) {
+			chromatogramReader = new ChromatogramReaderVersion100();
 		} else {
 			throw new UnknownVersionException();
 		}
