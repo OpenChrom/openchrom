@@ -11,12 +11,15 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cdf.io;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.File;
 
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
+import org.eclipse.chemclipse.processing.core.IProcessingMessage;
+import org.eclipse.chemclipse.processing.core.MessageType;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -40,15 +43,14 @@ public class ChromatogramReader_EMPTY_1_ITest {
 	@Order(1)
 	public void testImport() {
 
-		File fileImport = new File("testData/EMPTY.CDF");
+		File file = new File("testData/EMPTY.CDF");
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
-		IProcessingInfo<IChromatogramMSD> processingInfo = importConverter.convert(fileImport, new NullProgressMonitor());
+		IProcessingInfo<IChromatogramMSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();
-	}
-
-	@Test
-	public void testNotReadable_1() {
-
 		assertNull(chromatogram);
+		for(IProcessingMessage message : processingInfo.getMessages()) {
+			assertEquals(MessageType.ERROR, message.getMessageType());
+			assertEquals("The given file is empty: " + file.getAbsolutePath(), message.getMessage());
+		}
 	}
 }
