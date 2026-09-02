@@ -33,6 +33,7 @@
 -Dp2.trustedAuthorities=https://converter.openchrom.net,https://plugins.openchrom.net,https://update.openchrom.net,https://plugins.lablicate.com
 -XX:+UseG1GC
 -XX:+UseStringDeduplication
+--enable-native-access=ALL-UNNAMED
       </vmArgs>
       <vmArgsMac>-XstartOnFirstThread
       </vmArgsMac>
