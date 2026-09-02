@@ -44,7 +44,7 @@ public class FileContentMatcher extends AbstractFileContentMatcher {
 
 			int events = 0;
 
-			while(reader.hasNext() && events < 1000) {
+			while(reader.hasNext() && events < 100000) {
 				int event = reader.next();
 				if(event == XMLStreamConstants.START_ELEMENT) {
 					String localName = reader.getLocalName();
