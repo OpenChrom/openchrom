@@ -14,6 +14,7 @@ package net.openchrom.msd.converter.supplier.muf.converter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.util.Calendar;
@@ -41,12 +42,13 @@ import net.openchrom.msd.converter.supplier.muf.converter.model.ITaxonomicInform
 public class MassSpectrumImportConverter_RKI_Ring_Trial_ITest {
 
 	private IMassSpectra massSpectra;
+	private File file;
 
 	@Test
 	@Order(1)
 	public void testImport() {
 
-		File file = new File("data/RKI-ring-trial-spectra.muf");
+		file = new File("data/RKI-ring-trial-spectra.muf");
 		MassSpectrumImportConverter importConverter = new MassSpectrumImportConverter();
 		IProcessingInfo<IMassSpectra> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		for(IProcessingMessage message : processingInfo.getMessages()) {
@@ -54,6 +56,13 @@ public class MassSpectrumImportConverter_RKI_Ring_Trial_ITest {
 		}
 		massSpectra = processingInfo.getProcessingResult();
 		assertNotNull(massSpectra);
+	}
+
+	@Test
+	public void testMatch() {
+
+		MagicNumberMatcher magicNumberMatcher = new MagicNumberMatcher();
+		assertTrue(magicNumberMatcher.checkFileFormat(file));
 	}
 
 	@Test

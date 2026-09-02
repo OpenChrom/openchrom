@@ -16,6 +16,7 @@ package net.openchrom.msd.converter.supplier.pkf.converter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 
@@ -31,22 +32,31 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import net.openchrom.msd.converter.supplier.microbems.pkf.converter.DatabaseImportConverter;
+import net.openchrom.msd.converter.supplier.microbems.pkf.converter.MagicNumberMatcherDatabase;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class MassSpectrumImportConverter_Ecoli_ITest {
 
 	private IMassSpectra massSpectra;
+	private File file;
 
 	@Test
 	@Order(1)
 	public void testImport() {
 
-		File file = new File("data/ecoli-peaklist-oct16.pkf");
+		file = new File("data/ecoli-peaklist-oct16.pkf");
 		DatabaseImportConverter importConverter = new DatabaseImportConverter();
 		IProcessingInfo<IMassSpectra> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		massSpectra = processingInfo.getProcessingResult();
 		assertNotNull(massSpectra);
+	}
+
+	@Test
+	public void testMatch() {
+
+		MagicNumberMatcherDatabase magicNumberMatcher = new MagicNumberMatcherDatabase();
+		assertTrue(magicNumberMatcher.checkFileFormat(file));
 	}
 
 	@Test

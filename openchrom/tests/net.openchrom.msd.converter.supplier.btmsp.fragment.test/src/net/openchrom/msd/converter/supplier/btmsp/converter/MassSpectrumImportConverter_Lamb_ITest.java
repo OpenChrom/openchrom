@@ -17,6 +17,7 @@ package net.openchrom.msd.converter.supplier.btmsp.converter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 
@@ -39,16 +40,24 @@ import net.openchrom.msd.converter.supplier.btmsp.converter.model.MainSpectraPro
 public class MassSpectrumImportConverter_Lamb_ITest {
 
 	private IMassSpectra massSpectra;
+	private File file;
 
 	@Test
 	@Order(1)
 	public void testImport() {
 
-		File file = new File("data/lamb.btmsp");
+		file = new File("data/lamb.btmsp");
 		DatabaseImportConverter importConverter = new DatabaseImportConverter();
 		IProcessingInfo<IMassSpectra> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		massSpectra = processingInfo.getProcessingResult();
 		assertNotNull(massSpectra);
+	}
+
+	@Test
+	public void testMatch() {
+
+		MagicNumberMatcherDatabase magicNumberMatcher = new MagicNumberMatcherDatabase();
+		assertTrue(magicNumberMatcher.checkFileFormat(file));
 	}
 
 	@Test

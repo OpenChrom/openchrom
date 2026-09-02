@@ -26,23 +26,32 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import net.openchrom.wsd.converter.supplier.axr.converter.ChromatogramImportConverter;
+import net.openchrom.wsd.converter.supplier.axr.converter.MagicNumberMatcher;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AXRRealFileSmoke_ITest {
 
 	private IChromatogramWSD chromatogram;
+	private File file;
 
 	@Test
 	@Order(1)
 	public void testImport() {
 
-		File file = new File("testdata/files/import/Moses_Lake_Low_Focus9_006.axr");
+		file = new File("testdata/files/import/Moses_Lake_Low_Focus9_006.axr");
 		assertTrue(file.isFile(), "Real AXR smoke file not found: " + file.getAbsolutePath());
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramWSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();
 		assertNotNull(chromatogram);
+	}
+
+	@Test
+	public void testMatch() {
+
+		MagicNumberMatcher magicNumberMatcher = new MagicNumberMatcher();
+		assertTrue(magicNumberMatcher.checkFileFormat(file));
 	}
 
 	@Test

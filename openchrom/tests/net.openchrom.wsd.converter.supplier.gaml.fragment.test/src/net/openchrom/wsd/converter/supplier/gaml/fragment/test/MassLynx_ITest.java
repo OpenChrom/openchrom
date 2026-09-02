@@ -14,6 +14,7 @@ package net.openchrom.wsd.converter.supplier.gaml.fragment.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 
@@ -28,22 +29,35 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import net.openchrom.wsd.converter.supplier.gaml.converter.ChromatogramImportConverter;
+import net.openchrom.wsd.converter.supplier.gaml.converter.FileContentMatcherChromatogram;
+import net.openchrom.xxd.converter.supplier.gaml.converter.MagicNumberMatcher;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class MassLynx_ITest {
 
 	private IChromatogramWSD chromatogram;
+	private File file;
 
 	@Test
 	@Order(1)
 	public void testImport() {
 
-		File file = new File("testData/files/import/Micromass_Masslynx.gaml");
+		file = new File("testData/files/import/Micromass_Masslynx.gaml");
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramWSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();
 		assertNotNull(chromatogram);
+	}
+
+	@Test
+	public void testMatch() {
+
+		MagicNumberMatcher magicNumberMatcher = new MagicNumberMatcher();
+		assertTrue(magicNumberMatcher.checkFileFormat(file));
+
+		FileContentMatcherChromatogram fileContentMatcher = new FileContentMatcherChromatogram();
+		assertTrue(fileContentMatcher.checkFileFormat(file));
 	}
 
 	@Test

@@ -14,6 +14,7 @@ package net.openchrom.msd.converter.supplier.animl.converter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.util.Calendar;
@@ -35,16 +36,27 @@ import org.junit.jupiter.api.TestMethodOrder;
 public class StrictImport_ITest {
 
 	private IChromatogramMSD chromatogram;
+	private File file;
 
 	@Test
 	@Order(1)
 	public void testImport() {
 
-		File file = new File("testData/files/import/MS_STRICT.animl");
+		file = new File("testData/files/import/MS_STRICT.animl");
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramMSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();
 		assertNotNull(chromatogram);
+	}
+
+	@Test
+	public void testMatch() {
+
+		ChromatogramMagicNumberMatcher magicNumberMatcher = new ChromatogramMagicNumberMatcher();
+		assertTrue(magicNumberMatcher.checkFileFormat(file));
+
+		ChromatogramFileContentMatcher fileContentMatcher = new ChromatogramFileContentMatcher();
+		assertTrue(fileContentMatcher.checkFileFormat(file));
 	}
 
 	@Test
