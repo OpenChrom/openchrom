@@ -13,6 +13,7 @@ package net.openchrom.msd.converter.supplier.cdf.io;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 
@@ -21,36 +22,26 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.IProcessingMessage;
 import org.eclipse.chemclipse.processing.core.MessageType;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
-import org.junit.jupiter.api.TestMethodOrder;
 
 import net.openchrom.msd.converter.supplier.cdf.converter.ChromatogramImportConverter;
 
-/**
- * Tests if the right exception will be thrown if the file is empty.
- */
-@TestInstance(Lifecycle.PER_CLASS)
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ChromatogramReader_EMPTY_1_ITest {
 
-	private IChromatogramMSD chromatogram;
-
 	@Test
-	@Order(1)
 	public void testImport() {
 
 		File file = new File("testData/EMPTY.CDF");
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramMSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
-		chromatogram = processingInfo.getProcessingResult();
-		assertNull(chromatogram);
+
+		assertTrue(!processingInfo.getMessages().isEmpty());
 		for(IProcessingMessage message : processingInfo.getMessages()) {
 			assertEquals(MessageType.ERROR, message.getMessageType());
 			assertEquals("The given file is empty: " + file.getAbsolutePath(), message.getMessage());
 		}
+
+		IChromatogramMSD chromatogram = processingInfo.getProcessingResult();
+		assertNull(chromatogram);
 	}
 }
