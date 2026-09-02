@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cdf.io;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -18,6 +19,8 @@ import java.io.File;
 
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
+import org.eclipse.chemclipse.processing.core.IProcessingMessage;
+import org.eclipse.chemclipse.processing.core.MessageType;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -41,16 +44,16 @@ public class ChromatogramReader_NOT_READABLE_1_ITest {
 	@Order(1)
 	public void testImport() {
 
-		File fileImport = new File("testData/NOT_READABLE.CDF");
-		assertTrue(fileImport.setReadable(false));
+		File file = new File("testData/NOT_READABLE.CDF");
+		assertTrue(file.setReadable(false));
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
-		IProcessingInfo<IChromatogramMSD> processingInfo = importConverter.convert(fileImport, new NullProgressMonitor());
+		IProcessingInfo<IChromatogramMSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
+		for(IProcessingMessage message : processingInfo.getMessages()) {
+			assertEquals(MessageType.ERROR, message.getMessageType());
+			assertEquals("The given file is not readable: " + file.getAbsolutePath(), message.getMessage());
+		}
 		chromatogram = processingInfo.getProcessingResult();
-	}
-
-	@Test
-	public void testNotReadable() {
-
 		assertNull(chromatogram);
+		assertTrue(file.setReadable(true));
 	}
 }
