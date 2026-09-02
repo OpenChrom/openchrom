@@ -14,6 +14,7 @@ package net.openchrom.msd.converter.supplier.cdf;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 
@@ -28,22 +29,35 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import net.openchrom.msd.converter.supplier.cdf.converter.ChromatogramImportConverter;
+import net.openchrom.msd.converter.supplier.cdf.converter.FileContentMatcher;
+import net.openchrom.msd.converter.supplier.cdf.converter.MagicNumberMatcher;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class EXTREL_LIBRARY_ITest {
 
 	private IChromatogramMSD chromatogram;
+	private File file;
 
 	@Test
 	@Order(1)
 	public void testImport() {
 
-		File file = new File("testData/EXTREL/LIBRARY.CDF"); // TODO: detect as a library
+		file = new File("testData/EXTREL/LIBRARY.CDF"); // TODO: detect as a library
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramMSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();
 		assertNotNull(chromatogram);
+	}
+
+	@Test
+	public void testMatch() {
+
+		MagicNumberMatcher magicNumberMatcher = new MagicNumberMatcher();
+		assertTrue(magicNumberMatcher.checkFileFormat(file));
+
+		FileContentMatcher fileContentMatcher = new FileContentMatcher();
+		assertTrue(fileContentMatcher.checkFileFormat(file));
 	}
 
 	@Test

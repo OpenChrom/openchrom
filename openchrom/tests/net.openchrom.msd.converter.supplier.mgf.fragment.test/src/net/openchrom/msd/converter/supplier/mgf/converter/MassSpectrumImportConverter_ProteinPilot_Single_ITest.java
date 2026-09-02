@@ -14,6 +14,7 @@ package net.openchrom.msd.converter.supplier.mgf.converter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 
@@ -33,15 +34,23 @@ import org.junit.jupiter.api.TestMethodOrder;
 public class MassSpectrumImportConverter_ProteinPilot_Single_ITest {
 
 	private IMassSpectra massSpectra;
+	private File file;
 
 	@Test
 	@Order(1)
 	public void testImport() {
 
-		File file = new File("testData/files/import/proteinpilot/singleElement.mgf");
+		file = new File("testData/files/import/proteinpilot/singleElement.mgf");
 		DatabaseImportConverter importConverter = new DatabaseImportConverter();
 		IProcessingInfo<IMassSpectra> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		massSpectra = processingInfo.getProcessingResult();
+	}
+
+	@Test
+	public void testMatch() {
+
+		MagicNumberMatcher magicNumberMatcher = new MagicNumberMatcher();
+		assertTrue(magicNumberMatcher.checkFileFormat(file));
 	}
 
 	@Test

@@ -14,35 +14,50 @@ package net.openchrom.wsd.converter.supplier.gaml.fragment.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.wsd.model.core.ISpectrumWSD;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import net.openchrom.wsd.converter.supplier.gaml.converter.FileContentMatcherSpectrum;
 import net.openchrom.wsd.converter.supplier.gaml.converter.ScanImportConverter;
+import net.openchrom.xxd.converter.supplier.gaml.converter.MagicNumberMatcher;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class Helios_ITest {
 
 	private ISpectrumWSD spectrumWSD;
+	private File file;
 
-	@BeforeAll
+	@Test
+	@Order(1)
 	public void setUp() {
 
-		File file = new File("testData/files/import/TS_Helios.gaml");
+		file = new File("testData/files/import/TS_Helios.gaml");
 		ScanImportConverter importConverter = new ScanImportConverter();
 		IProcessingInfo<ISpectrumWSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		spectrumWSD = processingInfo.getProcessingResult();
 		assertNotNull(spectrumWSD);
+	}
+
+	@Test
+	public void testMatch() {
+
+		MagicNumberMatcher magicNumberMatcher = new MagicNumberMatcher();
+		assertTrue(magicNumberMatcher.checkFileFormat(file));
+
+		FileContentMatcherSpectrum fileContentMatcher = new FileContentMatcherSpectrum();
+		assertTrue(fileContentMatcher.checkFileFormat(file));
 	}
 
 	@Test

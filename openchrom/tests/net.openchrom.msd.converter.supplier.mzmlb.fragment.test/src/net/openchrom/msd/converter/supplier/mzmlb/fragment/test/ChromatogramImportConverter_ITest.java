@@ -14,6 +14,7 @@ package net.openchrom.msd.converter.supplier.mzmlb.fragment.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 
@@ -28,22 +29,31 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import net.openchrom.msd.converter.supplier.mzmlb.converter.ChromatogramImportConverter;
+import net.openchrom.msd.converter.supplier.mzmlb.converter.MagicNumberMatcher;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ChromatogramImportConverter_ITest {
 
 	private IChromatogramMSD chromatogram;
+	private File file;
 
 	@Test
 	@Order(1)
 	public void testImport() {
 
-		File file = new File("testData/files/import/test.mzMLb");
+		file = new File("testData/files/import/test.mzMLb");
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramMSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
 		chromatogram = processingInfo.getProcessingResult();
 		assertNotNull(chromatogram);
+	}
+
+	@Test
+	public void testMatch() {
+
+		MagicNumberMatcher magicNumberMatcher = new MagicNumberMatcher();
+		assertTrue(magicNumberMatcher.checkFileFormat(file));
 	}
 
 	@Test
