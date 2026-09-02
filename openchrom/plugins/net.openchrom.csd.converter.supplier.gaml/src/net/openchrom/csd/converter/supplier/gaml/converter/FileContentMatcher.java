@@ -54,6 +54,9 @@ public class FileContentMatcher extends AbstractFileContentMatcher {
 					if("trace".equals(localName)) {
 						String technique = reader.getAttributeValue(null, "technique");
 						if(technique != null) {
+							if("UNKNOWN".equalsIgnoreCase(technique.trim())) {
+								continue;
+							}
 							if("CHROM".equalsIgnoreCase(technique.trim())) {
 								isChromatography = true;
 							} else {
