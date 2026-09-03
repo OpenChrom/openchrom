@@ -4,7 +4,7 @@ Eclipse-RegisterBuddy: 	org.eclipse.chemclipse.model, org.eclipse.chemclipse.csd
 Bundle-ManifestVersion: 2
 Bundle-Name: Waters ARW Converter
 Bundle-SymbolicName: net.openchrom.csd.converter.supplier.arw;singleton:=true
-Bundle-Version: 1.6.30.qualifier
+Bundle-Version: 1.6.31.qualifier
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.converter;bundle-version="0.8.0",
