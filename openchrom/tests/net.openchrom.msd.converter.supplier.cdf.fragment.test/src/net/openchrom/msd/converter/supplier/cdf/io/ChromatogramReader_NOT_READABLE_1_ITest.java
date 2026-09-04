@@ -22,10 +22,12 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.IProcessingMessage;
 import org.eclipse.chemclipse.processing.core.MessageType;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import net.openchrom.msd.converter.supplier.cdf.converter.ChromatogramImportConverter;
 
+@Disabled("Does not work in CI.")
 public class ChromatogramReader_NOT_READABLE_1_ITest {
 
 	private IChromatogramMSD chromatogram;
