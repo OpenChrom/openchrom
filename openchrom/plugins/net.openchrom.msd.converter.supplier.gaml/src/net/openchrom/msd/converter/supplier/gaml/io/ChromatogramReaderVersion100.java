@@ -21,7 +21,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.XMLConstants;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -32,6 +31,7 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.msd.converter.io.IChromatogramMSDReader;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
+import org.eclipse.chemclipse.support.xml.XmlParserFactory;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -85,13 +85,7 @@ public class ChromatogramReaderVersion100 extends AbstractChromatogramReader imp
 
 		List<VendorChromatogram> chromatograms = new ArrayList<>();
 		try {
-			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-			documentBuilderFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-			documentBuilderFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-			documentBuilderFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-			documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-			documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
-
+			DocumentBuilderFactory documentBuilderFactory = XmlParserFactory.createDocumentBuilderFactory();
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			Document document = documentBuilder.parse(file);
 			NodeList nodeList = document.getElementsByTagName(Reader.NODE_GAML);
@@ -182,7 +176,7 @@ public class ChromatogramReaderVersion100 extends AbstractChromatogramReader imp
 		IVendorChromatogram chromatogram = null;
 
 		try {
-			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilderFactory documentBuilderFactory = XmlParserFactory.createDocumentBuilderFactory();
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			Document document = documentBuilder.parse(file);
 			NodeList nodeList = document.getElementsByTagName(Reader.NODE_GAML);

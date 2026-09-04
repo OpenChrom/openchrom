@@ -14,12 +14,12 @@ package net.openchrom.wsd.converter.supplier.animl.converter;
 
 import java.io.File;
 
-import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.io.FilenameUtils;
 import org.eclipse.chemclipse.converter.core.AbstractFileContentMatcher;
+import org.eclipse.chemclipse.support.xml.XmlParserFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -34,12 +34,7 @@ public class FileContentMatcher extends AbstractFileContentMatcher {
 
 		boolean isValidFormat = false;
 		try {
-			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-			documentBuilderFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-			documentBuilderFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-			documentBuilderFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-			documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-			documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+			DocumentBuilderFactory documentBuilderFactory = XmlParserFactory.createDocumentBuilderFactory();
 
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			Document document = documentBuilder.parse(file);
