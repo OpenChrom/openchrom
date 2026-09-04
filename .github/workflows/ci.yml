@@ -22,9 +22,8 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: maven:3.9-eclipse-temurin-25
-
-
     steps:
+
     - name: Checkout OpenChrom
       uses: actions/checkout@v7
       with:
@@ -36,3 +35,17 @@ jobs:
       run: |
         cd openchrom
         mvn -f openchrom/releng/net.openchrom.aggregator/pom.xml -T 1C verify -Pci
+
+    - name: Print JUnit report
+      if: failure()
+      run: |
+        cd openchrom
+        find . -type f \( \
+          -path "*/target/surefire-reports/*.txt" -o \
+          -path "*/target/failsafe-reports/*.txt" \
+        \) -exec grep -lE "Failures: [1-9]|Errors: [1-9]" {} \; \
+          | while IFS= read -r report; do
+              echo "::group::$report"
+              cat "$report"
+              echo "::endgroup::"
+            done
