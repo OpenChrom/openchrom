@@ -4,6 +4,8 @@ Bundle-ManifestVersion: 2
 Bundle-Name: ab1 Converter
 Bundle-SymbolicName: net.openchrom.wsd.converter.supplier.abif;singleton:=true
 Bundle-Version: 1.6.31.qualifier
+Export-Package: net.openchrom.wsd.converter.supplier.abif.core,
+ net.openchrom.wsd.converter.supplier.abif.model
 Bundle-Vendor: OpenChrom
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.converter;bundle-version="0.8.0",
