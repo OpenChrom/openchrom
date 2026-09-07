@@ -140,6 +140,11 @@ public class CheckForUpdatesHander {
 		URI[] known = metaManager.getKnownRepositories(IRepositoryManager.REPOSITORIES_ALL);
 		Set<URI> newUris = new HashSet<>();
 		for(URI uri : known) {
+			String scheme = uri.getScheme();
+			if(!"http".equalsIgnoreCase(scheme) && !"https".equalsIgnoreCase(scheme)) {
+				// Only the online update sites can offer a new release.
+				continue;
+			}
 			URI newUri = replaceVersion(uri, toVersion.toString());
 			newUris.add(newUri);
 		}
