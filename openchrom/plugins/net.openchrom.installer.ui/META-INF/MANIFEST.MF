@@ -36,8 +36,11 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.progress;bundle-version="0.9.0",
  net.openchrom.feature.branding;bundle-version="1.6.13",
  org.eclipse.e4.core.contexts;bundle-version="1.13.0",
- org.apache.commons.lang3;bundle-version="3.20.0"
+ org.apache.commons.lang3;bundle-version="3.20.0",
+ org.osgi.service.event;bundle-version="[1.4.0,2.0.0)"
 Bundle-RequiredExecutionEnvironment: JavaSE-25
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: net.openchrom.installer.ui
-Service-Component: OSGI-INF/net.openchrom.installer.ui.OpenchromP2Policy.xml
+Service-Component: OSGI-INF/net.openchrom.installer.ui.OpenchromP2Policy.xml,
+ OSGI-INF/net.openchrom.installer.ui.P2CleanupDS.xml
+Import-Package: org.osgi.service.event;version="[1.0.0,2.0.0)"
