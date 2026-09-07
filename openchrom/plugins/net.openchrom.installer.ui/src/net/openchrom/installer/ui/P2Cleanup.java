@@ -6,7 +6,7 @@
  * which is available at https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  * Matthias Mailänder - initial API and implementation
  *******************************************************************************/
@@ -24,26 +24,33 @@ import org.eclipse.equinox.p2.repository.IRepository;
 import org.eclipse.equinox.p2.repository.IRepositoryManager;
 import org.eclipse.equinox.p2.repository.artifact.IArtifactRepositoryManager;
 import org.eclipse.equinox.p2.repository.metadata.IMetadataRepositoryManager;
-import org.eclipse.ui.IStartup;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.Version;
 import org.osgi.util.tracker.ServiceTracker;
 
-public class P2Cleanup implements IStartup {
+public class P2Cleanup {
 
 	private static final Logger logger = Logger.getLogger(P2Cleanup.class);
 
-	@Override
-	public void earlyStartup() {
+	private P2Cleanup() {
+
+	}
+
+	public static void clean() {
 
 		BundleContext context = FrameworkUtil.getBundle(P2Cleanup.class).getBundleContext();
 		ServiceTracker<IProvisioningAgent, IProvisioningAgent> tracker = new ServiceTracker<>(context, IProvisioningAgent.class, null);
 		tracker.open();
-		IProvisioningAgent agent = tracker.getService();
-		cleanRepositories(agent, context.getBundle().getVersion());
-		cleanProfileStates(agent);
-		tracker.close();
+		try {
+			IProvisioningAgent agent = tracker.getService();
+			if(agent != null) {
+				cleanRepositories(agent, context.getBundle().getVersion());
+				cleanProfileStates(agent);
+			}
+		} finally {
+			tracker.close();
+		}
 	}
 
 	/*
@@ -51,9 +58,6 @@ public class P2Cleanup implements IStartup {
 	 */
 	private static void cleanProfileStates(IProvisioningAgent agent) {
 
-		if(agent == null) {
-			return;
-		}
 		IProfileRegistry profileRegistry = agent.getService(IProfileRegistry.class);
 		if(profileRegistry == null) {
 			return;

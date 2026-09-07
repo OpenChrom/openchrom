@@ -4,8 +4,6 @@
          point="org.eclipse.ui.startup">
       <startup
             class="net.openchrom.installer.ui.FeatureCheck"></startup>
-      <startup
-            class="net.openchrom.installer.ui.P2Cleanup"></startup>
    </extension>
    <extension
          id="com.lablicate.installer.ui.fragment"
