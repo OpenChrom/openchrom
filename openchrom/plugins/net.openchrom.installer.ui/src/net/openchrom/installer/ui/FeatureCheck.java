@@ -27,7 +27,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.ui.IStartup;
 import org.osgi.framework.Bundle;
 
 import net.openchrom.installer.model.IPluginDescriptor;
@@ -39,12 +38,15 @@ import net.openchrom.installer.ui.discovery.IPluginInstallJob;
 import net.openchrom.installer.ui.discovery.PrepareInstallProfileJob;
 import net.openchrom.installer.ui.wizards.PluginDiscoveryWizard;
 
-public class FeatureCheck implements IStartup {
+public class FeatureCheck {
 
 	private static final Logger logger = Logger.getLogger(FeatureCheck.class);
 
-	@Override
-	public void earlyStartup() {
+	private FeatureCheck() {
+
+	}
+
+	public static void check() {
 
 		for(String feature : getConverterFeatures()) {
 			Bundle bundle = Platform.getBundle(feature);
@@ -87,7 +89,7 @@ public class FeatureCheck implements IStartup {
 		}
 	}
 
-	private List<String> getConverterFeatures() {
+	private static List<String> getConverterFeatures() {
 
 		List<String> features = new ArrayList<>();
 		PluginDiscoveryExtensionReader extensionReader = new PluginDiscoveryExtensionReader();

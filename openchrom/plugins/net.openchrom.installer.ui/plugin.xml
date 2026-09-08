@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin>
    <extension
-         point="org.eclipse.ui.startup">
-      <startup
-            class="net.openchrom.installer.ui.FeatureCheck"></startup>
-   </extension>
-   <extension
          id="com.lablicate.installer.ui.fragment"
          point="org.eclipse.e4.workbench.model">
       <fragment
