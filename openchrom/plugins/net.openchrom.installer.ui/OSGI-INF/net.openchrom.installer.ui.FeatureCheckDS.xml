@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.4.0" name="net.openchrom.installer.ui.FeatureCheckDS">
+   <property name="event.topics" type="String" value="org/eclipse/e4/ui/LifeCycle/appStartupComplete"/>
+   <service>
+      <provide interface="org.osgi.service.event.EventHandler"/>
+   </service>
+   <implementation class="net.openchrom.installer.ui.FeatureCheckDS"/>
+</scr:component>
