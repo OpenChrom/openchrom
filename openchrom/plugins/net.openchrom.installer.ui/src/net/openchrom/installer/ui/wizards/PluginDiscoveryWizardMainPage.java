@@ -193,7 +193,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 		setControl(container);
 		EHelpService helpService = Activator.getDefault().getApplication().getContext().get(EHelpService.class);
 		if(helpService != null) {
-			helpService.setHelp(parent, "net.openchrom.installer.ui.pluginDiscovery"); // TODO: does not work
+			helpService.setHelp(parent, "net.openchrom.installer.ui.pluginDiscovery");
 		}
 	}
 
