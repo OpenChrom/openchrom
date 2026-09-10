@@ -33,6 +33,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.e4.ui.services.help.EHelpService;
 import org.eclipse.equinox.p2.engine.IProfile;
 import org.eclipse.equinox.p2.engine.IProfileRegistry;
 import org.eclipse.equinox.p2.metadata.IInstallableUnit;
@@ -82,7 +83,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.WorkbenchJob;
 import org.osgi.framework.FrameworkUtil;
 
@@ -94,6 +94,7 @@ import net.openchrom.installer.model.PluginDescriptorKind;
 import net.openchrom.installer.model.PluginDiscovery;
 import net.openchrom.installer.model.SetupDefinition;
 import net.openchrom.installer.preferences.PreferenceSupplier;
+import net.openchrom.installer.ui.Activator;
 import net.openchrom.installer.ui.swt.OverviewToolTip;
 import net.openchrom.installer.util.DiscoveryCategoryComparator;
 import net.openchrom.installer.util.DiscoveryConnectorComparator;
@@ -190,7 +191,10 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 		}
 		Dialog.applyDialogFont(container);
 		setControl(container);
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, "net.openchrom.installer.ui.pluginDiscovery"); // TODO: does not work
+		EHelpService helpService = Activator.getDefault().getApplication().getContext().get(EHelpService.class);
+		if(helpService != null) {
+			helpService.setHelp(parent, "net.openchrom.installer.ui.pluginDiscovery"); // TODO: does not work
+		}
 	}
 
 	private void createButtonImportSetupDefinition(Composite parent) {
