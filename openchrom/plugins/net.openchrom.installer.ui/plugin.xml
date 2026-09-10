@@ -17,8 +17,7 @@
    <extension
          point="org.eclipse.help.contexts">
       <contexts
-            file="contexts.xml"
-            plugin="com.lablicate.installer.ui">
+            file="contexts.xml">
       </contexts>
    </extension>
 

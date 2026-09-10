@@ -2,7 +2,6 @@
 <?NLS TYPE="org.eclipse.help.contexts"?>
 <contexts>
    <context id="pluginDiscovery">
-      <description>The installers allows to install software extensions.</description>
       <topic label="Installer" href="html/plugin/main.html"/>
    </context>
 </contexts>

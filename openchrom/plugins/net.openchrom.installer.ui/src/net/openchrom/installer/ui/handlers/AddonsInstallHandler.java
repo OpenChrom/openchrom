@@ -33,6 +33,7 @@ public class AddonsInstallHandler {
 			IPluginInstallJob installJob = new PrepareInstallProfileJob();
 			PluginDiscoveryWizard wizard = new PluginDiscoveryWizard(installJob);
 			WizardDialog dialog = new WizardDialog(shell, wizard);
+			dialog.setHelpAvailable(true);
 			dialog.open();
 		} catch(IllegalArgumentException e) {
 			logger.warn(e);

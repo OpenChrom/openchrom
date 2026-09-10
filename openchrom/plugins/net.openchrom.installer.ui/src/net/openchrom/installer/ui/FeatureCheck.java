@@ -75,6 +75,7 @@ public class FeatureCheck {
 						IPluginInstallJob installJob = new PrepareInstallProfileJob();
 						PluginDiscoveryWizard wizard = new PluginDiscoveryWizard(installJob);
 						WizardDialog wizardDialog = new WizardDialog(DisplayUtils.getShell(), wizard);
+						wizardDialog.setHelpAvailable(true);
 						wizardDialog.open();
 					} catch(IllegalArgumentException e) {
 						logger.warn(e);
