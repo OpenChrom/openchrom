@@ -11,6 +11,7 @@
 		<unit id="org.jdom2"/>
 		<unit id="org.apache.aries.spifly.dynamic.bundle"/>
 		<unit id="org.glassfish.hk2.osgi-resource-locator"/>
+		<unit id="com.sun.xml.bind.jaxb-osgi"/>
 		<unit id="jakarta.xml.bind-api"/>
 	</location>
 	<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
@@ -39,16 +40,6 @@
 		<unit id="org.apache.poi.ooxml"/>
 		<unit id="org.apache.poi.ooxml.schemas"/>
 		<unit id="org.apache.xmlbeans"/>
-	</location>
-	<location includeDependencyDepth="none" includeDependencyScopes="compile" label="com.sun.xml.bind.jaxb-osgi" missingManifest="error" type="Maven">
-		<dependencies>
-			<dependency>
-				<groupId>com.sun.xml.bind</groupId>
-				<artifactId>jaxb-osgi</artifactId>
-				<version>4.0.9</version>
-				<type>jar</type>
-			</dependency>
-		</dependencies>
 	</location>
 	<location includeDependencyDepth="none" includeDependencyScopes="compile" missingManifest="generate" type="Maven">
 		<dependencies>
