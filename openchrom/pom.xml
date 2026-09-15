@@ -16,7 +16,7 @@
 	<properties>
 		<!-- versions for plugins to use -->
 		<tycho.version>5.0.4</tycho.version>
-		<maven-install-plugin.version>3.1.4</maven-install-plugin.version>
+		<maven-install-plugin.version>3.2.0</maven-install-plugin.version>
 		<!-- definition of the target to use -->
 		<tycho.target.groupId>net.openchrom</tycho.target.groupId>
 		<tycho.target.artifactId>net.openchrom.targetplatform</tycho.target.artifactId>
