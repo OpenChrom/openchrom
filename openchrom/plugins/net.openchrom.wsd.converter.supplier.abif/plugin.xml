@@ -2,7 +2,7 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="org.eclipse.chemclipse.wsd.converter.chromatogramSupplier">
+         point="org.eclipse.chemclipse.dsd.converter.chromatogramSupplier">
       <ChromatogramSupplier
             description="Reads ABIF Sanger Sequencing Trace Files."
             fileExtension=".ab1"
