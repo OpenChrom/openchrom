@@ -58,6 +58,12 @@ public class EmptyFile_ITest {
 	}
 
 	@Test
+	public void testInstrument() {
+
+		assertEquals("ABI-3730-XL-1404-021", chromatogram.getInstrument());
+	}
+
+	@Test
 	public void testEmptySequence() {
 
 		assertEquals("NNNNN", chromatogram.getNucleotideSequence().toString());

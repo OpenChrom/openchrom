@@ -60,6 +60,12 @@ public class AbiPrism310GeneticAnalyser_ITest {
 	}
 
 	@Test
+	public void testInstrument() {
+
+		assertEquals("ABI PRISM 310", chromatogram.getInstrument());
+	}
+
+	@Test
 	public void testVersion() {
 
 		assertEquals(101, ((IVendorChromatogram)chromatogram).getVersion());

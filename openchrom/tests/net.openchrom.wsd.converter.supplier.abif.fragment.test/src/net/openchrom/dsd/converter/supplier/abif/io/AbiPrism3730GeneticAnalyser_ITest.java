@@ -59,6 +59,12 @@ public class AbiPrism3730GeneticAnalyser_ITest {
 	}
 
 	@Test
+	public void testInstrument() {
+
+		assertEquals("ABI-3730-XL-1404-021", chromatogram.getInstrument());
+	}
+
+	@Test
 	public void testScans() {
 
 		assertEquals(16302, chromatogram.getNumberOfScans());
