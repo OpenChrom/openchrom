@@ -327,6 +327,7 @@ public class ChromatogramReader extends AbstractChromatogramDSDReader {
 
 			IIdentificationTarget identificationTarget = new IdentificationTarget(libraryInformation, comparisonResult);
 			scan.getTargets().add(identificationTarget); // TODO add to scan signal rather than total signal
+			scan.setCycleNumber(i + 1); // TODO: move elsewhere
 
 			i++;
 		}
