@@ -15,7 +15,11 @@ package net.openchrom.wsd.converter.supplier.abif.io;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
 import org.eclipse.chemclipse.dsd.converter.io.AbstractChromatogramDSDReader;
@@ -247,6 +251,20 @@ public class ChromatogramReader extends AbstractChromatogramDSDReader {
 					chromatogram.setInstrument(instrument);
 					in.resetPosition();
 					in.seek(position);
+					break;
+				/*
+				 * Run Date
+				 */
+				case "RUND": // actually 2 (start and stop)
+					short year = in.read2BShortBE();
+					short month = in.read1BShortBE();
+					short day = in.read1BShortBE();
+					try {
+						chromatogram.setDate(Date.from(LocalDate.of(year, month, day).atStartOfDay(ZoneId.systemDefault()).toInstant()));
+					} catch(DateTimeException e) {
+						logger.error(e);
+					}
+					break;
 					break;
 				/*
 				 * Container identifier

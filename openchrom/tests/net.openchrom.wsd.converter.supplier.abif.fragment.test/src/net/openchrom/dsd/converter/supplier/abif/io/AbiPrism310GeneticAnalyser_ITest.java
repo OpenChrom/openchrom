@@ -29,11 +29,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.util.DefaultTimeZone;
 
 import net.openchrom.wsd.converter.supplier.abif.core.ChromatogramImportConverter;
 import net.openchrom.wsd.converter.supplier.abif.core.MagicNumberMatcher;
 import net.openchrom.wsd.converter.supplier.abif.model.IVendorChromatogram;
 
+@DefaultTimeZone("CET")
 @TestInstance(Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AbiPrism310GeneticAnalyser_ITest {
@@ -63,6 +65,12 @@ public class AbiPrism310GeneticAnalyser_ITest {
 	public void testInstrument() {
 
 		assertEquals("ABI PRISM 310", chromatogram.getInstrument());
+	}
+
+	@Test
+	public void testDate() {
+
+		assertEquals("2009-02-19", String.format("%tF", chromatogram.getDate()));
 	}
 
 	@Test
