@@ -235,6 +235,20 @@ public class ChromatogramReader extends AbstractChromatogramDSDReader {
 					in.seek(position);
 					break;
 				/*
+				 * Machine
+				 */
+				case "MCHN":
+					position = in.getPosition();
+					in.resetPosition();
+					in.seek(dataOffset);
+					// Pascal style string (length is stored in first byte)
+					length = in.read1BShortBE();
+					String instrument = in.readBytesAsString(length);
+					chromatogram.setInstrument(instrument);
+					in.resetPosition();
+					in.seek(position);
+					break;
+				/*
 				 * Container identifier
 				 */
 				case "CTID":
