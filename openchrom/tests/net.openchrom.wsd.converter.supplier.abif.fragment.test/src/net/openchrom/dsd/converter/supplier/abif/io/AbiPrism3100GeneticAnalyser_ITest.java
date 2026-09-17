@@ -67,6 +67,12 @@ public class AbiPrism3100GeneticAnalyser_ITest {
 	}
 
 	@Test
+	public void testUser() {
+
+		assertEquals("Yepy", chromatogram.getOperator());
+	}
+
+	@Test
 	public void testDate() {
 
 		assertEquals("2010-01-27", String.format("%tF", chromatogram.getDate()));
