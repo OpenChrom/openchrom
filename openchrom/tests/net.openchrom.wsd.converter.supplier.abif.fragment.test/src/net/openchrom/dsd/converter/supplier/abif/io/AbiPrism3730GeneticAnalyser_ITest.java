@@ -73,6 +73,12 @@ public class AbiPrism3730GeneticAnalyser_ITest {
 	}
 
 	@Test
+	public void testUser() {
+
+		assertEquals("1st BASE", chromatogram.getOperator());
+	}
+
+	@Test
 	public void testScans() {
 
 		assertEquals(16302, chromatogram.getNumberOfScans());

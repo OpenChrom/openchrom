@@ -265,6 +265,22 @@ public class ChromatogramReader extends AbstractChromatogramDSDReader {
 						logger.error(e);
 					}
 					break;
+				/*
+				 * Operator
+				 */
+				case "User":
+					if(dataSize < 4) {
+						break;
+					}
+					position = in.getPosition();
+					in.resetPosition();
+					in.seek(dataOffset);
+					// Pascal style string (length is stored in first byte)
+					length = in.read1BShortBE();
+					String user = in.readBytesAsString(length);
+					chromatogram.setOperator(user);
+					in.resetPosition();
+					in.seek(position);
 					break;
 				/*
 				 * Container identifier
