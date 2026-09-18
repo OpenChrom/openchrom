@@ -62,6 +62,12 @@ public class AbiPrism3100GeneticAnalyser_ITest {
 	}
 
 	@Test
+	public void testVersion() {
+
+		assertEquals(101, chromatogram.getVersion());
+	}
+
+	@Test
 	public void testInstrument() {
 
 		assertEquals("WILMAR-21372-006", chromatogram.getInstrument());

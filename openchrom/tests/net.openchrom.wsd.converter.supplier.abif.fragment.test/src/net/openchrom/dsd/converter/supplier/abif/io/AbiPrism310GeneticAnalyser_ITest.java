@@ -62,6 +62,12 @@ public class AbiPrism310GeneticAnalyser_ITest {
 	}
 
 	@Test
+	public void testVersion() {
+
+		assertEquals(101, chromatogram.getVersion());
+	}
+
+	@Test
 	public void testInstrument() {
 
 		assertEquals("ABI PRISM 310", chromatogram.getInstrument());
@@ -83,12 +89,6 @@ public class AbiPrism310GeneticAnalyser_ITest {
 	public void testUser() {
 
 		assertEquals("", chromatogram.getOperator());
-	}
-
-	@Test
-	public void testVersion() {
-
-		assertEquals(101, chromatogram.getVersion());
 	}
 
 	@Test
