@@ -305,7 +305,7 @@ public class ChromatogramReader extends AbstractChromatogramDSDReader {
 					in.seek(dataOffset);
 					// C-style string (null terminated).
 					String containerId = in.readBytesAsString(dataSize);
-					chromatogram.setSampleGroup(containerId);
+					chromatogram.setSampleGroup(containerId.trim());
 					in.resetPosition();
 					in.seek(position);
 					break;
