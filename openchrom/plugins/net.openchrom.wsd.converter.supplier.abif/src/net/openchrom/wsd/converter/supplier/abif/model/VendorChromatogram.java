@@ -18,9 +18,9 @@ import org.eclipse.chemclipse.dsd.model.core.AbstractChromatogramDSD;
 public class VendorChromatogram extends AbstractChromatogramDSD implements IVendorChromatogram {
 
 	private static final long serialVersionUID = 99309012496579942L;
+	private static final String WELL = "Well";
 
 	private short version;
-	private String well;
 
 	@Override
 	public short getVersion() {
@@ -37,12 +37,12 @@ public class VendorChromatogram extends AbstractChromatogramDSD implements IVend
 	@Override
 	public String getWell() {
 
-		return well;
+		return getHeaderData(WELL);
 	}
 
 	@Override
 	public void setWell(String well) {
 
-		this.well = well;
+		putHeaderData(WELL, well);
 	}
 }
