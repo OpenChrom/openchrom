@@ -20,4 +20,8 @@ public interface IVendorChromatogram extends IChromatogramDSD {
 	short getVersion();
 
 	void setVersion(short version);
+
+	String getWell();
+
+	void setWell(String well);
 }
