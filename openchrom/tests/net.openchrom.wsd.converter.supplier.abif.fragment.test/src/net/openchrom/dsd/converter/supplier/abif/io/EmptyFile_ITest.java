@@ -85,6 +85,12 @@ public class EmptyFile_ITest {
 	}
 
 	@Test
+	public void testSampleGroup() {
+
+		assertEquals("Run4582", chromatogram.getSampleGroup());
+	}
+
+	@Test
 	public void testUser() {
 
 		assertEquals("1st BASE", chromatogram.getOperator());
