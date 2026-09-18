@@ -319,6 +319,19 @@ public class ChromatogramReader extends AbstractChromatogramDSDReader {
 					in.skipBytes(4 - dataSize); // padding
 					break;
 				/*
+				 * Run Name
+				 */
+				case "RunN":
+					position = in.getPosition();
+					in.resetPosition();
+					in.seek(dataOffset);
+					// C-style string (null terminated).
+					String runName = in.readBytesAsString(dataSize);
+					chromatogram.setDataName(runName.trim());
+					in.resetPosition();
+					in.seek(position);
+					break;
+				/*
 				 * raw data
 				 */
 				case "DSam":
