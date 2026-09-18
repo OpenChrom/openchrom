@@ -40,7 +40,7 @@ import net.openchrom.wsd.converter.supplier.abif.model.IVendorChromatogram;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AbiPrism310GeneticAnalyser_ITest {
 
-	private IChromatogramDSD chromatogram;
+	private IVendorChromatogram chromatogram;
 	private File file;
 
 	@Test
@@ -50,7 +50,7 @@ public class AbiPrism310GeneticAnalyser_ITest {
 		file = new File("testdata/files/import/310.ab1");
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramDSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
-		chromatogram = processingInfo.getProcessingResult();
+		chromatogram = (IVendorChromatogram)processingInfo.getProcessingResult();
 		assertNotNull(chromatogram);
 	}
 
@@ -74,6 +74,12 @@ public class AbiPrism310GeneticAnalyser_ITest {
 	}
 
 	@Test
+	public void testWell() {
+
+		assertEquals("C5", chromatogram.getWell());
+	}
+
+	@Test
 	public void testUser() {
 
 		assertEquals("", chromatogram.getOperator());
@@ -82,7 +88,7 @@ public class AbiPrism310GeneticAnalyser_ITest {
 	@Test
 	public void testVersion() {
 
-		assertEquals(101, ((IVendorChromatogram)chromatogram).getVersion());
+		assertEquals(101, chromatogram.getVersion());
 	}
 
 	@Test

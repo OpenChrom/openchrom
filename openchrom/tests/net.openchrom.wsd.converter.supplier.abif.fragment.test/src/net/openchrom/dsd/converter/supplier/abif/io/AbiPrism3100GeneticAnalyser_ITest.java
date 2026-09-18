@@ -33,13 +33,14 @@ import org.junit.jupiter.api.util.DefaultTimeZone;
 
 import net.openchrom.wsd.converter.supplier.abif.core.ChromatogramImportConverter;
 import net.openchrom.wsd.converter.supplier.abif.core.MagicNumberMatcher;
+import net.openchrom.wsd.converter.supplier.abif.model.IVendorChromatogram;
 
 @DefaultTimeZone("CET")
 @TestInstance(Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AbiPrism3100GeneticAnalyser_ITest {
 
-	private IChromatogramDSD chromatogram;
+	private IVendorChromatogram chromatogram;
 	private File file;
 
 	@Test
@@ -49,7 +50,7 @@ public class AbiPrism3100GeneticAnalyser_ITest {
 		file = new File("testdata/files/import/3100.ab1");
 		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
 		IProcessingInfo<IChromatogramDSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
-		chromatogram = processingInfo.getProcessingResult();
+		chromatogram = (IVendorChromatogram)processingInfo.getProcessingResult();
 		assertNotNull(chromatogram);
 	}
 
@@ -76,6 +77,12 @@ public class AbiPrism3100GeneticAnalyser_ITest {
 	public void testDate() {
 
 		assertEquals("Wed Jan 27 10:41:02 CET 2010", chromatogram.getDate().toString());
+	}
+
+	@Test
+	public void testWell() {
+
+		assertEquals("H3", chromatogram.getWell());
 	}
 
 	@Test

@@ -310,6 +310,15 @@ public class ChromatogramReader extends AbstractChromatogramDSDReader {
 					in.seek(position);
 					break;
 				/*
+				 * Well Position
+				 */
+				case "TUBE":
+					// Pascal style string (length is stored in first byte)
+					short size = in.read1BShortBE();
+					chromatogram.setWell(in.readString(size).trim());
+					in.skipBytes(4 - dataSize); // padding
+					break;
+				/*
 				 * raw data
 				 */
 				case "DSam":
