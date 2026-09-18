@@ -92,6 +92,12 @@ public class AbiPrism310GeneticAnalyser_ITest {
 	}
 
 	@Test
+	public void testDataName() {
+
+		assertEquals("", chromatogram.getDataName());
+	}
+
+	@Test
 	public void testUser() {
 
 		assertEquals("", chromatogram.getOperator());

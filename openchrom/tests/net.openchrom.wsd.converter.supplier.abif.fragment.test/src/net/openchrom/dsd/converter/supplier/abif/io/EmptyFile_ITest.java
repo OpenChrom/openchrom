@@ -91,6 +91,12 @@ public class EmptyFile_ITest {
 	}
 
 	@Test
+	public void testDataName() {
+
+		assertEquals("Run_ABI-3730-XL_2009-12-12_09-56_0048", chromatogram.getDataName());
+	}
+
+	@Test
 	public void testUser() {
 
 		assertEquals("1st BASE", chromatogram.getOperator());
