@@ -15,11 +15,8 @@ package net.openchrom.wsd.converter.supplier.abif.io;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.DateTimeException;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotReadableException;
 import org.eclipse.chemclipse.dsd.converter.io.AbstractChromatogramDSDReader;
@@ -259,11 +256,28 @@ public class ChromatogramReader extends AbstractChromatogramDSDReader {
 					short year = in.read2BShortBE();
 					short month = in.read1BShortBE();
 					short day = in.read1BShortBE();
-					try {
-						chromatogram.setDate(Date.from(LocalDate.of(year, month, day).atStartOfDay(ZoneId.systemDefault()).toInstant()));
-					} catch(DateTimeException e) {
-						logger.error(e);
-					}
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(chromatogram.getDate());
+					calendar.set(Calendar.YEAR, year);
+					calendar.set(Calendar.MONTH, month - 1);
+					calendar.set(Calendar.DAY_OF_MONTH, day);
+					chromatogram.setDate(calendar.getTime());
+					break;
+				/*
+				 * Run Time
+				 */
+				case "RUNT": // actually 4 (start and stop and data collection start stop)
+					short hour = in.read1BShortBE();
+					short minute = in.read1BShortBE();
+					short second = in.read1BShortBE();
+					short hsecond = in.read1BShortBE(); // hundredths of a second.
+					calendar = Calendar.getInstance();
+					calendar.setTime(chromatogram.getDate());
+					calendar.set(Calendar.HOUR_OF_DAY, hour);
+					calendar.set(Calendar.MINUTE, minute);
+					calendar.set(java.util.Calendar.SECOND, second);
+					calendar.set(java.util.Calendar.MILLISECOND, hsecond * 10);
+					chromatogram.setDate(calendar.getTime());
 					break;
 				/*
 				 * Operator

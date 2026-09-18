@@ -69,7 +69,7 @@ public class AbiPrism3730GeneticAnalyser_ITest {
 	@Test
 	public void testDate() {
 
-		assertEquals("2009-12-12", String.format("%tF", chromatogram.getDate()));
+		assertEquals("Sat Dec 12 11:44:38 CET 2009", chromatogram.getDate().toString());
 	}
 
 	@Test
