@@ -17,9 +17,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.supplier.firstderivative.core.PeakDetectorCSD;
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.supplier.firstderivative.settings.PeakDetectorSettingsCSD;
@@ -59,10 +61,13 @@ import org.eclipse.chemclipse.model.support.RetentionIndexMath;
 import org.eclipse.chemclipse.model.support.ScanRange;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramPeakMSD;
+import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.core.support.PeakBuilderMSD;
+import org.eclipse.chemclipse.msd.model.implementation.ChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.implementation.ChromatogramPeakMSD;
+import org.eclipse.chemclipse.msd.model.implementation.RegularMassSpectrum;
 import org.eclipse.chemclipse.msd.model.support.CondenseOption;
 import org.eclipse.chemclipse.msd.model.support.HighResolutionSupport;
 import org.eclipse.chemclipse.msd.model.support.TandemDataSupport;
@@ -96,7 +101,14 @@ import net.openchrom.xxd.process.supplier.templates.settings.PeakDetectorSetting
 public class PeakSupport {
 
 	private static final Logger logger = Logger.getLogger(PeakSupport.class);
-	private Map<Integer, Map<String, List<IPeak>>> chromatogramPeakMap = new HashMap<>();
+	/*
+	 * Map by instance, not by IChromatogram#hashCode().
+	 * The hash code only covers the number of scans and the start/stop retention time.
+	 * Hence, all trace reference chromatograms (e.g. 107 > 91.0 @20, 121 > 91.0 @15)
+	 * extracted with the full time range share the same hash code and the cached
+	 * peaks of the first trace would be used for all other traces.
+	 */
+	private Map<IChromatogram, Map<String, List<IPeak>>> chromatogramPeakMap = new IdentityHashMap<>();
 
 	public static int getStartScan(IChromatogram chromatogram, int retentionTime) {
 
@@ -285,7 +297,7 @@ public class PeakSupport {
 		 * On purpose: intensityRange is null.
 		 * No support for MM or CB modus.
 		 */
-		IScanRange scanRange = optimizeRange ? optimizeRange(chromatogram, startScan, stopScan, traces) : new ScanRange(startScan, stopScan);
+		IScanRange scanRange = optimizeRange && !isTandemMS(traces) ? optimizeRange(chromatogram, startScan, stopScan, traces) : new ScanRange(startScan, stopScan);
 		IntensityRange intensityRange = null;
 		return extractPeakByScanRange(chromatogram, scanRange, intensityRange, includeBackground, traces, autoAdjustScanRange, peakSelectionCriterion, peakSelectionChoice);
 	}
@@ -353,8 +365,7 @@ public class PeakSupport {
 		/*
 		 * Try to get the cached version.
 		 */
-		int hashCode = chromatogram.hashCode();
-		Map<String, List<IPeak>> tracesPeakMap = chromatogramPeakMap.get(hashCode);
+		Map<String, List<IPeak>> tracesPeakMap = chromatogramPeakMap.get(chromatogram);
 		if(tracesPeakMap != null) {
 			chromatogramPeaks.addAll(tracesPeakMap.getOrDefault(traces, Collections.emptyList()));
 		}
@@ -378,7 +389,7 @@ public class PeakSupport {
 						if(tracesPeakMap == null) {
 							autoClearCache();
 							tracesPeakMap = new HashMap<>();
-							chromatogramPeakMap.put(hashCode, tracesPeakMap);
+							chromatogramPeakMap.put(chromatogram, tracesPeakMap);
 						}
 						tracesPeakMap.put(traces, peaks);
 						chromatogramPeaks.addAll(peaks);
@@ -777,12 +788,19 @@ public class PeakSupport {
 	private IChromatogramPeak extractPeakByScanRangeTandemMS(IChromatogramMSD chromatogram, IScanRange scanRange, PeakSelectionCriterion peakSelectionCriterion, PeakSelectionChoice peakSelectionChoice, String traces, IntensityRange intensityRange, boolean includeBackground, boolean autoAdjustScanRange) {
 
 		IChromatogramPeak peak = null;
+		/*
+		 * Map the existing chromatogram references by traces.
+		 */
 		int retentionTimeStart = chromatogram.getScan(scanRange.getStartScan()).getRetentionTime();
 		int retentionTimeStop = chromatogram.getScan(scanRange.getStopScan()).getRetentionTime();
 		Set<TraceTandemMSD> tracesTandem = new HashSet<>(TraceFactory.parseTraces(traces, TraceTandemMSD.class));
 		boolean enforceFullTimeRange = true;
 		boolean separateTraces = false;
-		List<IChromatogramMSD> chromatograms = TandemDataSupport.extractTandemData(chromatogram, HeaderField.DATA_NAME, CondenseOption.STANDARD, enforceFullTimeRange, tracesTandem, separateTraces);
+		List<IChromatogramMSD> chromatograms = getChromatogramsTandemMS(chromatogram, tracesTandem);
+		if(chromatograms.isEmpty()) {
+			chromatograms = TandemDataSupport.extractTandemData(chromatogram, HeaderField.DATA_NAME, CondenseOption.STANDARD, enforceFullTimeRange, tracesTandem, separateTraces);
+		}
+
 		if(!chromatograms.isEmpty()) {
 			/*
 			 * Scan Range
@@ -797,24 +815,100 @@ public class PeakSupport {
 			 * Empty traces "" is important as the chromatogram has been extracted already.
 			 */
 			scanRange = getScanRangeOptimizedByPeakDetector(chromatogramMSD, scanRangeTandem, peakSelectionCriterion, peakSelectionChoice, "", autoAdjustScanRange);
+			/*
+			 * The reference chromatogram contains IIonMSn ions, hence the
+			 * peak mass spectrum keeps the ion transitions, e.g. 107 > 91.0 @20.
+			 */
 			if(intensityRange != null) {
-				peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRangeTandem, intensityRange.getStartIntensity(), intensityRange.getStopIntensity());
+				peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, intensityRange.getStartIntensity(), intensityRange.getStopIntensity());
 			} else {
-				peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRangeTandem, includeBackground);
+				peak = PeakBuilderMSD.createPeak(chromatogramMSD, scanRange, includeBackground);
 			}
 			/*
-			 * Remove the reference chromatogram / free memory
+			 * The peak belongs to the main chromatogram.
+			 * The trace reference chromatograms are kept as they are reused
+			 * by the following detector settings. The extracted chromatogram
+			 * (fallback) is not added as reference, hence it is freed anyhow.
 			 */
 			if(peak != null) {
 				if(peak instanceof ChromatogramPeakMSD peakMSD) {
 					peakMSD.setChromatogram(chromatogram);
 				}
 			}
-			chromatogram.getReferencedChromatograms().remove(chromatogramMSD);
-			chromatogramMSD = null;
 		}
 
 		return peak;
+	}
+
+	/**
+	 * Returns the trace reference chromatogram, e.g. created via:
+	 * TandemDataSupport.extractTandemData(..., separateTraces = true)
+	 * The reference chromatograms are named by their trace, e.g. "107 > 91.0 @20".
+	 * If several traces are requested (combined), the trace reference chromatograms
+	 * are merged. If not all traces are available, an empty list is returned.
+	 */
+	private List<IChromatogramMSD> getChromatogramsTandemMS(IChromatogramMSD chromatogram, Set<TraceTandemMSD> tracesTandem) {
+
+		Map<String, IChromatogramMSD> chromatogramMap = new HashMap<>();
+		for(IChromatogram chromatogramReference : chromatogram.getReferencedChromatograms()) {
+			if(chromatogramReference instanceof IChromatogramMSD chromatogramMSD) {
+				chromatogramMap.putIfAbsent(chromatogramMSD.getDataName(), chromatogramMSD);
+			}
+		}
+
+		List<IChromatogramMSD> chromatogramsTrace = new ArrayList<>();
+		for(TraceTandemMSD traceTandem : tracesTandem) {
+			IChromatogramMSD chromatogramMSD = chromatogramMap.get(traceTandem.toString());
+			if(chromatogramMSD == null) {
+				return new ArrayList<>();
+			}
+			chromatogramsTrace.add(chromatogramMSD);
+		}
+
+		List<IChromatogramMSD> chromatograms = new ArrayList<>();
+		if(chromatogramsTrace.size() == 1) {
+			chromatograms.add(chromatogramsTrace.get(0));
+		} else if(chromatogramsTrace.size() > 1) {
+			chromatograms.add(mergeChromatogramsTandemMS(chromatogram, chromatogramsTrace));
+		}
+
+		return chromatograms;
+	}
+
+	/*
+	 * The peak mass spectrum shall contain all requested ion transitions.
+	 */
+	private IChromatogramMSD mergeChromatogramsTandemMS(IChromatogramMSD chromatogram, List<IChromatogramMSD> chromatogramsTrace) {
+
+		Map<Integer, List<IIon>> scanIonsMap = new TreeMap<>();
+		for(IChromatogramMSD chromatogramTrace : chromatogramsTrace) {
+			for(IScan scan : chromatogramTrace.getScans()) {
+				if(scan instanceof IScanMSD scanMSD) {
+					scanIonsMap.computeIfAbsent(scan.getRetentionTime(), _ -> new ArrayList<>()).addAll(scanMSD.getIons());
+				}
+			}
+		}
+
+		IChromatogramMSD chromatogramMerged = new ChromatogramMSD();
+		chromatogramMerged.setConverterId(chromatogram.getConverterId());
+		for(Map.Entry<Integer, List<IIon>> entry : scanIonsMap.entrySet()) {
+			RegularMassSpectrum scanMSD = new RegularMassSpectrum();
+			scanMSD.setRetentionTime(entry.getKey());
+			scanMSD.addIons(entry.getValue(), false);
+			chromatogramMerged.addScan(scanMSD);
+		}
+		ChromatogramSupport.calculateScanIntervalAndDelay(chromatogramMerged);
+
+		return chromatogramMerged;
+	}
+
+	private boolean isTandemMS(String traces) {
+
+		if(traces != null && !traces.isEmpty()) {
+			return TraceTandemMSD.class.equals(TraceFactory.getTraceType(traces, DetectorType.MSD));
+		}
+
+		return false;
 	}
 
 	private IScanRange optimizeRange(IChromatogram chromatogram, int startScan, int stopScan, String traces) {
