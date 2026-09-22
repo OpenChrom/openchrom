@@ -777,12 +777,21 @@ public class PeakSupport {
 	private IChromatogramPeak extractPeakByScanRangeTandemMS(IChromatogramMSD chromatogram, IScanRange scanRange, PeakSelectionCriterion peakSelectionCriterion, PeakSelectionChoice peakSelectionChoice, String traces, IntensityRange intensityRange, boolean includeBackground, boolean autoAdjustScanRange) {
 
 		IChromatogramPeak peak = null;
+		/*
+		 * Map the existing chromatogram references by traces.
+		 */
 		int retentionTimeStart = chromatogram.getScan(scanRange.getStartScan()).getRetentionTime();
 		int retentionTimeStop = chromatogram.getScan(scanRange.getStopScan()).getRetentionTime();
 		Set<TraceTandemMSD> tracesTandem = new HashSet<>(TraceFactory.parseTraces(traces, TraceTandemMSD.class));
 		boolean enforceFullTimeRange = true;
 		boolean separateTraces = false;
-		List<IChromatogramMSD> chromatograms = TandemDataSupport.extractTandemData(chromatogram, HeaderField.DATA_NAME, CondenseOption.STANDARD, enforceFullTimeRange, tracesTandem, separateTraces);
+		List<IChromatogramMSD> chromatograms = getChromatogramsTandemMS(chromatogram, tracesTandem);
+		if(chromatograms.isEmpty()) {
+			chromatograms = TandemDataSupport.extractTandemData(chromatogram, HeaderField.DATA_NAME, CondenseOption.STANDARD, enforceFullTimeRange, tracesTandem, separateTraces);
+		}
+		/*
+		 * TraceFactory.getTracesAsString(
+		 */
 		if(!chromatograms.isEmpty()) {
 			/*
 			 * Scan Range
@@ -810,11 +819,28 @@ public class PeakSupport {
 					peakMSD.setChromatogram(chromatogram);
 				}
 			}
-			chromatogram.getReferencedChromatograms().remove(chromatogramMSD);
-			chromatogramMSD = null;
+			// chromatogram.getReferencedChromatograms().remove(chromatogramMSD);
+			// chromatogramMSD = null;
 		}
 
 		return peak;
+	}
+
+	private List<IChromatogramMSD> getChromatogramsTandemMS(IChromatogramMSD chromatogram, Set<TraceTandemMSD> tracesTandem) {
+
+		List<IChromatogramMSD> chromatograms = new ArrayList<>();
+		for(IChromatogram chromatogramReference : chromatogram.getReferencedChromatograms()) {
+			if(chromatogramReference instanceof IChromatogramMSD chromatogramMSD) {
+				String dataName = chromatogramMSD.getDataName();
+				for(TraceTandemMSD traceTandem : tracesTandem) {
+					if(traceTandem.toString().equals(dataName)) {
+						chromatograms.add(chromatogramMSD);
+					}
+				}
+			}
+		}
+
+		return chromatograms;
 	}
 
 	private IScanRange optimizeRange(IChromatogram chromatogram, int startScan, int stopScan, String traces) {
