@@ -95,6 +95,10 @@
          id="org.eclipse.chemclipse.nmr.processing.supplier.base.feature"
          version="0.0.0"/>
 
+   <includes
+         id="net.openchrom.chromatogram.xxd.report.supplier.masc.escape.feature"
+         version="0.0.0"/>
+
    <requires>
       <import feature="org.eclipse.rcp"/>
       <import feature="org.eclipse.help"/>

@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: net.openchrom.chromatogram.xxd.report.supplier.excel.template
+Bundle-ManifestVersion: 2
+Bundle-Name: MaSC ESCAPE Report
+Bundle-SymbolicName: net.openchrom.chromatogram.xxd.report.supplier.masc.escape;singleton:=true
+Bundle-Version: 1.6.34.qualifier
+Export-Package: net.openchrom.chromatogram.xxd.report.supplier.masc.escape.preferences
+Bundle-Vendor: OpenChrom
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.chemclipse.chromatogram.xxd.report;bundle-version="0.9.0",
+ org.eclipse.chemclipse.model;bundle-version="0.9.0",
+ org.eclipse.chemclipse.logging;bundle-version="0.9.0",
+ org.eclipse.chemclipse.processing;bundle-version="0.9.0",
+ org.eclipse.chemclipse.support;bundle-version="0.9.0",
+ org.apache.poi;bundle-version="4.1.1",
+ org.apache.poi.ooxml;bundle-version="4.1.1",
+ org.apache.poi.ooxml.schemas;bundle-version="4.1.1",
+ org.apache.xmlbeans;bundle-version="3.1.0",
+ org.apache.commons.commons-compress;bundle-version="1.28.0",
+ org.eclipse.chemclipse.msd.model;bundle-version="[0.9.0,1.0.0)"
+Bundle-RequiredExecutionEnvironment: JavaSE-25
+Bundle-ActivationPolicy: lazy
+Import-Package: com.fasterxml.jackson.annotation;version="2.20.0"

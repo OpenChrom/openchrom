@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.chemclipse.chromatogram.xxd.report.chromatogramReportSupplier">
+      <ChromatogramReportSupplier
+            description="Reports into the ESCAPE Excel master sheet"
+            fileExtension=".xlsx"
+            fileName="MaSC Escape Report"
+            id="net.openchrom.chromatogram.xxd.report.supplier.masc.escape"
+            reportGenerator="net.openchrom.chromatogram.xxd.report.supplier.masc.escape.core.MascEscapeReport"
+            reportName="MaSC ESCAPE Report (*.xlsx)"
+            reportSettings="net.openchrom.chromatogram.xxd.report.supplier.masc.escape.settings.ChromatogramReportSettings">
+      </ChromatogramReportSupplier>
+   </extension>
+</plugin>
