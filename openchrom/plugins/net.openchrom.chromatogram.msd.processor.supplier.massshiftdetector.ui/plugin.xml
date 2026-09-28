@@ -4,6 +4,7 @@
          id="net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.ui.fragment"
          point="org.eclipse.e4.workbench.model">
       <fragment
+            apply="notexists"
             uri="fragment.e4xmi">
       </fragment>
    </extension>
