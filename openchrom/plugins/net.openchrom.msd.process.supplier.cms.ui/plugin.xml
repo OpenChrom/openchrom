@@ -5,6 +5,7 @@
          id="net.openchrom.msd.process.supplier.cms.ui.fragment"
          point="org.eclipse.e4.workbench.model">
       <fragment
+            apply="notexists"
             uri="fragment.e4xmi">
       </fragment>
    </extension>
