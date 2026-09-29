@@ -13,8 +13,8 @@
    <extension
          point="org.eclipse.chemclipse.xxd.process.ui.menu.icon">
       <icon
-            class="net.openchrom.chromatogram.xxd.report.supplier.excel.template.ui.icon.MenuIcon"
-            id="net.openchrom.chromatogram.xxd.report.supplier.excel.template">
+            class="net.openchrom.chromatogram.xxd.report.supplier.masc.escape.ui.icon.MenuIcon"
+            id="net.openchrom.chromatogram.xxd.report.supplier.masc.escape">
       </icon>
    </extension>
 </plugin>
