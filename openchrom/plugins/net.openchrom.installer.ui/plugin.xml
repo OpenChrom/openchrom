@@ -1394,5 +1394,18 @@
             icon="icons/32x32/Mabritec.svg">
       </pluginDescriptor>
 
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.converters.proprietary"
+            description="Reads *.run files."
+            groupId="net.openchrom.csd.converter"
+            id="net.openchrom.msd.converter.supplier.kratos.axima.feature"
+            kind="converter"
+            license="Converter License Terms"
+            name="Shimadzu Kratos AXIMA"
+            provider="Lablicate"
+            summary="Free extension exclusively for OpenChrom®"
+            icon="icons/32x32/Shimadzu.png">
+      </pluginDescriptor>
+
    </extension>
 </plugin>
