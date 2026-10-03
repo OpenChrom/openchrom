@@ -16,6 +16,6 @@
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_pQ1nsFa2EfGQWeaOVqkAyA" featurename="addons" parentElementId="org.eclipse.chemclipse.rcp.ide.application"/>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_Nsa4MESIEfGQWeaOVqkAyA" featurename="children" parentElementId="org.eclipse.chemclipse.rcp.app.ui.menu.help">
-    <elements xsi:type="menu:HandledMenuItem" xmi:id="_FARncESIEfGQWeaOVqkAyA" elementId="net.openchrom.installer.ui.handledmenuitem.checkupdates" label="Check for Updates" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/refresh.png" command="_rY6ywESHEfGQWeaOVqkAyA"/>
+    <elements xsi:type="menu:HandledMenuItem" xmi:id="_FARncESIEfGQWeaOVqkAyA" elementId="net.openchrom.installer.ui.handledmenuitem.checkupdates" label="Check for Updates" iconURI="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/scalable/refresh.svg" command="_rY6ywESHEfGQWeaOVqkAyA"/>
   </fragments>
 </fragment:ModelFragments>
