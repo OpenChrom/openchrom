@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Lablicate GmbH.
+ * Copyright (c) 2023, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -26,25 +26,35 @@ public class ProjectInfo {
 
 	@XmlAttribute(name = "name")
 	protected String name;
+
 	@XmlAttribute(name = "timestamp")
 	@XmlSchemaType(name = "dateTime")
 	protected XMLGregorianCalendar timestamp;
+
 	@XmlAttribute(name = "instrumentId")
 	protected String instrumentId;
+
 	@XmlAttribute(name = "externalTargetId")
 	protected String externalTargetId;
+
 	@XmlAttribute(name = "uuid", required = true)
 	protected String uuid;
+
 	@XmlAttribute(name = "validationPosition")
 	protected String validationPosition;
+
 	@XmlAttribute(name = "validationResult")
 	protected Boolean validationResult;
+
 	@XmlAttribute(name = "projectTypeName")
 	protected String projectTypeName;
+
 	@XmlAttribute(name = "creator")
 	protected String creator;
+
 	@XmlAttribute(name = "totalSampleNumber")
 	protected Integer totalSampleNumber;
+
 	@XmlAttribute(name = "comment")
 	protected String comment;
 
