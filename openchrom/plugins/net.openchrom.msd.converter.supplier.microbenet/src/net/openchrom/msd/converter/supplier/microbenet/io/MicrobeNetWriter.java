@@ -28,11 +28,14 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.commons.math3.util.Precision;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
 import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.model.core.IMassSpectrumPeak;
 import org.eclipse.chemclipse.msd.converter.io.AbstractMassSpectraWriter;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
+import org.eclipse.chemclipse.msd.model.core.IRegularMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.core.IStandaloneMassSpectrum;
+import org.eclipse.chemclipse.msd.model.core.MassSpectrumType;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.microbenet.model.Analytes;
@@ -120,17 +123,27 @@ public class MicrobeNetWriter extends AbstractMassSpectraWriter {
 	private Peaks createPeaks(IScanMSD scanMSD) {
 
 		Peaks peaks = new Peaks();
-		for(IIon ion : scanMSD.getIons()) {
-			peaks.getPeak().add(createPeak(ion));
+
+		if(scanMSD instanceof IRegularMassSpectrum massSpectrum) {
+			if(massSpectrum.getMassSpectrumType() == MassSpectrumType.CENTROID) {
+				for(IIon ion : scanMSD.getIons()) {
+					peaks.getPeak().add(createPeak(ion.getAbundance(), ion.getIon()));
+				}
+			} else if(massSpectrum instanceof IStandaloneMassSpectrum standaloneMassSpectrum) {
+				for(IMassSpectrumPeak massSpectrumPeak : standaloneMassSpectrum.getPeaks()) {
+					peaks.getPeak().add(createPeak(massSpectrumPeak.getAbundance(), massSpectrumPeak.getIon()));
+				}
+			}
 		}
+
 		return peaks;
 	}
 
-	private Peak createPeak(IIon ion) {
+	private Peak createPeak(double abundance, double ion) {
 
 		Peak peak = new Peak();
-		peak.setIntensity(Precision.round(ion.getAbundance() / scale, 3));
-		peak.setMass(Precision.round(ion.getIon(), 2));
+		peak.setIntensity(Precision.round(abundance / scale, 3));
+		peak.setMass(Precision.round(ion, 2));
 		return peak;
 	}
 
