@@ -4,14 +4,27 @@
     <extension
          point="org.eclipse.chemclipse.msd.converter.databaseSupplier">
       <DatabaseSupplier
-            description="Writes MicrobeNet MALDI XML files."
+            description="Writes MicrobeNet XML files."
             exportConverter="net.openchrom.msd.converter.supplier.microbenet.converter.DatabaseExportConverter"
-            importMagicNumberMatcher="net.openchrom.msd.converter.supplier.microbenet.converter.MagicNumberMatcher"            
+            importMagicNumberMatcher="net.openchrom.msd.converter.supplier.microbenet.converter.MagicNumberMatcher"
             fileExtension=".xml"
             filterName="MicrobeNet MALDI (*.xml)"
             id="net.openchrom.msd.converter.supplier.microbenet"
             isExportable="true"
             isImportable="false">
       </DatabaseSupplier>
+   </extension>
+    <extension
+         point="org.eclipse.chemclipse.msd.converter.massSpectrumSupplier">
+      <MassSpectrumSupplier
+            description="Writes MicrobeNet XML files."
+            exportConverter="net.openchrom.msd.converter.supplier.microbenet.converter.MassSpectrumExportConverter"
+            importMagicNumberMatcher="net.openchrom.msd.converter.supplier.microbenet.converter.MagicNumberMatcher"
+            fileExtension=".xml"
+            filterName="MicrobeNet MALDI (*.xml)"
+            id="net.openchrom.msd.converter.supplier.microbenet"
+            isExportable="true"
+            isImportable="false">
+      </MassSpectrumSupplier>
    </extension>
 </plugin>
