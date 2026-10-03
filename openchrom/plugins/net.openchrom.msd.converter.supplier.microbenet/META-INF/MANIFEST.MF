@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Automatic-Module-Name: net.openchrom.msd.converter.supplier.microbenet
 Bundle-ManifestVersion: 2
-Bundle-Name: CDC MicrobeNet
+Bundle-Name: CDC MicrobeNet XML
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.microbenet;singleton:=true
 Bundle-Version: 1.6.35.qualifier
 Bundle-Vendor: OpenChrom

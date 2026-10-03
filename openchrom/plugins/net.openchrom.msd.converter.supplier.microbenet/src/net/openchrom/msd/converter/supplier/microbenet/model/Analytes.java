@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Lablicate GmbH.
+ * Copyright (c) 2023, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -45,21 +45,29 @@ public class Analytes {
 
 		@XmlElement(name = "Peaklist", required = true)
 		protected Peaklist peaklist;
+
 		@XmlAttribute(name = "name")
 		protected String name;
+
 		@XmlAttribute(name = "internId")
 		protected String internId;
+
 		@XmlAttribute(name = "externId")
 		protected String externId;
+
 		@XmlAttribute(name = "description")
 		protected String description;
+
 		@XmlAttribute(name = "typeName")
 		protected String typeName;
+
 		@XmlAttribute(name = "timestamp")
 		@XmlSchemaType(name = "dateTime")
 		protected XMLGregorianCalendar timestamp;
+
 		@XmlAttribute(name = "targetChip")
 		protected String targetChip;
+
 		@XmlAttribute(name = "targetPosition")
 		protected String targetPosition;
 
