@@ -13,9 +13,13 @@
 package net.openchrom.chromatogram.xxd.report.supplier.masc.escape.settings;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.List;
 
 import org.eclipse.chemclipse.chromatogram.xxd.report.settings.IChromatogramReportSettings;
 import org.eclipse.chemclipse.model.settings.AbstractProcessSettings;
+import org.eclipse.chemclipse.support.literature.LiteratureReference;
 import org.eclipse.chemclipse.support.settings.FileSettingProperty;
 import org.eclipse.chemclipse.support.settings.FileSettingProperty.DialogType;
 
@@ -64,5 +68,24 @@ public class ChromatogramReportSettings extends AbstractProcessSettings implemen
 	public String getFileNamePattern() {
 
 		return VARIABLE_CHROMATOGRAM_NAME + VARIABLE_EXTENSION;
+	}
+
+	@Override
+	public List<LiteratureReference> getLiteratureReferences() {
+
+		return Arrays.asList(createLiteratureReference());
+	}
+
+	private static LiteratureReference createLiteratureReference() {
+
+		String content;
+		try {
+			content = new String(ChromatogramReportSettings.class.getResourceAsStream("tandf_ysic2064_S1.ris").readAllBytes(), StandardCharsets.US_ASCII);
+		} catch(Exception e) {
+			e.printStackTrace();
+			content = "https://doi.org/10.1080/00393630.2019.1594580";
+		}
+
+		return new LiteratureReference(content);
 	}
 }

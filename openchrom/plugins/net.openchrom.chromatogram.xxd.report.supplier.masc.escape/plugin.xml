@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.chemclipse.chromatogram.xxd.report.chromatogramReportSupplier">
       <ChromatogramReportSupplier
-            description="Reports into the ESCAPE Excel master sheet"
+            description="Reports from the ESCAPE Excel master sheet"
             fileExtension=".xlsx"
             fileName="MaSC Escape Report"
             id="net.openchrom.chromatogram.xxd.report.supplier.masc.escape"
