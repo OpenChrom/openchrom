@@ -19,6 +19,7 @@
       <MassSpectrumSupplier
             description="Writes MicrobeNet XML files."
             exportConverter="net.openchrom.msd.converter.supplier.microbenet.converter.MassSpectrumExportConverter"
+            importConverter="net.openchrom.msd.converter.supplier.microbenet.converter.MassSpectrumImportConverter"
             importMagicNumberMatcher="net.openchrom.msd.converter.supplier.microbenet.converter.MagicNumberMatcher"
             fileExtension=".xml"
             filterName="MicrobeNet MALDI (*.xml)"
