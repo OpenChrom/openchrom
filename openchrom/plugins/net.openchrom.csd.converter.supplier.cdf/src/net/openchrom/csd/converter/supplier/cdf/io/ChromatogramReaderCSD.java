@@ -163,7 +163,7 @@ public class ChromatogramReaderCSD extends AbstractChromatogramCSDReader {
 			operator = in.getOperator();
 			date = in.getDate();
 		} catch(NoCDFAttributeDataFound e) {
-			logger.warn(e);
+			logger.info(e);
 		}
 		/*
 		 * Set the file name to the chromatogram.
