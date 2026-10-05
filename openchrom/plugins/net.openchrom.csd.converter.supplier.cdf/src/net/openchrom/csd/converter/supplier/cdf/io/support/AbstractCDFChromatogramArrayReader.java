@@ -120,7 +120,8 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 		 * Add a default scan interval if none has set yet.
 		 */
 		if(scanInterval == 0) {
-			scanInterval = 200; // milliseconds
+			logger.error("No scan interval detected.");
+			scanInterval = 200; // TODO magic number
 		}
 
 		variable = CDFConstants.VARIABLE_ORDINATE_VALUES;
