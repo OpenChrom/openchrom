@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2025 Lablicate GmbH.
+ * Copyright (c) 2013, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -109,6 +109,11 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 			 */
 			scanDelay = (int)(valueScanDelayTime.readScalarFloat() * retentionTimeScaleFactor);
 			scanInterval = (int)(valueScanInterval.readScalarFloat() * retentionTimeScaleFactor);
+		} else if(valueScanDelayTime.readScalarFloat() == -0.1f) {
+			/*
+			 * HP ChemServer
+			 */
+			scanInterval = (int)(valueScanInterval.readScalarFloat() * IChromatogramOverview.SECOND_CORRELATION_FACTOR);
 		} else {
 			/*
 			 * DataApex
