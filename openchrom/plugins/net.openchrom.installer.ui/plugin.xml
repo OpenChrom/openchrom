@@ -96,6 +96,19 @@
 
       <pluginDescriptor
             categoryId="com.lablicate.openchrom.converters.proprietary"
+            description="Reads *.d/dad_#.ch and *.d/vwd_#.ch files."
+            groupId="net.openchrom.wsd.converter"
+            id="net.openchrom.wsd.converter.supplier.hp.chemserver.feature"
+            kind="converter"
+            license="Converter License Terms"
+            name="HP ChemServer HPLC-DAD"
+            provider="Lablicate"
+            summary="Free extension exclusively for OpenChrom®"
+            icon="icons/32x32/HP.png">
+      </pluginDescriptor>
+
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.converters.proprietary"
             description="Reads *.dat files."
             groupId="net.openchrom.csd.converter"
             id="net.openchrom.csd.converter.supplier.finnigan.dat.feature"
