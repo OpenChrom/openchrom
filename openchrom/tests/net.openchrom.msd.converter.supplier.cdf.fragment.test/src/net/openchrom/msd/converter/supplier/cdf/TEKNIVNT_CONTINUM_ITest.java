@@ -6,7 +6,7 @@
  * which is available at https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  * Matthias Mailänder - initial API and implementation
  *******************************************************************************/
@@ -22,7 +22,6 @@ import java.time.Instant;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -34,7 +33,6 @@ import net.openchrom.msd.converter.supplier.cdf.converter.ChromatogramImportConv
 import net.openchrom.msd.converter.supplier.cdf.converter.FileContentMatcher;
 import net.openchrom.msd.converter.supplier.cdf.converter.MagicNumberMatcher;
 
-@Disabled("Fails to load.") // TODO
 @TestInstance(Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TEKNIVNT_CONTINUM_ITest {
@@ -66,18 +64,23 @@ public class TEKNIVNT_CONTINUM_ITest {
 	@Test
 	public void testDate() {
 
-		assertEquals(Instant.parse("1997-01-28T19:58:23Z"), chromatogram.getDate().toInstant());
+		assertEquals(Instant.parse("1993-09-14T19:08:36Z"), chromatogram.getDate().toInstant());
 	}
 
 	@Test
-	public void testOperator() {
+	public void testScans() {
 
-		assertEquals("Unknown", chromatogram.getOperator());
+		assertEquals(5, chromatogram.getNumberOfScans());
+		assertEquals(2376, chromatogram.getNumberOfScanIons());
+		assertEquals(3, chromatogram.getScan(1).getRetentionTime());
+		assertEquals(4000, chromatogram.getScan(5).getRetentionTime());
 	}
 
 	@Test
-	public void testLoading() {
+	public void testIons() {
 
-		assertNotNull(chromatogram);
+		assertEquals(247, chromatogram.getScan(1).getNumberOfIons());
+		assertEquals(10.505d, chromatogram.getScan(1).getLowestIon().getIon(), 0.0001d);
+		assertEquals(362.614d, chromatogram.getScan(1).getHighestIon().getIon(), 0.0001d);
 	}
 }

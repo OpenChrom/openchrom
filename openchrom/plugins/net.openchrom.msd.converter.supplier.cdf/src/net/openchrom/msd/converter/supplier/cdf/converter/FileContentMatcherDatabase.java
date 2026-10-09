@@ -1,14 +1,14 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2026 Lablicate GmbH.
+ * Copyright (c) 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
- * Philip Wenig - initial API and implementation
+ * Matthias Mailänder - initial API and implementation
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cdf.converter;
 
@@ -24,9 +24,13 @@ import net.openchrom.msd.converter.supplier.cdf.io.support.CDFConstants;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.NetcdfFiles;
 
-public class FileContentMatcher extends AbstractFileContentMatcher {
+/**
+ * Accepts the libraries only, the chromatographic runs are handled by
+ * {@link FileContentMatcher}.
+ */
+public class FileContentMatcherDatabase extends AbstractFileContentMatcher {
 
-	private static final Logger logger = Logger.getLogger(FileContentMatcher.class);
+	private static final Logger logger = Logger.getLogger(FileContentMatcherDatabase.class);
 
 	@Override
 	public boolean checkFileFormat(File file) {
@@ -35,12 +39,7 @@ public class FileContentMatcher extends AbstractFileContentMatcher {
 		NetcdfFile netcdfFile = null;
 		try {
 			netcdfFile = NetcdfFiles.open(file.getAbsolutePath());
-			/*
-			 * If mass values are stored, assume that it is a MSD file. Libraries
-			 * store them too, but have no time axis, hence they are left to the
-			 * database converter.
-			 */
-			if(netcdfFile.findVariable(CDFConstants.VARIABLE_MASS_VALUES) != null && !AttributeSupport.isLibrary(netcdfFile)) {
+			if(netcdfFile.findVariable(CDFConstants.VARIABLE_MASS_VALUES) != null && AttributeSupport.isLibrary(netcdfFile)) {
 				isValidFormat = true;
 			}
 		} catch(Exception e) {
