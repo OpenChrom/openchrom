@@ -12,6 +12,8 @@
  *******************************************************************************/
 package net.openchrom.wsd.converter.supplier.cdf.io.support;
 
+import net.openchrom.xxd.converter.supplier.cdf.io.support.IAbstractCDFChromatogramArrayReader;
+
 public interface ICDFChromatogramOverviewArrayReader extends IAbstractCDFChromatogramArrayReader {
 
 	float getTotalSignal(int scan);

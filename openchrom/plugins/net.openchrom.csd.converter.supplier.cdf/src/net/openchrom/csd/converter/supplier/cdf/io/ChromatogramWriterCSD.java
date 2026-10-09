@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2025 Lablicate GmbH.
+ * Copyright (c) 2014, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -25,10 +25,10 @@ import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.csd.converter.supplier.cdf.io.support.AttributeSupport;
-import net.openchrom.csd.converter.supplier.cdf.io.support.CDFConstants;
 import net.openchrom.csd.converter.supplier.cdf.io.support.DimensionSupport;
 import net.openchrom.csd.converter.supplier.cdf.io.support.IDataEntry;
 import net.openchrom.csd.converter.supplier.cdf.io.support.VariableSupport;
+import net.openchrom.xxd.converter.supplier.cdf.io.support.CDFConstants;
 
 import ucar.ma2.InvalidRangeException;
 import ucar.nc2.write.NetcdfFormatWriter;

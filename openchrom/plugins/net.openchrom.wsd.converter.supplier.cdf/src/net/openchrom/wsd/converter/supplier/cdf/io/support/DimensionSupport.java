@@ -16,6 +16,8 @@ import java.util.ArrayList;
 
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 
+import net.openchrom.xxd.converter.supplier.cdf.io.support.CDFConstants;
+
 import ucar.ma2.ArrayChar;
 import ucar.ma2.ArrayDouble;
 import ucar.ma2.ArrayFloat;

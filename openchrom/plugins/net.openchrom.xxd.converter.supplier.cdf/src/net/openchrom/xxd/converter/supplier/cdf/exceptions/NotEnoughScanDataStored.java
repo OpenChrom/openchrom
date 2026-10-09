@@ -6,11 +6,11 @@
  * which is available at https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  * Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.wsd.converter.supplier.cdf.exceptions;
+package net.openchrom.xxd.converter.supplier.cdf.exceptions;
 
 public class NotEnoughScanDataStored extends Exception {
 

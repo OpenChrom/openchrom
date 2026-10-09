@@ -14,6 +14,8 @@ package net.openchrom.wsd.converter.supplier.cdf.io.support;
 
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 
+import net.openchrom.xxd.converter.supplier.cdf.io.support.CDFConstants;
+
 import ucar.nc2.Attribute;
 import ucar.nc2.write.NetcdfFormatWriter.Builder;
 

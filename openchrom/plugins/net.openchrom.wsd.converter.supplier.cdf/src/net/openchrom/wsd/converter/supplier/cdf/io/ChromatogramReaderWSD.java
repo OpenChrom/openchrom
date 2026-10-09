@@ -26,14 +26,14 @@ import org.eclipse.chemclipse.wsd.converter.io.AbstractChromatogramWSDReader;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.wsd.converter.supplier.cdf.exceptions.NoCDFAttributeDataFound;
-import net.openchrom.wsd.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
-import net.openchrom.wsd.converter.supplier.cdf.exceptions.NotEnoughScanDataStored;
 import net.openchrom.wsd.converter.supplier.cdf.io.support.CDFChromtogramArrayReader;
 import net.openchrom.wsd.converter.supplier.cdf.io.support.DateSupport;
-import net.openchrom.wsd.converter.supplier.cdf.io.support.IAbstractCDFChromatogramArrayReader;
 import net.openchrom.wsd.converter.supplier.cdf.model.VendorChromatogramWSD;
 import net.openchrom.wsd.converter.supplier.cdf.model.VendorScan;
+import net.openchrom.xxd.converter.supplier.cdf.exceptions.NoCDFAttributeDataFound;
+import net.openchrom.xxd.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
+import net.openchrom.xxd.converter.supplier.cdf.exceptions.NotEnoughScanDataStored;
+import net.openchrom.xxd.converter.supplier.cdf.io.support.IAbstractCDFChromatogramArrayReader;
 
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.NetcdfFiles;

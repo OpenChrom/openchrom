@@ -25,10 +25,10 @@ import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.wsd.converter.supplier.cdf.io.support.AttributeSupport;
-import net.openchrom.wsd.converter.supplier.cdf.io.support.CDFConstants;
 import net.openchrom.wsd.converter.supplier.cdf.io.support.DimensionSupport;
 import net.openchrom.wsd.converter.supplier.cdf.io.support.IDataEntry;
 import net.openchrom.wsd.converter.supplier.cdf.io.support.VariableSupport;
+import net.openchrom.xxd.converter.supplier.cdf.io.support.CDFConstants;
 
 import ucar.ma2.InvalidRangeException;
 import ucar.nc2.write.NetcdfFormatWriter;

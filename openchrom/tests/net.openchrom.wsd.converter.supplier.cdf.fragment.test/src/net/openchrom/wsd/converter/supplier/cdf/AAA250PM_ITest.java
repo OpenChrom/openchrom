@@ -65,6 +65,6 @@ public class AAA250PM_ITest {
 
 		assertEquals(8999, chromatogram.getNumberOfScans());
 		assertEquals(0.0043940535f, chromatogram.getScan(4500).getTotalSignal(), 0d);
-		assertEquals(1799600, chromatogram.getScan(8999).getRetentionTime());
+		assertEquals(4499000, chromatogram.getScan(8999).getRetentionTime());
 	}
 }

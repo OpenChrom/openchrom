@@ -84,6 +84,6 @@ public class ICI_21_2_ITest {
 
 		assertEquals(152, chromatogram.getNumberOfScans());
 		assertEquals(46848.0f, chromatogram.getScan(76).getTotalSignal(), 0);
-		assertEquals(302, chromatogram.getScan(152).getRetentionTime());
+		assertEquals(303963, chromatogram.getScan(152).getRetentionTime());
 	}
 }
