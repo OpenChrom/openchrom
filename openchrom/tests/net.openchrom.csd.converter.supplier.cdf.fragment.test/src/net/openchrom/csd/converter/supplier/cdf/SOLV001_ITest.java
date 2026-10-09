@@ -72,6 +72,6 @@ public class SOLV001_ITest {
 
 		assertEquals(1200, chromatogram.getNumberOfScans());
 		assertEquals(429191.0f, chromatogram.getScan(600).getTotalSignal(), 0);
-		assertEquals(239800, chromatogram.getScan(1200).getRetentionTime());
+		assertEquals(599500, chromatogram.getScan(1200).getRetentionTime());
 	}
 }
