@@ -78,6 +78,6 @@ public class SHIMADZU_ITest {
 
 		assertEquals(1080, chromatogram.getNumberOfScans());
 		assertEquals(5224.6f, chromatogram.getScan(540).getTotalSignal(), 0);
-		assertEquals(215800, chromatogram.getScan(1080).getRetentionTime());
+		assertEquals(539500, chromatogram.getScan(1080).getRetentionTime());
 	}
 }

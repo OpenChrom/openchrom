@@ -76,23 +76,7 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 		if(valueScanInterval == null) {
 			throw new NoCDFVariableDataFound("There could be no data found for the variable: " + variable);
 		}
-		double retentionTimeScaleFactor;
-		Attribute retentionUnit = chromatogram.findGlobalAttribute(CDFConstants.ATTRIBUTE_RETENTION_UNIT);
-		if(retentionUnit != null) {
-			String unit = retentionUnit.getStringValue().trim();
-			if(unit.equals("seconds") || unit.equals("Seconds") || unit.equals("s")) {
-				retentionTimeScaleFactor = IChromatogramOverview.SECOND_CORRELATION_FACTOR;
-			} else if(unit.equals("minutes") || unit.equals("Minutes") || unit.equals("time in minutes")) {
-				retentionTimeScaleFactor = IChromatogramOverview.MINUTE_CORRELATION_FACTOR;
-			} else {
-				/*
-				 * Milliseconds
-				 */
-				retentionTimeScaleFactor = 1;
-			}
-		} else {
-			retentionTimeScaleFactor = 1;
-		}
+		double retentionTimeScaleFactor = getRetentionTimeScaleFactor();
 		/*
 		 * Not all supplier store a run time length.
 		 */
@@ -101,32 +85,35 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 		/*
 		 * Calculate the scan delay and interval.
 		 */
+		float delayTime = valueScanDelayTime.readScalarFloat();
+		float samplingInterval = valueScanInterval.readScalarFloat();
 		scanDelay = 0; // milliseconds
 		scanInterval = 0; // milliseconds
 		if(valueRunTimeLength == null) {
 			/*
 			 * Normal
 			 */
-			scanDelay = (int)(valueScanDelayTime.readScalarFloat() * retentionTimeScaleFactor);
-			scanInterval = (int)(valueScanInterval.readScalarFloat() * retentionTimeScaleFactor);
-		} else if(valueScanDelayTime.readScalarFloat() == -0.1f) {
-			/*
-			 * HP ChemServer
-			 */
-			scanInterval = (int)(valueScanInterval.readScalarFloat() * IChromatogramOverview.SECOND_CORRELATION_FACTOR);
+			scanDelay = (int)(delayTime * retentionTimeScaleFactor);
+			scanInterval = (int)(samplingInterval * retentionTimeScaleFactor);
 		} else {
 			/*
 			 * DataApex
 			 */
-			scanDelay = (int)(valueScanDelayTime.readScalarFloat() * retentionTimeScaleFactor);
-			scanInterval = (int)(((valueRunTimeLength.readScalarFloat() - valueScanDelayTime.readScalarFloat()) * retentionTimeScaleFactor) / (scans.getLength() - 1));
+			scanDelay = (int)(delayTime * retentionTimeScaleFactor);
+			scanInterval = (int)(((valueRunTimeLength.readScalarFloat() - delayTime) * retentionTimeScaleFactor) / (scans.getLength() - 1));
+		}
+		/*
+		 * The run time length is not stored by every supplier, hence fall back to the sampling interval.
+		 */
+		if(scanInterval <= 0) {
+			scanInterval = (int)(samplingInterval * retentionTimeScaleFactor);
 		}
 		/*
 		 * Add a default scan interval if none has set yet.
 		 */
-		if(scanInterval == 0) {
+		if(scanInterval <= 0) {
 			logger.error("No scan interval detected.");
-			scanInterval = 200; // TODO magic number
+			scanInterval = 1;
 		}
 
 		variable = CDFConstants.VARIABLE_ORDINATE_VALUES;
@@ -136,6 +123,28 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 		}
 
 		valueArrayIntensity = (ArrayFloat.D1)valuesIntensity.read();
+	}
+
+	/*
+	 * The retention unit is spelled differently by each supplier, e.g. "seconds", "Time-Sec" or "time in minutes".
+	 */
+	private double getRetentionTimeScaleFactor() {
+
+		Attribute retentionUnit = chromatogram.findGlobalAttribute(CDFConstants.ATTRIBUTE_RETENTION_UNIT);
+		if(retentionUnit != null) {
+			String unit = retentionUnit.getStringValue().trim().toLowerCase();
+			if(unit.contains("min")) {
+				return IChromatogramOverview.MINUTE_CORRELATION_FACTOR;
+			} else if(unit.contains("millis") || unit.contains("msec") || unit.equals("ms")) {
+				return 1;
+			} else if(unit.contains("sec") || unit.equals("s")) {
+				return IChromatogramOverview.SECOND_CORRELATION_FACTOR;
+			}
+		}
+		/*
+		 * The ANDI/AIA chromatography standard stores the retention time in seconds.
+		 */
+		return IChromatogramOverview.SECOND_CORRELATION_FACTOR;
 	}
 
 	// ------------------------------------------------IAbstractCDFChromatogramArrayReader

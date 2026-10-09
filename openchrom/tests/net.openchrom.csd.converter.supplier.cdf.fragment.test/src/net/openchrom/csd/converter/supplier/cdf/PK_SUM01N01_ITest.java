@@ -78,6 +78,6 @@ public class PK_SUM01N01_ITest {
 
 		assertEquals(5250, chromatogram.getNumberOfScans());
 		assertEquals(502.0f, chromatogram.getScan(2625).getTotalSignal(), 0);
-		assertEquals(1049800, chromatogram.getScan(5250).getRetentionTime());
+		assertEquals(524900, chromatogram.getScan(5250).getRetentionTime());
 	}
 }

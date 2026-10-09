@@ -72,6 +72,6 @@ public class EXAMPLE1_ITest {
 
 		assertEquals(4000, chromatogram.getNumberOfScans());
 		assertEquals(31.0f, chromatogram.getScan(2000).getTotalSignal(), 0);
-		assertEquals(799800, chromatogram.getScan(4000).getRetentionTime());
+		assertEquals(399900, chromatogram.getScan(4000).getRetentionTime());
 	}
 }
