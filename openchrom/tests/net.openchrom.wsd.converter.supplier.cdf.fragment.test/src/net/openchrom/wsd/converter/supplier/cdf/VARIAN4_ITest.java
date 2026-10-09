@@ -78,6 +78,6 @@ public class VARIAN4_ITest {
 
 		assertEquals(1794, chromatogram.getNumberOfScans());
 		assertEquals(4.348755E-4f, chromatogram.getScan(900).getTotalSignal(), 0);
-		assertEquals(358600, chromatogram.getScan(1794).getRetentionTime());
+		assertEquals(365772, chromatogram.getScan(1794).getRetentionTime());
 	}
 }

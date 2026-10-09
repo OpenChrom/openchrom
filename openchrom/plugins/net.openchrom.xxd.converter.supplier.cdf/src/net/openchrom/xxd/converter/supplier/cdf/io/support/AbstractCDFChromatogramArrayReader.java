@@ -6,15 +6,16 @@
  * which is available at https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  * Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.wsd.converter.supplier.cdf.io.support;
+package net.openchrom.xxd.converter.supplier.cdf.io.support;
 
 import java.io.IOException;
 
 import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.identifier.ComparisonResult;
 import org.eclipse.chemclipse.model.identifier.IComparisonResult;
@@ -23,10 +24,9 @@ import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.model.identifier.LibraryInformation;
 import org.eclipse.chemclipse.model.implementation.IdentificationTarget;
 
-import net.openchrom.wsd.converter.supplier.cdf.exceptions.NoCDFAttributeDataFound;
-import net.openchrom.wsd.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
-import net.openchrom.wsd.converter.supplier.cdf.exceptions.NotEnoughScanDataStored;
-import net.openchrom.wsd.converter.supplier.cdf.model.VendorChromatogramWSD;
+import net.openchrom.xxd.converter.supplier.cdf.exceptions.NoCDFAttributeDataFound;
+import net.openchrom.xxd.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
+import net.openchrom.xxd.converter.supplier.cdf.exceptions.NotEnoughScanDataStored;
 
 import ucar.ma2.ArrayChar;
 import ucar.ma2.ArrayFloat;
@@ -76,23 +76,7 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 		if(valueScanInterval == null) {
 			throw new NoCDFVariableDataFound("There could be no data found for the variable: " + variable);
 		}
-		double retentionTimeScaleFactor;
-		Attribute retentionUnit = chromatogram.findGlobalAttribute(CDFConstants.ATTRIBUTE_RETENTION_UNIT);
-		if(retentionUnit != null) {
-			String unit = retentionUnit.getStringValue().trim();
-			if(unit.equals("seconds") || unit.equals("Seconds") || unit.equals("s")) {
-				retentionTimeScaleFactor = IChromatogramOverview.SECOND_CORRELATION_FACTOR;
-			} else if(unit.equals("minutes") || unit.equals("Minutes") || unit.equals("time in minutes")) {
-				retentionTimeScaleFactor = IChromatogramOverview.MINUTE_CORRELATION_FACTOR;
-			} else {
-				/*
-				 * Milliseconds
-				 */
-				retentionTimeScaleFactor = 1;
-			}
-		} else {
-			retentionTimeScaleFactor = 1;
-		}
+		double retentionTimeScaleFactor = getRetentionTimeScaleFactor();
 		/*
 		 * Not all supplier store a run time length.
 		 */
@@ -101,26 +85,35 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 		/*
 		 * Calculate the scan delay and interval.
 		 */
+		float delayTime = valueScanDelayTime.readScalarFloat();
+		float samplingInterval = valueScanInterval.readScalarFloat();
 		scanDelay = 0; // milliseconds
 		scanInterval = 0; // milliseconds
 		if(valueRunTimeLength == null) {
 			/*
 			 * Normal
 			 */
-			scanDelay = (int)(valueScanDelayTime.readScalarFloat() * retentionTimeScaleFactor);
-			scanInterval = (int)(valueScanInterval.readScalarFloat() * retentionTimeScaleFactor);
+			scanDelay = (int)(delayTime * retentionTimeScaleFactor);
+			scanInterval = (int)(samplingInterval * retentionTimeScaleFactor);
 		} else {
 			/*
 			 * DataApex
 			 */
-			scanDelay = (int)(valueScanDelayTime.readScalarFloat() * retentionTimeScaleFactor);
-			scanInterval = (int)(((valueRunTimeLength.readScalarFloat() - valueScanDelayTime.readScalarFloat()) * retentionTimeScaleFactor) / (scans.getLength() - 1));
+			scanDelay = (int)(delayTime * retentionTimeScaleFactor);
+			scanInterval = (int)(((valueRunTimeLength.readScalarFloat() - delayTime) * retentionTimeScaleFactor) / (scans.getLength() - 1));
+		}
+		/*
+		 * The run time length is not stored by every supplier, hence fall back to the sampling interval.
+		 */
+		if(scanInterval <= 0) {
+			scanInterval = (int)(samplingInterval * retentionTimeScaleFactor);
 		}
 		/*
 		 * Add a default scan interval if none has set yet.
 		 */
-		if(scanInterval == 0) {
-			scanInterval = 200; // milliseconds
+		if(scanInterval <= 0) {
+			logger.error("No scan interval detected.");
+			scanInterval = 1;
 		}
 
 		variable = CDFConstants.VARIABLE_ORDINATE_VALUES;
@@ -130,6 +123,28 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 		}
 
 		valueArrayIntensity = (ArrayFloat.D1)valuesIntensity.read();
+	}
+
+	/*
+	 * The retention unit is spelled differently by each supplier, e.g. "seconds", "Time-Sec" or "time in minutes".
+	 */
+	private double getRetentionTimeScaleFactor() {
+
+		Attribute retentionUnit = chromatogram.findGlobalAttribute(CDFConstants.ATTRIBUTE_RETENTION_UNIT);
+		if(retentionUnit != null) {
+			String unit = retentionUnit.getStringValue().trim().toLowerCase();
+			if(unit.contains("min")) {
+				return IChromatogramOverview.MINUTE_CORRELATION_FACTOR;
+			} else if(unit.contains("millis") || unit.contains("msec") || unit.equals("ms")) {
+				return 1;
+			} else if(unit.contains("sec") || unit.equals("s")) {
+				return IChromatogramOverview.SECOND_CORRELATION_FACTOR;
+			}
+		}
+		/*
+		 * The ANDI/AIA chromatography standard stores the retention time in seconds.
+		 */
+		return IChromatogramOverview.SECOND_CORRELATION_FACTOR;
 	}
 
 	// ------------------------------------------------IAbstractCDFChromatogramArrayReader
@@ -184,7 +199,7 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 	}
 
 	@Override
-	public void readPeakTable(VendorChromatogramWSD vendorChromatogram) {
+	public void readPeakTable(IChromatogram vendorChromatogram) {
 
 		try {
 			Variable valuesPeakName = chromatogram.findVariable(CDFConstants.VARIABLE_PEAK_NAME);

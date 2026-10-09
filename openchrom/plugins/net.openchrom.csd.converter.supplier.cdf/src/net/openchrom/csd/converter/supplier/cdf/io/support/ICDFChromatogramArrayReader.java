@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014, 2025 Lablicate GmbH.
+ * Copyright (c) 2014, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -11,6 +11,8 @@
  * Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.csd.converter.supplier.cdf.io.support;
+
+import net.openchrom.xxd.converter.supplier.cdf.io.support.IAbstractCDFChromatogramArrayReader;
 
 public interface ICDFChromatogramArrayReader extends IAbstractCDFChromatogramArrayReader {
 }

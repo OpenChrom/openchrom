@@ -65,6 +65,6 @@ public class STEROIDS_ITest {
 
 		assertEquals(959, chromatogram.getNumberOfScans());
 		assertEquals(-8.064019E-5f, chromatogram.getScan(480).getTotalSignal(), 0);
-		assertEquals(191600, chromatogram.getScan(959).getRetentionTime());
+		assertEquals(479000, chromatogram.getScan(959).getRetentionTime());
 	}
 }

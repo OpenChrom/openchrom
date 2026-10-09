@@ -78,6 +78,6 @@ public class ACID_ITest {
 
 		assertEquals(300, chromatogram.getNumberOfScans());
 		assertEquals(10397.0f, chromatogram.getScan(150).getTotalSignal(), 0);
-		assertEquals(299, chromatogram.getScan(300).getRetentionTime());
+		assertEquals(299897, chromatogram.getScan(300).getRetentionTime());
 	}
 }

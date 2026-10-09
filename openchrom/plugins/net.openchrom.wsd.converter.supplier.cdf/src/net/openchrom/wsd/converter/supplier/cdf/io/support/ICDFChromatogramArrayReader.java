@@ -12,5 +12,7 @@
  *******************************************************************************/
 package net.openchrom.wsd.converter.supplier.cdf.io.support;
 
+import net.openchrom.xxd.converter.supplier.cdf.io.support.IAbstractCDFChromatogramArrayReader;
+
 public interface ICDFChromatogramArrayReader extends IAbstractCDFChromatogramArrayReader {
 }

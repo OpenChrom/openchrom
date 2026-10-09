@@ -14,8 +14,9 @@ package net.openchrom.wsd.converter.supplier.cdf.io.support;
 
 import java.io.IOException;
 
-import net.openchrom.wsd.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
-import net.openchrom.wsd.converter.supplier.cdf.exceptions.NotEnoughScanDataStored;
+import net.openchrom.xxd.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
+import net.openchrom.xxd.converter.supplier.cdf.exceptions.NotEnoughScanDataStored;
+import net.openchrom.xxd.converter.supplier.cdf.io.support.AbstractCDFChromatogramArrayReader;
 
 import ucar.nc2.NetcdfFile;
 
