@@ -6,21 +6,22 @@
  * which is available at https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  * Matthias Mailänder - initial API and implementation
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cdf;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
+import java.time.Instant;
 
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,10 @@ import net.openchrom.msd.converter.supplier.cdf.converter.ChromatogramImportConv
 import net.openchrom.msd.converter.supplier.cdf.converter.FileContentMatcher;
 import net.openchrom.msd.converter.supplier.cdf.converter.MagicNumberMatcher;
 
-@Disabled("NotEnoughScanDataStored") // TODO
+/**
+ * A FAB spectrum acquired without chromatography, hence it stores a single scan
+ * only.
+ */
 @TestInstance(Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class FISONS_A_CONTINUM_ITest {
@@ -59,5 +63,32 @@ public class FISONS_A_CONTINUM_ITest {
 
 		FileContentMatcher fileContentMatcher = new FileContentMatcher();
 		assertTrue(fileContentMatcher.checkFileFormat(file));
+	}
+
+	@Test
+	public void testDate() {
+
+		assertEquals(Instant.parse("1993-09-22T12:15:12Z"), chromatogram.getDate().toInstant());
+	}
+
+	@Test
+	public void testMiscInfo() {
+
+		assertEquals("D", chromatogram.getMiscInfo());
+	}
+
+	@Test
+	public void testScans() {
+
+		assertEquals(1, chromatogram.getNumberOfScans());
+		assertEquals(4488, chromatogram.getNumberOfScanIons());
+		assertEquals(87000, chromatogram.getScan(1).getRetentionTime());
+	}
+
+	@Test
+	public void testIons() {
+
+		assertEquals(3318.0762d, chromatogram.getScan(1).getLowestIon().getIon(), 0.0001d);
+		assertEquals(3585.6160d, chromatogram.getScan(1).getHighestIon().getIon(), 0.0001d);
 	}
 }

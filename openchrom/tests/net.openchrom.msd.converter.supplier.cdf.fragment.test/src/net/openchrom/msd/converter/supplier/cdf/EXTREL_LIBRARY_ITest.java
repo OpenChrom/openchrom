@@ -6,19 +6,21 @@
  * which is available at https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  * Matthias Mailänder - initial API and implementation
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cdf;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 
-import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
+import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
+import org.eclipse.chemclipse.msd.model.core.IRegularLibraryMassSpectrum;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.jupiter.api.MethodOrderer;
@@ -28,26 +30,27 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
 
-import net.openchrom.msd.converter.supplier.cdf.converter.ChromatogramImportConverter;
+import net.openchrom.msd.converter.supplier.cdf.converter.DatabaseImportConverter;
 import net.openchrom.msd.converter.supplier.cdf.converter.FileContentMatcher;
+import net.openchrom.msd.converter.supplier.cdf.converter.FileContentMatcherDatabase;
 import net.openchrom.msd.converter.supplier.cdf.converter.MagicNumberMatcher;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class EXTREL_LIBRARY_ITest {
 
-	private IChromatogramMSD chromatogram;
+	private IMassSpectra massSpectra;
 	private File file;
 
 	@Test
 	@Order(1)
 	public void testImport() {
 
-		file = new File("testData/EXTREL/LIBRARY.CDF"); // TODO: detect as a library
-		ChromatogramImportConverter importConverter = new ChromatogramImportConverter();
-		IProcessingInfo<IChromatogramMSD> processingInfo = importConverter.convert(file, new NullProgressMonitor());
-		chromatogram = processingInfo.getProcessingResult();
-		assertNotNull(chromatogram);
+		file = new File("testData/EXTREL/LIBRARY.CDF");
+		DatabaseImportConverter importConverter = new DatabaseImportConverter();
+		IProcessingInfo<IMassSpectra> processingInfo = importConverter.convert(file, new NullProgressMonitor());
+		massSpectra = processingInfo.getProcessingResult();
+		assertNotNull(massSpectra);
 	}
 
 	@Test
@@ -56,15 +59,32 @@ public class EXTREL_LIBRARY_ITest {
 		MagicNumberMatcher magicNumberMatcher = new MagicNumberMatcher();
 		assertTrue(magicNumberMatcher.checkFileFormat(file));
 
+		FileContentMatcherDatabase fileContentMatcherDatabase = new FileContentMatcherDatabase();
+		assertTrue(fileContentMatcherDatabase.checkFileFormat(file));
+
 		FileContentMatcher fileContentMatcher = new FileContentMatcher();
-		assertTrue(fileContentMatcher.checkFileFormat(file));
+		assertFalse(fileContentMatcher.checkFileFormat(file));
 	}
 
 	@Test
-	public void testScans() {
+	public void testEntries() {
 
-		assertEquals(2, chromatogram.getNumberOfScans());
-		assertEquals(17, chromatogram.getNumberOfScanIons());
-		assertEquals(200, chromatogram.getScan(2).getRetentionTime());
+		assertEquals(2, massSpectra.size());
+	}
+
+	@Test
+	public void testBenzene() {
+
+		IRegularLibraryMassSpectrum massSpectrum = (IRegularLibraryMassSpectrum)massSpectra.getMassSpectrum(1);
+		assertEquals("benzene", massSpectrum.getLibraryInformation().getName());
+		assertEquals(9, massSpectrum.getNumberOfIons());
+	}
+
+	@Test
+	public void testToluene() {
+
+		IRegularLibraryMassSpectrum massSpectrum = (IRegularLibraryMassSpectrum)massSpectra.getMassSpectrum(2);
+		assertEquals("toluene", massSpectrum.getLibraryInformation().getName());
+		assertEquals(8, massSpectrum.getNumberOfIons());
 	}
 }

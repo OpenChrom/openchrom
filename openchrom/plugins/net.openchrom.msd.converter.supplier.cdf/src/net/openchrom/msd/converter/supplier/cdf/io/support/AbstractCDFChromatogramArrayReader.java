@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2025 Lablicate GmbH.
+ * Copyright (c) 2013, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -50,8 +50,11 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 		if(scans == null) {
 			throw new NoCDFVariableDataFound("There could be no data found for the variable: " + dimension);
 		}
-		// Tests if a chromatogram has at least 2 scans.
-		if(scans.getLength() < 2) {
+		/*
+		 * Direct inlet probe measurements store a single scan only,
+		 * e.g. a continuum spectrum acquired without chromatography.
+		 */
+		if(scans.getLength() < 1) {
 			throw new NotEnoughScanDataStored();
 		}
 		valueArrayScanAcquisitionTime = (ArrayDouble.D1)valuesScanAcquisitionTime.read();
@@ -73,15 +76,18 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 	@Override
 	public int getScanInterval() {
 
+		/*
+		 * A single scan has no interval.
+		 */
+		if(scans.getLength() < 2) {
+			return 0;
+		}
 		double interval = 0;
 		int massSpectra = scans.getLength() / (10 * 4);
 		if(massSpectra < 2) {
 			massSpectra = 2;
 		}
-		/*
-		 * Length is greater than 1.<br/> Otherwise the class couldn't be
-		 * created without throwing an exception.
-		 */
+		massSpectra = Math.min(massSpectra, scans.getLength());
 		for(int i = 0; i < massSpectra - 1; i++) {
 			interval += (valueArrayScanAcquisitionTime.get(i + 1) - valueArrayScanAcquisitionTime.get(i));
 		}

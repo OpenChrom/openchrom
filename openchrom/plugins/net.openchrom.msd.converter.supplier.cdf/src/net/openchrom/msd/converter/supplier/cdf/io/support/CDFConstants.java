@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2025 Lablicate GmbH.
+ * Copyright (c) 2013, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -90,4 +90,35 @@ public class CDFConstants {
 	public static final String ATTRIBUTE_RAW_DATA_MASS_FORMAT = "raw_data_mass_format";
 	public static final String ATTRIBUTE_RAW_DATA_TIME_FORMAT = "raw_data_time_format";
 	public static final String ATTRIBUTE_RAW_DATA_INTENSITY_FORMAT = "raw_data_intensity_format";
+	/*
+	 * Library (*.CDF) specific dimensions and variables.
+	 */
+	public static final String VARIABLE_ENTRY_NAME = "entry_name";
+	public static final String VARIABLE_ENTRY_NUMBER = "entry_number";
+	public static final String VARIABLE_ENTRY_ID = "entry_id";
+	public static final String VARIABLE_ENTRY_OTHER_INFORMATION = "entry_other_information";
+	public static final String VARIABLE_CAS_NAME = "CAS_name";
+	public static final String VARIABLE_CAS_NUMBER = "CAS_number";
+	public static final String VARIABLE_CHEMICAL_FORMULA = "chemical_formula";
+	public static final String VARIABLE_NOMINAL_MASS = "nominal_mass";
+	public static final String VARIABLE_CHEMICAL_MASS = "chemical_mass";
+	public static final String VARIABLE_ACCURATE_MASS = "accurate_mass";
+	public static final String VARIABLE_SMILES = "smiles";
+	public static final String VARIABLE_RETENTION_INDEX = "retention_index";
+	public static final String VARIABLE_SOURCE_DATA_FILE_REFERENCE = "source_data_file_reference";
+	/*
+	 * The value of ATTRIBUTE_EXPERIMENT_TYPE which marks a spectral library
+	 * instead of a chromatographic run.
+	 */
+	public static final String EXPERIMENT_TYPE_LIBRARY = "Library Mass Spectrum";
+	/*
+	 * Variable attributes which scale the stored raw values. The netCDF library
+	 * does not apply them when a file is opened unenhanced.
+	 */
+	public static final String ATTRIBUTE_SCALE_FACTOR = "scale_factor";
+	public static final String ATTRIBUTE_ADD_OFFSET = "add_offset";
+	/*
+	 * The AIA/ANDI null value, used for fields a vendor did not fill in.
+	 */
+	public static final double NULL_VALUE = -9999.0d;
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2025 Lablicate GmbH.
+ * Copyright (c) 2013, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -17,12 +17,28 @@ import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import net.openchrom.msd.converter.supplier.cdf.model.VendorChromatogram;
 
 import ucar.nc2.Attribute;
+import ucar.nc2.NetcdfFile;
 import ucar.nc2.write.NetcdfFormatWriter.Builder;
 
 public class AttributeSupport {
 
 	private AttributeSupport() {
 
+	}
+
+	/**
+	 * Returns true if the file holds a spectral library rather than a
+	 * chromatographic run. Such a file has no usable time axis and must be read
+	 * by the database converter instead.
+	 */
+	public static boolean isLibrary(NetcdfFile netcdfFile) {
+
+		Attribute experimentType = netcdfFile.findGlobalAttribute(CDFConstants.ATTRIBUTE_EXPERIMENT_TYPE);
+		if(experimentType == null) {
+			return false;
+		}
+		String value = experimentType.getStringValue();
+		return value != null && CDFConstants.EXPERIMENT_TYPE_LIBRARY.equalsIgnoreCase(value.trim());
 	}
 
 	public static void setAttributes(Builder builder, IChromatogramMSD chromatogram) {

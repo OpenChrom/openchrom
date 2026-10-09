@@ -20,7 +20,6 @@ import net.openchrom.msd.converter.supplier.cdf.exceptions.NotEnoughScanDataStor
 import net.openchrom.msd.converter.supplier.cdf.model.VendorIon;
 import net.openchrom.msd.converter.supplier.cdf.model.VendorScan;
 
-import ucar.ma2.DataType;
 import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
 
@@ -69,10 +68,10 @@ public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReade
 		 * -> Int ------------- Agilent: Ion -> Float Abundance -> Float
 		 * PointCount -> Int ScanIndex -> Int
 		 */
-		valueArrayIon = (double[])valuesIon.read().get1DJavaArray(DataType.DOUBLE);
-		valueArrayAbundance = (float[])valuesAbundance.read().get1DJavaArray(DataType.FLOAT);
-		valueArrayPointCount = (int[])valuesPointCount.read().get1DJavaArray(DataType.INT);
-		valueArrayScanIndex = (int[])valuesScanIndex.read().get1DJavaArray(DataType.INT);
+		valueArrayIon = VariableSupport.readScaled(valuesIon);
+		valueArrayAbundance = VariableSupport.readScaledFloats(valuesAbundance);
+		valueArrayPointCount = VariableSupport.readIntegers(valuesPointCount);
+		valueArrayScanIndex = VariableSupport.readIntegers(valuesScanIndex);
 	}
 
 	public VendorScan getMassSpectrum(int scan) throws NoSuchScanStored {
