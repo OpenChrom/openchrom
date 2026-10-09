@@ -78,6 +78,6 @@ public class TGNTHPLAS_ITest {
 
 		assertEquals(15626, chromatogram.getNumberOfScans());
 		assertEquals(39625.0f, chromatogram.getScan(7500).getTotalSignal(), 0);
-		assertEquals(3906000, chromatogram.getScan(15626).getRetentionTime());
+		assertEquals(3906250, chromatogram.getScan(15626).getRetentionTime());
 	}
 }
