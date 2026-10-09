@@ -115,6 +115,16 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 			logger.error("No scan interval detected.");
 			scanInterval = 1;
 		}
+		/*
+		 * Several supplier, e.g. HP ChemServer, store the delay time as the negated sampling
+		 * interval to express that the first scan is the zero point of the chromatogram. Taken
+		 * literally it would shift the whole chromatogram by one scan interval, hence it is
+		 * normalized. Such a file stores the retention time of the last scan as the run time
+		 * length, which only adds up when the first scan starts at zero.
+		 */
+		if(scanDelay == -scanInterval) {
+			scanDelay = 0;
+		}
 
 		variable = CDFConstants.VARIABLE_ORDINATE_VALUES;
 		Variable valuesIntensity = chromatogram.findVariable(variable);
