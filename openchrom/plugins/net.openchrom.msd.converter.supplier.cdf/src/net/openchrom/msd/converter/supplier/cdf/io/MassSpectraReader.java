@@ -18,7 +18,6 @@ import java.io.IOException;
 import org.eclipse.chemclipse.converter.l10n.ConverterMessages;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.converter.io.AbstractMassSpectraReader;
-import org.eclipse.chemclipse.msd.converter.io.IMassSpectraReader;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.implementation.MassSpectra;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -34,7 +33,7 @@ import ucar.nc2.NetcdfFiles;
 /**
  * Reads an AIA/ANDI library (*.CDF) as a list of library mass spectra.
  */
-public class MassSpectraReader extends AbstractMassSpectraReader implements IMassSpectraReader {
+public class MassSpectraReader extends AbstractMassSpectraReader {
 
 	public static final String CONVERTER_ID = "net.openchrom.msd.converter.supplier.cdf.database";
 
