@@ -26,8 +26,9 @@
 		<tycho.groupid>org.eclipse.tycho</tycho.groupid>
 		<maven.groupid>org.apache.maven.plugins</maven.groupid>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.build.outputTimestamp>${maven.build.timestamp}</project.build.outputTimestamp>
+		<maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm:ss'Z'</maven.build.timestamp.format>
 		<!-- about dialog -->
-		<maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
 		<buildTimestamp>${maven.build.timestamp}</buildTimestamp>
 		<buildId>${buildTimestamp}</buildId>
 		<releaseName>1.6.36</releaseName>
