@@ -64,7 +64,7 @@ public class CheckForUpdatesHander {
 
 		if(updateAvailable) {
 			Version newVersion = availableVersion;
-			MessageDialog dialog = new MessageDialog(shell, "Check for Updates", null, "New version available -" + newVersion.toString(), MessageDialog.INFORMATION, new String[]{"OK"}, 0) {
+			MessageDialog dialog = new MessageDialog(shell, "Check for Updates", null, "New version available: " + newVersion.toString(), MessageDialog.INFORMATION, new String[]{"OK"}, 0) {
 
 				@Override
 				protected Control createCustomArea(Composite parent) {
