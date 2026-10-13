@@ -260,7 +260,7 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 		return installableUnits;
 	}
 
-	private List<IMetadataRepository> getRepositories(SubMonitor monitor) throws ProvisionException {
+	private List<IMetadataRepository> getRepositories(SubMonitor monitor) {
 
 		ProvisioningSession session = provisioningUI.getSession();
 		List<IMetadataRepository> metaRepositories = new ArrayList<>();
@@ -268,8 +268,11 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 		monitor.setWorkRemaining(repositories.length);
 		for(URI uri : repositories) {
 			checkCancelled(monitor);
-			IMetadataRepository repository = manager.loadRepository(uri, monitor.newChild(1));
-			metaRepositories.add(repository);
+			try {
+				metaRepositories.add(manager.loadRepository(uri, monitor.newChild(1)));
+			} catch(ProvisionException e) {
+				logger.warn(e);
+			}
 		}
 		return metaRepositories;
 	}
