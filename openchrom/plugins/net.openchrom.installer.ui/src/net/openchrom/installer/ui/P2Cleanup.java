@@ -15,6 +15,8 @@ package net.openchrom.installer.ui;
 import java.net.URI;
 
 import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.equinox.internal.p2.garbagecollector.GarbageCollector;
 import org.eclipse.equinox.p2.core.IProvisioningAgent;
 import org.eclipse.equinox.p2.core.ProvisionException;
@@ -37,7 +39,9 @@ public class P2Cleanup {
 
 	}
 
-	public static void clean() {
+	public static void clean(IProgressMonitor monitor) {
+
+		SubMonitor subMonitor = SubMonitor.convert(monitor, 2);
 
 		BundleContext context = FrameworkUtil.getBundle(P2Cleanup.class).getBundleContext();
 		ServiceTracker<IProvisioningAgent, IProvisioningAgent> tracker = new ServiceTracker<>(context, IProvisioningAgent.class, null);
@@ -45,8 +49,9 @@ public class P2Cleanup {
 		try {
 			IProvisioningAgent agent = tracker.getService();
 			if(agent != null) {
+				subMonitor.split(1);
 				cleanRepositories(agent, context.getBundle().getVersion());
-				cleanProfileStates(agent);
+				cleanProfileStates(agent, subMonitor.split(1));
 			}
 		} finally {
 			tracker.close();
@@ -56,7 +61,7 @@ public class P2Cleanup {
 	/*
 	 * Delete old snapshots of the running profile so bundles referenced in it are removed from disk.
 	 */
-	private static void cleanProfileStates(IProvisioningAgent agent) {
+	private static void cleanProfileStates(IProvisioningAgent agent, IProgressMonitor monitor) {
 
 		IProfileRegistry profileRegistry = agent.getService(IProfileRegistry.class);
 		if(profileRegistry == null) {
@@ -71,9 +76,11 @@ public class P2Cleanup {
 		if(timestamps.length <= 1) {
 			return;
 		}
+		SubMonitor subMonitor = SubMonitor.convert(monitor, timestamps.length);
 		boolean removed = false;
 		// The last timestamp belongs to the currently running profile and must be kept.
 		for(int i = 0; i < timestamps.length - 1; i++) {
+			subMonitor.split(1);
 			try {
 				profileRegistry.removeProfile(profileId, timestamps[i]);
 				removed = true;
@@ -82,6 +89,8 @@ public class P2Cleanup {
 			}
 		}
 		if(removed) {
+			// The garbage collector can not be canceled once started.
+			subMonitor.split(1);
 			runGarbageCollector(agent, profile);
 		}
 	}
