@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.chemclipse.chromatogram.xxd.report.settings.IChromatogramReportSettings;
+import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.settings.AbstractProcessSettings;
 import org.eclipse.chemclipse.support.literature.LiteratureReference;
 import org.eclipse.chemclipse.support.settings.FileSettingProperty;
@@ -27,6 +28,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
 public class ChromatogramReportSettings extends AbstractProcessSettings implements IChromatogramReportSettings {
+
+	private static final Logger logger = Logger.getLogger(ChromatogramReportSettings.class);
 
 	@JsonProperty(value = "ESCAPE Master Template", defaultValue = "")
 	@FileSettingProperty(dialogType = DialogType.OPEN_DIALOG, validExtensions = ".xltx", allowEmpty = false)
@@ -82,7 +85,7 @@ public class ChromatogramReportSettings extends AbstractProcessSettings implemen
 		try {
 			content = new String(ChromatogramReportSettings.class.getResourceAsStream("tandf_ysic2064_S1.ris").readAllBytes(), StandardCharsets.US_ASCII);
 		} catch(Exception e) {
-			e.printStackTrace();
+			logger.error(e);
 			content = "https://doi.org/10.1080/00393630.2019.1594580";
 		}
 
