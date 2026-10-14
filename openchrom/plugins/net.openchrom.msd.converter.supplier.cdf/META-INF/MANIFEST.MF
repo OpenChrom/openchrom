@@ -20,6 +20,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.tsd.model;bundle-version="0.9.0",
  com.google.protobuf;bundle-version="2.4.0",
  org.jdom2;bundle-version="2.0.6"
+Require-Capability: osgi.identity;filter:="(&(osgi.identity=org.eclipse.chemclipse.logging.slf4j)(type=osgi.fragment))"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-25
 Bundle-Vendor: OpenChrom

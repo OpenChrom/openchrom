@@ -20,6 +20,7 @@ Require-Bundle: org.eclipse.core.runtime,
  com.google.protobuf;bundle-version="2.4.0",
  org.jdom2;bundle-version="2.0.6",
  net.openchrom.xxd.converter.supplier.cdf;bundle-version="1.6.36"
+Require-Capability: osgi.identity;filter:="(&(osgi.identity=org.eclipse.chemclipse.logging.slf4j)(type=osgi.fragment))"
 Bundle-RequiredExecutionEnvironment: JavaSE-25
 Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.wsd.converter.supplier.cdf.converter,
