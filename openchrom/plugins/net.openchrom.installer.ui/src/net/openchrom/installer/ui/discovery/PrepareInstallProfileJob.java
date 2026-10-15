@@ -177,7 +177,7 @@ public class PrepareInstallProfileJob implements IPluginInstallJob {
 			// instead of aborting here we ask the user if they wish to proceed anyways
 			final boolean[] okayToProceed = new boolean[1];
 			final String finalMessage = message;
-			DisplayUtils.getDisplay().syncExec(() -> okayToProceed[0] = MessageDialog.openQuestion(DisplayUtils.getShell(), "questionProceed", MessageFormat.format("The following connectors are not available: {0}\nProceed with the installation anyways?", finalMessage)));
+			Display.getDefault().syncExec(() -> okayToProceed[0] = MessageDialog.openQuestion(DisplayUtils.getShell(), "questionProceed", MessageFormat.format("The following connectors are not available: {0}\nProceed with the installation anyways?", finalMessage)));
 			if(!okayToProceed[0]) {
 				logger.error("Connectors not available: " + detailedMessage);
 			}

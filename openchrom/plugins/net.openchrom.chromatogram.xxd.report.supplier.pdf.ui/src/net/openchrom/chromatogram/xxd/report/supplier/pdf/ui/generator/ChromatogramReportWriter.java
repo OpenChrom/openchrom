@@ -58,10 +58,10 @@ import org.eclipse.chemclipse.pdfbox.extensions.settings.ReferenceY;
 import org.eclipse.chemclipse.pdfbox.extensions.settings.TextOption;
 import org.eclipse.chemclipse.pdfbox.extensions.settings.Unit;
 import org.eclipse.chemclipse.support.text.ValueFormat;
-import org.eclipse.chemclipse.support.ui.workbench.DisplayUtils;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.swt.widgets.Display;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
@@ -192,7 +192,7 @@ public class ChromatogramReportWriter {
 		int width = 1080;
 		int height = (int)(width * (CHART_HEIGHT / CHART_WIDTH));
 		ChartExportRunnable chartExportRunnable = new ChartExportRunnable(chromatogram, width, height, reportSettings.getNumberOfImagesPerPage());
-		DisplayUtils.getDisplay().syncExec(chartExportRunnable);
+		Display.getDefault().syncExec(chartExportRunnable);
 		return chartExportRunnable;
 	}
 
