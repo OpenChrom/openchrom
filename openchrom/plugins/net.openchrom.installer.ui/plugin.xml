@@ -1432,7 +1432,20 @@
             summary="Commercial product. Requires a valid license."
             url="https://lablicate.com/marketplace/extensions/peakalignment"
             icon="icons/32x32/OpenChrom.png">
-      </pluginDescriptor>      
+      </pluginDescriptor>
+
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.extensions.commercial"
+            description="LLM assistant that interprets identification results"
+            groupId="com.lablicate.xxd.processor"
+            id="com.lablicate.llm.feature"
+            kind="extension"
+            license="Commercial License Terms"
+            name="ChatGPT Scan Explainer"
+            provider="Lablicate"
+            summary="Commercial product. Requires an API key."
+            icon="icons/32x32/OpenAI.svg">
+      </pluginDescriptor>
 
    </extension>
 </plugin>
