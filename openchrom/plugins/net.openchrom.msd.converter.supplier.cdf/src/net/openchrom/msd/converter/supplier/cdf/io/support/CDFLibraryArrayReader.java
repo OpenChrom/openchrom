@@ -18,7 +18,6 @@ import org.eclipse.chemclipse.model.cas.CasSupport;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 
 import net.openchrom.msd.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
-import net.openchrom.msd.converter.supplier.cdf.exceptions.NoSuchScanStored;
 import net.openchrom.msd.converter.supplier.cdf.model.VendorIon;
 import net.openchrom.msd.converter.supplier.cdf.model.VendorLibraryMassSpectrum;
 
@@ -82,10 +81,10 @@ public class CDFLibraryArrayReader {
 		return entries;
 	}
 
-	public VendorLibraryMassSpectrum getMassSpectrum(int entry) throws NoSuchScanStored {
+	public VendorLibraryMassSpectrum getMassSpectrum(int entry) {
 
 		if(entry < 1 || entry > entries) {
-			throw new NoSuchScanStored("The requested entry " + entry + " is not available");
+			throw new IndexOutOfBoundsException("The requested entry " + entry + " is not available");
 		}
 		VendorLibraryMassSpectrum massSpectrum = new VendorLibraryMassSpectrum();
 		/*
