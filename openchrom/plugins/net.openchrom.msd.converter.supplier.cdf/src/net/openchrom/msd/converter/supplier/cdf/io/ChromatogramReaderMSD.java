@@ -188,12 +188,12 @@ public class ChromatogramReaderMSD extends AbstractChromatogramMSDReader {
 		 */
 		chromatogram.setConverterId(CONVERTER_ID);
 		/*
-		 * Each attribute is optional, so a missing one must not discard the others.
+		 * Each attribute is optional and empty if not stored.
 		 */
-		String miscInfo = readAttribute(in::getMiscInfo);
-		String operator = readAttribute(in::getOperator);
-		String date = readAttribute(in::getDate);
-		String dateOfExperiment = readAttribute(in::getDateOfExperiment);
+		String miscInfo = in.getMiscInfo();
+		String operator = in.getOperator();
+		String date = in.getDate();
+		String dateOfExperiment = in.getDateOfExperiment();
 		/*
 		 * Set the file name to the chromatogram.
 		 */
@@ -220,23 +220,5 @@ public class ChromatogramReaderMSD extends AbstractChromatogramMSDReader {
 		chromatogram.setDateOfExperiment(experimentDate);
 		chromatogram.setMiscInfo(miscInfo);
 		chromatogram.setOperator(operator);
-	}
-
-	@FunctionalInterface
-	private interface AttributeSupplier {
-
-		String get() throws NoCDFAttributeDataFound;
-	}
-
-	/**
-	 * Returns the attribute value or an empty string if it is not stored.
-	 */
-	private String readAttribute(AttributeSupplier supplier) {
-
-		try {
-			return supplier.get();
-		} catch(NoCDFAttributeDataFound e) {
-			return "";
-		}
 	}
 }

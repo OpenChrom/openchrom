@@ -14,8 +14,6 @@ package net.openchrom.xxd.converter.supplier.cdf.io.support;
 
 import org.eclipse.chemclipse.model.core.IChromatogram;
 
-import net.openchrom.xxd.converter.supplier.cdf.exceptions.NoCDFAttributeDataFound;
-
 import ucar.nc2.NetcdfFile;
 
 public interface IAbstractCDFChromatogramArrayReader {
@@ -42,20 +40,18 @@ public interface IAbstractCDFChromatogramArrayReader {
 	public int getScanInterval();
 
 	/**
-	 * Returns the operator string.
+	 * Returns the operator string or an empty string if it is not stored.
 	 *
-	 * @throws NoCDFAttributeDataFound
 	 * @return String
 	 */
-	public String getOperator() throws NoCDFAttributeDataFound;
+	public String getOperator();
 
 	/**
-	 * Returns the time stamp of the file creation.
+	 * Returns the time stamp of the file creation or an empty string if it is not stored.
 	 *
 	 * @return String
-	 * @throws NoCDFAttributeDataFound
 	 */
-	public String getDate() throws NoCDFAttributeDataFound;
+	public String getDate();
 
 	/**
 	 * Returns the net cdf file.

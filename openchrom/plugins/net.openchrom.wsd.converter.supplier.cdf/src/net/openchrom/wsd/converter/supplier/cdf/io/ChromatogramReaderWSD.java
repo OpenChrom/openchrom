@@ -30,7 +30,6 @@ import net.openchrom.wsd.converter.supplier.cdf.io.support.CDFChromtogramArrayRe
 import net.openchrom.wsd.converter.supplier.cdf.io.support.DateSupport;
 import net.openchrom.wsd.converter.supplier.cdf.model.VendorChromatogramWSD;
 import net.openchrom.wsd.converter.supplier.cdf.model.VendorScan;
-import net.openchrom.xxd.converter.supplier.cdf.exceptions.NoCDFAttributeDataFound;
 import net.openchrom.xxd.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
 import net.openchrom.xxd.converter.supplier.cdf.exceptions.NotEnoughScanDataStored;
 import net.openchrom.xxd.converter.supplier.cdf.io.support.IAbstractCDFChromatogramArrayReader;
@@ -158,14 +157,8 @@ public class ChromatogramReaderWSD extends AbstractChromatogramWSDReader {
 		 * Extension
 		 */
 		chromatogram.setConverterId("net.openchrom.wsd.converter.supplier.cdf");
-		String operator = "";
-		String date = "";
-		try {
-			operator = in.getOperator();
-			date = in.getDate();
-		} catch(NoCDFAttributeDataFound e) {
-			logger.warn(e);
-		}
+		String operator = in.getOperator();
+		String date = in.getDate();
 		/*
 		 * Set the file name to the chromatogram.
 		 */

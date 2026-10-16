@@ -14,7 +14,6 @@ package net.openchrom.msd.converter.supplier.cdf.io.support;
 
 import java.io.IOException;
 
-import net.openchrom.msd.converter.supplier.cdf.exceptions.NoCDFAttributeDataFound;
 import net.openchrom.msd.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
 import net.openchrom.msd.converter.supplier.cdf.exceptions.NotEnoughScanDataStored;
 
@@ -95,43 +94,39 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 	}
 
 	@Override
-	public String getMiscInfo() throws NoCDFAttributeDataFound {
+	public String getMiscInfo() {
 
-		Attribute miscInfo = chromatogram.findGlobalAttribute(CDFConstants.ATTRIBUTE_EXPERIMENT_TITLE);
-		if(miscInfo == null) {
-			throw new NoCDFAttributeDataFound("There could be no data found for the attribute: " + CDFConstants.ATTRIBUTE_EXPERIMENT_TITLE);
-		}
-		return miscInfo.getStringValue().trim();
+		return getAttribute(CDFConstants.ATTRIBUTE_EXPERIMENT_TITLE);
 	}
 
 	@Override
-	public String getOperator() throws NoCDFAttributeDataFound {
+	public String getOperator() {
 
-		Attribute operator = chromatogram.findGlobalAttribute(CDFConstants.ATTRIBUTE_OPERATOR_NAME);
-		if(operator == null) {
-			throw new NoCDFAttributeDataFound("There could be no data found for the attribute: " + CDFConstants.ATTRIBUTE_OPERATOR_NAME);
-		}
-		return operator.getStringValue().trim();
+		return getAttribute(CDFConstants.ATTRIBUTE_OPERATOR_NAME);
 	}
 
 	@Override
-	public String getDate() throws NoCDFAttributeDataFound {
+	public String getDate() {
 
-		Attribute date = chromatogram.findGlobalAttribute(CDFConstants.ATTRIBUTE_NETCDF_FILE_DATE_TIME_STAMP);
-		if(date == null) {
-			throw new NoCDFAttributeDataFound("There could be no data found for the attribute: " + CDFConstants.ATTRIBUTE_NETCDF_FILE_DATE_TIME_STAMP);
-		}
-		return date.getStringValue().trim();
+		return getAttribute(CDFConstants.ATTRIBUTE_NETCDF_FILE_DATE_TIME_STAMP);
 	}
 
 	@Override
-	public String getDateOfExperiment() throws NoCDFAttributeDataFound {
+	public String getDateOfExperiment() {
 
-		Attribute dateOfExperiment = chromatogram.findGlobalAttribute(CDFConstants.ATTRIBUTE_EXPERIMENT_DATE_TIME_STAMP);
-		if(dateOfExperiment == null) {
-			throw new NoCDFAttributeDataFound("There could be no data found for the attribute: " + CDFConstants.ATTRIBUTE_EXPERIMENT_DATE_TIME_STAMP);
+		return getAttribute(CDFConstants.ATTRIBUTE_EXPERIMENT_DATE_TIME_STAMP);
+	}
+
+	/**
+	 * Returns the trimmed value of the global attribute or an empty string if it is not stored.
+	 */
+	private String getAttribute(String name) {
+
+		Attribute attribute = chromatogram.findGlobalAttribute(name);
+		if(attribute == null) {
+			return "";
 		}
-		return dateOfExperiment.getStringValue().trim();
+		return attribute.getStringValue().trim();
 	}
 
 	@Override
