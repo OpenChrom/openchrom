@@ -17,7 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.chemclipse.logging.core.Logger;
+import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.core.IPeakModel;
+import org.eclipse.chemclipse.model.exceptions.PeakException;
 import org.eclipse.chemclipse.msd.converter.io.IPeakReader;
 import org.eclipse.chemclipse.msd.converter.peak.PeakConverterMSD;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
@@ -115,20 +117,21 @@ public class PeakProcessorSupport {
 					 */
 					if(chromatogramPeakMSD != null) {
 						chromatogram.getPeaks().add(chromatogramPeakMSD);
-						logger.info("Add Peak (ELU): " + header);
+						logger.debug("Add Peak (ELU): " + header);
 					} else {
-						String message = "Skip Peak (ELU): " + header;
-						logger.info(message);
-						result.addInfoMessage(PreferenceSupplier.IDENTIFIER, message);
+						logger.debug("Skip Peak (ELU): " + header);
+						double retentionTime = peakModelMSD.getRetentionTimeAtPeakMaximum() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR;
+						result.addInfoMessage(PreferenceSupplier.IDENTIFIER, "Skipped peak at " + retentionTime + " min.");
 					}
 				} else {
-					String message = "Invalid Peak (ELU): " + header;
-					logger.info(message);
-					result.addInfoMessage(PreferenceSupplier.IDENTIFIER, message);
+					logger.debug("Invalid Peak (ELU): " + header);
+					double retentionTime = peakModelMSD.getRetentionTimeAtPeakMaximum() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR;
+					result.addInfoMessage(PreferenceSupplier.IDENTIFIER, "Skipped invalid peak " + retentionTime + " min.");
 				}
-			} catch(Exception e) {
-				logger.warn(e);
-				result.addWarnMessage(PreferenceSupplier.IDENTIFIER, "Peak Error (ELU): " + header);
+			} catch(PeakException e) {
+				logger.debug("Peak Error (ELU): " + header, e);
+				double retentionTime = peak.getPeakModel().getRetentionTimeAtPeakMaximum() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR;
+				result.addWarnMessage(PreferenceSupplier.IDENTIFIER, "Failed to add peak at " + retentionTime + " min.");
 			}
 		}
 		return result;
