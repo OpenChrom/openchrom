@@ -15,7 +15,6 @@ package net.openchrom.msd.converter.supplier.cdf.io.support;
 import java.io.IOException;
 
 import net.openchrom.msd.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
-import net.openchrom.msd.converter.supplier.cdf.exceptions.NoSuchScanStored;
 import net.openchrom.msd.converter.supplier.cdf.exceptions.NotEnoughScanDataStored;
 import net.openchrom.msd.converter.supplier.cdf.model.VendorIon;
 import net.openchrom.msd.converter.supplier.cdf.model.VendorScan;
@@ -74,13 +73,13 @@ public class CDFChromtogramArrayReader extends AbstractCDFChromatogramArrayReade
 		valueArrayScanIndex = VariableSupport.readIntegers(valuesScanIndex);
 	}
 
-	public VendorScan getMassSpectrum(int scan) throws NoSuchScanStored {
+	public VendorScan getMassSpectrum(int scan) {
 
 		/*
 		 * If the scan is out of a valid range.
 		 */
 		if(scan < 1 || scan > getNumberOfScans()) {
-			throw new NoSuchScanStored("The requested scan " + scan + " is not available");
+			throw new IndexOutOfBoundsException("The requested scan " + scan + " is not available");
 		}
 		/*
 		 * Scan

@@ -27,9 +27,7 @@ import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.msd.converter.supplier.cdf.exceptions.NoCDFAttributeDataFound;
 import net.openchrom.msd.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
-import net.openchrom.msd.converter.supplier.cdf.exceptions.NoSuchScanStored;
 import net.openchrom.msd.converter.supplier.cdf.exceptions.NotEnoughScanDataStored;
 import net.openchrom.msd.converter.supplier.cdf.io.support.CDFChromatogramOverviewArrayReader;
 import net.openchrom.msd.converter.supplier.cdf.io.support.CDFChromtogramArrayReader;
@@ -113,7 +111,6 @@ public class ChromatogramReaderMSD extends AbstractChromatogramMSDReader {
 	private VendorChromatogram readChromatogram(File file, IProgressMonitor monitor) throws IOException, NoCDFVariableDataFound, NotEnoughScanDataStored {
 
 		VendorChromatogram chromatogram;
-		VendorScan massSpectrum;
 		try (NetcdfFile cdfChromatogram = NetcdfFiles.open(file.getAbsolutePath())) {
 			CDFChromtogramArrayReader in = new CDFChromtogramArrayReader(cdfChromatogram);
 			chromatogram = new VendorChromatogram();
@@ -121,12 +118,7 @@ public class ChromatogramReaderMSD extends AbstractChromatogramMSDReader {
 
 			monitor.beginTask(ConverterMessages.importScan, in.getNumberOfScans());
 			for(int i = 1; i <= in.getNumberOfScans(); i++) {
-				try {
-					massSpectrum = in.getMassSpectrum(i);
-					chromatogram.addScan(massSpectrum);
-				} catch(NoSuchScanStored e) {
-					logger.warn(e);
-				}
+				chromatogram.addScan(in.getMassSpectrum(i));
 				monitor.worked(1);
 			}
 		}

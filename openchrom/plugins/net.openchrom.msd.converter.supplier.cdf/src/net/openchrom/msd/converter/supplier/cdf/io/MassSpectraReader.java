@@ -23,7 +23,6 @@ import org.eclipse.chemclipse.msd.model.implementation.MassSpectra;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
-import net.openchrom.msd.converter.supplier.cdf.exceptions.NoSuchScanStored;
 import net.openchrom.msd.converter.supplier.cdf.io.support.CDFLibraryArrayReader;
 import net.openchrom.msd.converter.supplier.cdf.model.VendorLibraryMassSpectrum;
 
@@ -49,13 +48,9 @@ public class MassSpectraReader extends AbstractMassSpectraReader {
 			CDFLibraryArrayReader in = new CDFLibraryArrayReader(library);
 			monitor.beginTask(ConverterMessages.importScan, in.getNumberOfEntries());
 			for(int i = 1; i <= in.getNumberOfEntries(); i++) {
-				try {
-					VendorLibraryMassSpectrum massSpectrum = in.getMassSpectrum(i);
-					if(massSpectrum.getNumberOfIons() > 0) {
-						massSpectra.addMassSpectrum(massSpectrum);
-					}
-				} catch(NoSuchScanStored e) {
-					logger.warn(e);
+				VendorLibraryMassSpectrum massSpectrum = in.getMassSpectrum(i);
+				if(massSpectrum.getNumberOfIons() > 0) {
+					massSpectra.addMassSpectrum(massSpectrum);
 				}
 				monitor.worked(1);
 			}
