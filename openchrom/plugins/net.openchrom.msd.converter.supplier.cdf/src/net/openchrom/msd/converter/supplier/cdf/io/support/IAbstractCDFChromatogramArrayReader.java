@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2025 Lablicate GmbH.
+ * Copyright (c) 2013, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -11,8 +11,6 @@
  * Philip Wenig - initial API and implementation
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.cdf.io.support;
-
-import net.openchrom.msd.converter.supplier.cdf.exceptions.NoCDFAttributeDataFound;
 
 import ucar.nc2.NetcdfFile;
 
@@ -40,36 +38,32 @@ public interface IAbstractCDFChromatogramArrayReader {
 	public int getScanInterval();
 
 	/**
-	 * Returns the miscellaneous information string.
+	 * Returns the miscellaneous information string or an empty string if it is not stored.
 	 * 
-	 * @throws NoCDFAttributeDataFound
 	 * @return String
 	 */
-	public String getMiscInfo() throws NoCDFAttributeDataFound;
+	public String getMiscInfo();
 
 	/**
-	 * Returns the operator string.
+	 * Returns the operator string or an empty string if it is not stored.
 	 * 
-	 * @throws NoCDFAttributeDataFound
 	 * @return String
 	 */
-	public String getOperator() throws NoCDFAttributeDataFound;
+	public String getOperator();
 
 	/**
-	 * Returns the time stamp of the file creation.
+	 * Returns the time stamp of the file creation or an empty string if it is not stored.
 	 * 
 	 * @return String
-	 * @throws NoCDFAttributeDataFound
 	 */
-	public String getDate() throws NoCDFAttributeDataFound;
+	public String getDate();
 
 	/**
-	 * Returns the time stamp of the experiment creation.
+	 * Returns the time stamp of the experiment creation or an empty string if it is not stored.
 	 * 
 	 * @return String
-	 * @throws NoCDFAttributeDataFound
 	 */
-	public String getDateOfExperiment() throws NoCDFAttributeDataFound;
+	public String getDateOfExperiment();
 
 	/**
 	 * Returns the net cdf file.

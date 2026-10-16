@@ -24,7 +24,6 @@ import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.model.identifier.LibraryInformation;
 import org.eclipse.chemclipse.model.implementation.IdentificationTarget;
 
-import net.openchrom.xxd.converter.supplier.cdf.exceptions.NoCDFAttributeDataFound;
 import net.openchrom.xxd.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
 import net.openchrom.xxd.converter.supplier.cdf.exceptions.NotEnoughScanDataStored;
 
@@ -177,23 +176,27 @@ public abstract class AbstractCDFChromatogramArrayReader implements IAbstractCDF
 	}
 
 	@Override
-	public String getOperator() throws NoCDFAttributeDataFound {
+	public String getOperator() {
 
-		Attribute operator = chromatogram.findGlobalAttribute(CDFConstants.ATTRIBUTE_OPERATOR_NAME);
-		if(operator == null) {
-			throw new NoCDFAttributeDataFound("There could be no data found for the attribute: " + CDFConstants.ATTRIBUTE_OPERATOR_NAME);
-		}
-		return operator.getStringValue().trim();
+		return getAttribute(CDFConstants.ATTRIBUTE_OPERATOR_NAME);
 	}
 
 	@Override
-	public String getDate() throws NoCDFAttributeDataFound {
+	public String getDate() {
 
-		Attribute date = chromatogram.findGlobalAttribute(CDFConstants.ATTRIBUTE_DATASET_DATE_TIME_STAMP);
-		if(date == null) {
-			throw new NoCDFAttributeDataFound("There could be no data found for the attribute: " + CDFConstants.ATTRIBUTE_DATASET_DATE_TIME_STAMP);
+		return getAttribute(CDFConstants.ATTRIBUTE_DATASET_DATE_TIME_STAMP);
+	}
+
+	/**
+	 * Returns the trimmed value of the global attribute or an empty string if it is not stored.
+	 */
+	private String getAttribute(String name) {
+
+		Attribute attribute = chromatogram.findGlobalAttribute(name);
+		if(attribute == null) {
+			return "";
 		}
-		return date.getStringValue().trim();
+		return attribute.getStringValue().trim();
 	}
 
 	@Override
