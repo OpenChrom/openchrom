@@ -628,7 +628,7 @@
 
       <pluginDescriptor
             categoryId="com.lablicate.openchrom.converters.proprietary"
-            description="Reads *.inf files."
+            description="Reads *.inf/*.dat files."
             groupId="net.openchrom.msd.converter"
             id="net.openchrom.msd.converter.supplier.masslib.feature"
             kind="converter"
