@@ -23,9 +23,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.model.IProcessorModel;
@@ -135,8 +133,6 @@ public class PageSettingsSelection extends AbstractExtendedWizardPage {
 
 	private void createSampleGroupSection(Composite parent) {
 
-		Shell shell = Display.getDefault().getActiveShell();
-
 		textSampleDirectory = new Text(parent, SWT.BORDER);
 		textSampleDirectory.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		textSampleDirectory.addModifyListener(_ -> validateData());
@@ -148,7 +144,7 @@ public class PageSettingsSelection extends AbstractExtendedWizardPage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				DirectoryDialog directoryDialog = new DirectoryDialog(shell, SWT.READ_ONLY);
+				DirectoryDialog directoryDialog = new DirectoryDialog(parent.getShell(), SWT.READ_ONLY);
 				directoryDialog.setText("Samples");
 				directoryDialog.setFilterPath(PreferenceSupplier.getSampleDirectory());
 				String pathname = directoryDialog.open();
@@ -180,8 +176,6 @@ public class PageSettingsSelection extends AbstractExtendedWizardPage {
 
 	private void createReferenceGroupSection(Composite parent) {
 
-		Shell shell = Display.getDefault().getActiveShell();
-
 		textReferenceDirectory = new Text(parent, SWT.BORDER);
 		textReferenceDirectory.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		textReferenceDirectory.addModifyListener(_ -> validateData());
@@ -193,7 +187,7 @@ public class PageSettingsSelection extends AbstractExtendedWizardPage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				DirectoryDialog directoryDialog = new DirectoryDialog(shell, SWT.READ_ONLY);
+				DirectoryDialog directoryDialog = new DirectoryDialog(parent.getShell(), SWT.READ_ONLY);
 				directoryDialog.setText("References");
 				directoryDialog.setFilterPath(PreferenceSupplier.getReferenceDirectory());
 				String pathname = directoryDialog.open();
