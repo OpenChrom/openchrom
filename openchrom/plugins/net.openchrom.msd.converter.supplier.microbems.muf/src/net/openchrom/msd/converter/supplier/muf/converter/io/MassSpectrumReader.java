@@ -17,8 +17,8 @@ import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Arrays;
 import java.util.Date;
-import java.util.Iterator;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IMassSpectrumPeak;
@@ -36,10 +36,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import net.openchrom.msd.converter.supplier.muf.converter.model.ISpectraMultiFileMassSpectra;
 import net.openchrom.msd.converter.supplier.muf.converter.model.SpectraMultiFileMassSpectra;
 
-import ch.systemsx.cisd.base.mdarray.MDFloatArray;
-import ch.systemsx.cisd.hdf5.HDF5Factory;
-import ch.systemsx.cisd.hdf5.HDF5MDDataBlock;
-import ch.systemsx.cisd.hdf5.IHDF5Reader;
+import hdf.hdf5lib.H5;
+import hdf.hdf5lib.HDF5Constants;
+import hdf.hdf5lib.exceptions.HDF5Exception;
 
 // https://wiki-ms.microbe-ms.com/index.php?title=Format_of_Spectral_Multifiles
 public class MassSpectrumReader extends AbstractMassSpectraReader {
@@ -51,68 +50,70 @@ public class MassSpectrumReader extends AbstractMassSpectraReader {
 
 		ISpectraMultiFileMassSpectra massSpectra = new SpectraMultiFileMassSpectra();
 
-		try (IHDF5Reader reader = HDF5Factory.openForReading(file)) {
+		try {
+			long reader = H5.H5Fopen(file.getAbsolutePath(), HDF5Constants.H5F_ACC_RDONLY, HDF5Constants.H5P_DEFAULT);
+			try {
+				float lcms = readFloat(reader, "/spec/lms");
+				if(lcms != 0) {
+					throw new UnsupportedOperationException("Only MALDI-TOF MS is currently supported."); // TODO: read as chromatogram
+				}
 
-			float lcms = reader.float32().read(reader.reference().read("/spec/lms"));
-			if(lcms != 0) {
-				throw new UnsupportedOperationException("Only MALDI-TOF MS is currently supported."); // TODO: read as chromatogram
+				IStandaloneMassSpectrum originalMassSpectrum = readSpectrum(reader, "/spec/org");
+				originalMassSpectrum.setMassSpectrumType(MassSpectrumType.PROFILE);
+				originalMassSpectrum.setIdentifier("original");
+				originalMassSpectrum.setFile(file);
+				setMeasurementDate(reader, originalMassSpectrum);
+				readOriginalDataHistory(reader, originalMassSpectrum);
+				massSpectra.addMassSpectrum(originalMassSpectrum);
+
+				IStandaloneMassSpectrum processedMassSpectrum = readSpectrum(reader, "/spec/pre");
+				processedMassSpectrum.setMassSpectrumType(MassSpectrumType.PROFILE);
+				processedMassSpectrum.setIdentifier("processed");
+				processedMassSpectrum.setFile(file);
+				massSpectra.addMassSpectrum(processedMassSpectrum);
+				readEditHistory(reader, processedMassSpectrum);
+				readPeaks(reader, processedMassSpectrum);
+
+				readMetaData(reader, massSpectra);
+			} finally {
+				H5.H5Fclose(reader);
 			}
-
-			IStandaloneMassSpectrum originalMassSpectrum = readSpectrum(reader, reader.reference().read("/spec/org"));
-			originalMassSpectrum.setMassSpectrumType(MassSpectrumType.PROFILE);
-			originalMassSpectrum.setIdentifier("original");
-			originalMassSpectrum.setFile(file);
-			setMeasurementDate(reader, originalMassSpectrum);
-			readOriginalDataHistory(reader, originalMassSpectrum);
-			massSpectra.addMassSpectrum(originalMassSpectrum);
-
-			IStandaloneMassSpectrum processedMassSpectrum = readSpectrum(reader, reader.reference().read("/spec/pre"));
-			processedMassSpectrum.setMassSpectrumType(MassSpectrumType.PROFILE);
-			processedMassSpectrum.setIdentifier("processed");
-			processedMassSpectrum.setFile(file);
-			massSpectra.addMassSpectrum(processedMassSpectrum);
-			readEditHistory(reader, processedMassSpectrum);
-			readPeaks(reader, processedMassSpectrum);
-
-			readMetaData(reader, massSpectra);
+		} catch(HDF5Exception e) {
+			logger.error(e);
 		}
 		return massSpectra;
 	}
 
-	private IStandaloneMassSpectrum readSpectrum(IHDF5Reader reader, String field) {
+	private IStandaloneMassSpectrum readSpectrum(long reader, String field) {
 
 		IStandaloneMassSpectrum massSpectrum = new StandaloneMassSpectrum();
-		Iterator<HDF5MDDataBlock<MDFloatArray>> dataBlocks = reader.float32().getMDArrayNaturalBlocks(field).iterator();
-		while(dataBlocks.hasNext()) {
-			MDFloatArray data = dataBlocks.next().getData();
-			float[][] matrix = data.toMatrix();
-			for(int i = 0; i < data.size(0); i++) {
-				float mz = matrix[i][0];
-				float intensity = matrix[i][1];
-				IIon ion = new Ion(mz, intensity);
-				massSpectrum.addIon(ion, false);
-			}
+		float[][] matrix = readFloatMatrix(reader, field);
+		for(int i = 0; i < matrix.length; i++) {
+			float mz = matrix[i][0];
+			float intensity = matrix[i][1];
+			IIon ion = new Ion(mz, intensity);
+			massSpectrum.addIon(ion, false);
 		}
 		return massSpectrum;
 	}
 
-	private void readMetaData(IHDF5Reader reader, ISpectraMultiFileMassSpectra massSpectra) {
+	private void readMetaData(long reader, ISpectraMultiFileMassSpectra massSpectra) {
 
-		massSpectra.setName(readMatlabCharArray(reader, reader.reference().read("/spec/nam")));
+		massSpectra.setName(readMatlabCharArray(reader, "/spec/nam"));
 
-		massSpectra.setGenus(readMatlabCharArray(reader, reader.reference().read("/spec/gen")));
-		massSpectra.setSpecies(readMatlabCharArray(reader, reader.reference().read("/spec/spe")));
-		massSpectra.setStrain(readMatlabCharArray(reader, reader.reference().read("/spec/str")));
+		massSpectra.setGenus(readMatlabCharArray(reader, "/spec/gen"));
+		massSpectra.setSpecies(readMatlabCharArray(reader, "/spec/spe"));
+		massSpectra.setStrain(readMatlabCharArray(reader, "/spec/str"));
 
-		massSpectra.setType(readMatlabCharArray(reader, reader.reference().read("/spec/typ")));
+		massSpectra.setType(readMatlabCharArray(reader, "/spec/typ"));
 
 		try {
-			String uid = readMatlabCharArray(reader, reader.reference().read("/spec/uid"));
+			String uid = readMatlabCharArray(reader, "/spec/uid");
 			if(!uid.isBlank()) {
 				massSpectra.setTaxonmicIdentifierNCBI(Integer.parseInt(uid));
 			}
 
-			String uie = readMatlabCharArray(reader, reader.reference().read("/spec/uie"));
+			String uie = readMatlabCharArray(reader, "/spec/uie");
 			if(!uie.isBlank()) {
 				massSpectra.setUnmodifiedTaxonmicIdentifierNCBI(Integer.parseInt(uie));
 			}
@@ -120,36 +121,36 @@ public class MassSpectrumReader extends AbstractMassSpectraReader {
 			logger.warn(e.getMessage());
 		}
 
-		massSpectra.setGrowthTime(readMatlabCharArray(reader, reader.reference().read("/spec/gti")));
-		massSpectra.setTemperature(readMatlabCharArray(reader, reader.reference().read("/spec/tem")));
-		massSpectra.setAtmosphere(readMatlabCharArray(reader, reader.reference().read("/spec/air")));
-		massSpectra.setMedium(readMatlabCharArray(reader, reader.reference().read("/spec/med")));
+		massSpectra.setGrowthTime(readMatlabCharArray(reader, "/spec/gti"));
+		massSpectra.setTemperature(readMatlabCharArray(reader, "/spec/tem"));
+		massSpectra.setAtmosphere(readMatlabCharArray(reader, "/spec/air"));
+		massSpectra.setMedium(readMatlabCharArray(reader, "/spec/med"));
 
-		String sporeFormer = readMatlabCharArray(reader, reader.reference().read("/spec/spo"));
+		String sporeFormer = readMatlabCharArray(reader, "/spec/spo");
 		if(sporeFormer.equals("Yes")) {
 			massSpectra.setSporeFormer(true);
 		} else if(sporeFormer.equals("No")) {
 			massSpectra.setSporeFormer(false);
 		}
 
-		massSpectra.setSampleConcentration(readMatlabCharArray(reader, reader.reference().read("/spec/con")));
-		massSpectra.setSampleTreatment(readMatlabCharArray(reader, reader.reference().read("/spec/trt")));
-		massSpectra.setExtraInformation(readMatlabCharArray(reader, reader.reference().read("/spec/ext")));
-		massSpectra.setLaserParameters(readMatlabCharArray(reader, reader.reference().read("/spec/las")));
-		massSpectra.setCalibrationInformation(readMatlabCharArray(reader, reader.reference().read("/spec/cal")));
-		massSpectra.setMeasurementMethod(readMatlabCharArray(reader, reader.reference().read("/spec/met")));
-		massSpectra.setCustomerInformation(readMatlabCharArray(reader, reader.reference().read("/spec/cus")));
+		massSpectra.setSampleConcentration(readMatlabCharArray(reader, "/spec/con"));
+		massSpectra.setSampleTreatment(readMatlabCharArray(reader, "/spec/trt"));
+		massSpectra.setExtraInformation(readMatlabCharArray(reader, "/spec/ext"));
+		massSpectra.setLaserParameters(readMatlabCharArray(reader, "/spec/las"));
+		massSpectra.setCalibrationInformation(readMatlabCharArray(reader, "/spec/cal"));
+		massSpectra.setMeasurementMethod(readMatlabCharArray(reader, "/spec/met"));
+		massSpectra.setCustomerInformation(readMatlabCharArray(reader, "/spec/cus"));
 
-		massSpectra.setSpectrumPath(readMatlabCharArray(reader, reader.reference().read("/spec/pth")));
-		massSpectra.setClassAssignment((int)reader.float32().read(reader.reference().read("/spec/cls")));
-		massSpectra.setPeakTableInformation(readMatlabCharArray(reader, reader.reference().read("/spec/lst")));
+		massSpectra.setSpectrumPath(readMatlabCharArray(reader, "/spec/pth"));
+		massSpectra.setClassAssignment((int)readFloat(reader, "/spec/cls"));
+		massSpectra.setPeakTableInformation(readMatlabCharArray(reader, "/spec/lst"));
 
 	}
 
-	private void setMeasurementDate(IHDF5Reader reader, IStandaloneMassSpectrum originalMassSpectrum) {
+	private void setMeasurementDate(long reader, IStandaloneMassSpectrum originalMassSpectrum) {
 
 		try {
-			String time = readMatlabCharArray(reader, reader.reference().read("/spec/tim"));
+			String time = readMatlabCharArray(reader, "/spec/tim");
 			OffsetDateTime offsetDateTime = OffsetDateTime.parse(time, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
 			originalMassSpectrum.setDate(Date.from(offsetDateTime.toInstant()));
 		} catch(DateTimeParseException e) {
@@ -157,73 +158,153 @@ public class MassSpectrumReader extends AbstractMassSpectraReader {
 		}
 	}
 
-	private void readOriginalDataHistory(IHDF5Reader reader, IStandaloneMassSpectrum originalMassSpectrum) {
+	private void readOriginalDataHistory(long reader, IStandaloneMassSpectrum originalMassSpectrum) {
 
-		float modified = reader.float32().read(reader.reference().read("/spec/mod"));
+		float modified = readFloat(reader, "/spec/mod");
 		if(modified == 1) {
 			Date date = originalMassSpectrum.getDate();
 			originalMassSpectrum.getEditHistory().add(new EditInformation(date, "Original data was modified."));
 
-			String reduction = readMatlabCharArray(reader, reader.reference().read("/spec/red"));
+			String reduction = readMatlabCharArray(reader, "/spec/red");
 			if(!reduction.isBlank()) {
 				originalMassSpectrum.getEditHistory().add(new EditInformation(date, "Data reduction factor: " + reduction));
 			}
 
-			String cut = readMatlabCharArray(reader, reader.reference().read("/spec/cut"));
+			String cut = readMatlabCharArray(reader, "/spec/cut");
 			if(!cut.isBlank()) {
 				originalMassSpectrum.getEditHistory().add(new EditInformation(date, "Cut: " + cut));
 			}
 		}
 	}
 
-	private void readEditHistory(IHDF5Reader reader, IStandaloneMassSpectrum processedMassSpectrum) {
+	private void readEditHistory(long reader, IStandaloneMassSpectrum processedMassSpectrum) {
 
 		Date date = new Date(processedMassSpectrum.getFile().lastModified());
 
-		String preprocessingSteps = readMatlabCharArray(reader, reader.reference().read("/spec/seq"));
+		String preprocessingSteps = readMatlabCharArray(reader, "/spec/seq");
 
 		if(preprocessingSteps.contains("SMO")) {
-			String points = readMatlabCharArray(reader, reader.reference().read("/spec/smo"));
+			String points = readMatlabCharArray(reader, "/spec/smo");
 			processedMassSpectrum.getEditHistory().add(new EditInformation(date, "Smoothing points: " + points));
 		}
 
 		if(preprocessingSteps.contains("BAS")) {
-			int intervals = ((int)reader.float32().read(reader.reference().read("/spec/bas")));
+			int intervals = ((int)readFloat(reader, "/spec/bas"));
 			processedMassSpectrum.getEditHistory().add(new EditInformation(date, "Baseline correction with intervals " + intervals));
 		}
 
 		if(preprocessingSteps.contains("NRM")) {
-			float normalisation = reader.float32().read(reader.reference().read("/spec/nrm"));
+			float normalisation = readFloat(reader, "/spec/nrm");
 			if(normalisation == 1) {
 				processedMassSpectrum.getEditHistory().add(new EditInformation(date, "Normalisation"));
 			}
 		}
 	}
 
-	private static String readMatlabCharArray(IHDF5Reader reader, String reference) {
+	private static String readMatlabCharArray(long reader, String field) {
 
-		short[] uint16 = reader.uint16().readArray(reference);
+		long dataset = openReferencedDataset(reader, field);
+		try {
+			if(H5.H5Aexists(dataset, "MATLAB_empty")) {
+				return "";
+			}
+			short[] uint16 = new short[(int)getNumberOfElements(dataset)];
+			H5.H5Dread_short(dataset, HDF5Constants.H5T_NATIVE_USHORT, HDF5Constants.H5S_ALL, HDF5Constants.H5S_ALL, HDF5Constants.H5P_DEFAULT, uint16);
 
-		char[] chars = new char[uint16.length];
-		for(int i = 0; i < uint16.length; i++) {
-			chars[i] = (char)(uint16[i]);
+			char[] chars = new char[uint16.length];
+			for(int i = 0; i < uint16.length; i++) {
+				chars[i] = (char)(uint16[i]);
+			}
+
+			return new String(chars);
+		} finally {
+			H5.H5Dclose(dataset);
 		}
-
-		return new String(chars);
 	}
 
-	private void readPeaks(IHDF5Reader reader, IStandaloneMassSpectrum processedMassSpectrum) {
+	private static float readFloat(long reader, String field) {
 
-		Iterator<HDF5MDDataBlock<MDFloatArray>> dataBlocks = reader.float32().getMDArrayNaturalBlocks(reader.reference().read("/spec/pik")).iterator();
-		while(dataBlocks.hasNext()) {
-			MDFloatArray data = dataBlocks.next().getData();
-			float[][] matrix = data.toMatrix();
-			for(int i = 0; i < data.size(0); i++) {
-				IMassSpectrumPeak peak = new MassSpectrumPeak();
-				peak.setIon(matrix[i][0]);
-				peak.setAbundance(matrix[i][1]);
-				processedMassSpectrum.getPeaks().add(peak);
+		return readFloatMatrix(reader, field)[0][0];
+	}
+
+	private static float[][] readFloatMatrix(long reader, String field) {
+
+		long dataset = openReferencedDataset(reader, field);
+		try {
+			long[] dimensions = getDimensions(dataset);
+			int rows = (int)dimensions[0];
+			int columns = dimensions.length > 1 ? (int)dimensions[1] : 1;
+			float[] data = new float[rows * columns];
+			H5.H5Dread_float(dataset, HDF5Constants.H5T_NATIVE_FLOAT, HDF5Constants.H5S_ALL, HDF5Constants.H5S_ALL, HDF5Constants.H5P_DEFAULT, data);
+
+			float[][] matrix = new float[rows][];
+			for(int i = 0; i < rows; i++) {
+				matrix[i] = Arrays.copyOfRange(data, i * columns, (i + 1) * columns);
 			}
+			return matrix;
+		} finally {
+			H5.H5Dclose(dataset);
+		}
+	}
+
+	/**
+	 * MATLAB stores struct fields as arrays of object references. Like the
+	 * original reader, this only follows the reference of the first entry.
+	 */
+	private static long openReferencedDataset(long reader, String field) {
+
+		long dataset = H5.H5Dopen(reader, field, HDF5Constants.H5P_DEFAULT);
+		try {
+			int size = HDF5Constants.H5R_REF_BUF_SIZE;
+			int count = (int)getNumberOfElements(dataset);
+			byte[] buffer = new byte[count * size];
+			H5.H5Dread(dataset, HDF5Constants.H5T_STD_REF, HDF5Constants.H5S_ALL, HDF5Constants.H5S_ALL, HDF5Constants.H5P_DEFAULT, buffer);
+			byte[][] references = new byte[count][];
+			for(int i = 0; i < count; i++) {
+				references[i] = Arrays.copyOfRange(buffer, i * size, (i + 1) * size);
+			}
+			try {
+				return H5.H5Ropen_object(references[0], HDF5Constants.H5P_DEFAULT, HDF5Constants.H5P_DEFAULT);
+			} finally {
+				for(byte[] reference : references) {
+					H5.H5Rdestroy(reference);
+				}
+			}
+		} finally {
+			H5.H5Dclose(dataset);
+		}
+	}
+
+	private static long[] getDimensions(long dataset) {
+
+		long dataspace = H5.H5Dget_space(dataset);
+		try {
+			long[] dimensions = new long[H5.H5Sget_simple_extent_ndims(dataspace)];
+			H5.H5Sget_simple_extent_dims(dataspace, dimensions, null);
+			return dimensions;
+		} finally {
+			H5.H5Sclose(dataspace);
+		}
+	}
+
+	private static long getNumberOfElements(long dataset) {
+
+		long dataspace = H5.H5Dget_space(dataset);
+		try {
+			return H5.H5Sget_simple_extent_npoints(dataspace);
+		} finally {
+			H5.H5Sclose(dataspace);
+		}
+	}
+
+	private void readPeaks(long reader, IStandaloneMassSpectrum processedMassSpectrum) {
+
+		float[][] matrix = readFloatMatrix(reader, "/spec/pik");
+		for(int i = 0; i < matrix.length; i++) {
+			IMassSpectrumPeak peak = new MassSpectrumPeak();
+			peak.setIon(matrix[i][0]);
+			peak.setAbundance(matrix[i][1]);
+			processedMassSpectrum.getPeaks().add(peak);
 		}
 	}
 }
