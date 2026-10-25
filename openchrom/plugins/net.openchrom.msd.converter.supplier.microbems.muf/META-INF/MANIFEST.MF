@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Automatic-Module-Name: net.openchrom.msd.converter.supplier.pkf
+Automatic-Module-Name: net.openchrom.msd.converter.supplier.muf
 Bundle-ManifestVersion: 2
 Bundle-Name: MicrobeMS spectral multifiles
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.microbems.muf;singleton:=true
