@@ -25,6 +25,7 @@ import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IStandaloneMassSpectrum;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.IProcessingMessage;
+import org.eclipse.chemclipse.support.history.IEditHistory;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -94,6 +95,20 @@ public class MassSpectrumImportConverter_RKI_Ring_Trial_ITest {
 		assertEquals(33000, originalMassSpectrum.getNumberOfIons());
 		assertEquals(20376.65234375, originalMassSpectrum.getHighestIon().getIon());
 		assertEquals(26254.029296875, originalMassSpectrum.getHighestAbundance().getAbundance());
+	}
+
+	@Test
+	public void testEditHistory() {
+
+		IStandaloneMassSpectrum originalMassSpectrum = (IStandaloneMassSpectrum)massSpectra.getMassSpectrum(1);
+		assertTrue(originalMassSpectrum.getEditHistory().isEmpty());
+
+		IStandaloneMassSpectrum processedMassSpectrum = (IStandaloneMassSpectrum)massSpectra.getMassSpectrum(2);
+		IEditHistory editHistory = processedMassSpectrum.getEditHistory();
+		assertEquals(3, editHistory.size());
+		assertEquals("Smoothing points: 21", editHistory.get(0).getDescription());
+		assertEquals("Baseline correction: 1  -4   5   8  60", editHistory.get(1).getDescription());
+		assertEquals("Normalisation", editHistory.get(2).getDescription());
 	}
 
 	@Test

@@ -14,6 +14,7 @@ package net.openchrom.msd.converter.supplier.muf.converter.io;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -184,18 +185,18 @@ public class MassSpectrumReader extends AbstractMassSpectraReader {
 		String preprocessingSteps = readMatlabCharArray(reader, "/spec/seq");
 
 		if(preprocessingSteps.contains("SMO")) {
-			String points = readMatlabCharArray(reader, "/spec/smo");
+			String points = readMatlabValue(reader, "/spec/smo");
 			processedMassSpectrum.getEditHistory().add(new EditInformation(date, "Smoothing points: " + points));
 		}
 
 		if(preprocessingSteps.contains("BAS")) {
-			int intervals = ((int)readFloat(reader, "/spec/bas"));
-			processedMassSpectrum.getEditHistory().add(new EditInformation(date, "Baseline correction with intervals " + intervals));
+			String baseline = readMatlabValue(reader, "/spec/bas");
+			processedMassSpectrum.getEditHistory().add(new EditInformation(date, "Baseline correction: " + baseline));
 		}
 
 		if(preprocessingSteps.contains("NRM")) {
-			float normalisation = readFloat(reader, "/spec/nrm");
-			if(normalisation == 1) {
+			String normalisation = readMatlabValue(reader, "/spec/nrm");
+			if(normalisation.equals("1")) {
 				processedMassSpectrum.getEditHistory().add(new EditInformation(date, "Normalisation"));
 			}
 		}
@@ -205,20 +206,71 @@ public class MassSpectrumReader extends AbstractMassSpectraReader {
 
 		long dataset = openReferencedDataset(reader, field);
 		try {
-			if(H5.H5Aexists(dataset, "MATLAB_empty")) {
-				return "";
-			}
-			short[] uint16 = new short[(int)getNumberOfElements(dataset)];
-			H5.H5Dread_short(dataset, HDF5Constants.H5T_NATIVE_USHORT, HDF5Constants.H5S_ALL, HDF5Constants.H5S_ALL, HDF5Constants.H5P_DEFAULT, uint16);
-
-			char[] chars = new char[uint16.length];
-			for(int i = 0; i < uint16.length; i++) {
-				chars[i] = (char)(uint16[i]);
-			}
-
-			return new String(chars);
+			return readMatlabCharArray(dataset);
 		} finally {
 			H5.H5Dclose(dataset);
+		}
+	}
+
+	/**
+	 * The specification declares some parameters as numbers,
+	 * but MicrobeMS also writes them as char arrays.
+	 */
+	private static String readMatlabValue(long reader, String field) {
+
+		long dataset = openReferencedDataset(reader, field);
+		try {
+			if(readMatlabClass(dataset).equals("char")) {
+				return readMatlabCharArray(dataset).trim();
+			}
+			double[] data = new double[(int)getNumberOfElements(dataset)];
+			if(data.length == 0) {
+				return "";
+			}
+			H5.H5Dread_double(dataset, HDF5Constants.H5T_NATIVE_DOUBLE, HDF5Constants.H5S_ALL, HDF5Constants.H5S_ALL, HDF5Constants.H5P_DEFAULT, data);
+			double value = data[0];
+			if(value == Math.rint(value)) {
+				return Long.toString((long)value);
+			}
+			return Double.toString(value);
+		} finally {
+			H5.H5Dclose(dataset);
+		}
+	}
+
+	private static String readMatlabCharArray(long dataset) {
+
+		if(H5.H5Aexists(dataset, "MATLAB_empty")) {
+			return "";
+		}
+		short[] uint16 = new short[(int)getNumberOfElements(dataset)];
+		H5.H5Dread_short(dataset, HDF5Constants.H5T_NATIVE_USHORT, HDF5Constants.H5S_ALL, HDF5Constants.H5S_ALL, HDF5Constants.H5P_DEFAULT, uint16);
+
+		char[] chars = new char[uint16.length];
+		for(int i = 0; i < uint16.length; i++) {
+			chars[i] = (char)(uint16[i]);
+		}
+
+		return new String(chars);
+	}
+
+	private static String readMatlabClass(long dataset) {
+
+		if(!H5.H5Aexists(dataset, "MATLAB_class")) {
+			return "";
+		}
+		long attribute = H5.H5Aopen(dataset, "MATLAB_class", HDF5Constants.H5P_DEFAULT);
+		try {
+			long type = H5.H5Aget_type(attribute);
+			try {
+				byte[] buffer = new byte[(int)H5.H5Tget_size(type)];
+				H5.H5Aread(attribute, type, buffer);
+				return new String(buffer, StandardCharsets.US_ASCII).trim();
+			} finally {
+				H5.H5Tclose(type);
+			}
+		} finally {
+			H5.H5Aclose(attribute);
 		}
 	}
 
