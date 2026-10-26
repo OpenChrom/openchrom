@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Lablicate GmbH.
+ * Copyright (c) 2021, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -15,8 +15,8 @@ package net.openchrom.msd.converter.supplier.mzmlb.internal.io;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 
+import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.mzmlb.io.IReaderProxy;
@@ -25,10 +25,13 @@ import net.openchrom.msd.converter.supplier.mzmlb.model.IVendorIon;
 import net.openchrom.msd.converter.supplier.mzmlb.model.IVendorScanProxy;
 import net.openchrom.msd.converter.supplier.mzmlb.model.VendorIon;
 
-import ch.systemsx.cisd.hdf5.HDF5Factory;
-import ch.systemsx.cisd.hdf5.IHDF5SimpleReader;
+import hdf.hdf5lib.H5;
+import hdf.hdf5lib.HDF5Constants;
+import hdf.hdf5lib.exceptions.HDF5Exception;
 
 public class ReaderProxy implements IReaderProxy {
+
+	private static final Logger logger = Logger.getLogger(ReaderProxy.class);
 
 	private double[] mzs = null;
 	private float[] intensities = null;
@@ -58,49 +61,25 @@ public class ReaderProxy implements IReaderProxy {
 	@Override
 	public void readMassSpectrum(IScanMarker scanMarker, IVendorScanProxy massSpectrum, IProgressMonitor monitor) throws IOException {
 
-		if(mzs == null) {
-			try (IHDF5SimpleReader reader = HDF5Factory.openForReading(file)) {
-				if(mzDataset.contains("float64")) {
-					mzs = reader.readDoubleArray(mzDataset);
-				} else if(mzDataset.contains("float32")) {
-					mzs = floatsToDoubles(reader.readFloatArray(mzDataset));
+		if(mzs == null || intensities == null) {
+			try {
+				long reader = H5.H5Fopen(file.getAbsolutePath(), HDF5Constants.H5F_ACC_RDONLY, HDF5Constants.H5P_DEFAULT);
+				try {
+					mzs = MzMLbDatasets.readDoubleArray(reader, mzDataset);
+					intensities = MzMLbDatasets.readFloatArray(reader, intensityDataset);
+				} finally {
+					H5.H5Fclose(reader);
 				}
-			}
-		}
-
-		if(intensities == null) {
-			try (IHDF5SimpleReader reader = HDF5Factory.openForReading(file)) {
-				if(intensityDataset.contains("float64")) {
-					intensities = doublesToFloats(reader.readDoubleArray(intensityDataset));
-				} else if(intensityDataset.contains("float32")) {
-					intensities = reader.readFloatArray(intensityDataset);
-				}
+			} catch(HDF5Exception e) {
+				logger.error(e);
 			}
 		}
 
 		for(int i = scanMarker.getOffset(); i < scanMarker.getOffset() + scanMarker.getLength(); i++) {
-			float abundance = Array.getFloat(intensities, i);
-			double mz = Array.getDouble(mzs, i);
+			float abundance = intensities[i];
+			double mz = mzs[i];
 			IVendorIon ion = new VendorIon(mz, abundance);
 			massSpectrum.addIon(ion, false);
 		}
-	}
-
-	private static float[] doublesToFloats(final double[] input) {
-
-		float[] output = new float[input.length];
-		for(int i = 0; i < input.length; i++) {
-			output[i] = (float)input[i];
-		}
-		return output;
-	}
-
-	private static double[] floatsToDoubles(final float[] input) {
-
-		double[] output = new double[input.length];
-		for(int i = 0; i < input.length; i++) {
-			output[i] = input[i];
-		}
-		return output;
 	}
 }
