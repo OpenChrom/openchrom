@@ -27,6 +27,7 @@ import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import net.openchrom.msd.converter.supplier.mz5.internal.io.Mz5Datasets;
 import net.openchrom.msd.converter.supplier.mz5.internal.model.CVParam;
 import net.openchrom.msd.converter.supplier.mz5.internal.model.CVReference;
 import net.openchrom.msd.converter.supplier.mz5.internal.model.Mz5;
@@ -39,8 +40,9 @@ import net.openchrom.msd.converter.supplier.mz5.model.VendorIon;
 import net.openchrom.msd.converter.supplier.mz5.model.VendorScan;
 import net.openchrom.msd.converter.supplier.mz5.model.VendorScanProxy;
 
-import ch.systemsx.cisd.hdf5.HDF5Factory;
-import ch.systemsx.cisd.hdf5.IHDF5SimpleReader;
+import hdf.hdf5lib.H5;
+import hdf.hdf5lib.HDF5Constants;
+import hdf.hdf5lib.exceptions.HDF5Exception;
 
 public class ChromatogramReader extends AbstractChromatogramReader implements IChromatogramMSDReader {
 
@@ -50,12 +52,19 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 	public IChromatogramOverview readOverview(File file, IProgressMonitor monitor) throws IOException {
 
 		IVendorChromatogram chromatogram = null;
-		try (IHDF5SimpleReader reader = HDF5Factory.openForReading(file)) {
-			chromatogram = new VendorChromatogram();
-			CVParam[] cvParams = reader.readCompoundArray(Mz5.CV_PARAM, CVParam.class);
-			CVReference[] cvReferences = reader.readCompoundArray(Mz5.CV_REFERENCE, CVReference.class);
-			readDate(cvReferences, cvParams, chromatogram);
-			readTIC(reader, cvReferences, cvParams, chromatogram);
+		try {
+			long reader = H5.H5Fopen(file.getAbsolutePath(), HDF5Constants.H5F_ACC_RDONLY, HDF5Constants.H5P_DEFAULT);
+			try {
+				chromatogram = new VendorChromatogram();
+				CVParam[] cvParams = Mz5Datasets.readCVParams(reader);
+				CVReference[] cvReferences = Mz5Datasets.readCVReferences(reader);
+				readDate(cvReferences, cvParams, chromatogram);
+				readTIC(reader, cvReferences, cvParams, chromatogram);
+			} finally {
+				H5.H5Fclose(reader);
+			}
+		} catch(HDF5Exception e) {
+			logger.error(e);
 		}
 		return chromatogram;
 	}
@@ -66,25 +75,32 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 		IVendorChromatogram chromatogram = null;
 		chromatogram = new VendorChromatogram();
 		chromatogram.setFile(file);
-		try (IHDF5SimpleReader reader = HDF5Factory.openForReading(file)) {
-			CVParam[] cvParams = reader.readCompoundArray(Mz5.CV_PARAM, CVParam.class);
-			CVReference[] cvReferences = reader.readCompoundArray(Mz5.CV_REFERENCE, CVReference.class);
-			readDate(cvReferences, cvParams, chromatogram);
-			readTIC(reader, cvReferences, cvParams, chromatogram);
-			readScanProxies(reader, cvReferences, cvParams, chromatogram, monitor);
+		try {
+			long reader = H5.H5Fopen(file.getAbsolutePath(), HDF5Constants.H5F_ACC_RDONLY, HDF5Constants.H5P_DEFAULT);
+			try {
+				CVParam[] cvParams = Mz5Datasets.readCVParams(reader);
+				CVReference[] cvReferences = Mz5Datasets.readCVReferences(reader);
+				readDate(cvReferences, cvParams, chromatogram);
+				readTIC(reader, cvReferences, cvParams, chromatogram);
+				readScanProxies(reader, cvReferences, cvParams, chromatogram, monitor);
+			} finally {
+				H5.H5Fclose(reader);
+			}
+		} catch(HDF5Exception e) {
+			logger.error(e);
 		}
 		return chromatogram;
 	}
 
-	private void readTIC(IHDF5SimpleReader reader, CVReference[] cvReferences, CVParam[] cvParams, IVendorChromatogram chromatogram) {
+	private void readTIC(long reader, CVReference[] cvReferences, CVParam[] cvParams, IVendorChromatogram chromatogram) {
 
-		if(!reader.exists(Mz5.CHROMATOGRAM_TIME) || !reader.exists(Mz5.CHROMATOGRAM_INTENSITY) || !reader.exists(Mz5.CHROMATOGRAM_INDEX)) {
+		if(!Mz5Datasets.exists(reader, Mz5.CHROMATOGRAM_TIME) || !Mz5Datasets.exists(reader, Mz5.CHROMATOGRAM_INTENSITY) || !Mz5Datasets.exists(reader, Mz5.CHROMATOGRAM_INDEX)) {
 			return;
 		}
 		double timeMultiplicator = getTimeArrayMultiplicator(cvReferences, cvParams);
-		double[] retentionTimes = reader.readDoubleArray(Mz5.CHROMATOGRAM_TIME);
-		double[] totalIntensities = reader.readDoubleArray(Mz5.CHROMATOGRAM_INTENSITY);
-		int[] chromatogramIndex = reader.readIntArray(Mz5.CHROMATOGRAM_INDEX);
+		double[] retentionTimes = Mz5Datasets.readDoubleArray(reader, Mz5.CHROMATOGRAM_TIME);
+		double[] totalIntensities = Mz5Datasets.readDoubleArray(reader, Mz5.CHROMATOGRAM_INTENSITY);
+		int[] chromatogramIndex = Mz5Datasets.readIntArray(reader, Mz5.CHROMATOGRAM_INDEX);
 		for(int i = 0; i < chromatogramIndex[0]; i++) {
 			IScanMSD scan = new VendorScan();
 			VendorIon ion = new VendorIon(IIon.TIC_ION, (float)totalIntensities[i]);
@@ -115,9 +131,9 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 		}
 	}
 
-	private void readScanProxies(IHDF5SimpleReader reader, CVReference[] cvReferences, CVParam[] cvParams, IVendorChromatogram chromatogram, IProgressMonitor monitor) {
+	private void readScanProxies(long reader, CVReference[] cvReferences, CVParam[] cvParams, IVendorChromatogram chromatogram, IProgressMonitor monitor) {
 
-		if(!reader.exists(Mz5.SPECTRUM_INDEX) || !reader.exists(Mz5.SPECTRUM_MZ) || !reader.exists(Mz5.SPECTRUM_INTENSITY)) {
+		if(!Mz5Datasets.exists(reader, Mz5.SPECTRUM_INDEX) || !Mz5Datasets.exists(reader, Mz5.SPECTRUM_MZ) || !Mz5Datasets.exists(reader, Mz5.SPECTRUM_INTENSITY)) {
 			return;
 		}
 
@@ -126,7 +142,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 		int massSpectrumLevelReferenceID = getMassSpectrumLevelReference(cvReferences);
 		int selectedIonRefID = getSelectedIonReference(cvReferences);
 
-		int[] spectrumIndex = reader.readIntArray(Mz5.SPECTRUM_INDEX);
+		int[] spectrumIndex = Mz5Datasets.readIntArray(reader, Mz5.SPECTRUM_INDEX);
 		int[] retentionTimes = new int[spectrumIndex.length];
 		String[] spectrumTitles = new String[spectrumIndex.length];
 		short[] msLevels = new short[spectrumIndex.length];
@@ -149,8 +165,8 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 			}
 		}
 		try {
-			double[] mzs = reader.readDoubleArray(Mz5.SPECTRUM_MZ);
-			float[] spectrumIntensity = reader.readFloatArray(Mz5.SPECTRUM_INTENSITY);
+			double[] mzs = Mz5Datasets.readDoubleArray(reader, Mz5.SPECTRUM_MZ);
+			float[] spectrumIntensity = Mz5Datasets.readFloatArray(reader, Mz5.SPECTRUM_INTENSITY);
 			int start = 0;
 			int cycleNumber = isMultiStageMassSpectrum(cvParams, cvReferences) ? 1 : 0;
 			for(int i = 0; i < spectrumIndex.length; i++) {
