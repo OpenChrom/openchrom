@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.chemclipse.logging.core.Logger;
-import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.exceptions.PeakException;
 import org.eclipse.chemclipse.msd.converter.io.IPeakReader;
@@ -34,7 +33,6 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.IProcessingResult;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.preferences.PreferenceSupplier;
 import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.settings.IProcessSettings;
 import net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.settings.ModelPeakOption;
 
@@ -120,18 +118,12 @@ public class PeakProcessorSupport {
 						logger.debug("Add Peak (ELU): " + header);
 					} else {
 						logger.debug("Skip Peak (ELU): " + header);
-						double retentionTime = peakModelMSD.getRetentionTimeAtPeakMaximum() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR;
-						result.addInfoMessage(PreferenceSupplier.IDENTIFIER, "Skipped peak at " + retentionTime + " min.");
 					}
 				} else {
 					logger.debug("Invalid Peak (ELU): " + header);
-					double retentionTime = peakModelMSD.getRetentionTimeAtPeakMaximum() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR;
-					result.addInfoMessage(PreferenceSupplier.IDENTIFIER, "Skipped invalid peak " + retentionTime + " min.");
 				}
 			} catch(PeakException e) {
 				logger.debug("Peak Error (ELU): " + header, e);
-				double retentionTime = peak.getPeakModel().getRetentionTimeAtPeakMaximum() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR;
-				result.addWarnMessage(PreferenceSupplier.IDENTIFIER, "Failed to add peak at " + retentionTime + " min.");
 			}
 		}
 		return result;
