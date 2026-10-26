@@ -28,7 +28,6 @@
 	</location>
 	<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 		<repository location="https://bundles.openchrom.net/3rdparty"/>
-		<unit id="net.openchrom.thirdparty.jhdf5.feature.feature.group"/>
 		<unit id="net.openchrom.thirdparty.hdf5.feature.feature.group"/>
 		<unit id="net.openchrom.thirdparty.cdk.feature.feature.group"/>
 		<unit id="net.openchrom.thirdparty.inchi.feature.feature.group"/>
