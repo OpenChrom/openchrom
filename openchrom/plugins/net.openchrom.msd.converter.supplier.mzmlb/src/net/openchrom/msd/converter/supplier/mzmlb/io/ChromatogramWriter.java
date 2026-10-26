@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Lablicate GmbH.
+ * Copyright (c) 2024, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -17,6 +17,8 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
 
+import javax.naming.spi.ObjectFactory;
+
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
 import org.eclipse.chemclipse.converter.io.AbstractChromatogramWriter;
 import org.eclipse.chemclipse.logging.core.Logger;
@@ -31,7 +33,6 @@ import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.BinaryDataA
 import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.BinaryDataArrayType;
 import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.CVParamType;
 import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.MzMLType;
-import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.ObjectFactory;
 import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.RunType;
 import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.ScanListType;
 import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.ScanType;
@@ -39,8 +40,11 @@ import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.SpectrumLis
 import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.SpectrumType;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import ch.systemsx.cisd.hdf5.HDF5Factory;
-import ch.systemsx.cisd.hdf5.IHDF5SimpleWriter;
+import net.openchrom.msd.converter.supplier.mzmlb.internal.io.MzMLbDatasets;
+
+import hdf.hdf5lib.H5;
+import hdf.hdf5lib.HDF5Constants;
+import hdf.hdf5lib.exceptions.HDF5Exception;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Marshaller;
@@ -52,13 +56,20 @@ public class ChromatogramWriter extends AbstractChromatogramWriter implements IC
 	@Override
 	public void writeChromatogram(File file, IChromatogramMSD chromatogram, IProgressMonitor monitor) throws FileIsNotWriteableException, IOException {
 
-		try (IHDF5SimpleWriter writer = HDF5Factory.open(file)) {
-			writeMzML(createMzML(chromatogram), writer);
-			writeScans(chromatogram, writer);
+		try {
+			long writer = H5.H5Fcreate(file.getAbsolutePath(), HDF5Constants.H5F_ACC_TRUNC, HDF5Constants.H5P_DEFAULT, HDF5Constants.H5P_DEFAULT);
+			try {
+				writeMzML(createMzML(chromatogram), writer);
+				writeScans(chromatogram, writer);
+			} finally {
+				H5.H5Fclose(writer);
+			}
+		} catch(HDF5Exception e) {
+			logger.error(e);
 		}
 	}
 
-	private void writeScans(IChromatogramMSD chromatogram, IHDF5SimpleWriter writer) {
+	private void writeScans(IChromatogramMSD chromatogram, long writer) {
 
 		int dataPoints = chromatogram.getNumberOfScanIons();
 		double[] mzs = new double[dataPoints];
@@ -77,10 +88,10 @@ public class ChromatogramWriter extends AbstractChromatogramWriter implements IC
 				lastByteOffset += scanMSD.getNumberOfIons() * (Double.BYTES + Float.BYTES);
 			}
 		}
-		writer.writeDoubleArray("spectrum_MS_1000514_float64", mzs);
-		writer.writeFloatArray("spectrum_MS_1000515_float32", intensities);
-		writer.writeLongArray("mzML_spectrumIndex", byteOffsets);
-		writer.writeLongArray("mzML_chromatogramIndex", new long[]{byteOffsets[byteOffsets.length - 1]});
+		MzMLbDatasets.writeDoubleArray(writer, "spectrum_MS_1000514_float64", mzs);
+		MzMLbDatasets.writeFloatArray(writer, "spectrum_MS_1000515_float32", intensities);
+		MzMLbDatasets.writeLongArray(writer, "mzML_spectrumIndex", byteOffsets);
+		MzMLbDatasets.writeLongArray(writer, "mzML_chromatogramIndex", new long[]{byteOffsets[byteOffsets.length - 1]});
 	}
 
 	private RunType createRun(IChromatogramMSD chromatogram) {
@@ -98,7 +109,7 @@ public class ChromatogramWriter extends AbstractChromatogramWriter implements IC
 		return mzML;
 	}
 
-	private void writeMzML(MzMLType mzML, IHDF5SimpleWriter writer) {
+	private void writeMzML(MzMLType mzML, long writer) {
 
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
@@ -106,7 +117,7 @@ public class ChromatogramWriter extends AbstractChromatogramWriter implements IC
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 			marshaller.marshal(mzML, byteArrayOutputStream);
 			byte[] mzMLbyteArray = byteArrayOutputStream.toByteArray();
-			writer.writeByteArray("mzML", mzMLbyteArray);
+			MzMLbDatasets.writeByteArray(writer, "mzML", mzMLbyteArray);
 		} catch(JAXBException e) {
 			logger.warn(e);
 		}

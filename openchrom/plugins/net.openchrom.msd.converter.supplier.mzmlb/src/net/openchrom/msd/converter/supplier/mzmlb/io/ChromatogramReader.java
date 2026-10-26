@@ -42,6 +42,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import net.openchrom.msd.converter.supplier.mzmlb.internal.io.MzMLbDatasets;
 import net.openchrom.msd.converter.supplier.mzmlb.internal.io.ReaderProxy;
 import net.openchrom.msd.converter.supplier.mzmlb.io.support.IScanMarker;
 import net.openchrom.msd.converter.supplier.mzmlb.io.support.ScanMarker;
@@ -50,9 +51,9 @@ import net.openchrom.msd.converter.supplier.mzmlb.model.IVendorScanProxy;
 import net.openchrom.msd.converter.supplier.mzmlb.model.VendorChromatogram;
 import net.openchrom.msd.converter.supplier.mzmlb.model.VendorScanProxy;
 
-import ch.systemsx.cisd.hdf5.HDF5Factory;
-import ch.systemsx.cisd.hdf5.IHDF5SimpleReader;
-import hdf.hdf5lib.exceptions.HDF5LibraryException;
+import hdf.hdf5lib.H5;
+import hdf.hdf5lib.HDF5Constants;
+import hdf.hdf5lib.exceptions.HDF5Exception;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
@@ -72,8 +73,14 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 
 		IVendorChromatogram chromatogram = null;
 
-		try (IHDF5SimpleReader reader = HDF5Factory.openForReading(file)) {
-			byte[] xml = reader.readAsByteArray("mzML");
+		try {
+			byte[] xml;
+			long reader = H5.H5Fopen(file.getAbsolutePath(), HDF5Constants.H5F_ACC_RDONLY, HDF5Constants.H5P_DEFAULT);
+			try {
+				xml = MzMLbDatasets.readByteArray(reader, "mzML");
+			} finally {
+				H5.H5Fclose(reader);
+			}
 			DocumentBuilderFactory documentBuilderFactory = XmlParserFactory.createDocumentBuilderFactory();
 			documentBuilderFactory.setNamespaceAware(true);
 
@@ -108,14 +115,14 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 				chromatogram.addScan(scanProxy);
 				monitor.worked(1);
 			}
-		} catch(HDF5LibraryException e) {
+		} catch(HDF5Exception e) {
 			logger.error(e);
 		} catch(ParserConfigurationException e) {
-			logger.warn(e);
+			logger.error(e);
 		} catch(SAXException e) {
-			logger.warn(e);
+			logger.error(e);
 		} catch(JAXBException e) {
-			logger.warn(e);
+			logger.error(e);
 		}
 		monitor.done();
 		return chromatogram;
