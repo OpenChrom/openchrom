@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
 import org.eclipse.chemclipse.converter.io.AbstractChromatogramWriter;
+import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.msd.converter.io.IChromatogramMSDWriter;
@@ -29,14 +30,18 @@ import org.eclipse.chemclipse.msd.model.core.IRegularMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import net.openchrom.msd.converter.supplier.mz5.internal.io.Mz5Datasets;
 import net.openchrom.msd.converter.supplier.mz5.internal.model.CVParam;
 import net.openchrom.msd.converter.supplier.mz5.internal.model.CVReference;
 import net.openchrom.msd.converter.supplier.mz5.internal.model.Mz5;
 
-import ch.systemsx.cisd.hdf5.HDF5Factory;
-import ch.systemsx.cisd.hdf5.IHDF5SimpleWriter;
+import hdf.hdf5lib.H5;
+import hdf.hdf5lib.HDF5Constants;
+import hdf.hdf5lib.exceptions.HDF5Exception;
 
 public class ChromatogramWriter extends AbstractChromatogramWriter implements IChromatogramMSDWriter {
+
+	private static final Logger logger = Logger.getLogger(ChromatogramWriter.class);
 
 	private List<CVReference> cvReferences = new ArrayList<>();
 	private List<CVParam> cvParams = new ArrayList<>();
@@ -44,17 +49,24 @@ public class ChromatogramWriter extends AbstractChromatogramWriter implements IC
 	@Override
 	public void writeChromatogram(File file, IChromatogramMSD chromatogram, IProgressMonitor monitor) throws FileIsNotWriteableException, IOException {
 
-		try (IHDF5SimpleWriter writer = HDF5Factory.open(file)) {
-			addDate(chromatogram);
-			addTIC(chromatogram, writer);
-			addLevel(chromatogram, addMassSpectrometerLevelReference());
-			addScans(chromatogram, writer);
-			writer.writeCompoundArray(Mz5.CV_REFERENCE, cvReferences.toArray(new CVReference[0]));
-			writer.writeCompoundArray(Mz5.CV_PARAM, cvParams.toArray(new CVParam[0]));
+		try {
+			long writer = H5.H5Fcreate(file.getAbsolutePath(), HDF5Constants.H5F_ACC_TRUNC, HDF5Constants.H5P_DEFAULT, HDF5Constants.H5P_DEFAULT);
+			try {
+				addDate(chromatogram);
+				addTIC(chromatogram, writer);
+				addLevel(chromatogram, addMassSpectrometerLevelReference());
+				addScans(chromatogram, writer);
+				Mz5Datasets.writeCVReferences(writer, cvReferences.toArray(new CVReference[0]));
+				Mz5Datasets.writeCVParams(writer, cvParams.toArray(new CVParam[0]));
+			} finally {
+				H5.H5Fclose(writer);
+			}
+		} catch(HDF5Exception e) {
+			logger.error(e);
 		}
 	}
 
-	private void addTIC(IChromatogramMSD chromatogram, IHDF5SimpleWriter writer) {
+	private void addTIC(IChromatogramMSD chromatogram, long writer) {
 
 		addTimeArray(addUnitMinute(), addTimeArrayReference());
 		addIntensityArray(addUnitDetectorCount(), addIntensityArrayReference());
@@ -66,11 +78,11 @@ public class ChromatogramWriter extends AbstractChromatogramWriter implements IC
 			chromatogramTimes[i] = scan.getRetentionTime() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR;
 			chromatogramIntensities[i] = scan.getTotalSignal();
 		}
-		writer.writeDoubleArray(Mz5.CHROMATOGRAM_TIME, chromatogramTimes);
-		writer.writeDoubleArray(Mz5.CHROMATOGRAM_INTENSITY, chromatogramIntensities);
+		Mz5Datasets.writeDoubleArray(writer, Mz5.CHROMATOGRAM_TIME, chromatogramTimes);
+		Mz5Datasets.writeDoubleArray(writer, Mz5.CHROMATOGRAM_INTENSITY, chromatogramIntensities);
 	}
 
-	private void addScans(IChromatogramMSD chromatogram, IHDF5SimpleWriter writer) {
+	private void addScans(IChromatogramMSD chromatogram, long writer) {
 
 		int spectrumTitleRefID = addSpectrumTitleReference();
 		int scanStartTimeRefID = addScanStartTimeReference();
@@ -95,9 +107,9 @@ public class ChromatogramWriter extends AbstractChromatogramWriter implements IC
 			}
 			i++;
 		}
-		writer.writeIntArray(Mz5.SPECTRUM_INDEX, spectrumIndex);
-		writer.writeDoubleArray(Mz5.SPECTRUM_MZ, spectrumMZs);
-		writer.writeFloatArray(Mz5.SPECTRUM_INTENSITY, spectrumIntensity);
+		Mz5Datasets.writeIntArray(writer, Mz5.SPECTRUM_INDEX, spectrumIndex);
+		Mz5Datasets.writeDoubleArray(writer, Mz5.SPECTRUM_MZ, spectrumMZs);
+		Mz5Datasets.writeFloatArray(writer, Mz5.SPECTRUM_INTENSITY, spectrumIntensity);
 	}
 
 	private int addUnitMinute() {
