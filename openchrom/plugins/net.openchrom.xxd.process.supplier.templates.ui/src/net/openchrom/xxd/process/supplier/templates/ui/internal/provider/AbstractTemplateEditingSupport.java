@@ -72,6 +72,7 @@ public abstract class AbstractTemplateEditingSupport extends EditingSupport {
 			ComboViewer comboViewer = editor.getViewer();
 			comboViewer.setContentProvider(ArrayContentProvider.getInstance());
 			comboViewer.setInput(ReportValidator.REPORT_STRATEGIES);
+			comboViewer.setLabelProvider(enumLabelProvider);
 			this.cellEditor = editor;
 		} else if(column.equals(AbstractTemplateLabelProvider.INTEGRATOR)) {
 			this.cellEditor = new ComboBoxCellEditor(tableViewer.getTable(), //
