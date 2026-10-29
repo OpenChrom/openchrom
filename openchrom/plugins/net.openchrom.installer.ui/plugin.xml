@@ -135,6 +135,19 @@
 
       <pluginDescriptor
             categoryId="com.lablicate.openchrom.converters.proprietary"
+            description="Reads *.raw files."
+            groupId="net.openchrom.wsd.converter"
+            id="net.openchrom.wsd.converter.supplier.finnigan.raw.feature"
+            kind="converter"
+            license="Converter License Terms"
+            name="Thermo/Finnigan PDA/UV"
+            provider="Lablicate"
+            summary="Free extension exclusively for OpenChrom®"
+            icon="icons/32x32/Thermo.png">
+      </pluginDescriptor>
+
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.converters.proprietary"
             description="Reads *.sfd files."
             groupId="net.openchrom.wsd.converter"
             id="net.openchrom.wsd.converter.supplier.thermo.sfd.feature"
