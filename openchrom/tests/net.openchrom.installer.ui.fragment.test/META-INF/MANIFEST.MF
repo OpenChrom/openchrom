@@ -3,7 +3,7 @@ Automatic-Module-Name: net.openchrom.installer.ui.fragment.test
 Bundle-ManifestVersion: 2
 Bundle-Name: Installer UI Tests
 Bundle-SymbolicName: net.openchrom.installer.ui.fragment.test
-Bundle-Version: 1.6.38.qualifier
+Bundle-Version: 1.6.39.qualifier
 Fragment-Host: net.openchrom.installer.ui;bundle-version="1.6.36"
 Bundle-RequiredExecutionEnvironment: JavaSE-25
 Import-Package: org.junit.jupiter.api;version="[6.0.0,7.0.0)"
