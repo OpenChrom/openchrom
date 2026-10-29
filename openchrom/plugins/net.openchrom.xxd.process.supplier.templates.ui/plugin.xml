@@ -280,28 +280,28 @@
    <extension
          point="org.eclipse.chemclipse.xxd.process.ui.menu.icon">
       <icon
-            class="net.openchrom.xxd.process.supplier.templates.ui.icon.TemplateMenuIcon"
+            icon="icons/16x16/template.gif"
             id="net.openchrom.xxd.process.supplier.templates.peaks.detector">
       </icon>
    </extension>
    <extension
          point="org.eclipse.chemclipse.xxd.process.ui.menu.icon">
       <icon
-            class="net.openchrom.xxd.process.supplier.templates.ui.icon.TemplateMenuIcon"
+            icon="icons/16x16/template.gif"
             id="net.openchrom.xxd.process.supplier.templates.peaks.identifier">
       </icon>
    </extension>
    <extension
          point="org.eclipse.chemclipse.xxd.process.ui.menu.icon">
       <icon
-            class="net.openchrom.xxd.process.supplier.templates.ui.icon.TemplateMenuIcon"
+            icon="icons/16x16/template.gif"
             id="net.openchrom.xxd.process.supplier.templates.peakIntegrator">
       </icon>
    </extension>
    <extension
          point="org.eclipse.chemclipse.xxd.process.ui.menu.icon">
       <icon
-            class="net.openchrom.xxd.process.supplier.templates.ui.icon.TemplateMenuIcon"
+            icon="icons/16x16/template.gif"
             id="org.eclipse.chemclipse.chromatogram.xxd.report.supplier.openchrom.templateChromatogramReport">
       </icon>
    </extension>
@@ -329,7 +329,7 @@
    <extension
          point="org.eclipse.chemclipse.xxd.process.ui.menu.icon">
       <icon
-            class="net.openchrom.xxd.process.supplier.templates.ui.icon.TemplateMenuIcon"
+            icon="icons/16x16/template.gif"
             id="net.openchrom.xxd.process.supplier.templates.ui.msd">
       </icon>
    </extension>
