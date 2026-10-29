@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2025 Lablicate GmbH.
+ * Copyright (c) 2018, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -15,9 +15,7 @@ package net.openchrom.xxd.process.supplier.templates.ui;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.support.events.IChemClipseEvents;
@@ -32,7 +30,6 @@ import org.osgi.service.event.EventHandler;
 
 import net.openchrom.xxd.process.supplier.templates.chromatogram.ChromatogramReport;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
-import net.openchrom.xxd.process.supplier.templates.ui.icon.Icon;
 
 public class Activator extends AbstractActivatorUI {
 
@@ -47,7 +44,6 @@ public class Activator extends AbstractActivatorUI {
 		super.start(context);
 		plugin = this;
 		initializePreferenceStore(PreferenceSupplier.INSTANCE());
-		initializeImageRegistry(getImageHashMap());
 		registerEventBroker(context);
 	}
 
@@ -68,13 +64,6 @@ public class Activator extends AbstractActivatorUI {
 	public static AbstractActivatorUI getDefault() {
 
 		return plugin;
-	}
-
-	private Map<String, String> getImageHashMap() {
-
-		Map<String, String> imageHashMap = new HashMap<>();
-		imageHashMap.put(Icon.TEMPLATE, "icons/16x16/template.gif"); // $NON-NLS-1$
-		return imageHashMap;
 	}
 
 	private void registerEventBroker(BundleContext bundleContext) {
