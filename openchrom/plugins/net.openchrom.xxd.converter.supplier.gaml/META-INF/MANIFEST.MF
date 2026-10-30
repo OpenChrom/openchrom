@@ -5,8 +5,7 @@ Bundle-Name: GAML
 Bundle-SymbolicName: net.openchrom.xxd.converter.supplier.gaml;singleton:=true
 Bundle-Version: 1.6.39.qualifier
 Bundle-Vendor: OpenChrom
-Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.chemclipse.converter
+Require-Bundle: org.eclipse.chemclipse.converter
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-25
 Export-Package: net.openchrom.xxd.converter.supplier.gaml.converter,

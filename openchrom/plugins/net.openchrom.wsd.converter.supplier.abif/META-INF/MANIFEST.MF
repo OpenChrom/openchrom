@@ -7,7 +7,7 @@ Bundle-Version: 1.6.39.qualifier
 Export-Package: net.openchrom.wsd.converter.supplier.abif.core,
  net.openchrom.wsd.converter.supplier.abif.model
 Bundle-Vendor: OpenChrom
-Require-Bundle: org.eclipse.core.runtime,
+Require-Bundle: org.eclipse.equinox.common,
  org.eclipse.chemclipse.converter;bundle-version="0.8.0",
  org.eclipse.chemclipse.wsd.converter;bundle-version="0.8.0",
  org.eclipse.chemclipse.model;bundle-version="0.8.0",
@@ -17,5 +17,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.support;bundle-version="0.8.0",
  org.eclipse.chemclipse.dsd.model;bundle-version="0.9.0",
  org.eclipse.chemclipse.dsd.converter;bundle-version="0.9.0"
+Import-Package: org.eclipse.osgi.util
 Bundle-RequiredExecutionEnvironment: JavaSE-25
 Bundle-ActivationPolicy: lazy

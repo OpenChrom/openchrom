@@ -5,7 +5,7 @@ Bundle-Name: Templates
 Bundle-SymbolicName: net.openchrom.xxd.process.supplier.templates;singleton:=true
 Bundle-Version: 1.6.39.qualifier
 Bundle-Vendor: OpenChrom
-Require-Bundle: org.eclipse.core.runtime,
+Require-Bundle: org.eclipse.equinox.common,
  org.eclipse.chemclipse.csd.model;bundle-version="0.8.0",
  org.eclipse.chemclipse.model;bundle-version="0.8.0",
  org.eclipse.chemclipse.msd.model;bundle-version="0.8.0",
@@ -46,6 +46,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.chromatogram.xxd.baseline.detector;bundle-version="0.9.0",
  org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.baselinesubtract;bundle-version="0.9.0",
  org.eclipse.chemclipse.chromatogram.xxd.integrator.supplier.trapezoid;bundle-version="0.9.0"
+Import-Package: org.osgi.framework;version="1.3.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-25
 Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.xxd.process.supplier.templates.chromatogram,

@@ -5,7 +5,7 @@ Bundle-Name: AnIML
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.animl;singleton:=true
 Bundle-Version: 1.6.39.qualifier
 Bundle-Vendor: OpenChrom
-Require-Bundle: org.eclipse.core.runtime,
+Require-Bundle: org.eclipse.equinox.common,
  org.eclipse.chemclipse.logging;bundle-version="0.8.0",
  org.eclipse.chemclipse.msd.model;bundle-version="0.8.0",
  org.eclipse.chemclipse.msd.converter;bundle-version="0.8.0",
@@ -19,5 +19,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.glassfish.hk2.osgi-resource-locator;bundle-version="1.0.3"
 Bundle-RequiredExecutionEnvironment: JavaSE-25
 Bundle-ActivationPolicy: lazy
-Import-Package: jakarta.xml.bind
+Import-Package: jakarta.xml.bind,
+ org.eclipse.osgi.util
 Export-Package: net.openchrom.msd.converter.supplier.animl.io

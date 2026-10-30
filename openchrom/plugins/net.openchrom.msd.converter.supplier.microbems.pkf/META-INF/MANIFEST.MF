@@ -5,7 +5,7 @@ Bundle-Name: MicrobeMS peak list files
 Bundle-SymbolicName: net.openchrom.msd.converter.supplier.microbems.pkf;singleton:=true
 Bundle-Version: 1.6.39.qualifier
 Bundle-Vendor: OpenChrom
-Require-Bundle: org.eclipse.core.runtime,
+Require-Bundle: org.eclipse.equinox.common,
  org.eclipse.chemclipse.msd.converter;bundle-version="0.8.0",
  org.eclipse.chemclipse.msd.model;bundle-version="0.8.0",
  org.eclipse.chemclipse.processing;bundle-version="0.8.0",
@@ -16,6 +16,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.commons.commons-io;bundle-version="2.6.0",
  org.apache.commons.lang3;bundle-version="3.1.0",
  wrapped.us.hebi.matlab.mat.mfl-core;bundle-version="0.5.8"
+Import-Package: org.eclipse.osgi.util
 Bundle-RequiredExecutionEnvironment: JavaSE-25
 Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.msd.converter.supplier.microbems.pkf.converter,
