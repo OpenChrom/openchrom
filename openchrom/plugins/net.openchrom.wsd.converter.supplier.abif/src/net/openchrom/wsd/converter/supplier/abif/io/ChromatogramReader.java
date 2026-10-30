@@ -410,6 +410,7 @@ public class ChromatogramReader extends AbstractChromatogramDSDReader {
 			comparisonResult.setMetric(BaseCallerMetrics.PHRED_QUALITY_SCORE, quality[i]);
 
 			IIdentificationTarget identificationTarget = new IdentificationTarget(libraryInformation, comparisonResult);
+			identificationTarget.setIdentifier("Base Caller");
 			scan.getTargets().add(identificationTarget); // TODO add to scan signal rather than total signal
 			scan.setCycleNumber(i + 1); // TODO: move elsewhere
 
