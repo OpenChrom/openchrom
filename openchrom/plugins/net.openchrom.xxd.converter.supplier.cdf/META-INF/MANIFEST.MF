@@ -5,8 +5,7 @@ Bundle-Name: NetCDF
 Bundle-SymbolicName: net.openchrom.xxd.converter.supplier.cdf;singleton:=true
 Bundle-Version: 1.6.39.qualifier
 Bundle-Vendor: OpenChrom
-Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.chemclipse.logging;bundle-version="0.8.0",
+Require-Bundle: org.eclipse.chemclipse.logging;bundle-version="0.8.0",
  org.eclipse.chemclipse.model;bundle-version="0.8.0",
  wrapped.edu.ucar.cdm-core;bundle-version="5.5.3",
  wrapped.edu.ucar.udunits;bundle-version="5.5.3",
