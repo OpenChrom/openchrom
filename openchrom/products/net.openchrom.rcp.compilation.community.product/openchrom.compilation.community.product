@@ -111,6 +111,7 @@ Contributors:
       <repository location="https://plugins.openchrom.net/documentation/1.6.39/" name="Documentation" enabled="true" />
       <repository location="https://plugins.openchrom.net/mabritec/1.6.39/" name="Mabritec" enabled="true" />
       <repository location="https://plugins.openchrom.net/peakalignment/1.6.39/" name="Peak Alignment" enabled="true" />
+      <repository location="https://plugins.openchrom.net/mcp/1.6.39/" name="MCP" enabled="true" />
    </repositories>
 
    <preferencesInfo>
