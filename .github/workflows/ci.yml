@@ -34,7 +34,7 @@ jobs:
         MAVEN_ARGS: "--batch-mode --no-transfer-progress -Dstyle.color=always"
       run: |
         cd openchrom
-        mvn -f openchrom/releng/net.openchrom.aggregator/pom.xml -T 1C verify -Pci
+        mvn -f openchrom/pom.xml -T 1C verify -Pci
 
     - name: Print JUnit report
       if: failure()
