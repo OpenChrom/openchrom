@@ -34,6 +34,15 @@
 		<releaseName>1.6.39</releaseName>
 	</properties>
 
+	<modules>
+		<module>releng/net.openchrom.targetplatform</module>
+		<module>plugins</module>
+		<module>tests</module>
+		<module>features</module>
+		<module>products</module>
+		<module>sites</module>
+	</modules>
+
 	<repositories>
 		<repository>
 			<id>jre-updates</id>
