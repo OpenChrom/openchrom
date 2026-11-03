@@ -114,14 +114,12 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 	private final List<Resource> disposables = new ArrayList<>();
 	private Font h2Font;
 	private Font h1Font;
-	private Color colorWhite;
 	private Text filterText;
 	private WorkbenchJob refreshJob;
 	private String previousFilterText = ""; //$NON-NLS-1$
 	private Pattern filterPattern;
 	private Set<String> installedFeatures;
 	private Image infoImage;
-	private Color colorDisabled;
 	private ScrolledComposite bodyScrolledComposite;
 	private List<String> importedFeatures;
 
@@ -138,7 +136,6 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 	public void createControl(Composite parent) {
 
 		createRefreshJob();
-		initializeColors();
 		initializeImages();
 		initializeFonts();
 		Composite container = new Composite(parent, SWT.NULL);
@@ -320,11 +317,10 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 		clearDisposables();
 		GridLayoutFactory.fillDefaults().applyTo(body);
 		bodyScrolledComposite = new ScrolledComposite(body, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
-		configureLook(bodyScrolledComposite, colorWhite);
+		configureLook(bodyScrolledComposite, getShell().getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(bodyScrolledComposite);
-		// FIXME 3.2 does white work for any desktop theme, e.g. an inverse theme?
 		final Composite scrolledContents = new Composite(bodyScrolledComposite, SWT.NONE);
-		configureLook(scrolledContents, colorWhite);
+		configureLook(scrolledContents, getShell().getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
 		scrolledContents.setRedraw(false);
 		try {
 			createDiscoveryContents(scrolledContents);
@@ -358,12 +354,6 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 	private void initializeImages() {
 
 		infoImage = ApplicationImageFactory.getInstance().getImage(IApplicationImage.IMAGE_INFO, IApplicationImageProvider.SIZE_16x16);
-	}
-
-	private void initializeColors() {
-
-		colorWhite = getShell().getDisplay().getSystemColor(SWT.COLOR_WHITE);
-		colorDisabled = getShell().getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY);
 	}
 
 	private void initializeFonts() {
@@ -474,7 +464,7 @@ public class PluginDiscoveryWizardMainPage extends WizardPage {
 			}
 			description.setText(descriptionText.replaceAll("(\\r\\n)|\\n|\\r", " ")); //$NON-NLS-1$ //$NON-NLS-2$
 			// always disabled color to make it less prominent
-			providerLabel.setForeground(colorDisabled);
+			providerLabel.setForeground(display.getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW));
 			checkbox.addSelectionListener(new SelectionListener() {
 
 				@Override
