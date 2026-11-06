@@ -119,7 +119,7 @@
 		<repositories>
 			<repository>
 				<id>Unidata Releases</id>
-				<url>https://artifacts.unidata.ucar.edu/repository/unidata-releases/</url>
+				<url>https://mirror.openchrom.net/ucar/unidata-releases/</url>
 			</repository>
 		</repositories>
 	</location>
