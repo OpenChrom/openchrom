@@ -17,10 +17,6 @@
             id="org.eclipse.chemclipse.chromatogram.msd.peak.detector.supplier.amdis.elu">
       </icon>
       <icon
-            class="net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.ui.icon.AmbiguousPeakRemoverFilterMenuIcon"
-            id="org.eclipse.chemclipse.chromatogram.msd.peak.detector.supplier.amdis.filter.AmbiguousPeakRemoverFilter">
-      </icon>
-      <icon
             icon="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/peakdetectorDeconvolution.gif"
             id="org.eclipse.chemclipse.chromatogram.msd.peak.detector.supplier.amdis">
       </icon>
