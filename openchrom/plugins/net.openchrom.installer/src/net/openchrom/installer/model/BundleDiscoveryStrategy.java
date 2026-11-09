@@ -38,42 +38,33 @@ public class BundleDiscoveryStrategy extends AbstractDiscoveryStrategy {
 		}
 		IExtensionPoint extensionPoint = getExtensionRegistry().getExtensionPoint(PluginDiscoveryExtensionReader.EXTENSION_POINT_ID);
 		IExtension[] extensions = extensionPoint.getExtensions();
-		monitor.beginTask("Loading local extensions", extensions.length == 0 ? 1 : extensions.length);
-		try {
-			if(extensions.length > 0) {
-				processExtensions(SubMonitor.convert(monitor, extensions.length), extensions);
-			}
-		} finally {
-			monitor.done();
+		SubMonitor subMonitor = SubMonitor.convert(monitor, "Loading local extensions", 1);
+		if(extensions.length > 0) {
+			processExtensions(subMonitor.newChild(1), extensions);
 		}
 	}
 
 	protected void processExtensions(IProgressMonitor monitor, IExtension[] extensions) {
 
-		monitor.beginTask("Processing extensions", extensions.length == 0 ? 1 : extensions.length);
-		try {
-			PluginDiscoveryExtensionReader extensionReader = new PluginDiscoveryExtensionReader();
-			for(IExtension extension : extensions) {
-				IConfigurationElement[] elements = extension.getConfigurationElements();
-				for(IConfigurationElement element : elements) {
-					if(monitor.isCanceled()) {
-						return;
-					}
-					if(PluginDiscoveryExtensionReader.PLUGIN_DESCRIPTOR.equals(element.getName())) {
-						IPluginDescriptor descriptor = extensionReader.readConnectorDescriptor(element, PluginDescriptor.class);
-						plugins.add(descriptor);
-					} else if(PluginDiscoveryExtensionReader.PLUGIN_CATEGORY.equals(element.getName())) {
-						DiscoveryCategory category = extensionReader.readConnectorCategory(element, DiscoveryCategory.class);
-						categories.add(category);
-					} else {
-						logger.error("unexpected element " + element.getName());
-						monitor.done();
-					}
+		SubMonitor subMonitor = SubMonitor.convert(monitor, "Processing extensions", extensions.length);
+		PluginDiscoveryExtensionReader extensionReader = new PluginDiscoveryExtensionReader();
+		for(IExtension extension : extensions) {
+			IConfigurationElement[] elements = extension.getConfigurationElements();
+			for(IConfigurationElement element : elements) {
+				if(subMonitor.isCanceled()) {
+					return;
 				}
-				monitor.worked(1);
+				if(PluginDiscoveryExtensionReader.PLUGIN_DESCRIPTOR.equals(element.getName())) {
+					IPluginDescriptor descriptor = extensionReader.readConnectorDescriptor(element, PluginDescriptor.class);
+					plugins.add(descriptor);
+				} else if(PluginDiscoveryExtensionReader.PLUGIN_CATEGORY.equals(element.getName())) {
+					DiscoveryCategory category = extensionReader.readConnectorCategory(element, DiscoveryCategory.class);
+					categories.add(category);
+				} else {
+					logger.error("unexpected element " + element.getName());
+				}
 			}
-		} finally {
-			monitor.done();
+			subMonitor.worked(1);
 		}
 	}
 

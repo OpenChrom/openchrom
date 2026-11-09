@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
@@ -27,6 +28,7 @@ public class DSDiscoveryStrategy extends AbstractDiscoveryStrategy {
 	@Override
 	public void performDiscovery(IProgressMonitor monitor) throws CoreException {
 
+		SubMonitor subMonitor = SubMonitor.convert(monitor, "Loading private extensions", 1);
 		BundleContext ctx = FrameworkUtil.getBundle(getClass()).getBundleContext();
 		ServiceReference<PluginsDS> ref = ctx.getServiceReference(PluginsDS.class);
 		if(ref != null) {
@@ -36,14 +38,20 @@ public class DSDiscoveryStrategy extends AbstractDiscoveryStrategy {
 			category.setId(DYNAMIC_GROUP_ID);
 			categories.add(category);
 			PluginsDS pluginsDS = ctx.getService(ref);
-			for(IPluginDescriptor descriptor : pluginsDS.getDescriptors()) {
+			List<IPluginDescriptor> descriptors = pluginsDS.getDescriptors();
+			subMonitor.setWorkRemaining(descriptors.size() + 1);
+			for(IPluginDescriptor descriptor : descriptors) {
 				descriptor.setCategoryId(DYNAMIC_GROUP_ID);
 				descriptor.setCategory(category);
 				descriptor.setKind(List.of(PluginDescriptorKind.DYNAMIC));
 				plugins.add(descriptor);
-
+				subMonitor.worked(1);
 			}
 		}
+		/*
+		 * Always report the last tick, so the share is used up even without the service or descriptors.
+		 */
+		subMonitor.worked(1);
 	}
 
 }
