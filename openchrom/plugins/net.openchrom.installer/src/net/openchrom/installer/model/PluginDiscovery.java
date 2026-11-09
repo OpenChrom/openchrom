@@ -76,20 +76,14 @@ public class PluginDiscovery {
 		plugins = new ArrayList<>();
 		filteredConnectors = new ArrayList<>();
 		categories = new ArrayList<>();
-		final int totalTicks = 100000;
-		final int discoveryTicks = totalTicks - (totalTicks / 10);
-		monitor.beginTask("Creating list of plug-ins.", totalTicks);
-		try {
-			for(AbstractDiscoveryStrategy discoveryStrategy : discoveryStrategies) {
-				discoveryStrategy.setCategories(categories);
-				discoveryStrategy.setConnectors(plugins);
-				discoveryStrategy.performDiscovery(SubMonitor.convert(monitor, discoveryTicks / discoveryStrategies.size()));
-			}
-			filterDescriptors();
-			connectCategoriesToDescriptors();
-		} finally {
-			monitor.done();
+		SubMonitor subMonitor = SubMonitor.convert(monitor, "Creating list of plug-ins.", discoveryStrategies.size());
+		for(AbstractDiscoveryStrategy discoveryStrategy : discoveryStrategies) {
+			discoveryStrategy.setCategories(categories);
+			discoveryStrategy.setConnectors(plugins);
+			discoveryStrategy.performDiscovery(subMonitor.newChild(1));
 		}
+		filterDescriptors();
+		connectCategoriesToDescriptors();
 	}
 
 	/**
