@@ -16,7 +16,7 @@
    <extension
          point="org.eclipse.chemclipse.xxd.process.ui.menu.icon">
          <icon
-            class="net.openchrom.chromatogram.xxd.report.supplier.pdf.ui.icon.PortableDocumentFormatMenuIcon"
+            icon="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/pdf.gif"
             id="net.openchrom.chromatogram.xxd.report.supplier.openchrom.pdf.ui">
       </icon>
    </extension>

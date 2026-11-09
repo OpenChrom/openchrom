@@ -13,7 +13,7 @@
    <extension
          point="org.eclipse.chemclipse.xxd.process.ui.menu.icon">
       <icon
-            class="net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.ui.icon.FileMenuIcon"
+            icon="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/scalable/file_obj.svg"
             id="org.eclipse.chemclipse.chromatogram.msd.peak.detector.supplier.amdis.elu">
       </icon>
       <icon
@@ -21,7 +21,7 @@
             id="org.eclipse.chemclipse.chromatogram.msd.peak.detector.supplier.amdis.filter.AmbiguousPeakRemoverFilter">
       </icon>
       <icon
-            class="net.openchrom.chromatogram.msd.peak.detector.supplier.amdis.ui.icon.DeconvolutionMenuIcon"
+            icon="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/peakdetectorDeconvolution.gif"
             id="org.eclipse.chemclipse.chromatogram.msd.peak.detector.supplier.amdis">
       </icon>
    </extension>

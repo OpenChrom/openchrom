@@ -93,7 +93,7 @@
    <extension
          point="org.eclipse.chemclipse.xxd.process.ui.menu.icon">
       <icon
-            class="net.openchrom.xxd.classifier.supplier.ratios.ui.icon.MenuIcon"
+            icon="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/16x16/classifier.gif"
             id="net.openchrom.xxd.classifier.supplier.ratios.quant">
       </icon>
    </extension>   

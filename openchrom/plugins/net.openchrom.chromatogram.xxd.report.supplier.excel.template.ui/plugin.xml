@@ -13,7 +13,7 @@
    <extension
          point="org.eclipse.chemclipse.xxd.process.ui.menu.icon">
       <icon
-            class="net.openchrom.chromatogram.xxd.report.supplier.excel.template.ui.icon.MenuIcon"
+            icon="platform:/plugin/org.eclipse.chemclipse.rcp.ui.icons/icons/scalable/excel.svg"
             id="net.openchrom.chromatogram.xxd.report.supplier.excel.template">
       </icon>
    </extension>
