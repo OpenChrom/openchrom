@@ -892,7 +892,7 @@
             id="net.openchrom.wsd.converter.supplier.agilent.feature"
             kind="converter"
             license="Converter License Terms"
-            name="Agilent HPLC-DAD"
+            name="Agilent ChemStation HPLC-DAD"
             provider="Lablicate"
             summary="Free extension exclusively for OpenChrom®"
             icon="icons/32x32/Agilent.png">
