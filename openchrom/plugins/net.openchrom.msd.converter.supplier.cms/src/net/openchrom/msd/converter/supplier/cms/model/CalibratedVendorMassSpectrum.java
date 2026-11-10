@@ -468,15 +468,15 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	 * Override methods from class CalibratedVendorLibraryMassSpectrum that can be implemented without using Class IIon
 	 */
 	@Override
-	public boolean hasIons() {
+	public boolean isEmpty() {
 
-		return !ionMeasurements.isEmpty();
+		return ionMeasurements.isEmpty();
 	}
 
 	@Override
 	public double getBasePeak() {
 
-		if(hasIons()) {
+		if(!isEmpty()) {
 			if(!minMaxSignalIsValid) {
 				updateSignalLimits();
 			}
@@ -489,7 +489,7 @@ public class CalibratedVendorMassSpectrum extends CalibratedVendorLibraryMassSpe
 	@Override
 	public float getBasePeakAbundance() {
 
-		if(hasIons()) {
+		if(!isEmpty()) {
 			if(!minMaxSignalIsValid) {
 				updateSignalLimits();
 			}
