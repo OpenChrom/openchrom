@@ -1459,6 +1459,19 @@
             summary="Commercial product. Requires an API key."
             icon="icons/32x32/OpenAI.svg">
       </pluginDescriptor>
+      
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.converters.proprietary"
+            description="Reads *.ch9 files."
+            groupId="net.openchrom.csd.converter"
+            id="net.openchrom.csd.converter.supplier.ametekmocon.feature"
+            kind="converter"
+            license="Converter License Terms"
+            name="Ametek Mocon"
+            provider="Lablicate"
+            summary="Free extension exclusively for OpenChrom®"
+            icon="icons/32x32/AmetekMocon.png">
+      </pluginDescriptor>      
 
    </extension>
 </plugin>
