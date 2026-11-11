@@ -16,7 +16,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.stream.Collectors;
 
 import org.apache.poi.ss.usermodel.CellType;
@@ -69,7 +68,7 @@ public class MascEscapeReportWriter {
 
 		createPeakHeader(amdisReportSheet);
 
-		double areaSum = calculateAreaSum(chromatogram.getPeaks());
+		double totalSignal = chromatogram.getTotalSignal();
 
 		int p = 1;
 		for(IChromatogramPeakMSD peak : chromatogram.getPeaks()) {
@@ -96,14 +95,17 @@ public class MascEscapeReportWriter {
 			if(minimumAbundance > 0) {
 				createNumericCell(row, 8, minimumAbundance);
 			}
-			createTextCell(row, 9, calculateAreaPercent(peak, areaSum) + "%");
+			double integratedSignal = calculateIntegratedSignal(peak);
+			if(totalSignal > 0) {
+				createNumericCell(row, 9, integratedSignal / totalSignal);
+			}
 			createNumericCell(row, 10, peakMax.getScanNumber());
 			createNumericCell(row, 11, peak.getPeakModel().getTailing());
 			createNumericCell(row, 12, peak.getSignalToNoiseRatio());
 			createNumericCell(row, 13, peakMax.getBasePeak());
 			// TODO: max amount
 			createNumericCell(row, 15, peak.getIntegratedArea());
-			createNumericCell(row, 16, calculateIntegratedSignal(peak));
+			createNumericCell(row, 16, integratedSignal);
 			// TODO: Max. Area
 			// TODO: Extra Width
 			createTextCell(row, 19, peakMax.getIons().size() + ": " + peakMax.getIons().stream() //
@@ -214,24 +216,6 @@ public class MascEscapeReportWriter {
 		XSSFCell cell = row.createCell(column);
 		cell.setCellType(CellType.NUMERIC);
 		cell.setCellValue(value);
-	}
-
-	private static double calculateAreaPercent(IPeak peak, double areaSum) {
-
-		if(areaSum != 0) {
-			return peak.getIntegratedArea() / areaSum * 100;
-		} else {
-			return 0.0d;
-		}
-	}
-
-	private static double calculateAreaSum(Collection<IChromatogramPeakMSD> peaks) {
-
-		double areaSum = 0;
-		for(IPeak peak : peaks) {
-			areaSum = areaSum + peak.getIntegratedArea();
-		}
-		return areaSum;
 	}
 
 	/**
