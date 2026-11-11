@@ -20,13 +20,18 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Row.MissingCellPolicy;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFFormulaEvaluator;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbookType;
+import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.core.IPeak;
@@ -47,6 +52,8 @@ import net.openchrom.chromatogram.xxd.report.supplier.masc.escape.settings.Chrom
 
 public class MascEscapeReportWriter {
 
+	private static final Logger logger = Logger.getLogger(MascEscapeReportWriter.class);
+
 	public void generate(File file, IChromatogramMSD chromatogram, ChromatogramReportSettings reportSettings) throws IOException {
 
 		try (FileInputStream fileInputStreamTemplate = new FileInputStream(reportSettings.getTemplate())) {
@@ -61,7 +68,9 @@ public class MascEscapeReportWriter {
 				writeTIC(chromThermoReportSheet, chromatogram);
 				/*
 				 * The template's evaluation sheets still hold the cached results of the empty template.
+				 * Update them, as not every spreadsheet application honors the forced recalculation.
 				 */
+				evaluateFormulas(workbook);
 				workbook.setForceFormulaRecalculation(true);
 
 				try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
@@ -217,6 +226,27 @@ public class MascEscapeReportWriter {
 			XSSFRow row = getRow(chromThermoReportSheet, 3 + scan.getScanNumber());
 			createNumericCell(row, 0, scan.getRetentionTime() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 			createNumericCell(row, 1, scan.getTotalSignal());
+		}
+	}
+
+	private static void evaluateFormulas(XSSFWorkbook workbook) {
+
+		XSSFFormulaEvaluator formulaEvaluator = workbook.getCreationHelper().createFormulaEvaluator();
+		for(Sheet sheet : workbook) {
+			for(Row row : sheet) {
+				for(Cell cell : row) {
+					if(cell.getCellType() == CellType.FORMULA) {
+						try {
+							formulaEvaluator.evaluateFormulaCell(cell);
+						} catch(RuntimeException e) {
+							/*
+							 * E.g. CELL("filename") can only be evaluated by the spreadsheet application.
+							 */
+							logger.debug(e.getMessage());
+						}
+					}
+				}
+			}
 		}
 	}
 
