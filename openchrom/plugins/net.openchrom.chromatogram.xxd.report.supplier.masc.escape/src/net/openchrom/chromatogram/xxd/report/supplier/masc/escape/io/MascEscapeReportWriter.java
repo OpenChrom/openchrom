@@ -108,23 +108,26 @@ public class MascEscapeReportWriter {
 					.map(String::valueOf) //
 					.collect(Collectors.joining(",")));
 			// TODO: Frac. Good
+			if(libraryInformation.getRetentionTime() > 0) {
+				createNumericCell(row, 21, libraryInformation.getRetentionTime() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
+			}
 			double retentionIndexDeviation = getRetentionIndexDeviation(peak);
 			if(retentionIndexDeviation > 0) {
-				createNumericCell(row, 21, (int)retentionIndexDeviation);
+				createNumericCell(row, 22, (int)retentionIndexDeviation);
 			}
 			// TODO Net
 			IComparisonResult comparisonResult = identificationTarget.getComparisonResult();
-			createNumericCell(row, 23, comparisonResult.getMatchFactor());
-			createNumericCell(row, 24, comparisonResult.getMatchFactorDirectNotAdjusted());
-			createNumericCell(row, 25, comparisonResult.getReverseMatchFactorNotAdjusted());
+			createNumericCell(row, 24, comparisonResult.getMatchFactor());
+			createNumericCell(row, 25, comparisonResult.getMatchFactorDirectNotAdjusted());
+			createNumericCell(row, 26, comparisonResult.getReverseMatchFactorNotAdjusted());
 			// TODO Corrections
-			createNumericCell(row, 27, libraryInformation.getMolWeight());
+			createNumericCell(row, 28, libraryInformation.getMolWeight());
 			// TODO S/N (m/z)
 			// TODO Area % (m/z)
 			// TODO Conc.
 			double retentionTimeDeviation = getRetentionTimeDeviation(peak);
 			if(retentionTimeDeviation > 0) {
-				createNumericCell(row, 31, retentionTimeDeviation);
+				createNumericCell(row, 32, retentionTimeDeviation);
 			}
 			p++;
 		}
@@ -155,17 +158,18 @@ public class MascEscapeReportWriter {
 		createTextCell(headerRow, 18, "Extra Width");
 		createTextCell(headerRow, 19, "Models");
 		createTextCell(headerRow, 20, "Frac. Good");
-		createTextCell(headerRow, 21, "RI-RI(lib)");
-		createTextCell(headerRow, 22, "Net");
-		createTextCell(headerRow, 23, "Weighted");
-		createTextCell(headerRow, 24, "Simple");
-		createTextCell(headerRow, 25, "Reverse");
-		createTextCell(headerRow, 26, "Corrections");
-		createTextCell(headerRow, 27, "(m/z)");
-		createTextCell(headerRow, 28, "S/N (m/z)");
-		createTextCell(headerRow, 29, "Area % (m/z)");
-		createTextCell(headerRow, 30, "Conc.");
-		createTextCell(headerRow, 31, "RT-RT(lib)");
+		createTextCell(headerRow, 21, "Expec. RT");
+		createTextCell(headerRow, 22, "RI-RI(lib)");
+		createTextCell(headerRow, 23, "Net");
+		createTextCell(headerRow, 24, "Weighted");
+		createTextCell(headerRow, 25, "Simple");
+		createTextCell(headerRow, 26, "Reverse");
+		createTextCell(headerRow, 27, "Corrections");
+		createTextCell(headerRow, 28, "(m/z)");
+		createTextCell(headerRow, 29, "S/N (m/z)");
+		createTextCell(headerRow, 30, "Area % (m/z)");
+		createTextCell(headerRow, 31, "Conc.");
+		createTextCell(headerRow, 32, "RT-RT(lib)");
 	}
 
 	private void writeTIC(XSSFSheet chromThermoReportSheet, IChromatogram chromatogram) {
