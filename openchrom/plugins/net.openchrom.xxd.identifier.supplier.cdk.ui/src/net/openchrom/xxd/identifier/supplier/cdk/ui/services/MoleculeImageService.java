@@ -47,7 +47,7 @@ public class MoleculeImageService implements IMoleculeImageService {
 	@Override
 	public String getName() {
 
-		return "OPSIN and CDK";
+		return "CDK";
 	}
 
 	@Override
