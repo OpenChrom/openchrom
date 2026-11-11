@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Lablicate GmbH.
+ * Copyright (c) 2023, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -23,77 +23,67 @@ import org.openscience.cdk.tools.manipulator.MolecularFormulaManipulator;
 
 public class MoleculeMassCalculator {
 
-	private static final Pattern PATTERN_ELEMENT = Pattern.compile("([+-]\\w*)");
-	private static final Pattern PATTERN_COUNT = Pattern.compile("^([0-9])(.*)");
+	/*
+	 * CODATA 2018 electron mass in u.
+	 */
+	public static final double ELECTRON_MASS = 0.000548579909065d;
+	/*
+	 * [M+H]+, [2M+Na]+, [M-2H]2-, [M+2H]++, [M-H2O+H]+, ...
+	 */
+	private static final Pattern PATTERN_PRECURSOR_TYPE = Pattern.compile("^\\[([0-9]*)M((?:[+-][0-9]*[A-Z][A-Za-z0-9]*)*)\\]([0-9]*)([+]+|[-]+)$");
+	private static final Pattern PATTERN_ADDUCT = Pattern.compile("([+-])([0-9]*)([A-Z][A-Za-z0-9]*)");
 
 	/**
-	 * NOTE: This method needs further inspection.
+	 * Calculates the monoisotopic neutral mass M from the precursor m/z and the precursor type.
+	 * The adducts are calculated by their monoisotopic masses, the electron mass is considered
+	 * and the m/z is multiplied by the charge state. Multimers like [2M+H]+ are supported.
+	 * If the precursor type can't be parsed, the precursor ion is returned unchanged.
 	 * ----
 	 * Precursor Type:
 	 * ----
+	 * [M]+
 	 * [M+H]+
 	 * [M-H]-
-	 * ...
-	 * [M-H-CO2-C14H23O2]-
-	 * [M+H-C36H64O10-C12H20O10]+
+	 * [M+2H]2+
+	 * [M-2H]--
+	 * [2M+Na]+
+	 * [M-H2O+H]+
 	 * [M+H-C8H10N4O3]+
-	 * [M+H-C8H18O2]+
-	 * [M+H-C12H9NS]+
-	 * [M+H-C23H38O21-C15H24O2]+
-	 * [M-H-C18H32O18-CO]-
-	 * [M+H-CH3N-C2H2O]+
-	 * [M+H-CH5NO2-CH2O2]+
-	 * [M-H-C12H18]-
+	 * [M-H-CO2-C14H23O2]-
+	 * ...
 	 */
-	@SuppressWarnings("unused")
-	private static double getNeutralMass(String precursorType, double precursorIon) {
+	public static double getNeutralMass(String precursorType, double precursorIon) {
 
-		if(precursorIon > 0.0d) {
-			if(precursorType != null && !precursorType.isEmpty()) {
-				String[] parts = precursorType.split("]");
-				if(parts.length == 2) {
-					double adjustByMass = 0;
-					String chemicalIonization = parts[0].trim().replace("[M", "");
-					Matcher matcher = PATTERN_ELEMENT.matcher(chemicalIonization);
-					while(matcher.find()) {
-						/*
-						 * Add / Subtract
-						 */
-						String formula = matcher.group();
-						boolean add;
-						if(formula.startsWith("+")) {
-							add = false; // subtract to get the neutral mass
-						} else {
-							add = true; // add to get the neutral mass
-						}
-						/*
-						 * Formula
-						 * Handle differently 2H, 2H2O, ...
-						 */
-						double count = 1;
-						double mass;
-
-						formula = formula.substring(1, formula.length());
-						Matcher matcherCount = PATTERN_COUNT.matcher(formula);
-						if(matcherCount.find()) {
-							try {
-								count = Integer.parseInt(matcherCount.group(1));
-								formula = matcherCount.group(2);
-							} catch(NumberFormatException e) {
-							}
-						}
-
-						mass = calculateMolecularWeight(formula);
-						mass *= count;
-						adjustByMass += add ? mass : -mass;
-					}
-
-					return precursorIon + adjustByMass;
-				}
-			}
+		if(precursorIon <= 0.0d || precursorType == null) {
+			return precursorIon;
 		}
 
-		return precursorIon;
+		Matcher matcher = PATTERN_PRECURSOR_TYPE.matcher(precursorType.trim());
+		if(!matcher.matches()) {
+			return precursorIon;
+		}
+
+		int multimer = matcher.group(1).isEmpty() ? 1 : Integer.parseInt(matcher.group(1));
+		String charges = matcher.group(4);
+		int sign = charges.startsWith("+") ? 1 : -1;
+		int chargeState = matcher.group(3).isEmpty() ? charges.length() : Integer.parseInt(matcher.group(3));
+		if(multimer == 0 || chargeState == 0 || (!matcher.group(3).isEmpty() && charges.length() > 1)) {
+			return precursorIon;
+		}
+
+		double adductMass = 0.0d;
+		Matcher matcherAdduct = PATTERN_ADDUCT.matcher(matcher.group(2));
+		while(matcherAdduct.find()) {
+			int count = matcherAdduct.group(2).isEmpty() ? 1 : Integer.parseInt(matcherAdduct.group(2));
+			double mass = count * calculateExactMass(matcherAdduct.group(3));
+			adductMass += matcherAdduct.group(1).equals("+") ? mass : -mass;
+		}
+		/*
+		 * m/z * z = n * M + adducts - z * e
+		 */
+		int charge = sign * chargeState;
+		double ionMass = precursorIon * chargeState + charge * ELECTRON_MASS;
+		return (ionMass - adductMass) / multimer;
 	}
 
 	/**
