@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.stream.Collectors;
 
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row.MissingCellPolicy;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -80,7 +81,7 @@ public class MascEscapeReportWriter {
 
 		int p = 1;
 		for(IChromatogramPeakMSD peak : chromatogram.getPeaks()) {
-			XSSFRow row = amdisReportSheet.createRow(p);
+			XSSFRow row = getRow(amdisReportSheet, p);
 			IScanMSD peakMax = (IScanMSD)peak.getPeakModel().getPeakMaximum();
 			IIdentificationTarget identificationTarget = TargetSupport.getBestIdentificationTarget(peak);
 			if(identificationTarget == null) {
@@ -158,7 +159,7 @@ public class MascEscapeReportWriter {
 
 	private void createPeakHeader(XSSFSheet sheet) {
 
-		XSSFRow headerRow = sheet.createRow(0);
+		XSSFRow headerRow = getRow(sheet, 0);
 		createTextCell(headerRow, 0, "FileName");
 		createTextCell(headerRow, 1, "CAS");
 		createTextCell(headerRow, 2, "Name");
@@ -196,37 +197,49 @@ public class MascEscapeReportWriter {
 
 	private void writeTIC(XSSFSheet chromThermoReportSheet, IChromatogram chromatogram) {
 
-		XSSFRow firstRow = chromThermoReportSheet.createRow(0);
+		XSSFRow firstRow = getRow(chromThermoReportSheet, 0);
 		createTextCell(firstRow, 0, "CHROMATOGRAM");
 		createTextCell(firstRow, 3, chromatogram.getSampleName());
 
-		XSSFRow secondRow = chromThermoReportSheet.createRow(1);
+		XSSFRow secondRow = getRow(chromThermoReportSheet, 1);
 		createTextCell(secondRow, 0, chromatogram.getName());
 
-		XSSFRow thirdRow = chromThermoReportSheet.createRow(2);
+		XSSFRow thirdRow = getRow(chromThermoReportSheet, 2);
 		createTextCell(thirdRow, 0, "Data Points: " + chromatogram.getNumberOfScans());
 
-		XSSFRow headerRow = chromThermoReportSheet.createRow(3);
+		XSSFRow headerRow = getRow(chromThermoReportSheet, 3);
 		createTextCell(headerRow, 0, "Time");
 		createTextCell(headerRow, 1, "Intensity");
 
 		for(IScan scan : chromatogram.getScans()) {
-			XSSFRow row = chromThermoReportSheet.createRow(3 + scan.getScanNumber());
+			XSSFRow row = getRow(chromThermoReportSheet, 3 + scan.getScanNumber());
 			createNumericCell(row, 0, scan.getRetentionTime() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 			createNumericCell(row, 1, scan.getTotalSignal());
 		}
 	}
 
+	/**
+	 * Reuses the rows of the template to keep their cell styles.
+	 */
+	private static XSSFRow getRow(XSSFSheet sheet, int index) {
+
+		XSSFRow row = sheet.getRow(index);
+		if(row == null) {
+			row = sheet.createRow(index);
+		}
+		return row;
+	}
+
 	private void createTextCell(XSSFRow row, int column, String value) {
 
-		XSSFCell cell = row.createCell(column);
+		XSSFCell cell = row.getCell(column, MissingCellPolicy.CREATE_NULL_AS_BLANK);
 		cell.setCellType(CellType.STRING);
 		cell.setCellValue(value);
 	}
 
 	private void createNumericCell(XSSFRow row, int column, double value) {
 
-		XSSFCell cell = row.createCell(column);
+		XSSFCell cell = row.getCell(column, MissingCellPolicy.CREATE_NULL_AS_BLANK);
 		cell.setCellType(CellType.NUMERIC);
 		cell.setCellValue(value);
 	}
