@@ -128,9 +128,10 @@ public class MascEscapeReportWriter {
 			if(comparisonResult.getPenalty() > 0) {
 				createNumericCell(row, 27, -comparisonResult.getPenalty());
 			}
-			createNumericCell(row, 28, libraryInformation.getMolWeight());
-			// TODO S/N (m/z)
-			// TODO Area % (m/z)
+			/*
+			 * (m/z), S/N (m/z) and Area % (m/z) require a reference ion
+			 * stored in the library, which isn't supported.
+			 */
 			IQuantitationEntry quantitationEntry = peak.getQuantitationEntries().stream().findFirst().orElse(null);
 			if(quantitationEntry != null) {
 				createNumericCell(row, 31, quantitationEntry.getConcentration());
