@@ -111,7 +111,7 @@ public class MascEscapeReportWriter {
 			createNumericCell(row, 10, chromatogram.getScanNumber(peakMax.getRetentionTime()));
 			createNumericCell(row, 11, peak.getPeakModel().getTailing());
 			createNumericCell(row, 12, peak.getSignalToNoiseRatio());
-			createNumericCell(row, 13, peakMax.getBasePeak());
+			createNumericCell(row, 13, peakMax.getBasePeakAbundance());
 			/*
 			 * Max. Amount and Max. Area are only predicted by the AMDIS deconvolution
 			 * if a component can't be fully isolated. There is no equivalent.
