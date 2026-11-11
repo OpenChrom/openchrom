@@ -72,6 +72,10 @@ public class MascEscapeReportWriter {
 
 		createPeakHeader(amdisReportSheet);
 
+		/*
+		 * The template extracts the sample name after the last backslash of the AMDIS file path.
+		 */
+		String fileName = chromatogram.getFile().getAbsolutePath().replace('/', '\\');
 		double totalSignal = chromatogram.getTotalSignal();
 
 		int p = 1;
@@ -87,7 +91,7 @@ public class MascEscapeReportWriter {
 				continue;
 			}
 
-			createTextCell(row, 0, chromatogram.getFile().getAbsolutePath());
+			createTextCell(row, 0, fileName);
 			createTextCell(row, 1, libraryInformation.getCasNumber());
 			createTextCell(row, 2, libraryInformation.getName());
 			createNumericCell(row, 3, peakMax.getRetentionTime() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
