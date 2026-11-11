@@ -61,7 +61,7 @@ public class MoleculeImageService implements IMoleculeImageService {
 	@Override
 	public String getDescription() {
 
-		return "This service tries to create a molecular formula by using OPSIN and the Chemistry Development Kit (CDK).";
+		return "This service tries to create a molecular formula by using the Chemistry Development Kit (CDK).";
 	}
 
 	@Override
