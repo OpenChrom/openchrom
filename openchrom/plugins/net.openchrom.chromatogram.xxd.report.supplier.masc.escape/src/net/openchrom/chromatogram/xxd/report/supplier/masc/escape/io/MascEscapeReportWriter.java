@@ -108,7 +108,7 @@ public class MascEscapeReportWriter {
 			if(totalSignal > 0) {
 				createNumericCell(row, 9, integratedSignal / totalSignal);
 			}
-			createNumericCell(row, 10, peakMax.getScanNumber());
+			createNumericCell(row, 10, chromatogram.getScanNumber(peakMax.getRetentionTime()));
 			createNumericCell(row, 11, peak.getPeakModel().getTailing());
 			createNumericCell(row, 12, peak.getSignalToNoiseRatio());
 			createNumericCell(row, 13, peakMax.getBasePeak());
