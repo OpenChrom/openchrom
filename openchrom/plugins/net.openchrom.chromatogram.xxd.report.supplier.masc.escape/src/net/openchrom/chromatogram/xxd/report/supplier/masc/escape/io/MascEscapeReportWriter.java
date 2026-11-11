@@ -91,7 +91,10 @@ public class MascEscapeReportWriter {
 			createNumericCell(row, 5, peak.getPeakModel().getNumberOfScans());
 			createNumericCell(row, 6, peak.getPurity());
 			createTextCell(row, 7, peak.getModelDescription());
-			// TODO: min abundance
+			double minimumAbundance = calculateMinimumAbundance(peakMax);
+			if(minimumAbundance > 0) {
+				createNumericCell(row, 8, minimumAbundance);
+			}
 			createTextCell(row, 9, calculateAreaPercent(peak, areaSum) + "%");
 			createNumericCell(row, 10, peakMax.getScanNumber());
 			createNumericCell(row, 11, peak.getPeakModel().getTailing());
@@ -225,6 +228,19 @@ public class MascEscapeReportWriter {
 			areaSum = areaSum + peak.getIntegratedArea();
 		}
 		return areaSum;
+	}
+
+	/**
+	 * Smallest observable mass spectral peak as fraction of the base peak.
+	 */
+	private static double calculateMinimumAbundance(IScanMSD massSpectrum) {
+
+		IIon lowestAbundance = massSpectrum.getLowestAbundance();
+		float basePeakAbundance = massSpectrum.getBasePeakAbundance();
+		if(lowestAbundance == null || basePeakAbundance <= 0) {
+			return 0;
+		}
+		return lowestAbundance.getAbundance() / basePeakAbundance;
 	}
 
 	private static double getRetentionIndexDeviation(IChromatogramPeak peak) {
