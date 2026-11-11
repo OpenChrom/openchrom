@@ -27,7 +27,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbookType;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
-import org.eclipse.chemclipse.model.core.IChromatogramPeak;
 import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.core.IScan;
@@ -116,9 +115,8 @@ public class MascEscapeReportWriter {
 			if(libraryInformation.getRetentionTime() > 0) {
 				createNumericCell(row, 21, libraryInformation.getRetentionTime() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 			}
-			double retentionIndexDeviation = getRetentionIndexDeviation(peak);
-			if(retentionIndexDeviation > 0) {
-				createNumericCell(row, 22, (int)retentionIndexDeviation);
+			if(peakMax.getRetentionIndex() > 0 && libraryInformation.getRetentionIndex() > 0) {
+				createNumericCell(row, 22, peakMax.getRetentionIndex() - libraryInformation.getRetentionIndex());
 			}
 			IComparisonResult comparisonResult = identificationTarget.getComparisonResult();
 			createNumericCell(row, 23, comparisonResult.getMatchFactor());
@@ -261,17 +259,6 @@ public class MascEscapeReportWriter {
 			integratedSignal += peakModel.getPeakAbundance(retentionTime);
 		}
 		return integratedSignal;
-	}
-
-	private static double getRetentionIndexDeviation(IChromatogramPeak peak) {
-
-		IScan scan = peak.getPeakModel().getPeakMaximum();
-		if(scan.getRetentionIndex() == 0) {
-			return 0;
-		}
-		IIdentificationTarget identificationTarget = TargetSupport.getBestIdentificationTarget(peak);
-		ILibraryInformation libraryInformation = identificationTarget.getLibraryInformation();
-		return scan.getRetentionIndex() - libraryInformation.getRetentionIndex();
 	}
 
 	private double getRetentionTimeDeviation(IChromatogramPeakMSD peak) {
