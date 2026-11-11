@@ -29,6 +29,7 @@ import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.core.IChromatogramPeak;
 import org.eclipse.chemclipse.model.core.IPeak;
+import org.eclipse.chemclipse.model.core.IPeakModel;
 import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.model.identifier.IComparisonResult;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
@@ -102,7 +103,7 @@ public class MascEscapeReportWriter {
 			createNumericCell(row, 13, peakMax.getBasePeak());
 			// TODO: max amount
 			createNumericCell(row, 15, peak.getIntegratedArea());
-			// TODO: Intgr.Signal
+			createNumericCell(row, 16, calculateIntegratedSignal(peak));
 			// TODO: Max. Area
 			// TODO: Extra Width
 			createTextCell(row, 19, peakMax.getIons().size() + ": " + peakMax.getIons().stream() //
@@ -241,6 +242,19 @@ public class MascEscapeReportWriter {
 			return 0;
 		}
 		return lowestAbundance.getAbundance() / basePeakAbundance;
+	}
+
+	/**
+	 * Area under the extracted peak shape without baseline, summed over all scans.
+	 */
+	private static double calculateIntegratedSignal(IPeak peak) {
+
+		IPeakModel peakModel = peak.getPeakModel();
+		double integratedSignal = 0;
+		for(int retentionTime : peakModel.getRetentionTimes()) {
+			integratedSignal += peakModel.getPeakAbundance(retentionTime);
+		}
+		return integratedSignal;
 	}
 
 	private static double getRetentionIndexDeviation(IChromatogramPeak peak) {
