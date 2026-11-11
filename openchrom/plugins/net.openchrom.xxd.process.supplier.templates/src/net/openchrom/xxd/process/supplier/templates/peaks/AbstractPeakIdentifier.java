@@ -38,6 +38,7 @@ import org.eclipse.chemclipse.model.support.RetentionIndexMap;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.core.ProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 
 import net.openchrom.xxd.process.supplier.templates.model.IdentifierSetting;
 import net.openchrom.xxd.process.supplier.templates.preferences.PreferenceSupplier;
@@ -78,8 +79,10 @@ public abstract class AbstractPeakIdentifier {
 		IProcessingInfo<IPeakIdentificationResults> processingInfo = validate(peaks, settings);
 		if(!processingInfo.hasErrorMessages()) {
 			if(settings instanceof PeakIdentifierSettings peakIdentifierSettings) {
-				for(IdentifierSetting identifierSetting : peakIdentifierSettings.getIdentifierSettingsList()) {
-					identifyPeak(peaks, identifierSetting, retentionIndexMap, monitor);
+				List<IdentifierSetting> identifierSettings = peakIdentifierSettings.getIdentifierSettingsList();
+				SubMonitor subMonitor = SubMonitor.convert(monitor, "Identify peaks", identifierSettings.size());
+				for(IdentifierSetting identifierSetting : identifierSettings) {
+					identifyPeak(peaks, identifierSetting, retentionIndexMap, subMonitor.newChild(1));
 				}
 			} else {
 				processingInfo.addErrorMessage(PeakIdentifierSettings.IDENTIFIER_DESCRIPTION, "The settings instance is wrong.");
@@ -100,7 +103,8 @@ public abstract class AbstractPeakIdentifier {
 
 		try {
 			if(startRetentionTime > 0 && startRetentionTime < stopRetentionTime) {
-				monitor.beginTask("Identify peaks", peaks.size());
+				SubMonitor subMonitor = SubMonitor.convert(monitor, "Identify peaks", peaks.size());
+				subMonitor.subTask(identifierSetting.getName());
 				for(IPeak peak : peaks) {
 					if(LimitSupport.doIdentify(peak.getTargets(), limitMatchFactor)) {
 						if(isPeakMatch(peak, startRetentionTime, stopRetentionTime)) {
@@ -121,7 +125,7 @@ public abstract class AbstractPeakIdentifier {
 							}
 						}
 					}
-					monitor.worked(1);
+					subMonitor.worked(1);
 				}
 			}
 		} catch(PeakException e) {
