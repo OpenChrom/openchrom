@@ -128,7 +128,7 @@ public class MascEscapeReportWriter {
 					.map(IIon::getIon) //
 					.map(IonRoundMethod.getActive()::round) //
 					.map(String::valueOf) //
-					.collect(Collectors.joining(",")));
+					.collect(Collectors.joining(" ")));
 			if(libraryInformation.getRetentionTime() > 0) {
 				createNumericCell(row, 21, libraryInformation.getRetentionTime() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 			}
