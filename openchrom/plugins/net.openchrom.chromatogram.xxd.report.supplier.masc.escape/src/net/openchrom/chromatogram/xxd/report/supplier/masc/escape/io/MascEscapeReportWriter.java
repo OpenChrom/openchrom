@@ -186,7 +186,7 @@ public class MascEscapeReportWriter {
 
 		XSSFRow firstRow = chromThermoReportSheet.createRow(0);
 		createTextCell(firstRow, 0, "CHROMATOGRAM");
-		createTextCell(firstRow, 0, chromatogram.getSampleName());
+		createTextCell(firstRow, 3, chromatogram.getSampleName());
 
 		XSSFRow secondRow = chromThermoReportSheet.createRow(1);
 		createTextCell(secondRow, 0, chromatogram.getName());
