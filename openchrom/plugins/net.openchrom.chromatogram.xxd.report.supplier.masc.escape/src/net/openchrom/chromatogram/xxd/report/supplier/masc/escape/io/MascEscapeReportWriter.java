@@ -56,6 +56,10 @@ public class MascEscapeReportWriter {
 
 				XSSFSheet chromThermoReportSheet = workbook.getSheet("Chrom-Thermo");
 				writeTIC(chromThermoReportSheet, chromatogram);
+				/*
+				 * The template's evaluation sheets still hold the cached results of the empty template.
+				 */
+				workbook.setForceFormulaRecalculation(true);
 
 				try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
 					workbook.write(fileOutputStream);
