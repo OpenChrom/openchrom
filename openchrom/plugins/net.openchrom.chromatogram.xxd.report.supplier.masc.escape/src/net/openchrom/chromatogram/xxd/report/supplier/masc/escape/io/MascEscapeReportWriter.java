@@ -103,17 +103,21 @@ public class MascEscapeReportWriter {
 			createNumericCell(row, 11, peak.getPeakModel().getTailing());
 			createNumericCell(row, 12, peak.getSignalToNoiseRatio());
 			createNumericCell(row, 13, peakMax.getBasePeak());
-			// TODO: max amount
+			/*
+			 * Max. Amount and Max. Area are only predicted by the AMDIS deconvolution
+			 * if a component can't be fully isolated. There is no equivalent.
+			 */
 			createNumericCell(row, 15, peak.getIntegratedArea());
 			createNumericCell(row, 16, integratedSignal);
-			// TODO: Max. Area
-			// TODO: Extra Width
+			/*
+			 * Extra Width (baseline extension of the area) and Frac. Good (fraction of certain ions)
+			 * are AMDIS deconvolution internals that are not kept in the peak model.
+			 */
 			createTextCell(row, 19, peakMax.getIons().size() + ": " + peakMax.getIons().stream() //
 					.map(IIon::getIon) //
 					.map(IonRoundMethod.getActive()::round) //
 					.map(String::valueOf) //
 					.collect(Collectors.joining(",")));
-			// TODO: Frac. Good
 			if(libraryInformation.getRetentionTime() > 0) {
 				createNumericCell(row, 21, libraryInformation.getRetentionTime() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 			}
