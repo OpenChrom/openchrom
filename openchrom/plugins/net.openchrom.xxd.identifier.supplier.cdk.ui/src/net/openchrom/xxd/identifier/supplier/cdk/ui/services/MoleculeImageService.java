@@ -65,12 +65,6 @@ public class MoleculeImageService implements IMoleculeImageService {
 	}
 
 	@Override
-	public boolean isOnline() {
-
-		return false;
-	}
-
-	@Override
 	public Image create(Display display, ILibraryInformation libraryInformation, int width, int height) {
 
 		Image image = null;

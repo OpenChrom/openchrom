@@ -189,10 +189,4 @@ public class MoleculeImageService implements IMoleculeImageService {
 		jmolViewer.setStringProperty("defaultLoadFilter", "2D");
 		return jmolViewer;
 	}
-
-	@Override
-	public boolean isOnline() {
-
-		return false;
-	}
 }
