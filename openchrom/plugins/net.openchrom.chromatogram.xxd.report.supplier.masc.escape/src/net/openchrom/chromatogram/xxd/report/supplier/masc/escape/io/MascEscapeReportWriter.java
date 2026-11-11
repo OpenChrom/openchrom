@@ -133,9 +133,8 @@ public class MascEscapeReportWriter {
 			if(quantitationEntry != null) {
 				createNumericCell(row, 31, quantitationEntry.getConcentration());
 			}
-			double retentionTimeDeviation = getRetentionTimeDeviation(peak);
-			if(retentionTimeDeviation > 0) {
-				createNumericCell(row, 32, retentionTimeDeviation);
+			if(libraryInformation.getRetentionTime() > 0) {
+				createNumericCell(row, 32, (peakMax.getRetentionTime() - libraryInformation.getRetentionTime()) / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 			}
 			p++;
 		}
@@ -259,16 +258,5 @@ public class MascEscapeReportWriter {
 			integratedSignal += peakModel.getPeakAbundance(retentionTime);
 		}
 		return integratedSignal;
-	}
-
-	private double getRetentionTimeDeviation(IChromatogramPeakMSD peak) {
-
-		IScan scan = peak.getPeakModel().getPeakMaximum();
-		IIdentificationTarget identificationTarget = TargetSupport.getBestIdentificationTarget(peak);
-		ILibraryInformation libraryInformation = identificationTarget.getLibraryInformation();
-		if(libraryInformation.getRetentionTime() == 0) {
-			return 0;
-		}
-		return scan.getRetentionTime() - libraryInformation.getRetentionTime();
 	}
 }
