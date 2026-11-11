@@ -97,10 +97,10 @@ public class MascEscapeReportWriter {
 			createTextCell(row, 0, fileName);
 			createTextCell(row, 1, libraryInformation.getCasNumber());
 			createTextCell(row, 2, libraryInformation.getName());
-			createNumericCell(row, 3, peakMax.getRetentionTime() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
-			createNumericCell(row, 4, peakMax.getRetentionIndex());
+			createNumericCell(row, 3, round(peakMax.getRetentionTime() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR, 4));
+			createNumericCell(row, 4, round(peakMax.getRetentionIndex(), 1));
 			createTextCell(row, 5, getWidth(peak.getPeakModel()));
-			createNumericCell(row, 6, peak.getPurity());
+			createNumericCell(row, 6, round(peak.getPurity(), 3));
 			createTextCell(row, 7, peak.getModelDescription());
 			double minimumAbundance = calculateMinimumAbundance(peakMax);
 			if(minimumAbundance > 0) {
@@ -111,15 +111,15 @@ public class MascEscapeReportWriter {
 				createNumericCell(row, 9, integratedSignal / totalSignal);
 			}
 			createNumericCell(row, 10, chromatogram.getScanNumber(peakMax.getRetentionTime()));
-			createNumericCell(row, 11, peak.getPeakModel().getTailing());
-			createNumericCell(row, 12, peak.getSignalToNoiseRatio());
-			createNumericCell(row, 13, peakMax.getBasePeakAbundance());
+			createNumericCell(row, 11, round(peak.getPeakModel().getTailing(), 1));
+			createNumericCell(row, 12, Math.round(peak.getSignalToNoiseRatio()));
+			createNumericCell(row, 13, Math.round(peakMax.getBasePeakAbundance()));
 			/*
 			 * Max. Amount and Max. Area are only predicted by the AMDIS deconvolution
 			 * if a component can't be fully isolated. There is no equivalent.
 			 */
-			createNumericCell(row, 15, peak.getIntegratedArea());
-			createNumericCell(row, 16, integratedSignal);
+			createNumericCell(row, 15, Math.round(peak.getIntegratedArea()));
+			createNumericCell(row, 16, Math.round(integratedSignal));
 			/*
 			 * Extra Width (baseline extension of the area) and Frac. Good (fraction of certain ions)
 			 * are AMDIS deconvolution internals that are not kept in the peak model.
@@ -130,18 +130,18 @@ public class MascEscapeReportWriter {
 					.map(String::valueOf) //
 					.collect(Collectors.joining(" ")));
 			if(libraryInformation.getRetentionTime() > 0) {
-				createNumericCell(row, 21, libraryInformation.getRetentionTime() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
+				createNumericCell(row, 21, round(libraryInformation.getRetentionTime() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR, 4));
 			}
 			if(peakMax.getRetentionIndex() > 0 && libraryInformation.getRetentionIndex() > 0) {
-				createNumericCell(row, 22, peakMax.getRetentionIndex() - libraryInformation.getRetentionIndex());
+				createNumericCell(row, 22, round(peakMax.getRetentionIndex() - libraryInformation.getRetentionIndex(), 1));
 			}
 			IComparisonResult comparisonResult = identificationTarget.getComparisonResult();
-			createNumericCell(row, 23, comparisonResult.getMatchFactor());
-			createNumericCell(row, 24, comparisonResult.getMatchFactorNotAdjusted());
-			createNumericCell(row, 25, comparisonResult.getMatchFactorDirectNotAdjusted());
-			createNumericCell(row, 26, comparisonResult.getReverseMatchFactorNotAdjusted());
+			createNumericCell(row, 23, Math.round(comparisonResult.getMatchFactor()));
+			createNumericCell(row, 24, Math.round(comparisonResult.getMatchFactorNotAdjusted()));
+			createNumericCell(row, 25, Math.round(comparisonResult.getMatchFactorDirectNotAdjusted()));
+			createNumericCell(row, 26, Math.round(comparisonResult.getReverseMatchFactorNotAdjusted()));
 			if(comparisonResult.getPenalty() > 0) {
-				createNumericCell(row, 27, -comparisonResult.getPenalty());
+				createNumericCell(row, 27, -Math.round(comparisonResult.getPenalty()));
 			}
 			/*
 			 * (m/z), S/N (m/z) and Area % (m/z) require a reference ion
@@ -152,7 +152,7 @@ public class MascEscapeReportWriter {
 				createNumericCell(row, 31, quantitationEntry.getConcentration());
 			}
 			if(libraryInformation.getRetentionTime() > 0) {
-				createNumericCell(row, 32, (peakMax.getRetentionTime() - libraryInformation.getRetentionTime()) / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
+				createNumericCell(row, 32, round((peakMax.getRetentionTime() - libraryInformation.getRetentionTime()) / IChromatogramOverview.MINUTE_CORRELATION_FACTOR, 4));
 			}
 			p++;
 		}
@@ -301,6 +301,15 @@ public class MascEscapeReportWriter {
 			return retentionTime1;
 		}
 		return retentionTime1 + (intensity - intensity1) * (retentionTime2 - retentionTime1) / (intensity2 - intensity1);
+	}
+
+	/**
+	 * Rounds to the precision AMDIS reports.
+	 */
+	private static double round(double value, int decimals) {
+
+		double factor = Math.pow(10, decimals);
+		return Math.round(value * factor) / factor;
 	}
 
 	/**
