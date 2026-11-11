@@ -129,6 +129,7 @@ public class MoleculeImageService implements IMoleculeImageService {
 		JmolViewer jmolViewer = jmolPanel.getViewer();
 		jmolViewer.setColorBackground("white");
 		jmolViewer.setScreenDimension(width, height);
+		jmolViewer.setStringProperty("defaultLoadFilter", "2D");
 		return jmolViewer;
 	}
 
