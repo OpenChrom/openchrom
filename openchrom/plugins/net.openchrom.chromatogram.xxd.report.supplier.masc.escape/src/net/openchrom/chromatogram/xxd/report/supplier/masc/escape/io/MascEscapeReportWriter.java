@@ -124,7 +124,9 @@ public class MascEscapeReportWriter {
 			createNumericCell(row, 24, comparisonResult.getMatchFactorNotAdjusted());
 			createNumericCell(row, 25, comparisonResult.getMatchFactorDirectNotAdjusted());
 			createNumericCell(row, 26, comparisonResult.getReverseMatchFactorNotAdjusted());
-			// TODO Corrections
+			if(comparisonResult.getPenalty() > 0) {
+				createNumericCell(row, 27, -comparisonResult.getPenalty());
+			}
 			createNumericCell(row, 28, libraryInformation.getMolWeight());
 			// TODO S/N (m/z)
 			// TODO Area % (m/z)
