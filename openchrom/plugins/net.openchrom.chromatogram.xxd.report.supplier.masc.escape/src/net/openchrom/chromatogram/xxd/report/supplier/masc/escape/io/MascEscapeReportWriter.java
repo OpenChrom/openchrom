@@ -119,9 +119,9 @@ public class MascEscapeReportWriter {
 			if(retentionIndexDeviation > 0) {
 				createNumericCell(row, 22, (int)retentionIndexDeviation);
 			}
-			// TODO Net
 			IComparisonResult comparisonResult = identificationTarget.getComparisonResult();
-			createNumericCell(row, 24, comparisonResult.getMatchFactor());
+			createNumericCell(row, 23, comparisonResult.getMatchFactor());
+			createNumericCell(row, 24, comparisonResult.getMatchFactorNotAdjusted());
 			createNumericCell(row, 25, comparisonResult.getMatchFactorDirectNotAdjusted());
 			createNumericCell(row, 26, comparisonResult.getReverseMatchFactorNotAdjusted());
 			// TODO Corrections
