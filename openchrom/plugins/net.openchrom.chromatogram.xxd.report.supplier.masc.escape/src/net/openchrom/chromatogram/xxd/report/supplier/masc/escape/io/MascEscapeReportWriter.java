@@ -35,6 +35,7 @@ import org.eclipse.chemclipse.model.identifier.IComparisonResult;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
 import org.eclipse.chemclipse.model.math.IonRoundMethod;
+import org.eclipse.chemclipse.model.quantitation.IQuantitationEntry;
 import org.eclipse.chemclipse.model.targets.TargetSupport;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramPeakMSD;
@@ -130,7 +131,10 @@ public class MascEscapeReportWriter {
 			createNumericCell(row, 28, libraryInformation.getMolWeight());
 			// TODO S/N (m/z)
 			// TODO Area % (m/z)
-			// TODO Conc.
+			IQuantitationEntry quantitationEntry = peak.getQuantitationEntries().stream().findFirst().orElse(null);
+			if(quantitationEntry != null) {
+				createNumericCell(row, 31, quantitationEntry.getConcentration());
+			}
 			double retentionTimeDeviation = getRetentionTimeDeviation(peak);
 			if(retentionTimeDeviation > 0) {
 				createNumericCell(row, 32, retentionTimeDeviation);
