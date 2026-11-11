@@ -16,6 +16,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import org.apache.poi.ss.usermodel.CellType;
@@ -97,7 +99,7 @@ public class MascEscapeReportWriter {
 			createTextCell(row, 2, libraryInformation.getName());
 			createNumericCell(row, 3, peakMax.getRetentionTime() / IChromatogramOverview.MINUTE_CORRELATION_FACTOR);
 			createNumericCell(row, 4, peakMax.getRetentionIndex());
-			createNumericCell(row, 5, peak.getPeakModel().getNumberOfScans());
+			createTextCell(row, 5, getWidth(peak.getPeakModel()));
 			createNumericCell(row, 6, peak.getPurity());
 			createTextCell(row, 7, peak.getModelDescription());
 			double minimumAbundance = calculateMinimumAbundance(peakMax);
@@ -242,6 +244,63 @@ public class MascEscapeReportWriter {
 		XSSFCell cell = row.getCell(column, MissingCellPolicy.CREATE_NULL_AS_BLANK);
 		cell.setCellType(CellType.NUMERIC);
 		cell.setCellValue(value);
+	}
+
+	/**
+	 * Full width at half maximum in scans. Like AMDIS, a leading > marks
+	 * peaks whose ends don't drop below half of the maximum.
+	 */
+	private static String getWidth(IPeakModel peakModel) {
+
+		List<Integer> retentionTimes = peakModel.getRetentionTimes();
+		int size = retentionTimes.size();
+		if(size < 2) {
+			return "";
+		}
+		int maximum = 0;
+		for(int i = 1; i < size; i++) {
+			if(peakModel.getIntensity(retentionTimes.get(i)) > peakModel.getIntensity(retentionTimes.get(maximum))) {
+				maximum = i;
+			}
+		}
+		float halfHeight = peakModel.getIntensity(retentionTimes.get(maximum)) / 2;
+		boolean open = true;
+		double start = retentionTimes.getFirst();
+		for(int i = maximum; i > 0; i--) {
+			if(peakModel.getIntensity(retentionTimes.get(i - 1)) < halfHeight) {
+				start = interpolate(peakModel, retentionTimes.get(i - 1), retentionTimes.get(i), halfHeight);
+				open = false;
+				break;
+			}
+		}
+		boolean closed = false;
+		double stop = retentionTimes.getLast();
+		for(int i = maximum; i < size - 1; i++) {
+			if(peakModel.getIntensity(retentionTimes.get(i + 1)) < halfHeight) {
+				stop = interpolate(peakModel, retentionTimes.get(i), retentionTimes.get(i + 1), halfHeight);
+				closed = true;
+				break;
+			}
+		}
+		double scanInterval = (double)(retentionTimes.getLast() - retentionTimes.getFirst()) / (size - 1);
+		double width = (stop - start) / scanInterval;
+		if(open || !closed) {
+			return String.format(Locale.US, ">%.0f scans", width);
+		}
+		return String.format(Locale.US, "%.1f scans", width);
+	}
+
+	/**
+	 * Retention time between the two given ones where the peak has the given intensity.
+	 */
+	private static double interpolate(IPeakModel peakModel, int retentionTime1, int retentionTime2, float intensity) {
+
+		float intensity1 = peakModel.getIntensity(retentionTime1);
+		float intensity2 = peakModel.getIntensity(retentionTime2);
+		if(intensity1 == intensity2) {
+			return retentionTime1;
+		}
+		return retentionTime1 + (intensity - intensity1) * (retentionTime2 - retentionTime1) / (intensity2 - intensity1);
 	}
 
 	/**
