@@ -62,6 +62,7 @@ import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
 import org.eclipse.chemclipse.numeric.core.Point;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 
 import net.openchrom.xxd.process.supplier.templates.model.PeakSelectionChoice;
 import net.openchrom.xxd.process.supplier.templates.model.PeakSelectionCriterion;
@@ -102,8 +103,9 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 		IChromatogram chromatogram = chromatogramSelection.getChromatogram();
 		List<? extends IChromatogramPeak> peaks = chromatogram.getPeaks(chromatogramSelection);
 		List<IChromatogram> referencedChromatograms = chromatogram.getReferencedChromatograms();
+		SubMonitor subMonitor = SubMonitor.convert(monitor, referencedChromatograms.size());
 		for(IChromatogram referencedChromatogram : referencedChromatograms) {
-			transferPeaks(peaks, referencedChromatogram, peakTransferSettings, monitor);
+			transferPeaks(peaks, referencedChromatogram, peakTransferSettings, subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE));
 		}
 	}
 
@@ -113,7 +115,7 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 		List<Integer> groups = new ArrayList<>();
 		groups.addAll(peakGroups.keySet());
 		Collections.sort(groups);
-		monitor.beginTask("Transfer Peaks", peaks.size());
+		SubMonitor subMonitor = SubMonitor.convert(monitor, "Transfer Peaks", peaks.size());
 		for(int group : groups) {
 			if(monitor.isCanceled()) {
 				return;
@@ -126,6 +128,7 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 				IChromatogramPeak peak = groupedPeaks.get(0);
 				double percentageIntensity = getPercentageIntensity(peak);
 				transfer(peak, percentageIntensity, chromatogramSink, peakTransferSettings);
+				subMonitor.worked(1);
 			} else {
 				/*
 				 * Peak Group
@@ -133,12 +136,12 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 				if(chromatogramSink instanceof IChromatogramCSD chromatogramCSD && peakTransferSettings.isCreateModelPeak()) {
 					for(IChromatogramPeak peak : groupedPeaks) {
 						transferModelPeak(peak, chromatogramCSD, peakTransferSettings);
-						monitor.worked(1);
+						subMonitor.worked(1);
 					}
 				} else {
 					transferPeakGroup(groupedPeaks, chromatogramSink, peakTransferSettings);
 					int worked = groupedPeaks.size();
-					monitor.worked(worked);
+					subMonitor.worked(worked);
 				}
 			}
 		}
