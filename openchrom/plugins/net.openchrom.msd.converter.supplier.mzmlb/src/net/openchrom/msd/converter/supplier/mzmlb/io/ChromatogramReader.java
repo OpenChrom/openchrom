@@ -38,6 +38,7 @@ import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.ScanType;
 import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.SpectrumListType;
 import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.SpectrumType;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -101,7 +102,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 			SpectrumListType spectrumList = run.getSpectrumList();
 			IReaderProxy readerProxy = new ReaderProxy(file);
 
-			monitor.beginTask(ConverterMessages.readScans, spectrumList.getCount().intValue());
+			SubMonitor subMonitor = SubMonitor.convert(monitor, ConverterMessages.readScans, spectrumList.getCount().intValue());
 			for(SpectrumType spectrum : spectrumList.getSpectrum()) {
 				IVendorScanProxy scanProxy = new VendorScanProxy(readerProxy, monitor);
 				scanProxy.setScanNumber(spectrum.getIndex().intValue());
@@ -113,7 +114,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 				IScanMarker scanMarker = readBinaryData(spectrum, readerProxy);
 				scanProxy.setScanMarker(scanMarker);
 				chromatogram.addScan(scanProxy);
-				monitor.worked(1);
+				subMonitor.worked(1);
 			}
 		} catch(HDF5Exception e) {
 			logger.error(e);
@@ -124,7 +125,6 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 		} catch(JAXBException e) {
 			logger.error(e);
 		}
-		monitor.done();
 		return chromatogram;
 	}
 

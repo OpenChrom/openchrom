@@ -36,6 +36,7 @@ import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.implementation.Ion;
 import org.eclipse.chemclipse.support.history.EditInformation;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 
 import net.openchrom.msd.converter.supplier.mzdb.internal.DataEncoding;
 import net.openchrom.msd.converter.supplier.mzdb.internal.DataMode;
@@ -78,12 +79,11 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 				readName(statement, chromatogram);
 				readEditHistory(statement, chromatogram);
 				readSpectrum(statement, chromatogram);
-				readScans(statement, chromatogram);
+				readScans(statement, chromatogram, monitor);
 			}
 		} catch(SQLException e) {
 			logger.warn(e);
 		}
-		monitor.done();
 		return chromatogram;
 	}
 
@@ -177,7 +177,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 		return dataEncoding;
 	}
 
-	private void readScans(Statement statement, IVendorChromatogram chromatogram) throws SQLException {
+	private void readScans(Statement statement, IVendorChromatogram chromatogram, IProgressMonitor monitor) throws SQLException {
 
 		DataEncoding dataEncoding = readDataEncoding(statement);
 		String compression = dataEncoding.getCompression();
@@ -187,6 +187,11 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 		if(dataEncoding.getDataMode() != DataMode.CENTROID) {
 			throw new UnsupportedOperationException("Only centroided data is supported.");
 		}
+		int boundingBoxes;
+		try (ResultSet countResultSet = statement.executeQuery("SELECT COUNT(*) FROM bounding_box;")) {
+			boundingBoxes = countResultSet.getInt(1);
+		}
+		SubMonitor subMonitor = SubMonitor.convert(monitor, boundingBoxes);
 		try (ResultSet boundingBoxResultSet = statement.executeQuery("SELECT data FROM bounding_box;")) {
 			while(boundingBoxResultSet.next()) {
 				byte[] blobData = boundingBoxResultSet.getBytes("data");
@@ -214,6 +219,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 						}
 					}
 				}
+				subMonitor.worked(1);
 			}
 		}
 	}
