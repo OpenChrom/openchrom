@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="OpenChrom (Hillenkamp)" uid="net.openchrom.rcp.compilation.community.product.id" id="net.openchrom.rcp.compilation.community.ui.product" application="org.eclipse.chemclipse.rcp.app.ui.org.eclipse.chemclipse.rcp.application" version="1.6.40.qualifier" type="features" includeLaunchers="true" autoIncludeRequirements="true">
+<product name="OpenChrom (Hillenkamp)" uid="net.openchrom.rcp.compilation.community.product.id" id="net.openchrom.rcp.compilation.community.ui.product" application="org.eclipse.chemclipse.rcp.app.ui.org.eclipse.chemclipse.rcp.application" version="1.6.41.qualifier" type="features" includeLaunchers="true" autoIncludeRequirements="true">
 
    <aboutInfo>
       <image path="/net.openchrom.rcp.compilation.community.ui/icons/about_250x330.png"/>
@@ -89,9 +89,9 @@ Contributors:
    </configurations>
 
    <repositories>
-      <repository location="https://update.openchrom.net/1.6.40/" name="OpenChrom" enabled="true" />
-      <repository location="https://converter.openchrom.net/1.6.40/" name="Converter" enabled="true" />
-      <repository location="https://plugins.openchrom.net/1.6.40/" name="Plugins" enabled="true" />
+      <repository location="https://update.openchrom.net/1.6.41/" name="OpenChrom" enabled="true" />
+      <repository location="https://converter.openchrom.net/1.6.41/" name="Converter" enabled="true" />
+      <repository location="https://plugins.openchrom.net/1.6.41/" name="Plugins" enabled="true" />
    </repositories>
 
    <preferencesInfo>
