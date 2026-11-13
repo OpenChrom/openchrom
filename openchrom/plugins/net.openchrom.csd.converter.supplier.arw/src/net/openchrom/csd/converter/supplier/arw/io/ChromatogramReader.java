@@ -17,12 +17,14 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.chemclipse.converter.l10n.ConverterMessages;
 import org.eclipse.chemclipse.csd.converter.io.AbstractChromatogramCSDReader;
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.support.ChromatogramSupport;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 
 import net.openchrom.csd.converter.supplier.arw.io.support.ChromatogramArrayReader;
 import net.openchrom.csd.converter.supplier.arw.io.support.IChromatogramArrayReader;
@@ -56,8 +58,10 @@ public class ChromatogramReader extends AbstractChromatogramCSDReader {
 
 		IChromatogramArrayReader in = new ChromatogramArrayReader(file);
 		String input = in.readBytesAsString(in.getLength());
+		SubMonitor subMonitor = SubMonitor.convert(monitor, ConverterMessages.readScans, input.length());
 		Matcher matcher = scanPattern.matcher(input);
-		while(matcher.find() && !monitor.isCanceled()) {
+		int position = 0;
+		while(matcher.find() && !subMonitor.isCanceled()) {
 			String retentionTimeInMinutes = matcher.group(1).replace(",", ".");
 			String abundance = matcher.group(3).replace(",", ".");
 			try {
@@ -70,7 +74,10 @@ public class ChromatogramReader extends AbstractChromatogramCSDReader {
 			} catch(NumberFormatException e) {
 				logger.warn(e);
 			}
+			subMonitor.worked(matcher.end() - position);
+			position = matcher.end();
 		}
+		subMonitor.worked(input.length() - position);
 		/*
 		 * Set scan delay and interval
 		 */
