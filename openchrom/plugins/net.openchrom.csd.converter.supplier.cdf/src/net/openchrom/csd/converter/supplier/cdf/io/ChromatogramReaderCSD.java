@@ -25,6 +25,7 @@ import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 
 import net.openchrom.csd.converter.supplier.cdf.io.support.CDFChromtogramArrayReader;
 import net.openchrom.csd.converter.supplier.cdf.io.support.DateSupport;
@@ -121,11 +122,13 @@ public class ChromatogramReaderCSD extends AbstractChromatogramCSDReader {
 			monitor.subTask(ConverterMessages.importScan);
 			int retentionTime = in.getScanDelay();
 			int scans = in.getNumberOfScans();
+			SubMonitor subMonitor = SubMonitor.convert(monitor, ConverterMessages.readScans, scans);
 			for(int i = 0; i < scans; i++) {
 				VendorScan scan = new VendorScan(in.getIntensity(i));
 				scan.setRetentionTime(retentionTime);
 				retentionTime += in.getScanInterval();
 				chromatogram.addScan(scan);
+				subMonitor.worked(1);
 			}
 			/*
 			 * Peak Table
