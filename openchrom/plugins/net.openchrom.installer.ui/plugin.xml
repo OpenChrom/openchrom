@@ -421,6 +421,19 @@
 
       <pluginDescriptor
             categoryId="com.lablicate.openchrom.converters.proprietary"
+            description="Reads *.yep files."
+            groupId="net.openchrom.msd.converter"
+            id="net.openchrom.msd.converter.supplier.bruker.yep.feature"
+            kind="converter"
+            license="Converter License Terms"
+            name="Bruker Ion Trap"
+            provider="Lablicate"
+            summary="Free extension exclusively for OpenChrom®"
+            icon="icons/32x32/Bruker.png">
+      </pluginDescriptor>
+
+      <pluginDescriptor
+            categoryId="com.lablicate.openchrom.converters.proprietary"
             description="Reads *.sqlite files."
             groupId="net.openchrom.wsd.converter"
             id="net.openchrom.wsd.converter.supplier.bruker.hystar.feature"
@@ -1445,7 +1458,7 @@
             summary="Free extension exclusively for OpenChrom®"
             icon="icons/32x32/Shimadzu.png">
       </pluginDescriptor>
-      
+
       <pluginDescriptor
             categoryId="com.lablicate.openchrom.extensions.commercial"
             description="Peak Alignment (Batch Deconvolution for GC-MS)"
@@ -1472,7 +1485,7 @@
             summary="Commercial product. Requires an API key."
             icon="icons/32x32/OpenAI.svg">
       </pluginDescriptor>
-      
+
       <pluginDescriptor
             categoryId="com.lablicate.openchrom.converters.proprietary"
             description="Reads *.ch9 files."
@@ -1484,7 +1497,7 @@
             provider="Lablicate"
             summary="Free extension exclusively for OpenChrom®"
             icon="icons/32x32/AmetekMocon.png">
-      </pluginDescriptor>      
+      </pluginDescriptor>
 
    </extension>
 </plugin>
