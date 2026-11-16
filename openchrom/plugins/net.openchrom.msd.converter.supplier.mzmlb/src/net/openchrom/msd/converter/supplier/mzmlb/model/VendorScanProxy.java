@@ -13,6 +13,8 @@
 package net.openchrom.msd.converter.supplier.mzmlb.model;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.model.core.AbstractRegularMassSpectrumProxy;
@@ -21,6 +23,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.msd.converter.supplier.mzmlb.io.IReaderProxy;
 import net.openchrom.msd.converter.supplier.mzmlb.io.support.IScanMarker;
+import net.openchrom.msd.converter.supplier.mzmlb.io.support.ScanMarker;
 
 public class VendorScanProxy extends AbstractRegularMassSpectrumProxy implements IVendorScanProxy {
 
@@ -28,10 +31,11 @@ public class VendorScanProxy extends AbstractRegularMassSpectrumProxy implements
 	 * Renew the serialVersionUID any time you have changed some fields or
 	 * methods.
 	 */
-	private static final long serialVersionUID = 7247916814647121133L;
+	private static final long serialVersionUID = 7247916814647121134L;
 	private static final Logger logger = Logger.getLogger(VendorScanProxy.class);
 
-	private IScanMarker scanMarker;
+	private final List<IScanMarker> scanMarkers = new ArrayList<>(1);
+	private int combinedSpectra;
 	private IReaderProxy readerProxy;
 
 	public VendorScanProxy(IReaderProxy readerProxy, IProgressMonitor monitor) {
@@ -41,16 +45,34 @@ public class VendorScanProxy extends AbstractRegularMassSpectrumProxy implements
 	}
 
 	@Override
-	public void setScanMarker(IScanMarker scanMarker) {
+	public void addScanMarker(IScanMarker scanMarker) {
 
-		this.scanMarker = scanMarker;
+		combinedSpectra++;
+		if(scanMarker.getLength() <= 0) {
+			return;
+		}
+		/*
+		 * Spectra of a frame are usually stored back to back,
+		 * so a single block of the dataset covers all of them.
+		 */
+		if(!scanMarkers.isEmpty()) {
+			IScanMarker lastMarker = scanMarkers.get(scanMarkers.size() - 1);
+			if(lastMarker.getOffset() + lastMarker.getLength() == scanMarker.getOffset()) {
+				lastMarker.setLength(lastMarker.getLength() + scanMarker.getLength());
+				return;
+			}
+		}
+		IScanMarker marker = new ScanMarker();
+		marker.setOffset(scanMarker.getOffset());
+		marker.setLength(scanMarker.getLength());
+		scanMarkers.add(marker);
 	}
 
 	@Override
 	public void importIons(IProgressMonitor monitor) {
 
 		try {
-			readerProxy.readMassSpectrum(scanMarker, this, monitor);
+			readerProxy.readMassSpectrum(scanMarkers, combinedSpectra > 1, this, monitor);
 		} catch(IOException e) {
 			logger.error(e);
 		}

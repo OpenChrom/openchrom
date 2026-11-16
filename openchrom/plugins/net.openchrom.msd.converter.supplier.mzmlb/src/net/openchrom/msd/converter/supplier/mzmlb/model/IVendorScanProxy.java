@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Lablicate GmbH.
+ * Copyright (c) 2017, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -18,5 +18,9 @@ import net.openchrom.msd.converter.supplier.mzmlb.io.support.IScanMarker;
 
 public interface IVendorScanProxy extends IVendorScan, IMassSpectrumProxy {
 
-	void setScanMarker(IScanMarker scanMarker);
+	/**
+	 * Adds the location of the binary data of a spectrum.
+	 * Several spectra may be combined into this scan.
+	 */
+	void addScanMarker(IScanMarker scanMarker);
 }

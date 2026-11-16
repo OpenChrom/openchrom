@@ -15,6 +15,9 @@ package net.openchrom.msd.converter.supplier.mzmlb.internal.io;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -59,7 +62,7 @@ public class ReaderProxy implements IReaderProxy {
 	}
 
 	@Override
-	public void readMassSpectrum(IScanMarker scanMarker, IVendorScanProxy massSpectrum, IProgressMonitor monitor) throws IOException {
+	public void readMassSpectrum(List<IScanMarker> scanMarkers, boolean combine, IVendorScanProxy massSpectrum, IProgressMonitor monitor) throws IOException {
 
 		if(mzs == null || intensities == null) {
 			try {
@@ -75,11 +78,30 @@ public class ReaderProxy implements IReaderProxy {
 			}
 		}
 
-		for(int i = scanMarker.getOffset(); i < scanMarker.getOffset() + scanMarker.getLength(); i++) {
-			float abundance = intensities[i];
-			double mz = mzs[i];
-			IVendorIon ion = new VendorIon(mz, abundance);
-			massSpectrum.addIon(ion, false);
+		if(mzs == null || intensities == null) {
+			return;
+		}
+		if(combine) {
+			/*
+			 * Mobility scans of a frame share the same m/z values.
+			 */
+			Map<Double, Double> combinedIons = new TreeMap<>();
+			for(IScanMarker scanMarker : scanMarkers) {
+				for(int i = scanMarker.getOffset(); i < scanMarker.getOffset() + scanMarker.getLength(); i++) {
+					combinedIons.merge(mzs[i], (double)intensities[i], Double::sum);
+				}
+			}
+			for(Map.Entry<Double, Double> entry : combinedIons.entrySet()) {
+				IVendorIon ion = new VendorIon(entry.getKey(), entry.getValue().floatValue());
+				massSpectrum.addIon(ion, false);
+			}
+		} else {
+			for(IScanMarker scanMarker : scanMarkers) {
+				for(int i = scanMarker.getOffset(); i < scanMarker.getOffset() + scanMarker.getLength(); i++) {
+					IVendorIon ion = new VendorIon(mzs[i], intensities[i]);
+					massSpectrum.addIon(ion, false);
+				}
+			}
 		}
 	}
 }

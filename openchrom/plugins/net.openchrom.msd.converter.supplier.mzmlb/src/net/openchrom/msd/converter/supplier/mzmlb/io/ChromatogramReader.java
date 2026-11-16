@@ -86,6 +86,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 				 * Scans before the first MS1 scan of a MSn measurement belong to cycle 1.
 				 */
 				int cycleNumber = 0;
+				CombinedScan combinedScan = null;
 				while(reader.hasNext()) {
 					if(monitor.isCanceled()) {
 						break;
@@ -99,14 +100,20 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 						} else if(SPECTRUM_LIST.equals(localName)) {
 							subMonitor = SubMonitor.convert(monitor, ConverterMessages.readScans, getCount(reader));
 						} else if(SPECTRUM.equals(localName)) {
-							IVendorScanProxy scanProxy = readSpectrum(reader, readerProxy, monitor);
-							if(scanProxy.getMassSpectrometer() < 2) {
-								cycleNumber++;
+							Spectrum spectrum = readSpectrum(reader, readerProxy);
+							if(combinedScan != null && combinedScan.accepts(spectrum)) {
+								combinedScan.add(spectrum);
+							} else {
+								combinedScan = new CombinedScan(new VendorScanProxy(readerProxy, monitor), spectrum);
+								IVendorScanProxy scanProxy = combinedScan.scanProxy;
+								if(scanProxy.getMassSpectrometer() < 2) {
+									cycleNumber++;
+								}
+								if(cycleNumber >= 1) {
+									scanProxy.setCycleNumber(cycleNumber);
+								}
+								chromatogram.addScan(scanProxy);
 							}
-							if(cycleNumber >= 1) {
-								scanProxy.setCycleNumber(cycleNumber);
-							}
-							chromatogram.addScan(scanProxy);
 							if(subMonitor != null) {
 								subMonitor.worked(1);
 							}
@@ -166,12 +173,15 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 	/**
 	 * Expects the reader on the start of a spectrum and leaves it on its end.
 	 */
-	private IVendorScanProxy readSpectrum(XMLStreamReader reader, IReaderProxy readerProxy, IProgressMonitor monitor) throws XMLStreamException {
+	private Spectrum readSpectrum(XMLStreamReader reader, IReaderProxy readerProxy) throws XMLStreamException {
 
-		IVendorScanProxy scanProxy = new VendorScanProxy(readerProxy, monitor);
-		scanProxy.setScanNumber(Integer.parseInt(reader.getAttributeValue(null, "index")));
-		scanProxy.setIdentifier(reader.getAttributeValue(null, "id"));
-		IScanMarker scanMarker = new ScanMarker();
+		Spectrum spectrum = new Spectrum();
+		spectrum.index = Integer.parseInt(reader.getAttributeValue(null, "index"));
+		spectrum.id = reader.getAttributeValue(null, "id");
+		String defaultArrayLength = reader.getAttributeValue(null, "defaultArrayLength");
+		if(defaultArrayLength != null) {
+			spectrum.numberOfIons = Integer.parseInt(defaultArrayLength);
+		}
 		BinaryDataArray binaryDataArray = new BinaryDataArray();
 		/*
 		 * Only the cvParams that are direct children of
@@ -187,11 +197,11 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 				elements.push(localName);
 				if(CV_PARAM.equals(localName)) {
 					if(SPECTRUM.equals(parent)) {
-						readSpectrumParameter(reader, scanProxy);
+						readSpectrumParameter(reader, spectrum);
 					} else if(SCAN.equals(parent)) {
-						readScanParameter(reader, scanProxy);
+						readScanParameter(reader, spectrum);
 					} else if(BINARY_DATA_ARRAY.equals(parent)) {
-						readBinaryDataParameter(reader, scanMarker, binaryDataArray);
+						readBinaryDataParameter(reader, spectrum.scanMarker, binaryDataArray);
 					}
 				} else if(BINARY_DATA_ARRAY.equals(localName)) {
 					binaryDataArray = new BinaryDataArray();
@@ -206,36 +216,42 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 				}
 			}
 		}
-		scanProxy.setScanMarker(scanMarker);
-		return scanProxy;
+		return spectrum;
 	}
 
-	private void readSpectrumParameter(XMLStreamReader reader, IVendorScanProxy scanProxy) {
+	private void readSpectrumParameter(XMLStreamReader reader, Spectrum spectrum) {
 
 		String accession = reader.getAttributeValue(null, "accession");
 		String name = reader.getAttributeValue(null, "name");
 		if("MS:1000285".equals(accession) && "total ion current".equals(name)) {
-			scanProxy.setTotalSignal(Float.parseFloat(reader.getAttributeValue(null, "value")));
+			spectrum.totalSignal = Float.valueOf(reader.getAttributeValue(null, "value"));
 		} else if("MS:1000511".equals(accession) && "ms level".equals(name)) {
-			scanProxy.setMassSpectrometer(Short.parseShort(reader.getAttributeValue(null, "value")));
+			spectrum.msLevel = Short.parseShort(reader.getAttributeValue(null, "value"));
 		} else if("MS:1000129".equals(accession) && "negative scan".equals(name)) {
-			scanProxy.setPolarity(Polarity.NEGATIVE);
+			spectrum.polarity = Polarity.NEGATIVE;
 		} else if("MS:1000130".equals(accession) && "positive scan".equals(name)) {
-			scanProxy.setPolarity(Polarity.POSITIVE);
+			spectrum.polarity = Polarity.POSITIVE;
 		}
 	}
 
-	private void readScanParameter(XMLStreamReader reader, IVendorScanProxy scanProxy) {
+	private void readScanParameter(XMLStreamReader reader, Spectrum spectrum) {
 
 		String accession = reader.getAttributeValue(null, "accession");
 		String name = reader.getAttributeValue(null, "name");
 		if("MS:1000016".equals(accession) && "scan start time".equals(name)) {
+			String value = reader.getAttributeValue(null, "value");
 			CVParamType cvParam = new CVParamType();
 			cvParam.setUnitAccession(reader.getAttributeValue(null, "unitAccession"));
 			cvParam.setUnitName(reader.getAttributeValue(null, "unitName"));
 			float multiplicator = XmlReader110.getTimeMultiplicator(cvParam);
-			int retentionTime = Math.round(Float.parseFloat(reader.getAttributeValue(null, "value")) * multiplicator);
-			scanProxy.setRetentionTime(retentionTime);
+			spectrum.scanStartTime = value;
+			spectrum.retentionTime = Math.round(Float.parseFloat(value) * multiplicator);
+		} else if("MS:1002815".equals(accession) || "MS:1002476".equals(accession)) {
+			/*
+			 * inverse reduced ion mobility (e.g. Bruker timsTOF)
+			 * ion mobility drift time (e.g. Waters, Agilent)
+			 */
+			spectrum.ionMobility = true;
 		}
 	}
 
@@ -261,5 +277,81 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 		private String dataSet = "";
 		private boolean isMz = false;
 		private boolean isIntensity = false;
+	}
+
+	/**
+	 * The attributes of a single spectrum element.
+	 */
+	private static class Spectrum {
+
+		private int index;
+		private String id;
+		private int numberOfIons;
+		private short msLevel = 1;
+		private Polarity polarity;
+		private Float totalSignal;
+		private String scanStartTime;
+		private int retentionTime;
+		private boolean ionMobility;
+		private final IScanMarker scanMarker = new ScanMarker();
+	}
+
+	/**
+	 * Ion mobility spectrometers acquire a frame of many mobility scans at the
+	 * same retention time. Converted without combining them, each mobility scan
+	 * becomes a separate spectrum. Consecutive mobility spectra of the same
+	 * frame are merged into a single scan, which is what a chromatogram needs.
+	 */
+	private static class CombinedScan {
+
+		private final IVendorScanProxy scanProxy;
+		private final Spectrum first;
+		private int numberOfIons;
+		/*
+		 * ProteoWizard annotates each mobility scan with the total ion current
+		 * of the whole frame. Only if the values differ, they are per scan.
+		 */
+		private float totalSignalSum;
+		private boolean totalSignalPerFrame = true;
+
+		private CombinedScan(IVendorScanProxy scanProxy, Spectrum spectrum) {
+
+			this.scanProxy = scanProxy;
+			this.first = spectrum;
+			scanProxy.setScanNumber(spectrum.index);
+			scanProxy.setIdentifier(spectrum.id);
+			scanProxy.setMassSpectrometer(spectrum.msLevel);
+			if(spectrum.polarity != null) {
+				scanProxy.setPolarity(spectrum.polarity);
+			}
+			scanProxy.setRetentionTime(spectrum.retentionTime);
+			add(spectrum);
+		}
+
+		private boolean accepts(Spectrum spectrum) {
+
+			return first.ionMobility && spectrum.ionMobility //
+					&& first.scanStartTime != null && first.scanStartTime.equals(spectrum.scanStartTime) //
+					&& first.msLevel == spectrum.msLevel //
+					&& first.polarity == spectrum.polarity;
+		}
+
+		private void add(Spectrum spectrum) {
+
+			scanProxy.addScanMarker(spectrum.scanMarker);
+			numberOfIons += spectrum.numberOfIons;
+			scanProxy.setNumberOfIons(numberOfIons);
+			if(spectrum.totalSignal != null) {
+				totalSignalSum += spectrum.totalSignal;
+				if(first.totalSignal == null || !first.totalSignal.equals(spectrum.totalSignal)) {
+					totalSignalPerFrame = false;
+				}
+			}
+			if(totalSignalPerFrame && first.totalSignal != null) {
+				scanProxy.setTotalSignal(first.totalSignal);
+			} else {
+				scanProxy.setTotalSignal(totalSignalSum);
+			}
+		}
 	}
 }
