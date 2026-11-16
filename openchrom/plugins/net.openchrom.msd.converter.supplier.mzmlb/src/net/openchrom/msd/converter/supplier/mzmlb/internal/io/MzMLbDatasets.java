@@ -25,20 +25,6 @@ public class MzMLbDatasets {
 
 	}
 
-	public static byte[] readByteArray(long file, String name) {
-
-		long dataset = H5.H5Dopen(file, name, HDF5Constants.H5P_DEFAULT);
-		try {
-			byte[] data = new byte[getNumberOfElements(dataset)];
-			if(data.length > 0) {
-				H5.H5Dread(dataset, HDF5Constants.H5T_NATIVE_SCHAR, HDF5Constants.H5S_ALL, HDF5Constants.H5S_ALL, HDF5Constants.H5P_DEFAULT, data);
-			}
-			return data;
-		} finally {
-			H5.H5Dclose(dataset);
-		}
-	}
-
 	public static double[] readDoubleArray(long file, String name) {
 
 		long dataset = H5.H5Dopen(file, name, HDF5Constants.H5P_DEFAULT);
@@ -129,7 +115,7 @@ public class MzMLbDatasets {
 
 		long dataspace = H5.H5Dget_space(dataset);
 		try {
-			return (int)H5.H5Sget_simple_extent_npoints(dataspace);
+			return Math.toIntExact(H5.H5Sget_simple_extent_npoints(dataspace));
 		} finally {
 			H5.H5Sclose(dataspace);
 		}
