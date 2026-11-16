@@ -50,6 +50,7 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 
 	private static final Logger logger = Logger.getLogger(ChromatogramReader.class);
 
+	private static final String FILE_CONTENT = "fileContent";
 	private static final String SPECTRUM_LIST = "spectrumList";
 	private static final String SPECTRUM = "spectrum";
 	private static final String SCAN = "scan";
@@ -80,16 +81,32 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 				chromatogram.setFile(file);
 				IReaderProxy readerProxy = new ReaderProxy(file);
 				SubMonitor subMonitor = null; // created once the number of spectra is known
+				/*
+				 * MSn spectra are grouped into cycles, each started by an MS1 scan.
+				 * Scans before the first MS1 scan of a MSn measurement belong to cycle 1.
+				 */
+				int cycleNumber = 0;
 				while(reader.hasNext()) {
 					if(monitor.isCanceled()) {
 						break;
 					}
 					if(reader.isStartElement()) {
 						String localName = reader.getLocalName();
-						if(SPECTRUM_LIST.equals(localName)) {
+						if(FILE_CONTENT.equals(localName)) {
+							if(isMultiStageMassSpectrum(reader)) {
+								cycleNumber = 1;
+							}
+						} else if(SPECTRUM_LIST.equals(localName)) {
 							subMonitor = SubMonitor.convert(monitor, ConverterMessages.readScans, getCount(reader));
 						} else if(SPECTRUM.equals(localName)) {
-							chromatogram.addScan(readSpectrum(reader, readerProxy, monitor));
+							IVendorScanProxy scanProxy = readSpectrum(reader, readerProxy, monitor);
+							if(scanProxy.getMassSpectrometer() < 2) {
+								cycleNumber++;
+							}
+							if(cycleNumber >= 1) {
+								scanProxy.setCycleNumber(cycleNumber);
+							}
+							chromatogram.addScan(scanProxy);
 							if(subMonitor != null) {
 								subMonitor.worked(1);
 							}
@@ -121,6 +138,29 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 			}
 		}
 		return 0;
+	}
+
+	/**
+	 * Expects the reader on the start of the file content and leaves it on its end.
+	 */
+	private boolean isMultiStageMassSpectrum(XMLStreamReader reader) throws XMLStreamException {
+
+		boolean isMultiStage = false;
+		int depth = 1;
+		while(depth > 0) {
+			int event = reader.next();
+			if(event == XMLStreamConstants.START_ELEMENT) {
+				if(depth == 1 && CV_PARAM.equals(reader.getLocalName())) {
+					if("MS:1000580".equals(reader.getAttributeValue(null, "accession"))) {
+						isMultiStage = true;
+					}
+				}
+				depth++;
+			} else if(event == XMLStreamConstants.END_ELEMENT) {
+				depth--;
+			}
+		}
+		return isMultiStage;
 	}
 
 	/**
