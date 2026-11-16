@@ -81,6 +81,9 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 				IReaderProxy readerProxy = new ReaderProxy(file);
 				SubMonitor subMonitor = null; // created once the number of spectra is known
 				while(reader.hasNext()) {
+					if(monitor.isCanceled()) {
+						break;
+					}
 					if(reader.isStartElement()) {
 						String localName = reader.getLocalName();
 						if(SPECTRUM_LIST.equals(localName)) {
