@@ -63,4 +63,12 @@ public class ChromatogramImportConverter_ITest {
 		assertEquals(chromatogram.getScan(1).getTotalSignal(), 1.5245068E7f, 0);
 		assertEquals(chromatogram.getScan(2).getRetentionTime(), 356);
 	}
+
+	@Test
+	public void testCycles() {
+
+		int cycleNumber = chromatogram.getScan(1).getCycleNumber();
+		assertTrue(cycleNumber >= 1);
+		assertEquals(cycleNumber + 1, chromatogram.getScan(2).getCycleNumber());
+	}
 }
