@@ -12,14 +12,12 @@
  *******************************************************************************/
 package net.openchrom.msd.converter.supplier.mzmlb.io;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 
 import org.eclipse.chemclipse.converter.io.AbstractChromatogramReader;
 import org.eclipse.chemclipse.converter.l10n.ConverterMessages;
@@ -33,17 +31,12 @@ import org.eclipse.chemclipse.xxd.converter.supplier.mzml.io.XmlReader110;
 import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.BinaryDataArrayType;
 import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.CVParamType;
 import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.MzMLType;
-import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.RunType;
 import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.ScanType;
-import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.SpectrumListType;
 import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.SpectrumType;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
-import net.openchrom.msd.converter.supplier.mzmlb.internal.io.MzMLbDatasets;
+import net.openchrom.msd.converter.supplier.mzmlb.internal.io.MzMLbInputStream;
 import net.openchrom.msd.converter.supplier.mzmlb.internal.io.ReaderProxy;
 import net.openchrom.msd.converter.supplier.mzmlb.io.support.IScanMarker;
 import net.openchrom.msd.converter.supplier.mzmlb.io.support.ScanMarker;
@@ -52,8 +45,6 @@ import net.openchrom.msd.converter.supplier.mzmlb.model.IVendorScanProxy;
 import net.openchrom.msd.converter.supplier.mzmlb.model.VendorChromatogram;
 import net.openchrom.msd.converter.supplier.mzmlb.model.VendorScanProxy;
 
-import hdf.hdf5lib.H5;
-import hdf.hdf5lib.HDF5Constants;
 import hdf.hdf5lib.exceptions.HDF5Exception;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
@@ -62,6 +53,10 @@ import jakarta.xml.bind.Unmarshaller;
 public class ChromatogramReader extends AbstractChromatogramReader implements IChromatogramMSDReader {
 
 	private static final Logger logger = Logger.getLogger(ChromatogramReader.class);
+
+	private static final String SPECTRUM_LIST = "spectrumList";
+	private static final String SPECTRUM = "spectrum";
+	private static final String CHROMATOGRAM_LIST = "chromatogramList";
 
 	@Override
 	public IChromatogramOverview readOverview(File file, IProgressMonitor monitor) throws IOException {
@@ -73,59 +68,73 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 	public IChromatogramMSD read(File file, IProgressMonitor monitor) throws IOException {
 
 		IVendorChromatogram chromatogram = null;
-
-		try {
-			byte[] xml;
-			long reader = H5.H5Fopen(file.getAbsolutePath(), HDF5Constants.H5F_ACC_RDONLY, HDF5Constants.H5P_DEFAULT);
+		/*
+		 * The embedded mzML document can exceed the maximum Java array size,
+		 * hence stream it from the HDF5 dataset and unmarshal spectrum by spectrum.
+		 */
+		try (InputStream inputStream = new MzMLbInputStream(file, "mzML")) {
+			XMLStreamReader reader = XmlParserFactory.createInputFactory().createXMLStreamReader(inputStream);
 			try {
-				xml = MzMLbDatasets.readByteArray(reader, "mzML");
+				Unmarshaller unmarshaller = JAXBContext.newInstance(MzMLType.class).createUnmarshaller();
+				chromatogram = new VendorChromatogram();
+				chromatogram.setFile(file);
+				IReaderProxy readerProxy = new ReaderProxy(file);
+				SubMonitor subMonitor = null; // created once the number of spectra is known
+				while(reader.hasNext()) {
+					if(reader.isStartElement()) {
+						String localName = reader.getLocalName();
+						if(SPECTRUM_LIST.equals(localName)) {
+							subMonitor = SubMonitor.convert(monitor, ConverterMessages.readScans, getCount(reader));
+						} else if(SPECTRUM.equals(localName)) {
+							// leaves the reader on the event following </spectrum>
+							SpectrumType spectrum = unmarshaller.unmarshal(reader, SpectrumType.class).getValue();
+							chromatogram.addScan(readSpectrum(spectrum, readerProxy, monitor));
+							if(subMonitor != null) {
+								subMonitor.worked(1);
+							}
+							continue;
+						} else if(CHROMATOGRAM_LIST.equals(localName)) {
+							break; // everything needed has been read
+						}
+					}
+					reader.next();
+				}
 			} finally {
-				H5.H5Fclose(reader);
-			}
-			DocumentBuilderFactory documentBuilderFactory = XmlParserFactory.createDocumentBuilderFactory();
-			documentBuilderFactory.setNamespaceAware(true);
-
-			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-
-			InputStream inputStream = new ByteArrayInputStream(xml);
-			Document document = documentBuilder.parse(inputStream);
-			NodeList topNode = document.getElementsByTagName("mzML");
-
-			JAXBContext jaxbContext = JAXBContext.newInstance(MzMLType.class);
-			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-			MzMLType mzML = (MzMLType)unmarshaller.unmarshal(topNode.item(0));
-
-			chromatogram = new VendorChromatogram();
-			chromatogram.setFile(file);
-
-			RunType run = mzML.getRun();
-			SpectrumListType spectrumList = run.getSpectrumList();
-			IReaderProxy readerProxy = new ReaderProxy(file);
-
-			SubMonitor subMonitor = SubMonitor.convert(monitor, ConverterMessages.readScans, spectrumList.getCount().intValue());
-			for(SpectrumType spectrum : spectrumList.getSpectrum()) {
-				IVendorScanProxy scanProxy = new VendorScanProxy(readerProxy, monitor);
-				scanProxy.setScanNumber(spectrum.getIndex().intValue());
-				scanProxy.setIdentifier(spectrum.getId());
-
-				readSpectrumParameters(spectrum, scanProxy);
-				readScan(spectrum, scanProxy);
-
-				IScanMarker scanMarker = readBinaryData(spectrum, readerProxy);
-				scanProxy.setScanMarker(scanMarker);
-				chromatogram.addScan(scanProxy);
-				subMonitor.worked(1);
+				reader.close();
 			}
 		} catch(HDF5Exception e) {
 			logger.error(e);
-		} catch(ParserConfigurationException e) {
-			logger.error(e);
-		} catch(SAXException e) {
+		} catch(XMLStreamException e) {
 			logger.error(e);
 		} catch(JAXBException e) {
 			logger.error(e);
 		}
 		return chromatogram;
+	}
+
+	private int getCount(XMLStreamReader reader) {
+
+		String count = reader.getAttributeValue(null, "count");
+		if(count != null) {
+			try {
+				return Integer.parseInt(count);
+			} catch(NumberFormatException e) {
+				logger.warn(e);
+			}
+		}
+		return 0;
+	}
+
+	private IVendorScanProxy readSpectrum(SpectrumType spectrum, IReaderProxy readerProxy, IProgressMonitor monitor) {
+
+		IVendorScanProxy scanProxy = new VendorScanProxy(readerProxy, monitor);
+		scanProxy.setScanNumber(spectrum.getIndex().intValue());
+		scanProxy.setIdentifier(spectrum.getId());
+		readSpectrumParameters(spectrum, scanProxy);
+		readScan(spectrum, scanProxy);
+		IScanMarker scanMarker = readBinaryData(spectrum, readerProxy);
+		scanProxy.setScanMarker(scanMarker);
+		return scanProxy;
 	}
 
 	private void readSpectrumParameters(SpectrumType spectrum, IVendorScanProxy scanProxy) {
