@@ -15,7 +15,10 @@ package net.openchrom.msd.converter.supplier.mzmlb.io;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
+import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
@@ -28,11 +31,7 @@ import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.Polarity;
 import org.eclipse.chemclipse.support.xml.XmlParserFactory;
 import org.eclipse.chemclipse.xxd.converter.supplier.mzml.io.XmlReader110;
-import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.BinaryDataArrayType;
 import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.CVParamType;
-import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.MzMLType;
-import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.ScanType;
-import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.SpectrumType;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 
@@ -46,9 +45,6 @@ import net.openchrom.msd.converter.supplier.mzmlb.model.VendorChromatogram;
 import net.openchrom.msd.converter.supplier.mzmlb.model.VendorScanProxy;
 
 import hdf.hdf5lib.exceptions.HDF5Exception;
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Unmarshaller;
 
 public class ChromatogramReader extends AbstractChromatogramReader implements IChromatogramMSDReader {
 
@@ -56,6 +52,9 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 
 	private static final String SPECTRUM_LIST = "spectrumList";
 	private static final String SPECTRUM = "spectrum";
+	private static final String SCAN = "scan";
+	private static final String BINARY_DATA_ARRAY = "binaryDataArray";
+	private static final String CV_PARAM = "cvParam";
 	private static final String CHROMATOGRAM_LIST = "chromatogramList";
 
 	@Override
@@ -70,12 +69,13 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 		IVendorChromatogram chromatogram = null;
 		/*
 		 * The embedded mzML document can exceed the maximum Java array size,
-		 * hence stream it from the HDF5 dataset and unmarshal spectrum by spectrum.
+		 * hence stream it from the HDF5 dataset and read spectrum by spectrum.
+		 * Only a few attributes per spectrum are needed, so they are taken
+		 * directly from the StAX events, which is much faster than JAXB.
 		 */
 		try (InputStream inputStream = new MzMLbInputStream(file, "mzML")) {
 			XMLStreamReader reader = XmlParserFactory.createInputFactory().createXMLStreamReader(inputStream);
 			try {
-				Unmarshaller unmarshaller = JAXBContext.newInstance(MzMLType.class).createUnmarshaller();
 				chromatogram = new VendorChromatogram();
 				chromatogram.setFile(file);
 				IReaderProxy readerProxy = new ReaderProxy(file);
@@ -89,13 +89,10 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 						if(SPECTRUM_LIST.equals(localName)) {
 							subMonitor = SubMonitor.convert(monitor, ConverterMessages.readScans, getCount(reader));
 						} else if(SPECTRUM.equals(localName)) {
-							// leaves the reader on the event following </spectrum>
-							SpectrumType spectrum = unmarshaller.unmarshal(reader, SpectrumType.class).getValue();
-							chromatogram.addScan(readSpectrum(spectrum, readerProxy, monitor));
+							chromatogram.addScan(readSpectrum(reader, readerProxy, monitor));
 							if(subMonitor != null) {
 								subMonitor.worked(1);
 							}
-							continue;
 						} else if(CHROMATOGRAM_LIST.equals(localName)) {
 							break; // everything needed has been read
 						}
@@ -108,8 +105,6 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 		} catch(HDF5Exception e) {
 			logger.error(e);
 		} catch(XMLStreamException e) {
-			logger.error(e);
-		} catch(JAXBException e) {
 			logger.error(e);
 		}
 		return chromatogram;
@@ -128,78 +123,103 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 		return 0;
 	}
 
-	private IVendorScanProxy readSpectrum(SpectrumType spectrum, IReaderProxy readerProxy, IProgressMonitor monitor) {
+	/**
+	 * Expects the reader on the start of a spectrum and leaves it on its end.
+	 */
+	private IVendorScanProxy readSpectrum(XMLStreamReader reader, IReaderProxy readerProxy, IProgressMonitor monitor) throws XMLStreamException {
 
 		IVendorScanProxy scanProxy = new VendorScanProxy(readerProxy, monitor);
-		scanProxy.setScanNumber(spectrum.getIndex().intValue());
-		scanProxy.setIdentifier(spectrum.getId());
-		readSpectrumParameters(spectrum, scanProxy);
-		readScan(spectrum, scanProxy);
-		IScanMarker scanMarker = readBinaryData(spectrum, readerProxy);
+		scanProxy.setScanNumber(Integer.parseInt(reader.getAttributeValue(null, "index")));
+		scanProxy.setIdentifier(reader.getAttributeValue(null, "id"));
+		IScanMarker scanMarker = new ScanMarker();
+		BinaryDataArray binaryDataArray = new BinaryDataArray();
+		/*
+		 * Only the cvParams that are direct children of
+		 * spectrum, scan and binaryDataArray are of interest.
+		 */
+		Deque<String> elements = new ArrayDeque<>();
+		elements.push(SPECTRUM);
+		while(!elements.isEmpty()) {
+			int event = reader.next();
+			if(event == XMLStreamConstants.START_ELEMENT) {
+				String localName = reader.getLocalName();
+				String parent = elements.peek();
+				elements.push(localName);
+				if(CV_PARAM.equals(localName)) {
+					if(SPECTRUM.equals(parent)) {
+						readSpectrumParameter(reader, scanProxy);
+					} else if(SCAN.equals(parent)) {
+						readScanParameter(reader, scanProxy);
+					} else if(BINARY_DATA_ARRAY.equals(parent)) {
+						readBinaryDataParameter(reader, scanMarker, binaryDataArray);
+					}
+				} else if(BINARY_DATA_ARRAY.equals(localName)) {
+					binaryDataArray = new BinaryDataArray();
+				}
+			} else if(event == XMLStreamConstants.END_ELEMENT) {
+				if(BINARY_DATA_ARRAY.equals(elements.pop())) {
+					if(binaryDataArray.isMz) {
+						readerProxy.setMzDataset(binaryDataArray.dataSet);
+					} else if(binaryDataArray.isIntensity) {
+						readerProxy.setIntensityDataset(binaryDataArray.dataSet);
+					}
+				}
+			}
+		}
 		scanProxy.setScanMarker(scanMarker);
 		return scanProxy;
 	}
 
-	private void readSpectrumParameters(SpectrumType spectrum, IVendorScanProxy scanProxy) {
+	private void readSpectrumParameter(XMLStreamReader reader, IVendorScanProxy scanProxy) {
 
-		for(CVParamType cvParamSpectrum : spectrum.getCvParam()) {
-			if(cvParamSpectrum.getAccession().equals("MS:1000285") && cvParamSpectrum.getName().equals("total ion current")) {
-				scanProxy.setTotalSignal(Float.parseFloat(cvParamSpectrum.getValue()));
-			}
-			if(cvParamSpectrum.getAccession().equals("MS:1000511") && cvParamSpectrum.getName().equals("ms level")) {
-				scanProxy.setMassSpectrometer(Short.parseShort(cvParamSpectrum.getValue()));
-			}
-			if(cvParamSpectrum.getAccession().equals("MS:1000129") && cvParamSpectrum.getName().equals("negative scan")) {
-				scanProxy.setPolarity(Polarity.NEGATIVE);
-			} else if(cvParamSpectrum.getAccession().equals("MS:1000130") && cvParamSpectrum.getName().equals("positive scan")) {
-				scanProxy.setPolarity(Polarity.POSITIVE);
-			}
+		String accession = reader.getAttributeValue(null, "accession");
+		String name = reader.getAttributeValue(null, "name");
+		if("MS:1000285".equals(accession) && "total ion current".equals(name)) {
+			scanProxy.setTotalSignal(Float.parseFloat(reader.getAttributeValue(null, "value")));
+		} else if("MS:1000511".equals(accession) && "ms level".equals(name)) {
+			scanProxy.setMassSpectrometer(Short.parseShort(reader.getAttributeValue(null, "value")));
+		} else if("MS:1000129".equals(accession) && "negative scan".equals(name)) {
+			scanProxy.setPolarity(Polarity.NEGATIVE);
+		} else if("MS:1000130".equals(accession) && "positive scan".equals(name)) {
+			scanProxy.setPolarity(Polarity.POSITIVE);
 		}
 	}
 
-	private void readScan(SpectrumType spectrum, IVendorScanProxy scanProxy) {
+	private void readScanParameter(XMLStreamReader reader, IVendorScanProxy scanProxy) {
 
-		for(ScanType scan : spectrum.getScanList().getScan()) {
-			for(CVParamType cvParamScan : scan.getCvParam()) {
-				if(cvParamScan.getAccession().equals("MS:1000016") && cvParamScan.getName().equals("scan start time")) {
-					float multiplicator = XmlReader110.getTimeMultiplicator(cvParamScan);
-					int retentionTime = Math.round(Float.parseFloat(cvParamScan.getValue()) * multiplicator);
-					scanProxy.setRetentionTime(retentionTime);
-				}
-			}
+		String accession = reader.getAttributeValue(null, "accession");
+		String name = reader.getAttributeValue(null, "name");
+		if("MS:1000016".equals(accession) && "scan start time".equals(name)) {
+			CVParamType cvParam = new CVParamType();
+			cvParam.setUnitAccession(reader.getAttributeValue(null, "unitAccession"));
+			cvParam.setUnitName(reader.getAttributeValue(null, "unitName"));
+			float multiplicator = XmlReader110.getTimeMultiplicator(cvParam);
+			int retentionTime = Math.round(Float.parseFloat(reader.getAttributeValue(null, "value")) * multiplicator);
+			scanProxy.setRetentionTime(retentionTime);
 		}
 	}
 
-	private IScanMarker readBinaryData(SpectrumType spectrum, IReaderProxy scanReaderProxy) {
+	private void readBinaryDataParameter(XMLStreamReader reader, IScanMarker scanMarker, BinaryDataArray binaryDataArray) {
 
-		IScanMarker scanMarker = new ScanMarker();
-		for(BinaryDataArrayType binaryDataArray : spectrum.getBinaryDataArrayList().getBinaryDataArray()) {
-			String dataSet = "";
-			boolean isMz = false;
-			boolean isIntensity = false;
-			for(CVParamType cvParamBinary : binaryDataArray.getCvParam()) {
-				if(cvParamBinary.getAccession().equals("MS:1002841") && cvParamBinary.getName().equals("external HDF5 dataset")) {
-					dataSet = cvParamBinary.getValue();
-				}
-				if(cvParamBinary.getAccession().equals("MS:1002842") && cvParamBinary.getName().equals("external offset")) {
-					scanMarker.setOffset(Integer.parseInt(cvParamBinary.getValue()));
-				}
-				if(cvParamBinary.getAccession().equals("MS:1002843") && cvParamBinary.getName().equals("external array length")) {
-					scanMarker.setLength(Integer.parseInt(cvParamBinary.getValue()));
-				}
-				if(cvParamBinary.getAccession().equals("MS:1000514") && cvParamBinary.getName().equals("m/z array")) {
-					isMz = true;
-				}
-				if(cvParamBinary.getAccession().equals("MS:1000515") && cvParamBinary.getName().equals("intensity array")) {
-					isIntensity = true;
-				}
-			}
-			if(isMz) {
-				scanReaderProxy.setMzDataset(dataSet);
-			} else if(isIntensity) {
-				scanReaderProxy.setIntensityDataset(dataSet);
-			}
+		String accession = reader.getAttributeValue(null, "accession");
+		String name = reader.getAttributeValue(null, "name");
+		if("MS:1002841".equals(accession) && "external HDF5 dataset".equals(name)) {
+			binaryDataArray.dataSet = reader.getAttributeValue(null, "value");
+		} else if("MS:1002842".equals(accession) && "external offset".equals(name)) {
+			scanMarker.setOffset(Integer.parseInt(reader.getAttributeValue(null, "value")));
+		} else if("MS:1002843".equals(accession) && "external array length".equals(name)) {
+			scanMarker.setLength(Integer.parseInt(reader.getAttributeValue(null, "value")));
+		} else if("MS:1000514".equals(accession) && "m/z array".equals(name)) {
+			binaryDataArray.isMz = true;
+		} else if("MS:1000515".equals(accession) && "intensity array".equals(name)) {
+			binaryDataArray.isIntensity = true;
 		}
-		return scanMarker;
+	}
+
+	private static class BinaryDataArray {
+
+		private String dataSet = "";
+		private boolean isMz = false;
+		private boolean isIntensity = false;
 	}
 }
