@@ -19,6 +19,7 @@ import org.eclipse.chemclipse.support.ui.wizards.AbstractFileWizard;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.core.MassShiftDetector;
 import net.openchrom.chromatogram.msd.processor.supplier.massshiftdetector.io.ProcessorModelWriter;
@@ -67,8 +68,8 @@ public class WizardProcessor extends AbstractFileWizard {
 	@Override
 	public void doFinish(IProgressMonitor monitor) throws CoreException {
 
-		monitor.beginTask("MassShiftDetector", IProgressMonitor.UNKNOWN);
-		final IFile file = super.prepareProject(monitor);
+		SubMonitor subMonitor = SubMonitor.convert(monitor, "MassShiftDetector", 2);
+		final IFile file = super.prepareProject(subMonitor.newChild(1));
 
 		try {
 			IProcessorModel processorModel = wizardElements.getProcessorModel();
@@ -80,7 +81,7 @@ public class WizardProcessor extends AbstractFileWizard {
 		/*
 		 * Refresh
 		 */
-		super.refreshWorkspace(monitor);
-		super.runOpenEditor(file, monitor);
+		super.refreshWorkspace(subMonitor.newChild(1));
+		super.runOpenEditor(file, subMonitor);
 	}
 }
