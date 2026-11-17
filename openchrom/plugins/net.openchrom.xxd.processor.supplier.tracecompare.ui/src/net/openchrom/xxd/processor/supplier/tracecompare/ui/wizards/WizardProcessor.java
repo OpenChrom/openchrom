@@ -20,6 +20,7 @@ import org.eclipse.chemclipse.support.ui.wizards.AbstractFileWizard;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 
 import net.openchrom.xxd.processor.supplier.tracecompare.core.DataProcessor;
 import net.openchrom.xxd.processor.supplier.tracecompare.io.ProcessorModelWriter;
@@ -59,8 +60,8 @@ public class WizardProcessor extends AbstractFileWizard {
 	@Override
 	public void doFinish(IProgressMonitor monitor) throws CoreException {
 
-		monitor.beginTask("TraceCompare", IProgressMonitor.UNKNOWN);
-		final IFile file = super.prepareProject(monitor);
+		SubMonitor subMonitor = SubMonitor.convert(monitor, "TraceCompare", 2);
+		final IFile file = super.prepareProject(subMonitor.newChild(1));
 
 		try {
 			File projectFile = file.getLocation().toFile();
@@ -85,7 +86,7 @@ public class WizardProcessor extends AbstractFileWizard {
 		/*
 		 * Refresh
 		 */
-		super.refreshWorkspace(monitor);
-		super.runOpenEditor(file, monitor);
+		super.refreshWorkspace(subMonitor.newChild(1));
+		super.runOpenEditor(file, subMonitor);
 	}
 }
