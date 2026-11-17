@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Lablicate GmbH.
+ * Copyright (c) 2021, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -16,6 +16,7 @@ public class ScanMarker implements IScanMarker {
 
 	private int length;
 	private int offset;
+	private int intensityOffset;
 
 	@Override
 	public int getLength() {
@@ -39,5 +40,17 @@ public class ScanMarker implements IScanMarker {
 	public void setOffset(int offset) {
 
 		this.offset = offset;
+	}
+
+	@Override
+	public int getIntensityOffset() {
+
+		return intensityOffset;
+	}
+
+	@Override
+	public void setIntensityOffset(int intensityOffset) {
+
+		this.intensityOffset = intensityOffset;
 	}
 }

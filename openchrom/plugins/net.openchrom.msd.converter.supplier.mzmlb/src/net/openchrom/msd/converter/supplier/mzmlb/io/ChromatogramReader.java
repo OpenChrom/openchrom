@@ -201,17 +201,25 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 					} else if(SCAN.equals(parent)) {
 						readScanParameter(reader, spectrum);
 					} else if(BINARY_DATA_ARRAY.equals(parent)) {
-						readBinaryDataParameter(reader, spectrum.scanMarker, binaryDataArray);
+						readBinaryDataParameter(reader, binaryDataArray);
 					}
 				} else if(BINARY_DATA_ARRAY.equals(localName)) {
 					binaryDataArray = new BinaryDataArray();
 				}
 			} else if(event == XMLStreamConstants.END_ELEMENT) {
 				if(BINARY_DATA_ARRAY.equals(elements.pop())) {
+					/*
+					 * The m/z and intensity arrays of a spectrum can start at
+					 * different offsets, e.g. when spectra share their m/z values.
+					 */
 					if(binaryDataArray.isMz) {
 						readerProxy.setMzDataset(binaryDataArray.dataSet);
+						spectrum.scanMarker.setOffset(binaryDataArray.offset);
+						spectrum.scanMarker.setLength(binaryDataArray.length);
 					} else if(binaryDataArray.isIntensity) {
 						readerProxy.setIntensityDataset(binaryDataArray.dataSet);
+						spectrum.scanMarker.setIntensityOffset(binaryDataArray.offset);
+						spectrum.scanMarker.setLength(binaryDataArray.length);
 					}
 				}
 			}
@@ -255,16 +263,16 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 		}
 	}
 
-	private void readBinaryDataParameter(XMLStreamReader reader, IScanMarker scanMarker, BinaryDataArray binaryDataArray) {
+	private void readBinaryDataParameter(XMLStreamReader reader, BinaryDataArray binaryDataArray) {
 
 		String accession = reader.getAttributeValue(null, "accession");
 		String name = reader.getAttributeValue(null, "name");
 		if("MS:1002841".equals(accession) && "external HDF5 dataset".equals(name)) {
 			binaryDataArray.dataSet = reader.getAttributeValue(null, "value");
 		} else if("MS:1002842".equals(accession) && "external offset".equals(name)) {
-			scanMarker.setOffset(Integer.parseInt(reader.getAttributeValue(null, "value")));
+			binaryDataArray.offset = Integer.parseInt(reader.getAttributeValue(null, "value"));
 		} else if("MS:1002843".equals(accession) && "external array length".equals(name)) {
-			scanMarker.setLength(Integer.parseInt(reader.getAttributeValue(null, "value")));
+			binaryDataArray.length = Integer.parseInt(reader.getAttributeValue(null, "value"));
 		} else if("MS:1000514".equals(accession) && "m/z array".equals(name)) {
 			binaryDataArray.isMz = true;
 		} else if("MS:1000515".equals(accession) && "intensity array".equals(name)) {
@@ -277,6 +285,8 @@ public class ChromatogramReader extends AbstractChromatogramReader implements IC
 		private String dataSet = "";
 		private boolean isMz = false;
 		private boolean isIntensity = false;
+		private int offset;
+		private int length;
 	}
 
 	/**

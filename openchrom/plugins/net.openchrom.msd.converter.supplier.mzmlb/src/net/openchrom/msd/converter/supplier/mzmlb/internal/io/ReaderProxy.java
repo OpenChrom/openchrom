@@ -87,8 +87,8 @@ public class ReaderProxy implements IReaderProxy {
 			 */
 			Map<Double, Double> combinedIons = new TreeMap<>();
 			for(IScanMarker scanMarker : scanMarkers) {
-				for(int i = scanMarker.getOffset(); i < scanMarker.getOffset() + scanMarker.getLength(); i++) {
-					combinedIons.merge(mzs[i], (double)intensities[i], Double::sum);
+				for(int i = 0; i < scanMarker.getLength(); i++) {
+					combinedIons.merge(mzs[scanMarker.getOffset() + i], (double)intensities[scanMarker.getIntensityOffset() + i], Double::sum);
 				}
 			}
 			for(Map.Entry<Double, Double> entry : combinedIons.entrySet()) {
@@ -97,8 +97,8 @@ public class ReaderProxy implements IReaderProxy {
 			}
 		} else {
 			for(IScanMarker scanMarker : scanMarkers) {
-				for(int i = scanMarker.getOffset(); i < scanMarker.getOffset() + scanMarker.getLength(); i++) {
-					IVendorIon ion = new VendorIon(mzs[i], intensities[i]);
+				for(int i = 0; i < scanMarker.getLength(); i++) {
+					IVendorIon ion = new VendorIon(mzs[scanMarker.getOffset() + i], intensities[scanMarker.getIntensityOffset() + i]);
 					massSpectrum.addIon(ion, false);
 				}
 			}
