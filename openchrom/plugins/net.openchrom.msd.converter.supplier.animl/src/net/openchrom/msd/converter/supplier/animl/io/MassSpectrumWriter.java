@@ -18,6 +18,7 @@ import java.io.IOException;
 
 import org.apache.commons.io.FilenameUtils;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
+import org.eclipse.chemclipse.converter.l10n.ConverterMessages;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.converter.io.IMassSpectraWriter;
 import org.eclipse.chemclipse.msd.model.core.IIon;
@@ -26,6 +27,7 @@ import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.core.IStandaloneMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.MassSpectrumType;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 
 import net.openchrom.xxd.converter.supplier.animl.converter.BinaryReader;
 import net.openchrom.xxd.converter.supplier.animl.converter.Common;
@@ -72,17 +74,19 @@ public class MassSpectrumWriter implements IMassSpectraWriter {
 	public void write(File file, IMassSpectra massSpectra, boolean append, IProgressMonitor monitor) throws FileIsNotWriteableException, IOException {
 
 		FileWriter fileWriter = new FileWriter(file, append);
-		writeMassSpectra(fileWriter, massSpectra);
+		writeMassSpectra(fileWriter, massSpectra, monitor);
 		fileWriter.close();
 	}
 
-	private void writeMassSpectra(FileWriter fileWriter, IMassSpectra massSpectra) {
+	private void writeMassSpectra(FileWriter fileWriter, IMassSpectra massSpectra, IProgressMonitor monitor) {
 
+		SubMonitor subMonitor = SubMonitor.convert(monitor, ConverterMessages.writeMassSpectra, massSpectra.size());
 		for(int i = 1; i <= massSpectra.size(); i++) {
 			IScanMSD massSpectrum = massSpectra.getMassSpectrum(i);
 			if(massSpectrum != null && massSpectrum.getNumberOfIons() > 0) {
 				writeMassSpectrum(fileWriter, massSpectrum);
 			}
+			subMonitor.worked(1);
 		}
 	}
 
