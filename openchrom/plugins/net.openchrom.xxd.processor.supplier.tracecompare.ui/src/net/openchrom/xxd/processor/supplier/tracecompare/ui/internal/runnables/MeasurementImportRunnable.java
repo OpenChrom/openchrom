@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Lablicate GmbH.
+ * Copyright (c) 2017, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -22,6 +22,7 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.wsd.converter.chromatogram.ChromatogramConverterWSD;
 import org.eclipse.chemclipse.wsd.model.core.IChromatogramWSD;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 
 public class MeasurementImportRunnable implements IRunnableWithProgress {
@@ -43,8 +44,9 @@ public class MeasurementImportRunnable implements IRunnableWithProgress {
 	@Override
 	public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 
+		SubMonitor subMonitor = SubMonitor.convert(monitor, measurementFiles.size());
 		for(File file : measurementFiles) {
-			IChromatogramWSD measurement = importChromatogram(file.getAbsolutePath(), monitor);
+			IChromatogramWSD measurement = importChromatogram(file.getAbsolutePath(), subMonitor.split(1, SubMonitor.SUPPRESS_NONE));
 			if(measurement != null) {
 				measurements.add(measurement);
 			}
