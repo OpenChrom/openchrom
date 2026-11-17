@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2025 Lablicate GmbH.
+ * Copyright (c) 2017, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -24,6 +24,7 @@ import org.eclipse.chemclipse.msd.model.core.selection.ChromatogramSelectionMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 
 public class ChromatogramImportRunnable implements IRunnableWithProgress {
@@ -47,12 +48,13 @@ public class ChromatogramImportRunnable implements IRunnableWithProgress {
 	@Override
 	public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 
-		IChromatogramMSD referenceChromatogram = importChromatogram(pathChromatogramReference, monitor);
+		SubMonitor subMonitor = SubMonitor.convert(monitor, 2);
+		IChromatogramMSD referenceChromatogram = importChromatogram(pathChromatogramReference, subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE));
 		if(referenceChromatogram != null) {
 			chromatogramSelections.add(new ChromatogramSelectionMSD(referenceChromatogram));
 		}
 
-		IChromatogramMSD isotopeChromatogram = importChromatogram(pathChromatogramIsotope, monitor);
+		IChromatogramMSD isotopeChromatogram = importChromatogram(pathChromatogramIsotope, subMonitor.newChild(1, SubMonitor.SUPPRESS_NONE));
 		if(isotopeChromatogram != null) {
 			chromatogramSelections.add(new ChromatogramSelectionMSD(isotopeChromatogram));
 		}
