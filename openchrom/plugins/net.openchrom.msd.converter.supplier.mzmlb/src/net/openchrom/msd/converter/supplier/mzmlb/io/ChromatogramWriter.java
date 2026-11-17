@@ -17,8 +17,6 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
 
-import javax.naming.spi.ObjectFactory;
-
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
 import org.eclipse.chemclipse.converter.io.AbstractChromatogramWriter;
 import org.eclipse.chemclipse.logging.core.Logger;
@@ -33,6 +31,7 @@ import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.BinaryDataA
 import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.BinaryDataArrayType;
 import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.CVParamType;
 import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.MzMLType;
+import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.ObjectFactory;
 import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.RunType;
 import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.ScanListType;
 import org.eclipse.chemclipse.xxd.converter.supplier.mzml.model.v110.ScanType;
