@@ -26,6 +26,7 @@ import org.eclipse.chemclipse.msd.converter.io.AbstractChromatogramMSDReader;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 
 import net.openchrom.msd.converter.supplier.cdf.exceptions.NoCDFVariableDataFound;
 import net.openchrom.msd.converter.supplier.cdf.exceptions.NotEnoughScanDataStored;
@@ -116,10 +117,10 @@ public class ChromatogramReaderMSD extends AbstractChromatogramMSDReader {
 			chromatogram = new VendorChromatogram();
 			setChromatogramEntries(chromatogram, in, file);
 
-			monitor.beginTask(ConverterMessages.importScan, in.getNumberOfScans());
+			SubMonitor subMonitor = SubMonitor.convert(monitor, ConverterMessages.importScan, in.getNumberOfScans());
 			for(int i = 1; i <= in.getNumberOfScans(); i++) {
 				chromatogram.addScan(in.getMassSpectrum(i));
-				monitor.worked(1);
+				subMonitor.worked(1);
 			}
 		}
 		return chromatogram;
@@ -143,7 +144,7 @@ public class ChromatogramReaderMSD extends AbstractChromatogramMSDReader {
 			VendorChromatogram chromatogram = new VendorChromatogram();
 			setChromatogramEntries(chromatogram, in, file);
 
-			monitor.beginTask(ConverterMessages.importScan, in.getNumberOfScans());
+			SubMonitor subMonitor = SubMonitor.convert(monitor, ConverterMessages.importScan, in.getNumberOfScans());
 			for(int i = 1; i <= in.getNumberOfScans(); i++) {
 				VendorScan massSpectrum = new VendorScan();
 				massSpectrum.setRetentionTime(in.getScanAcquisitionTime(i));
@@ -151,7 +152,7 @@ public class ChromatogramReaderMSD extends AbstractChromatogramMSDReader {
 				ion.setAbundance(in.getTotalSignal(i));
 				massSpectrum.addIon(ion);
 				chromatogram.addScan(massSpectrum);
-				monitor.worked(1);
+				subMonitor.worked(1);
 			}
 			return chromatogram;
 		}
