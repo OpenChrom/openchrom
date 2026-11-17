@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2025 Lablicate GmbH.
+ * Copyright (c) 2016, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -17,21 +17,24 @@ import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
+import org.eclipse.chemclipse.converter.l10n.ConverterMessages;
 import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.msd.converter.io.AbstractChromatogramMSDWriter;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 
 public class ChromatogramWriter extends AbstractChromatogramMSDWriter {
 
 	@Override
 	public void writeChromatogram(File file, IChromatogramMSD chromatogram, IProgressMonitor monitor) throws FileIsNotWriteableException, IOException {
 
+		SubMonitor subMonitor = SubMonitor.convert(monitor, ConverterMessages.writeScans, chromatogram.getNumberOfScans());
 		MassSpectraWriter mgfWriter = new MassSpectraWriter();
 		for(IScan scan : chromatogram.getScans()) {
 			if(scan instanceof IScanMSD scanMSD) {
-				mgfWriter.write(file, scanMSD, true, monitor);
+				mgfWriter.write(file, scanMSD, true, subMonitor.newChild(1));
 			}
 		}
 	}
