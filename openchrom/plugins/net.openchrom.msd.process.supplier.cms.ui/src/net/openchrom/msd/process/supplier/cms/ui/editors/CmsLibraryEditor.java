@@ -31,6 +31,7 @@ import org.eclipse.chemclipse.support.updates.IUpdateListener;
 import org.eclipse.chemclipse.ux.extension.msd.ui.support.DatabaseImportRunnable;
 import org.eclipse.chemclipse.ux.extension.ui.editors.IChemClipseEditor;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.Persist;
@@ -128,9 +129,9 @@ public class CmsLibraryEditor implements IChemClipseEditor {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 
 				try {
-					monitor.beginTask("Save Mass Spectra", IProgressMonitor.UNKNOWN);
+					SubMonitor subMonitor = SubMonitor.convert(monitor, "Save Mass Spectra", 1);
 					try {
-						saveMassSpectra(monitor, shell);
+						saveMassSpectra(subMonitor.newChild(1), shell);
 					} catch(NoMassSpectrumConverterAvailableException e) {
 						throw new InvocationTargetException(e);
 					}
