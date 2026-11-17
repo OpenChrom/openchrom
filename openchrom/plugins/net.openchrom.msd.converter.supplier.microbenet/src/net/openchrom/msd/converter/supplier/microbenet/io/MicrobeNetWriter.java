@@ -27,6 +27,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.commons.math3.util.Precision;
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
+import org.eclipse.chemclipse.converter.l10n.ConverterMessages;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.core.IMassSpectrumPeak;
 import org.eclipse.chemclipse.msd.converter.io.AbstractMassSpectraWriter;
@@ -37,6 +38,7 @@ import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.core.IStandaloneMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.MassSpectrumType;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 
 import net.openchrom.msd.converter.supplier.microbenet.model.Analytes;
 import net.openchrom.msd.converter.supplier.microbenet.model.Analytes.Analyte;
@@ -68,8 +70,9 @@ public class MicrobeNetWriter extends AbstractMassSpectraWriter {
 	@Override
 	public void write(File file, IMassSpectra massSpectra, boolean append, IProgressMonitor monitor) throws FileIsNotWriteableException, IOException {
 
+		SubMonitor subMonitor = SubMonitor.convert(monitor, ConverterMessages.writeMassSpectra, massSpectra.size());
 		for(IScanMSD scan : massSpectra.getList()) {
-			write(file, scan, append, monitor);
+			write(file, scan, append, subMonitor.newChild(1));
 		}
 	}
 
