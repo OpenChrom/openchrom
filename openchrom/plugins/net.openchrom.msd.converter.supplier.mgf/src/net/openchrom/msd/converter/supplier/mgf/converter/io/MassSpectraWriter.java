@@ -19,11 +19,13 @@ import java.io.IOException;
 import java.util.Collection;
 
 import org.eclipse.chemclipse.converter.exceptions.FileIsNotWriteableException;
+import org.eclipse.chemclipse.converter.l10n.ConverterMessages;
 import org.eclipse.chemclipse.msd.converter.io.AbstractMassSpectraWriter;
 import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.msd.model.core.IMassSpectra;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 
 public class MassSpectraWriter extends AbstractMassSpectraWriter {
 
@@ -35,8 +37,9 @@ public class MassSpectraWriter extends AbstractMassSpectraWriter {
 
 	public void write(File file, Collection<? extends IScanMSD> scans, boolean append, IProgressMonitor monitor) throws FileIsNotWriteableException, IOException {
 
+		SubMonitor subMonitor = SubMonitor.convert(monitor, ConverterMessages.writeMassSpectra, scans.size());
 		for(IScanMSD scan : scans) {
-			write(file, scan, append, monitor);
+			write(file, scan, append, subMonitor.newChild(1));
 		}
 	}
 
