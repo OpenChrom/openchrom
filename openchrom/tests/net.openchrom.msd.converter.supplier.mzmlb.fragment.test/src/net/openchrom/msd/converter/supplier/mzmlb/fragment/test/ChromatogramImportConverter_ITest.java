@@ -17,8 +17,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
+import java.util.List;
 
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
+import org.eclipse.chemclipse.msd.model.core.IIon;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.jupiter.api.MethodOrderer;
@@ -62,6 +64,20 @@ public class ChromatogramImportConverter_ITest {
 		assertEquals(chromatogram.getNumberOfScans(), 2);
 		assertEquals(chromatogram.getScan(1).getTotalSignal(), 1.5245068E7f, 0);
 		assertEquals(chromatogram.getScan(2).getRetentionTime(), 356);
+	}
+
+	@Test
+	public void testIons() {
+
+		/*
+		 * Both spectra share their m/z values but have their own intensities.
+		 */
+		for(int scan = 1; scan <= chromatogram.getNumberOfScans(); scan++) {
+			List<IIon> ions = chromatogram.getScan(scan).getIons();
+			assertEquals(19914, ions.size());
+			assertEquals(200.00018310546875d, ions.getFirst().getIon(), 0);
+			assertEquals(2000.0098876953125d, ions.getLast().getIon(), 0);
+		}
 	}
 
 	@Test

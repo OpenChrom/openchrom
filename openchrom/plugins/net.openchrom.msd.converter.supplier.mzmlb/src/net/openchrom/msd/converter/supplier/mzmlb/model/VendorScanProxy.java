@@ -57,13 +57,14 @@ public class VendorScanProxy extends AbstractRegularMassSpectrumProxy implements
 		 */
 		if(!scanMarkers.isEmpty()) {
 			IScanMarker lastMarker = scanMarkers.get(scanMarkers.size() - 1);
-			if(lastMarker.getOffset() + lastMarker.getLength() == scanMarker.getOffset()) {
+			if(lastMarker.getOffset() + lastMarker.getLength() == scanMarker.getOffset() && lastMarker.getIntensityOffset() + lastMarker.getLength() == scanMarker.getIntensityOffset()) {
 				lastMarker.setLength(lastMarker.getLength() + scanMarker.getLength());
 				return;
 			}
 		}
 		IScanMarker marker = new ScanMarker();
 		marker.setOffset(scanMarker.getOffset());
+		marker.setIntensityOffset(scanMarker.getIntensityOffset());
 		marker.setLength(scanMarker.getLength());
 		scanMarkers.add(marker);
 	}
