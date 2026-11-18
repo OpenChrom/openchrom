@@ -86,7 +86,7 @@ public class AMDISParser {
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Wait for file " + file.getName() + " to complete", (int)(millis / WAIT_MS));
 		while(millis > System.currentTimeMillis() - start) {
 			Thread.sleep(WAIT_MS);
-			subMonitor.worked(1);
+			subMonitor.split(1);
 			if(index < CHECK_WINDOW_SIZE) {
 				long length = file.length();
 				if(length > 0) {
@@ -122,7 +122,7 @@ public class AMDISParser {
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Wait for file " + file.getName() + " to appear", (int)(millis / WAIT_MS));
 		while(millis > System.currentTimeMillis() - start && !file.exists()) {
 			Thread.sleep(WAIT_MS);
-			subMonitor.worked(1);
+			subMonitor.split(1);
 		}
 		return file.exists();
 	}
