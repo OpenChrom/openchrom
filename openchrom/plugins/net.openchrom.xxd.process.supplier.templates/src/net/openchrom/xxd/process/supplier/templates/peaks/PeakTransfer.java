@@ -115,9 +115,10 @@ public class PeakTransfer extends AbstractPeakDetector implements IPeakDetectorM
 		List<Integer> groups = new ArrayList<>();
 		groups.addAll(peakGroups.keySet());
 		Collections.sort(groups);
-		SubMonitor subMonitor = SubMonitor.convert(monitor, "Transfer Peaks", peaks.size());
+		int numberOfPeaks = peakGroups.values().stream().mapToInt(List::size).sum();
+		SubMonitor subMonitor = SubMonitor.convert(monitor, "Transfer Peaks", numberOfPeaks);
 		for(int group : groups) {
-			if(monitor.isCanceled()) {
+			if(subMonitor.isCanceled()) {
 				return;
 			}
 			List<IChromatogramPeak> groupedPeaks = peakGroups.get(group);
