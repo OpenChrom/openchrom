@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Lablicate GmbH.
+ * Copyright (c) 2024, 2026 Lablicate GmbH.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -32,6 +32,7 @@ import org.eclipse.chemclipse.msd.model.core.IRegularMassSpectrum;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.support.history.IEditInformation;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
 
@@ -263,7 +264,7 @@ public class ChromatogramWriter extends AbstractChromatogramWriter implements IC
 		try (var statement = connection.createStatement()) {
 			statement.execute(createBoundingBox);
 		}
-		monitor.beginTask(ConverterMessages.writeScans, chromatogram.getNumberOfScans());
+		SubMonitor subMonitor = SubMonitor.convert(monitor, ConverterMessages.writeScans, chromatogram.getNumberOfScans());
 		String insert = "INSERT INTO bounding_box(run_slice_id, data, first_spectrum_id, last_spectrum_id) VALUES(?,?,?,?)";
 		try (var prepareStatement = connection.prepareStatement(insert)) {
 			// TODO: optimize slicing for data retrieval
@@ -274,7 +275,7 @@ public class ChromatogramWriter extends AbstractChromatogramWriter implements IC
 				}
 				prepareStatement.setFloat(3, scan.getScanNumber());
 				prepareStatement.setFloat(4, scan.getScanNumber());
-				monitor.worked(1);
+				subMonitor.worked(1);
 				prepareStatement.addBatch();
 			}
 			prepareStatement.executeBatch();
