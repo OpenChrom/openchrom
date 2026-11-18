@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.zip.GZIPOutputStream;
 
 import org.eclipse.chemclipse.converter.io.AbstractChromatogramWriter;
+import org.eclipse.chemclipse.converter.l10n.ConverterMessages;
 import org.eclipse.chemclipse.model.core.IChromatogramOverview;
 import org.eclipse.chemclipse.model.core.IScan;
 import org.eclipse.chemclipse.msd.model.core.AbstractIon;
@@ -30,6 +31,7 @@ import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 
 public class ChromatogramWriter extends AbstractChromatogramWriter {
 
@@ -118,8 +120,10 @@ public class ChromatogramWriter extends AbstractChromatogramWriter {
 		writeRetentionIndex(dataOutputStream, scans, monitor);
 
 		List<IExtractedIonSignal> extractedIonSignals = getExtractedIonSignals(scans);
+		SubMonitor subMonitor = SubMonitor.convert(monitor, ConverterMessages.writeChromatogram, stopMZ - startMZ + 1);
 		for(int mz = startMZ; mz <= stopMZ; mz++) {
 			writeIon(dataOutputStream, extractedIonSignals, mz, monitor);
+			subMonitor.worked(1);
 		}
 	}
 
