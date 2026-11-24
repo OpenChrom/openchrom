@@ -72,7 +72,7 @@ public class ChromatogramImportConverter_ITest {
 		IRegularMassSpectrum massSpectrum = (IRegularMassSpectrum)chromatogram.getScan(3);
 		assertEquals(367.201873779297, massSpectrum.getPrecursorIon(), 0);
 		IIonMSn ion = (IIonMSn)massSpectrum.getIons().get(0);
-		assertEquals(367, ion.getIonTransition().getQ1Ion());
-		assertEquals(112.1d, ion.getIonTransition().getQ3Ion(), 0);
+		assertEquals(367.201873779297, ion.getIonTransition().getQ1Ion());
+		assertEquals(112.08702087402344, ion.getIonTransition().getQ3Ion(), 0);
 	}
 }
