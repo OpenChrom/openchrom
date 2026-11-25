@@ -175,10 +175,11 @@ public class CmsLibraryEditor implements IChemClipseEditor {
 				monitor.subTask("Save Mass Spectra");
 				IProcessingInfo<?> processingInfo = DatabaseConverter.convert(massSpectrumFile, massSpectra, false, converterId, monitor);
 				/*
-				 * If no failures have occurred, set the dirty status to
-				 * false.
+				 * Formats that can't be written only report a warning, without a file.
 				 */
-				processingInfo.getProcessingResult();
+				if(processingInfo.hasErrorMessages() || processingInfo.getProcessingResult() == null) {
+					throw new NoMassSpectrumConverterAvailableException();
+				}
 				dirtyable.setDirty(false);
 			} else {
 				throw new NoMassSpectrumConverterAvailableException();
