@@ -94,6 +94,7 @@ public class MassShiftDetector {
 		 * Do the calculation.
 		 */
 		for(int shiftLevel = startShiftLevel; shiftLevel <= stopShiftLevel; shiftLevel++) {
+			monitor.subTask("Calculate Level: " + shiftLevel);
 			/*
 			 * Get the m/z range.
 			 * The last m/z values are skipped, dependent on the selected level.
@@ -128,7 +129,7 @@ public class MassShiftDetector {
 					}
 
 					if(extractScan) {
-						Map<Integer, Double> extractedIonSignalCertainties = calculateIonSignalCertainty(processorSettings, referenceIonSignal, isotopeIonSignal, scan, shiftLevel, startIon, stopIon, monitor);
+						Map<Integer, Double> extractedIonSignalCertainties = calculateIonSignalCertainty(processorSettings, referenceIonSignal, isotopeIonSignal, shiftLevel, startIon, stopIon);
 						ionSignalCertainties.put(scan, extractedIonSignalCertainties);
 					}
 
@@ -215,7 +216,7 @@ public class MassShiftDetector {
 		return 0;
 	}
 
-	private Map<Integer, Double> calculateIonSignalCertainty(IProcessorSettings processorSettings, IExtractedIonSignal referenceIonSignal, IExtractedIonSignal isotopeIonSignal, int scan, int shiftLevel, int startIon, int stopIon, IProgressMonitor monitor) {
+	private Map<Integer, Double> calculateIonSignalCertainty(IProcessorSettings processorSettings, IExtractedIonSignal referenceIonSignal, IExtractedIonSignal isotopeIonSignal, int shiftLevel, int startIon, int stopIon) {
 
 		Map<Integer, Double> ionSignalCertainties = new HashMap<>();
 		/*
@@ -236,8 +237,6 @@ public class MassShiftDetector {
 				/*
 				 * Calculate the m/z difference.
 				 */
-				monitor.subTask("Calculate Level: " + shiftLevel + " -> Scan: " + scan + " -> m/z: " + mz);
-
 				double intensityIsotope = isotopeIonSignal.getAbundance(mz + shiftLevel);
 				double intensityMax = Math.max(intensityReference, intensityIsotope);
 				double intensityDelta = Math.abs(intensityReference - intensityIsotope);
