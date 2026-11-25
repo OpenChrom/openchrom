@@ -27,6 +27,7 @@ import org.eclipse.chemclipse.msd.swt.ui.support.DatabaseFileSupport;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.support.events.IChemClipseEvents;
 import org.eclipse.chemclipse.support.events.IPerspectiveAndViewIds;
+import org.eclipse.chemclipse.support.ui.workbench.DisplayUtils;
 import org.eclipse.chemclipse.support.updates.IUpdateListener;
 import org.eclipse.chemclipse.ux.extension.msd.ui.support.DatabaseImportRunnable;
 import org.eclipse.chemclipse.ux.extension.ui.editors.IChemClipseEditor;
@@ -191,8 +192,14 @@ public class CmsLibraryEditor implements IChemClipseEditor {
 		boolean saveSuccessful = false;
 		if(massSpectra != null) {
 			try {
-				saveSuccessful = DatabaseFileSupport.saveMassSpectra(massSpectra);
-				dirtyable.setDirty(!saveSuccessful);
+				/*
+				 * There might be no active shell, e.g. right after the save
+				 * progress dialog has closed.
+				 */
+				saveSuccessful = DatabaseFileSupport.saveMassSpectra(DisplayUtils.getShell(), massSpectra, "MassSpectra");
+				if(saveSuccessful) {
+					dirtyable.setDirty(false);
+				}
 			} catch(NoConverterAvailableException e) {
 				logger.warn(e);
 			}
