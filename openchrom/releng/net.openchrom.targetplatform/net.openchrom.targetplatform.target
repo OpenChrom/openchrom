@@ -128,7 +128,7 @@
 			<dependency>
 				<groupId>com.google.re2j</groupId>
 				<artifactId>re2j</artifactId>
-				<version>1.8</version>
+				<version>1.9</version>
 				<type>jar</type>
 			</dependency>
 		</dependencies>
